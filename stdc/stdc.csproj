@@ -36,6 +36,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="assert.cs" />
+    <Compile Include="math.cs" />
     <Compile Include="stdio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

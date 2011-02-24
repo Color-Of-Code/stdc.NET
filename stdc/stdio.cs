@@ -4,813 +4,784 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace stdc
-{
-    public sealed class stdio
-    {
-        #region Public Methods
-        #region IsNumericType
-        /// <summary>
-        /// Determines whether the specified value is of numeric type.
-        /// </summary>
-        /// <param name="o">The object to check.</param>
-        /// <returns>
-        /// 	<c>true</c> if o is a numeric type; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsNumericType(object o)
-        {
-            return (o is byte || o is sbyte ||
-                o is short || o is ushort ||
-                o is int || o is uint ||
-                o is long || o is ulong ||
-                o is float ||
-                o is double ||
-                o is decimal);
-        }
-        #endregion
-        #region IsPositive
-        /// <summary>
-        /// Determines whether the specified value is positive.
-        /// </summary>
-        /// <param name="Value">The value.</param>
-        /// <param name="ZeroIsPositive">if set to <c>true</c> treats 0 as positive.</param>
-        /// <returns>
-        /// 	<c>true</c> if the specified value is positive; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsPositive(object Value, bool ZeroIsPositive)
-        {
-            switch (Type.GetTypeCode(Value.GetType()))
-            {
-                case TypeCode.SByte:
-                    return (ZeroIsPositive ? (sbyte)Value >= 0 : (sbyte)Value > 0);
-                case TypeCode.Int16:
-                    return (ZeroIsPositive ? (short)Value >= 0 : (short)Value > 0);
-                case TypeCode.Int32:
-                    return (ZeroIsPositive ? (int)Value >= 0 : (int)Value > 0);
-                case TypeCode.Int64:
-                    return (ZeroIsPositive ? (long)Value >= 0 : (long)Value > 0);
-                case TypeCode.Single:
-                    return (ZeroIsPositive ? (float)Value >= 0 : (float)Value > 0);
-                case TypeCode.Double:
-                    return (ZeroIsPositive ? (double)Value >= 0 : (double)Value > 0);
-                case TypeCode.Decimal:
-                    return (ZeroIsPositive ? (decimal)Value >= 0 : (decimal)Value > 0);
-                case TypeCode.Byte:
-                    return (ZeroIsPositive ? true : (byte)Value > 0);
-                case TypeCode.UInt16:
-                    return (ZeroIsPositive ? true : (ushort)Value > 0);
-                case TypeCode.UInt32:
-                    return (ZeroIsPositive ? true : (uint)Value > 0);
-                case TypeCode.UInt64:
-                    return (ZeroIsPositive ? true : (ulong)Value > 0);
-                case TypeCode.Char:
-                    return (ZeroIsPositive ? true : (char)Value != '\0');
-                default:
-                    return false;
-            }
-        }
-        #endregion
-        #region ToUnsigned
-        /// <summary>
-        /// Converts the specified values boxed type to its correpsonding unsigned
-        /// type.
-        /// </summary>
-        /// <param name="Value">The value.</param>
-        /// <returns>A boxed numeric object whos type is unsigned.</returns>
-        public static object ToUnsigned(object Value)
-        {
-            switch (Type.GetTypeCode(Value.GetType()))
-            {
-                case TypeCode.SByte:
-                    return (byte)((sbyte)Value);
-                case TypeCode.Int16:
-                    return (ushort)((short)Value);
-                case TypeCode.Int32:
-                    return (uint)((int)Value);
-                case TypeCode.Int64:
-                    return (ulong)((long)Value);
+namespace stdc {
+	public static partial class c {
+		#region Public Methods
 
-                case TypeCode.Byte:
-                    return Value;
-                case TypeCode.UInt16:
-                    return Value;
-                case TypeCode.UInt32:
-                    return Value;
-                case TypeCode.UInt64:
-                    return Value;
+		#region IsNumericType
+		/// <summary>
+		/// Determines whether the specified value is of numeric type.
+		/// </summary>
+		/// <param name="o">The object to check.</param>
+		/// <returns>
+		/// 	<c>true</c> if o is a numeric type; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsNumericType (object o)
+		{
+			return (o is byte || o is sbyte ||
+				o is short || o is ushort ||
+				o is int || o is uint ||
+				o is long || o is ulong ||
+				o is float ||
+				o is double ||
+				o is decimal);
+		}
+		#endregion
+		#region IsPositive
+		/// <summary>
+		/// Determines whether the specified value is positive.
+		/// </summary>
+		/// <param name="Value">The value.</param>
+		/// <param name="ZeroIsPositive">if set to <c>true</c> treats 0 as positive.</param>
+		/// <returns>
+		/// 	<c>true</c> if the specified value is positive; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsPositive (object Value, bool ZeroIsPositive)
+		{
+			switch (Type.GetTypeCode (Value.GetType ())) {
+			case TypeCode.SByte:
+				return (ZeroIsPositive ? (sbyte)Value >= 0 : (sbyte)Value > 0);
+			case TypeCode.Int16:
+				return (ZeroIsPositive ? (short)Value >= 0 : (short)Value > 0);
+			case TypeCode.Int32:
+				return (ZeroIsPositive ? (int)Value >= 0 : (int)Value > 0);
+			case TypeCode.Int64:
+				return (ZeroIsPositive ? (long)Value >= 0 : (long)Value > 0);
+			case TypeCode.Single:
+				return (ZeroIsPositive ? (float)Value >= 0 : (float)Value > 0);
+			case TypeCode.Double:
+				return (ZeroIsPositive ? (double)Value >= 0 : (double)Value > 0);
+			case TypeCode.Decimal:
+				return (ZeroIsPositive ? (decimal)Value >= 0 : (decimal)Value > 0);
+			case TypeCode.Byte:
+				return (ZeroIsPositive ? true : (byte)Value > 0);
+			case TypeCode.UInt16:
+				return (ZeroIsPositive ? true : (ushort)Value > 0);
+			case TypeCode.UInt32:
+				return (ZeroIsPositive ? true : (uint)Value > 0);
+			case TypeCode.UInt64:
+				return (ZeroIsPositive ? true : (ulong)Value > 0);
+			case TypeCode.Char:
+				return (ZeroIsPositive ? true : (char)Value != '\0');
+			default:
+				return false;
+			}
+		}
+		#endregion
+		#region ToUnsigned
+		/// <summary>
+		/// Converts the specified values boxed type to its correpsonding unsigned
+		/// type.
+		/// </summary>
+		/// <param name="Value">The value.</param>
+		/// <returns>A boxed numeric object whos type is unsigned.</returns>
+		public static object ToUnsigned (object Value)
+		{
+			switch (Type.GetTypeCode (Value.GetType ())) {
+			case TypeCode.SByte:
+				return (byte)((sbyte)Value);
+			case TypeCode.Int16:
+				return (ushort)((short)Value);
+			case TypeCode.Int32:
+				return (uint)((int)Value);
+			case TypeCode.Int64:
+				return (ulong)((long)Value);
 
-                case TypeCode.Single:
-                    return (UInt32)((float)Value);
-                case TypeCode.Double:
-                    return (ulong)((double)Value);
-                case TypeCode.Decimal:
-                    return (ulong)((decimal)Value);
+			case TypeCode.Byte:
+				return Value;
+			case TypeCode.UInt16:
+				return Value;
+			case TypeCode.UInt32:
+				return Value;
+			case TypeCode.UInt64:
+				return Value;
 
-                default:
-                    return null;
-            }
-        }
-        #endregion
-        #region ToInteger
-        /// <summary>
-        /// Converts the specified values boxed type to its correpsonding integer
-        /// type.
-        /// </summary>
-        /// <param name="Value">The value.</param>
-        /// <returns>A boxed numeric object whos type is an integer type.</returns>
-        public static object ToInteger(object Value, bool Round)
-        {
-            switch (Type.GetTypeCode(Value.GetType()))
-            {
-                case TypeCode.SByte:
-                    return Value;
-                case TypeCode.Int16:
-                    return Value;
-                case TypeCode.Int32:
-                    return Value;
-                case TypeCode.Int64:
-                    return Value;
+			case TypeCode.Single:
+				return (UInt32)((float)Value);
+			case TypeCode.Double:
+				return (ulong)((double)Value);
+			case TypeCode.Decimal:
+				return (ulong)((decimal)Value);
 
-                case TypeCode.Byte:
-                    return Value;
-                case TypeCode.UInt16:
-                    return Value;
-                case TypeCode.UInt32:
-                    return Value;
-                case TypeCode.UInt64:
-                    return Value;
+			default:
+				return null;
+			}
+		}
+		#endregion
+		#region ToInteger
+		/// <summary>
+		/// Converts the specified values boxed type to its correpsonding integer
+		/// type.
+		/// </summary>
+		/// <param name="Value">The value.</param>
+		/// <returns>A boxed numeric object whos type is an integer type.</returns>
+		public static object ToInteger (object Value, bool Round)
+		{
+			switch (Type.GetTypeCode (Value.GetType ())) {
+			case TypeCode.SByte:
+				return Value;
+			case TypeCode.Int16:
+				return Value;
+			case TypeCode.Int32:
+				return Value;
+			case TypeCode.Int64:
+				return Value;
 
-                case TypeCode.Single:
-                    return (Round ? (int)Math.Round((float)Value) : (int)((float)Value));
-                case TypeCode.Double:
-                    return (Round ? (long)Math.Round((double)Value) : (long)((double)Value));
-                case TypeCode.Decimal:
-                    return (Round ? Math.Round((decimal)Value) : (decimal)Value);
+			case TypeCode.Byte:
+				return Value;
+			case TypeCode.UInt16:
+				return Value;
+			case TypeCode.UInt32:
+				return Value;
+			case TypeCode.UInt64:
+				return Value;
 
-                default:
-                    return null;
-            }
-        }
-        #endregion
-        #region UnboxToLong
-        public static long UnboxToLong(object Value, bool Round)
-        {
-            switch (Type.GetTypeCode(Value.GetType()))
-            {
-                case TypeCode.SByte:
-                    return (long)((sbyte)Value);
-                case TypeCode.Int16:
-                    return (long)((short)Value);
-                case TypeCode.Int32:
-                    return (long)((int)Value);
-                case TypeCode.Int64:
-                    return (long)Value;
+			case TypeCode.Single:
+				return (Round ? (int)Math.Round ((float)Value) : (int)((float)Value));
+			case TypeCode.Double:
+				return (Round ? (long)Math.Round ((double)Value) : (long)((double)Value));
+			case TypeCode.Decimal:
+				return (Round ? Math.Round ((decimal)Value) : (decimal)Value);
 
-                case TypeCode.Byte:
-                    return (long)((byte)Value);
-                case TypeCode.UInt16:
-                    return (long)((ushort)Value);
-                case TypeCode.UInt32:
-                    return (long)((uint)Value);
-                case TypeCode.UInt64:
-                    return (long)((ulong)Value);
+			default:
+				return null;
+			}
+		}
+		#endregion
+		#region UnboxToLong
+		public static long UnboxToLong (object Value, bool Round)
+		{
+			switch (Type.GetTypeCode (Value.GetType ())) {
+			case TypeCode.SByte:
+				return (long)((sbyte)Value);
+			case TypeCode.Int16:
+				return (long)((short)Value);
+			case TypeCode.Int32:
+				return (long)((int)Value);
+			case TypeCode.Int64:
+				return (long)Value;
 
-                case TypeCode.Single:
-                    return (Round ? (long)Math.Round((float)Value) : (long)((float)Value));
-                case TypeCode.Double:
-                    return (Round ? (long)Math.Round((double)Value) : (long)((double)Value));
-                case TypeCode.Decimal:
-                    return (Round ? (long)Math.Round((decimal)Value) : (long)((decimal)Value));
+			case TypeCode.Byte:
+				return (long)((byte)Value);
+			case TypeCode.UInt16:
+				return (long)((ushort)Value);
+			case TypeCode.UInt32:
+				return (long)((uint)Value);
+			case TypeCode.UInt64:
+				return (long)((ulong)Value);
 
-                default:
-                    return 0;
-            }
-        }
-        #endregion
-        #region ReplaceMetaChars
-        /// <summary>
-        /// Replaces the string representations of meta chars with their corresponding
-        /// character values.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns>A string with all string meta chars are replaced</returns>
-        public static string ReplaceMetaChars(string input)
-        {
-            return Regex.Replace(input, @"(\\)(\d{3}|[^\d])?", new MatchEvaluator(ReplaceMetaCharsMatch));
-        }
-        private static string ReplaceMetaCharsMatch(Match m)
-        {
-            // convert octal quotes (like \040)
-            if (m.Groups[2].Length == 3)
-                return Convert.ToChar(Convert.ToByte(m.Groups[2].Value, 8)).ToString();
-            else
-            {
-                // convert all other special meta characters
-                //TODO: \xhhh hex and possible dec !!
-                switch (m.Groups[2].Value)
-                {
-                    case "0":           // null
-                        return "\0";
-                    case "a":           // alert (beep)
-                        return "\a";
-                    case "b":           // BS
-                        return "\b";
-                    case "f":           // FF
-                        return "\f";
-                    case "v":           // vertical tab
-                        return "\v";
-                    case "r":           // CR
-                        return "\r";
-                    case "n":           // LF
-                        return "\n";
-                    case "t":           // Tab
-                        return "\t";
-                    default:
-                        throw new InvalidDataException("Bad escape char");
-                        // if neither an octal quote nor a special meta character
-                        // so just remove the backslash
-                        //return m.Groups[2].Value;
-                }
-            }
-        }
-        #endregion
+			case TypeCode.Single:
+				return (Round ? (long)Math.Round ((float)Value) : (long)((float)Value));
+			case TypeCode.Double:
+				return (Round ? (long)Math.Round ((double)Value) : (long)((double)Value));
+			case TypeCode.Decimal:
+				return (Round ? (long)Math.Round ((decimal)Value) : (long)((decimal)Value));
 
-        #endregion
+			default:
+				return 0;
+			}
+		}
+		#endregion
+		#region ReplaceMetaChars
+		/// <summary>
+		/// Replaces the string representations of meta chars with their corresponding
+		/// character values.
+		/// </summary>
+		/// <param name="input">The input.</param>
+		/// <returns>A string with all string meta chars are replaced</returns>
+		public static string ReplaceMetaChars (string input)
+		{
+			return Regex.Replace (input, @"(\\)(\d{3}|[^\d])?", new MatchEvaluator (ReplaceMetaCharsMatch));
+		}
+		private static string ReplaceMetaCharsMatch (Match m)
+		{
+			// convert octal quotes (like \040)
+			if (m.Groups[2].Length == 3)
+				return Convert.ToChar (Convert.ToByte (m.Groups[2].Value, 8)).ToString ();
+			else {
+				// convert all other special meta characters
+				//TODO: \xhhh hex and possible dec !!
+				switch (m.Groups[2].Value) {
+				case "0":           // null
+					return "\0";
+				case "a":           // alert (beep)
+					return "\a";
+				case "b":           // BS
+					return "\b";
+				case "f":           // FF
+					return "\f";
+				case "v":           // vertical tab
+					return "\v";
+				case "r":           // CR
+					return "\r";
+				case "n":           // LF
+					return "\n";
+				case "t":           // Tab
+					return "\t";
+				default:
+					throw new InvalidDataException ("Bad escape char");
+				// if neither an octal quote nor a special meta character
+				// so just remove the backslash
+				//return m.Groups[2].Value;
+				}
+			}
+		}
+		#endregion
 
-        #region SCANF functions (fscanf, scanf, sscanf)
+		#endregion
 
-        public static int fscanf(TextReader stream, string format, params object[] parameters)
-        {
-            throw new NotImplementedException();
-            //return 0;
-        }
+		#region SCANF functions (fscanf, scanf, sscanf)
 
-        public static int scanf(string format, params object[] parameters)
-        {
-            return fscanf(Console.In, format, parameters);
-        }
+		public static int fscanf (TextReader stream, string format, params object[] parameters)
+		{
+			throw new NotImplementedException ();
+			//return 0;
+		}
 
-        public static int sscanf(string input, string format, params object[] parameters)
-        {
-            throw new NotImplementedException();
-            //return 0;
-        }
+		public static int scanf (string format, params object[] parameters)
+		{
+			return fscanf (Console.In, format, parameters);
+		}
 
-        #endregion
+		public static int sscanf (string input, string format, params object[] parameters)
+		{
+			throw new NotImplementedException ();
+			//return 0;
+		}
 
-        #region PRINTF function (fprintf, printf, sprintf)
+		#endregion
 
-        public static int fprintf(TextWriter stream, string format, params object[] parameters)
-        {
-            String result;
-            int count = sprintf(out result, format, parameters);
-            stream.Write(result);
-            return count;
-        }
+		#region PRINTF function (fprintf, printf, sprintf)
 
-        public static int printf(string format, params object[] parameters)
-        {
-            return fprintf(Console.Out, format, parameters);
-        }
+		public static int fprintf (TextWriter stream, string format, params object[] parameters)
+		{
+			String result;
+			int count = sprintf (out result, format, parameters);
+			stream.Write (result);
+			return count;
+		}
 
-        /// <summary>
-        /// Writes into the string result a string consisting on a sequence of data formatted
-        /// as the format argument specifies. After the format parameter, the function expects at least
-        /// as many additional arguments as specified in format. This function behaves exactly as printf
-        /// does, but writing its results to a string instead of stdout.
-        /// 
-        /// The syntax for a format placeholder is "%[parameter][flags][width][.precision][length]type".
-        ///
-        /// Parameter can be omitted or can be:
-        ///   Character	Description
-        ///     n$      n is the number of the parameter to display using this format specifier, allowing
-        ///             the parameters provided to be output multiple times, using varying format specifiers
-        ///             or in different orders. This is a POSIX extension and not in C99. Example:
-        ///             printf("%2$d %1$#x %1$d",16,17) produces "17 0x10 16"
-        ///             
-        /// Flags can be zero or more (in any order) of:
-        ///   Character	Description
-        ///   a number	Causes printf to left-pad the output with spaces until the required length of output
-        ///             is attained. If combined with '0' (see below), it will cause the sign to become a
-        ///             space when positive, but the remaining characters will be zero-padded
-        ///   +	        Causes printf to always denote the sign '+' or '-' of a number (the default is to
-        ///             omit the sign for positive numbers). Only applicable to numeric types.
-        ///   -	        Causes printf to left-align the output of this placeholder (the default is to
-        ///             right-align the output).
-        ///   #	        Alternate form. For 'g' and 'G', trailing zeros are not removed. For 'f', 'F', 'e',
-        ///             'E', 'g', 'G', the output always contains a decimal point. For 'o', 'x', and 'X',
-        ///             a 0, 0x, and 0X, respectively, is prepended to non-zero numbers.
-        ///   0	        Causes printf to use 0 instead of spaces to left-fill a fixed-length field. For 
-        ///             example, printf("%2d", 3) results in " 3", while printf("%02d", 3) results in "03".
-        ///             
-        /// Width can be omitted or be any of:
-        ///   Character	Description
-        ///   a number	Causes printf to pad the output of this placeholder with spaces until it is at least
-        ///             number characters wide. As mentioned above, if number has a leading '0', that is
-        ///             interpreted as a flag, and the padding is done with '0' characters instead of spaces.
-        ///   *	        Causes printf to pad the output until it is n characters wide, where n is an integer
-        ///             value stored in the a function argument just preceding that represented by the
-        ///             modified type. For example printf("%*d", 5, 10) will result in "10" being printed
-        ///             with a width of 5.
-        ///             
-        /// Precision can be omitted or be any of:
-        ///   Character	Description
-        ///   a number	For non-integral numeric types, causes the decimal portion of the output to be
-        ///             expressed in at least number digits. For the string type, causes the output to be
-        ///             truncated at number characters. If the precision is zero, nothing is printed for
-        ///             the corresponding argument.
-        ///   *	        Same as the above, but uses an integer value in the intaken argument to determine
-        ///             the number of decimal places or maximum string length. For example, printf("%.*s",
-        ///             3, "abcdef") will result in "abc" being printed.
-        ///             
-        /// Length can be omitted or be any of:
-        ///   Character	Description
-        ///   hh	    For integer types, causes printf to expect an int sized integer argument which was
-        ///             promoted from a char.
-        ///   h	        For integer types, causes printf to expect a int sized integer argument which was
-        ///             promoted from a short.
-        ///   l	        For integer types, causes printf to expect a long sized integer argument.
-        ///   ll	    For integer types, causes printf to expect a long long sized integer argument.
-        ///   L	        For floating point types, causes printf to expect a long double argument.
-        ///   z	        For integer types, causes printf to expect a size_t sized integer argument.
-        ///   j	        For integer types, causes printf to expect a intmax_t sized integer argument.
-        ///   t	        For integer types, causes printf to expect a ptrdiff_t sized integer argument.
-        ///   
-        /// Additionally, several platform specific length options came to exist prior to widespread use
-        /// of the ISO C99 extensions:
-        ///   Character	Description
-        ///   I	        For signed integer types, causes printf to expect ptrdiff_t sized integer argument;
-        ///             for unsigned integer types, causes printf to expect size_t sized integer argument.
-        ///             Commonly found in Win32/Win64 platforms.
-        ///   I32	    For integer types, causes printf to expect a 32-bit (double word) integer argument.
-        ///             Commonly found in Win32/Win64 platforms.
-        ///   I64	    For integer types, causes printf to expect a 64-bit (quad word) integer argument.
-        ///             Commonly found in Win32/Win64 platforms.
-        ///   q	        For integer types, causes printf to expect a 64-bit (quad word) integer argument.
-        ///             Commonly found in BSD platforms.
-        ///             
-        /// ISO C99 includes the inttypes.h header file that includes a number of macros for use in platform-independent printf coding. Example macros include:
-        ///   Character	Description
-        ///   "PRId32"	Typically equivalent to I32d (Win32/Win64) or d
-        ///   "PRId64"	Typically equivalent to I64d (Win32/Win64), lld (32-bit platforms) or ld (64-bit platforms)
-        ///   "PRIi32"	Typically equivalent to I32i (Win32/Win64) or i
-        ///   "PRIi64"	Typically equivalent to I64i (Win32/Win64), lli (32-bit platforms) or li (64-bit platforms)
-        ///   "PRIu32"	Typically equivalent to I32u (Win32/Win64) or u
-        ///   "PRIu64"	Typically equivalent to I64u (Win32/Win64), llu (32-bit platforms) or lu (64-bit platforms)
-        ///   
-        /// Type can be any of:
-        ///   Character	Description
-        ///   d, i	    Print an int as a signed decimal number. '%d' and '%i' are synonymous for output, but are different when used with scanf() for input.
-        ///   u	        Print decimal unsigned int.
-        ///   f, F	    Print a double in normal (fixed-point) notation. 'f' and 'F' only differs in how the strings for an infinite number or NaN are printed ('inf', 'infinity' and 'nan' for 'f', 'INF', 'INFINITY' and 'NAN' for 'F').
-        ///   e, E	    Print a double value in standard form ([-]d.ddd e[+/-]ddd).An E conversion uses the letter E (rather than e) to introduce the exponent. The exponent always contains at least two digits; if the value is zero, the exponent is 00.
-        ///   g, G	    Print a double in either normal or exponential notation, whichever is more appropriate for its magnitude. 'g' uses lower-case letters, 'G' uses upper-case letters. This type differs slightly from fixed-point notation in that insignificant zeroes to the right of the decimal point are not included. Also, the decimal point is not included on whole numbers.
-        ///   x, X	    Print an unsigned int as a hexadecimal number. 'x' uses lower-case letters and 'X' uses upper-case.
-        ///   o	        Print an unsigned int in octal.
-        ///   s	        Print a character string.
-        ///   c	        Print a char (character).
-        ///   p	        Print a void * (pointer to void) in an implementation-defined format.
-        ///   n	        Print nothing, but write number of characters successfully written so far into an integer pointer parameter.
-        ///   %	        Print a literal '%' character (this type doesn't accept any flags, width, precision or length).
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="format"></param>
-        /// <param name="parameters"></param>
-        /// <returns>On success, the total number of characters written is returned. This count does
-        /// not include the additional null-character automatically appended at the end of the string.
-        /// On failure, a negative number is returned.</returns>
-        public static int sprintf(out String result, string format, params object[] parameters)
-        {
-            StringBuilder sb = new StringBuilder();
-            #region Variables
-            //                         +
-            Regex r = new Regex(@"\%(\d*\$)?([\'\#\-\+ ]*)(\d*)(?:\.(\d+))?([hl])?([dioxXucsfeEgGpn%])");
-            //"%[parameter][flags][width][.precision][length]type"
-            Match m = null;
-            string w = String.Empty;
-            int defaultParamIx = 0;
-            int paramIx;
-            object o = null;
+		public static int printf (string format, params object[] parameters)
+		{
+			return fprintf (Console.Out, format, parameters);
+		}
 
-            bool flagLeft2Right = false;
-            bool flagAlternate = false;
-            bool flagPositiveSign = false;
-            bool flagPositiveSpace = false;
-            bool flagZeroPadding = false;
-            bool flagGroupThousands = false;
+		/// <summary>
+		/// Writes into the string result a string consisting on a sequence of data formatted
+		/// as the format argument specifies. After the format parameter, the function expects at least
+		/// as many additional arguments as specified in format. This function behaves exactly as printf
+		/// does, but writing its results to a string instead of stdout.
+		/// 
+		/// The syntax for a format placeholder is "%[parameter][flags][width][.precision][length]type".
+		///
+		/// Parameter can be omitted or can be:
+		///   Character	Description
+		///     n$      n is the number of the parameter to display using this format specifier, allowing
+		///             the parameters provided to be output multiple times, using varying format specifiers
+		///             or in different orders. This is a POSIX extension and not in C99. Example:
+		///             printf("%2$d %1$#x %1$d",16,17) produces "17 0x10 16"
+		///             
+		/// Flags can be zero or more (in any order) of:
+		///   Character	Description
+		///   a number	Causes printf to left-pad the output with spaces until the required length of output
+		///             is attained. If combined with '0' (see below), it will cause the sign to become a
+		///             space when positive, but the remaining characters will be zero-padded
+		///   +	        Causes printf to always denote the sign '+' or '-' of a number (the default is to
+		///             omit the sign for positive numbers). Only applicable to numeric types.
+		///   -	        Causes printf to left-align the output of this placeholder (the default is to
+		///             right-align the output).
+		///   #	        Alternate form. For 'g' and 'G', trailing zeros are not removed. For 'f', 'F', 'e',
+		///             'E', 'g', 'G', the output always contains a decimal point. For 'o', 'x', and 'X',
+		///             a 0, 0x, and 0X, respectively, is prepended to non-zero numbers.
+		///   0	        Causes printf to use 0 instead of spaces to left-fill a fixed-length field. For 
+		///             example, printf("%2d", 3) results in " 3", while printf("%02d", 3) results in "03".
+		///             
+		/// Width can be omitted or be any of:
+		///   Character	Description
+		///   a number	Causes printf to pad the output of this placeholder with spaces until it is at least
+		///             number characters wide. As mentioned above, if number has a leading '0', that is
+		///             interpreted as a flag, and the padding is done with '0' characters instead of spaces.
+		///   *	        Causes printf to pad the output until it is n characters wide, where n is an integer
+		///             value stored in the a function argument just preceding that represented by the
+		///             modified type. For example printf("%*d", 5, 10) will result in "10" being printed
+		///             with a width of 5.
+		///             
+		/// Precision can be omitted or be any of:
+		///   Character	Description
+		///   a number	For non-integral numeric types, causes the decimal portion of the output to be
+		///             expressed in at least number digits. For the string type, causes the output to be
+		///             truncated at number characters. If the precision is zero, nothing is printed for
+		///             the corresponding argument.
+		///   *	        Same as the above, but uses an integer value in the intaken argument to determine
+		///             the number of decimal places or maximum string length. For example, printf("%.*s",
+		///             3, "abcdef") will result in "abc" being printed.
+		///             
+		/// Length can be omitted or be any of:
+		///   Character	Description
+		///   hh	    For integer types, causes printf to expect an int sized integer argument which was
+		///             promoted from a char.
+		///   h	        For integer types, causes printf to expect a int sized integer argument which was
+		///             promoted from a short.
+		///   l	        For integer types, causes printf to expect a long sized integer argument.
+		///   ll	    For integer types, causes printf to expect a long long sized integer argument.
+		///   L	        For floating point types, causes printf to expect a long double argument.
+		///   z	        For integer types, causes printf to expect a size_t sized integer argument.
+		///   j	        For integer types, causes printf to expect a intmax_t sized integer argument.
+		///   t	        For integer types, causes printf to expect a ptrdiff_t sized integer argument.
+		///   
+		/// Additionally, several platform specific length options came to exist prior to widespread use
+		/// of the ISO C99 extensions:
+		///   Character	Description
+		///   I	        For signed integer types, causes printf to expect ptrdiff_t sized integer argument;
+		///             for unsigned integer types, causes printf to expect size_t sized integer argument.
+		///             Commonly found in Win32/Win64 platforms.
+		///   I32	    For integer types, causes printf to expect a 32-bit (double word) integer argument.
+		///             Commonly found in Win32/Win64 platforms.
+		///   I64	    For integer types, causes printf to expect a 64-bit (quad word) integer argument.
+		///             Commonly found in Win32/Win64 platforms.
+		///   q	        For integer types, causes printf to expect a 64-bit (quad word) integer argument.
+		///             Commonly found in BSD platforms.
+		///             
+		/// ISO C99 includes the inttypes.h header file that includes a number of macros for use in platform-independent printf coding. Example macros include:
+		///   Character	Description
+		///   "PRId32"	Typically equivalent to I32d (Win32/Win64) or d
+		///   "PRId64"	Typically equivalent to I64d (Win32/Win64), lld (32-bit platforms) or ld (64-bit platforms)
+		///   "PRIi32"	Typically equivalent to I32i (Win32/Win64) or i
+		///   "PRIi64"	Typically equivalent to I64i (Win32/Win64), lli (32-bit platforms) or li (64-bit platforms)
+		///   "PRIu32"	Typically equivalent to I32u (Win32/Win64) or u
+		///   "PRIu64"	Typically equivalent to I64u (Win32/Win64), llu (32-bit platforms) or lu (64-bit platforms)
+		///   
+		/// Type can be any of:
+		///   Character	Description
+		///   d, i	    Print an int as a signed decimal number. '%d' and '%i' are synonymous for output, but are different when used with scanf() for input.
+		///   u	        Print decimal unsigned int.
+		///   f, F	    Print a double in normal (fixed-point) notation. 'f' and 'F' only differs in how the strings for an infinite number or NaN are printed ('inf', 'infinity' and 'nan' for 'f', 'INF', 'INFINITY' and 'NAN' for 'F').
+		///   e, E	    Print a double value in standard form ([-]d.ddd e[+/-]ddd).An E conversion uses the letter E (rather than e) to introduce the exponent. The exponent always contains at least two digits; if the value is zero, the exponent is 00.
+		///   g, G	    Print a double in either normal or exponential notation, whichever is more appropriate for its magnitude. 'g' uses lower-case letters, 'G' uses upper-case letters. This type differs slightly from fixed-point notation in that insignificant zeroes to the right of the decimal point are not included. Also, the decimal point is not included on whole numbers.
+		///   x, X	    Print an unsigned int as a hexadecimal number. 'x' uses lower-case letters and 'X' uses upper-case.
+		///   o	        Print an unsigned int in octal.
+		///   s	        Print a character string.
+		///   c	        Print a char (character).
+		///   p	        Print a void * (pointer to void) in an implementation-defined format.
+		///   n	        Print nothing, but write number of characters successfully written so far into an integer pointer parameter.
+		///   %	        Print a literal '%' character (this type doesn't accept any flags, width, precision or length).
+		/// </summary>
+		/// <param name="result"></param>
+		/// <param name="format"></param>
+		/// <param name="parameters"></param>
+		/// <returns>On success, the total number of characters written is returned. This count does
+		/// not include the additional null-character automatically appended at the end of the string.
+		/// On failure, a negative number is returned.</returns>
+		public static int sprintf (out String result, string format, params object[] parameters)
+		{
+			StringBuilder sb = new StringBuilder ();
+			#region Variables
+			//                         +
+			Regex r = new Regex (@"\%(\d*\$)?([\'\#\-\+ ]*)(\d*)(?:\.(\d+))?([hl])?([dioxXucsfeEgGpn%])");
+			//"%[parameter][flags][width][.precision][length]type"
+			Match m = null;
+			string w = String.Empty;
+			int defaultParamIx = 0;
+			int paramIx;
+			object o = null;
 
-            int fieldLength = 0;
-            int fieldPrecision = 0;
-            char shortLongIndicator = '\0';
-            char formatSpecifier = '\0';
-            char paddingCharacter = ' ';
-            #endregion
+			bool flagLeft2Right = false;
+			bool flagAlternate = false;
+			bool flagPositiveSign = false;
+			bool flagPositiveSpace = false;
+			bool flagZeroPadding = false;
+			bool flagGroupThousands = false;
 
-            // find all format parameters in format string
-            sb.Append(format);
-            m = r.Match(sb.ToString());
-            while (m.Success)
-            {
-                #region parameter index
-                paramIx = defaultParamIx;
-                if (m.Groups[1] != null && m.Groups[1].Value.Length > 0)
-                {
-                    string val = m.Groups[1].Value.Substring(0, m.Groups[1].Value.Length - 1);
-                    paramIx = Convert.ToInt32(val) - 1;
-                };
-                #endregion
+			int fieldLength = 0;
+			int fieldPrecision = 0;
+			char shortLongIndicator = '\0';
+			char formatSpecifier = '\0';
+			char paddingCharacter = ' ';
+			#endregion
 
-                #region format flags
-                // extract format flags
-                flagAlternate = false;
-                flagLeft2Right = false;
-                flagPositiveSign = false;
-                flagPositiveSpace = false;
-                flagZeroPadding = false;
-                flagGroupThousands = false;
-                if (m.Groups[2] != null && m.Groups[2].Value.Length > 0)
-                {
-                    string flags = m.Groups[2].Value;
+			// find all format parameters in format string
+			sb.Append (format);
+			m = r.Match (sb.ToString ());
+			while (m.Success) {
+				#region parameter index
+				paramIx = defaultParamIx;
+				if (m.Groups[1] != null && m.Groups[1].Value.Length > 0) {
+					string val = m.Groups[1].Value.Substring (0, m.Groups[1].Value.Length - 1);
+					paramIx = Convert.ToInt32 (val) - 1;
+				};
+				#endregion
 
-                    flagAlternate = (flags.IndexOf('#') >= 0);
-                    flagLeft2Right = (flags.IndexOf('-') >= 0);
-                    flagPositiveSign = (flags.IndexOf('+') >= 0);
-                    flagPositiveSpace = (flags.IndexOf(' ') >= 0);
-                    flagGroupThousands = (flags.IndexOf('\'') >= 0);
+				#region format flags
+				// extract format flags
+				flagAlternate = false;
+				flagLeft2Right = false;
+				flagPositiveSign = false;
+				flagPositiveSpace = false;
+				flagZeroPadding = false;
+				flagGroupThousands = false;
+				if (m.Groups[2] != null && m.Groups[2].Value.Length > 0) {
+					string flags = m.Groups[2].Value;
 
-                    // positive + indicator overrides a
-                    // positive space character
-                    if (flagPositiveSign && flagPositiveSpace)
-                        flagPositiveSpace = false;
-                }
-                #endregion
+					flagAlternate = (flags.IndexOf ('#') >= 0);
+					flagLeft2Right = (flags.IndexOf ('-') >= 0);
+					flagPositiveSign = (flags.IndexOf ('+') >= 0);
+					flagPositiveSpace = (flags.IndexOf (' ') >= 0);
+					flagGroupThousands = (flags.IndexOf ('\'') >= 0);
 
-                #region field length
-                // extract field length and 
-                // pading character
-                paddingCharacter = ' ';
-                fieldLength = int.MinValue;
-                if (m.Groups[3] != null && m.Groups[3].Value.Length > 0)
-                {
-                    fieldLength = Convert.ToInt32(m.Groups[3].Value);
-                    flagZeroPadding = (m.Groups[3].Value[0] == '0');
-                }
-                #endregion
+					// positive + indicator overrides a
+					// positive space character
+					if (flagPositiveSign && flagPositiveSpace)
+						flagPositiveSpace = false;
+				}
+				#endregion
 
-                if (flagZeroPadding)
-                    paddingCharacter = '0';
+				#region field length
+				// extract field length and 
+				// pading character
+				paddingCharacter = ' ';
+				fieldLength = int.MinValue;
+				if (m.Groups[3] != null && m.Groups[3].Value.Length > 0) {
+					fieldLength = Convert.ToInt32 (m.Groups[3].Value);
+					flagZeroPadding = (m.Groups[3].Value[0] == '0');
+				}
+				#endregion
 
-                // left2right allignment overrides zero padding
-                if (flagLeft2Right && flagZeroPadding)
-                {
-                    flagZeroPadding = false;
-                    paddingCharacter = ' ';
-                }
+				if (flagZeroPadding)
+					paddingCharacter = '0';
 
-                #region field precision
-                // extract field precision
-                fieldPrecision = int.MinValue;
-                if (m.Groups[4] != null && m.Groups[4].Value.Length > 0)
-                    fieldPrecision = Convert.ToInt32(m.Groups[4].Value);
-                #endregion
+				// left2right allignment overrides zero padding
+				if (flagLeft2Right && flagZeroPadding) {
+					flagZeroPadding = false;
+					paddingCharacter = ' ';
+				}
 
-                #region short / long indicator
-                // extract short / long indicator
-                shortLongIndicator = Char.MinValue;
-                if (m.Groups[5] != null && m.Groups[5].Value.Length > 0)
-                    shortLongIndicator = m.Groups[5].Value[0];
-                #endregion
+				#region field precision
+				// extract field precision
+				fieldPrecision = int.MinValue;
+				if (m.Groups[4] != null && m.Groups[4].Value.Length > 0)
+					fieldPrecision = Convert.ToInt32 (m.Groups[4].Value);
+				#endregion
 
-                #region format specifier
-                // extract format
-                formatSpecifier = Char.MinValue;
-                if (m.Groups[6] != null && m.Groups[6].Value.Length > 0)
-                    formatSpecifier = m.Groups[6].Value[0];
-                #endregion
+				#region short / long indicator
+				// extract short / long indicator
+				shortLongIndicator = Char.MinValue;
+				if (m.Groups[5] != null && m.Groups[5].Value.Length > 0)
+					shortLongIndicator = m.Groups[5].Value[0];
+				#endregion
 
-                // default precision is 6 digits if none is specified except
-                if (fieldPrecision == int.MinValue &&
-                    formatSpecifier != 's' &&
-                    formatSpecifier != 'c' &&
-                    Char.ToUpper(formatSpecifier) != 'X' &&
-                    formatSpecifier != 'o')
-                    fieldPrecision = 6;
+				#region format specifier
+				// extract format
+				formatSpecifier = Char.MinValue;
+				if (m.Groups[6] != null && m.Groups[6].Value.Length > 0)
+					formatSpecifier = m.Groups[6].Value[0];
+				#endregion
 
-                #region get next value parameter
-                // get next value parameter and convert value parameter depending on short / long indicator
-                if (parameters == null || paramIx >= parameters.Length)
-                    o = null;
-                else
-                {
-                    o = parameters[paramIx];
+				// default precision is 6 digits if none is specified except
+				if (fieldPrecision == int.MinValue &&
+					formatSpecifier != 's' &&
+					formatSpecifier != 'c' &&
+					Char.ToUpper (formatSpecifier) != 'X' &&
+					formatSpecifier != 'o')
+					fieldPrecision = 6;
 
-                    if (shortLongIndicator == 'h')
-                    {
-                        if (o is int)
-                            o = (short)((int)o);
-                        else if (o is long)
-                            o = (short)((long)o);
-                        else if (o is uint)
-                            o = (ushort)((uint)o);
-                        else if (o is ulong)
-                            o = (ushort)((ulong)o);
-                    }
-                    else if (shortLongIndicator == 'l')
-                    {
-                        if (o is short)
-                            o = (long)((short)o);
-                        else if (o is int)
-                            o = (long)((int)o);
-                        else if (o is ushort)
-                            o = (ulong)((ushort)o);
-                        else if (o is uint)
-                            o = (ulong)((uint)o);
-                    }
-                }
-                #endregion
+				#region get next value parameter
+				// get next value parameter and convert value parameter depending on short / long indicator
+				if (parameters == null || paramIx >= parameters.Length)
+					o = null;
+				else {
+					o = parameters[paramIx];
 
-                // convert value parameters to a string depending on the formatSpecifier
-                w = String.Empty;
-                switch (formatSpecifier)
-                {
-                    #region % - character
-                    case '%':   // % character
-                        w = "%";
-                        break;
-                    #endregion
-                    #region d - integer
-                    case 'd':   // integer
-                        w = FormatNumber((flagGroupThousands ? "n" : "d"), flagAlternate,
-                                        fieldLength, int.MinValue, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region i - integer
-                    case 'i':   // integer
-                        goto case 'd';
-                    #endregion
-                    #region o - octal integer
-                    case 'o':   // octal integer - no leading zero
-                        w = FormatOct("o", flagAlternate,
-                                        fieldLength, int.MinValue, flagLeft2Right,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region x - hex integer
-                    case 'x':   // hex integer - no leading zero
-                        w = FormatHex("x", flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region X - hex integer
-                    case 'X':   // same as x but with capital hex characters
-                        w = FormatHex("X", flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region u - unsigned integer
-                    case 'u':   // unsigned integer
-                        w = FormatNumber((flagGroupThousands ? "n" : "d"), flagAlternate,
-                                        fieldLength, int.MinValue, flagLeft2Right,
-                                        false, false,
-                                        paddingCharacter, ToUnsigned(o));
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region c - character
-                    case 'c':   // character
-                        if (IsNumericType(o))
-                            w = Convert.ToChar(o).ToString();
-                        else if (o is char)
-                            w = ((char)o).ToString();
-                        else if (o is string && ((string)o).Length > 0)
-                            w = ((string)o)[0].ToString();
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region s - string
-                    case 's':   // string
-                        string t = "{0" + (fieldLength != int.MinValue ? "," + (flagLeft2Right ? "-" : String.Empty) + fieldLength.ToString() : String.Empty) + ":s}";
-                        w = o.ToString();
-                        if (fieldPrecision >= 0)
-                            w = w.Substring(0, fieldPrecision);
+					if (shortLongIndicator == 'h') {
+						if (o is int)
+							o = (short)((int)o);
+						else if (o is long)
+							o = (short)((long)o);
+						else if (o is uint)
+							o = (ushort)((uint)o);
+						else if (o is ulong)
+							o = (ushort)((ulong)o);
+					} else if (shortLongIndicator == 'l') {
+						if (o is short)
+							o = (long)((short)o);
+						else if (o is int)
+							o = (long)((int)o);
+						else if (o is ushort)
+							o = (ulong)((ushort)o);
+						else if (o is uint)
+							o = (ulong)((uint)o);
+					}
+				}
+				#endregion
 
-                        if (fieldLength != int.MinValue)
-                            if (flagLeft2Right)
-                                w = w.PadRight(fieldLength, paddingCharacter);
-                            else
-                                w = w.PadLeft(fieldLength, paddingCharacter);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region f - double number
-                    case 'f':   // double
-                        w = FormatNumber((flagGroupThousands ? "n" : "f"), flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region e - exponent number
-                    case 'e':   // double / exponent
-                        w = FormatNumber("e", flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region E - exponent number
-                    case 'E':   // double / exponent
-                        w = FormatNumber("E", flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region g - general number
-                    case 'g':   // double / exponent
-                        w = FormatNumber("g", flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region G - general number
-                    case 'G':   // double / exponent
-                        w = FormatNumber("G", flagAlternate,
-                                        fieldLength, fieldPrecision, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, o);
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region p - pointer
-                    case 'p':   // pointer
-                        if (o is IntPtr)
-                            w = "0x" + ((IntPtr)o).ToString("x");
-                        defaultParamIx++;
-                        break;
-                    #endregion
-                    #region n - number of processed chars so far
-                    case 'n':   // number of characters so far
-                        w = FormatNumber("d", flagAlternate,
-                                        fieldLength, int.MinValue, flagLeft2Right,
-                                        flagPositiveSign, flagPositiveSpace,
-                                        paddingCharacter, m.Index);
-                        break;
-                    #endregion
-                    default:
-                        w = String.Empty;
-                        defaultParamIx++;
-                        break;
-                }
+				// convert value parameters to a string depending on the formatSpecifier
+				w = String.Empty;
+				switch (formatSpecifier) {
+				#region % - character
+				case '%':   // % character
+					w = "%";
+					break;
+				#endregion
+				#region d - integer
+				case 'd':   // integer
+					w = FormatNumber ((flagGroupThousands ? "n" : "d"), flagAlternate,
+									fieldLength, int.MinValue, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region i - integer
+				case 'i':   // integer
+					goto case 'd';
+				#endregion
+				#region o - octal integer
+				case 'o':   // octal integer - no leading zero
+					w = FormatOct ("o", flagAlternate,
+									fieldLength, int.MinValue, flagLeft2Right,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region x - hex integer
+				case 'x':   // hex integer - no leading zero
+					w = FormatHex ("x", flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region X - hex integer
+				case 'X':   // same as x but with capital hex characters
+					w = FormatHex ("X", flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region u - unsigned integer
+				case 'u':   // unsigned integer
+					w = FormatNumber ((flagGroupThousands ? "n" : "d"), flagAlternate,
+									fieldLength, int.MinValue, flagLeft2Right,
+									false, false,
+									paddingCharacter, ToUnsigned (o));
+					defaultParamIx++;
+					break;
+				#endregion
+				#region c - character
+				case 'c':   // character
+					if (IsNumericType (o))
+						w = Convert.ToChar (o).ToString ();
+					else if (o is char)
+						w = ((char)o).ToString ();
+					else if (o is string && ((string)o).Length > 0)
+						w = ((string)o)[0].ToString ();
+					defaultParamIx++;
+					break;
+				#endregion
+				#region s - string
+				case 's':   // string
+					string t = "{0" + (fieldLength != int.MinValue ? "," + (flagLeft2Right ? "-" : String.Empty) + fieldLength.ToString () : String.Empty) + ":s}";
+					w = o.ToString ();
+					if (fieldPrecision >= 0)
+						w = w.Substring (0, fieldPrecision);
 
-                // replace format parameter with parameter value
-                // and start searching for the next format parameter
-                // AFTER the position of the current inserted value
-                // to prohibit recursive matches if the value also
-                // includes a format specifier
-                sb.Remove(m.Index, m.Length);
-                sb.Insert(m.Index, w);
-                m = r.Match(sb.ToString(), m.Index + w.Length);
-            }
-            result = sb.ToString();
-            return result.Length;
-        }
-        #endregion
+					if (fieldLength != int.MinValue)
+						if (flagLeft2Right)
+							w = w.PadRight (fieldLength, paddingCharacter);
+						else
+							w = w.PadLeft (fieldLength, paddingCharacter);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region f - double number
+				case 'f':   // double
+					w = FormatNumber ((flagGroupThousands ? "n" : "f"), flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region e - exponent number
+				case 'e':   // double / exponent
+					w = FormatNumber ("e", flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region E - exponent number
+				case 'E':   // double / exponent
+					w = FormatNumber ("E", flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region g - general number
+				case 'g':   // double / exponent
+					w = FormatNumber ("g", flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region G - general number
+				case 'G':   // double / exponent
+					w = FormatNumber ("G", flagAlternate,
+									fieldLength, fieldPrecision, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, o);
+					defaultParamIx++;
+					break;
+				#endregion
+				#region p - pointer
+				case 'p':   // pointer
+					if (o is IntPtr)
+						w = "0x" + ((IntPtr)o).ToString ("x");
+					defaultParamIx++;
+					break;
+				#endregion
+				#region n - number of processed chars so far
+				case 'n':   // number of characters so far
+					w = FormatNumber ("d", flagAlternate,
+									fieldLength, int.MinValue, flagLeft2Right,
+									flagPositiveSign, flagPositiveSpace,
+									paddingCharacter, m.Index);
+					break;
+				#endregion
+				default:
+					w = String.Empty;
+					defaultParamIx++;
+					break;
+				}
 
-        #region Private Methods
-        #region FormatOCT
-        private static string FormatOct(string NativeFormat, bool Alternate,
-                                            int FieldLength, int FieldPrecision,
-                                            bool Left2Right,
-                                            char Padding, object Value)
-        {
-            string w = String.Empty;
-            string lengthFormat = "{0" + (FieldLength != int.MinValue ?
-                                            "," + (Left2Right ?
-                                                    "-" :
-                                                    String.Empty) + FieldLength.ToString() :
-                                            String.Empty) + "}";
+				// replace format parameter with parameter value
+				// and start searching for the next format parameter
+				// AFTER the position of the current inserted value
+				// to prohibit recursive matches if the value also
+				// includes a format specifier
+				sb.Remove (m.Index, m.Length);
+				sb.Insert (m.Index, w);
+				m = r.Match (sb.ToString (), m.Index + w.Length);
+			}
+			result = sb.ToString ();
+			return result.Length;
+		}
+		#endregion
 
-            if (IsNumericType(Value))
-            {
-                w = Convert.ToString(UnboxToLong(Value, true), 8);
+		#region Private Methods
+		#region FormatOCT
+		private static string FormatOct (string NativeFormat, bool Alternate,
+											int FieldLength, int FieldPrecision,
+											bool Left2Right,
+											char Padding, object Value)
+		{
+			string w = String.Empty;
+			string lengthFormat = "{0" + (FieldLength != int.MinValue ?
+											"," + (Left2Right ?
+													"-" :
+													String.Empty) + FieldLength.ToString () :
+											String.Empty) + "}";
 
-                if (Left2Right || Padding == ' ')
-                {
-                    if (Alternate && w != "0")
-                        w = "0" + w;
-                    w = String.Format(lengthFormat, w);
-                }
-                else
-                {
-                    if (FieldLength != int.MinValue)
-                        w = w.PadLeft(FieldLength - (Alternate && w != "0" ? 1 : 0), Padding);
-                    if (Alternate && w != "0")
-                        w = "0" + w;
-                }
-            }
+			if (IsNumericType (Value)) {
+				w = Convert.ToString (UnboxToLong (Value, true), 8);
 
-            return w;
-        }
-        #endregion
-        #region FormatHEX
-        private static string FormatHex(string NativeFormat, bool Alternate,
-                                            int FieldLength, int FieldPrecision,
-                                            bool Left2Right,
-                                            char Padding, object Value)
-        {
-            string w = String.Empty;
-            string lengthFormat = "{0" + (FieldLength != int.MinValue ?
-                                            "," + (Left2Right ?
-                                                    "-" :
-                                                    String.Empty) + FieldLength.ToString() :
-                                            String.Empty) + "}";
-            string numberFormat = "{0:" + NativeFormat + (FieldPrecision != int.MinValue ?
-                                            FieldPrecision.ToString() :
-                                            String.Empty) + "}";
+				if (Left2Right || Padding == ' ') {
+					if (Alternate && w != "0")
+						w = "0" + w;
+					w = String.Format (lengthFormat, w);
+				} else {
+					if (FieldLength != int.MinValue)
+						w = w.PadLeft (FieldLength - (Alternate && w != "0" ? 1 : 0), Padding);
+					if (Alternate && w != "0")
+						w = "0" + w;
+				}
+			}
 
-            if (IsNumericType(Value))
-            {
-                w = String.Format(numberFormat, Value);
+			return w;
+		}
+		#endregion
+		#region FormatHEX
+		private static string FormatHex (string NativeFormat, bool Alternate,
+											int FieldLength, int FieldPrecision,
+											bool Left2Right,
+											char Padding, object Value)
+		{
+			string w = String.Empty;
+			string lengthFormat = "{0" + (FieldLength != int.MinValue ?
+											"," + (Left2Right ?
+													"-" :
+													String.Empty) + FieldLength.ToString () :
+											String.Empty) + "}";
+			string numberFormat = "{0:" + NativeFormat + (FieldPrecision != int.MinValue ?
+											FieldPrecision.ToString () :
+											String.Empty) + "}";
 
-                if (Left2Right || Padding == ' ')
-                {
-                    if (Alternate)
-                        w = (NativeFormat == "x" ? "0x" : "0X") + w;
-                    w = String.Format(lengthFormat, w);
-                }
-                else
-                {
-                    if (FieldLength != int.MinValue)
-                        w = w.PadLeft(FieldLength - (Alternate ? 2 : 0), Padding);
-                    if (Alternate)
-                        w = (NativeFormat == "x" ? "0x" : "0X") + w;
-                }
-            }
+			if (IsNumericType (Value)) {
+				w = String.Format (numberFormat, Value);
 
-            return w;
-        }
-        #endregion
-        #region FormatNumber
-        private static string FormatNumber(string NativeFormat, bool Alternate,
-                                            int FieldLength, int FieldPrecision,
-                                            bool Left2Right,
-                                            bool PositiveSign, bool PositiveSpace,
-                                            char Padding, object Value)
-        {
-            string w = String.Empty;
-            string lengthFormat = "{0" + (FieldLength != int.MinValue ?
-                                            "," + (Left2Right ?
-                                                    "-" :
-                                                    String.Empty) + FieldLength.ToString() :
-                                            String.Empty) + "}";
-            string numberFormat = "{0:" + NativeFormat + (FieldPrecision != int.MinValue ?
-                                            FieldPrecision.ToString() :
-                                            "0") + "}";
+				if (Left2Right || Padding == ' ') {
+					if (Alternate)
+						w = (NativeFormat == "x" ? "0x" : "0X") + w;
+					w = String.Format (lengthFormat, w);
+				} else {
+					if (FieldLength != int.MinValue)
+						w = w.PadLeft (FieldLength - (Alternate ? 2 : 0), Padding);
+					if (Alternate)
+						w = (NativeFormat == "x" ? "0x" : "0X") + w;
+				}
+			}
 
-            if (IsNumericType(Value))
-            {
-                w = String.Format(numberFormat, Value);
+			return w;
+		}
+		#endregion
+		#region FormatNumber
+		private static string FormatNumber (string NativeFormat, bool Alternate,
+											int FieldLength, int FieldPrecision,
+											bool Left2Right,
+											bool PositiveSign, bool PositiveSpace,
+											char Padding, object Value)
+		{
+			string w = String.Empty;
+			string lengthFormat = "{0" + (FieldLength != int.MinValue ?
+											"," + (Left2Right ?
+													"-" :
+													String.Empty) + FieldLength.ToString () :
+											String.Empty) + "}";
+			string numberFormat = "{0:" + NativeFormat + (FieldPrecision != int.MinValue ?
+											FieldPrecision.ToString () :
+											"0") + "}";
 
-                if (Left2Right || Padding == ' ')
-                {
-                    if (IsPositive(Value, true))
-                        w = (PositiveSign ?
-                                "+" : (PositiveSpace ? " " : String.Empty)) + w;
-                    w = String.Format(lengthFormat, w);
-                }
-                else
-                {
-                    if (w.StartsWith("-"))
-                        w = w.Substring(1);
-                    if (FieldLength != int.MinValue)
-                        w = w.PadLeft(FieldLength - 1, Padding);
-                    if (IsPositive(Value, true))
-                        w = (PositiveSign ?
-                                "+" : (PositiveSpace ?
-                                        " " : (FieldLength != int.MinValue ?
-                                                Padding.ToString() : String.Empty))) + w;
-                    else
-                        w = "-" + w;
-                }
-            }
+			if (IsNumericType (Value)) {
+				w = String.Format (numberFormat, Value);
 
-            return w;
-        }
-        #endregion
-        #endregion
-    }
+				if (Left2Right || Padding == ' ') {
+					if (IsPositive (Value, true))
+						w = (PositiveSign ?
+								"+" : (PositiveSpace ? " " : String.Empty)) + w;
+					w = String.Format (lengthFormat, w);
+				} else {
+					if (w.StartsWith ("-"))
+						w = w.Substring (1);
+					if (FieldLength != int.MinValue)
+						w = w.PadLeft (FieldLength - 1, Padding);
+					if (IsPositive (Value, true))
+						w = (PositiveSign ?
+								"+" : (PositiveSpace ?
+										" " : (FieldLength != int.MinValue ?
+												Padding.ToString () : String.Empty))) + w;
+					else
+						w = "-" + w;
+				}
+			}
+
+			return w;
+		}
+		#endregion
+		#endregion
+	}
 }

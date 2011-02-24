@@ -356,7 +356,7 @@ namespace stdc.Tests
             Assert.IsTrue(RunTest("[%020.10s]", "[0000000000This is a ]", "This is a shortened string"));
             Assert.IsTrue(RunTest("[%-020.10s]", "[This is a           ]", "This is a shortened string"));
 
-            stdio.printf("Account balance: %'+20.2f\n", 12345678);
+            c.printf("Account balance: %'+20.2f\n", 12345678);
 
             Console.WriteLine("\n\n");
         }
@@ -449,7 +449,7 @@ namespace stdc.Tests
         private bool RunTest(string format, string wanted, params object[] parameters)
         {
             string result;
-            stdio.sprintf(out result, format, parameters);
+            c.sprintf(out result, format, parameters);
             Console.WriteLine("Format:\t{0,-30}Parameters: {1}\nWanted:\t{2}\nResult:\t{3}",
                 format, ShowParameters(parameters), wanted, result);
             if (wanted == null || wanted == result)
