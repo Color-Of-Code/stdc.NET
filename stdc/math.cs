@@ -85,11 +85,16 @@ namespace stdc {
 		}
 		#endregion
 
-		//public static double fabs(double x);
+		public static double fabs (double x)
+		{
+			return Math.Abs (x);
+		}
+
 		//public static double fmod(double, double);
 		////public static double frexp(double, int *);
 		//public static double ldexp(double x, int y);
-		////public static double modf(double, double *);
+		
+		//public static double modf(double, double *);
 
 	}
 }

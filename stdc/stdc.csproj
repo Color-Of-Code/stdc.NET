@@ -41,10 +41,12 @@
     <Compile Include="errno.cs" />
     <Compile Include="locale.cs" />
     <Compile Include="math.cs" />
+    <Compile Include="signal.cs" />
     <Compile Include="stdio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="stdlib.cs" />
     <Compile Include="string.cs" />
+    <Compile Include="time.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

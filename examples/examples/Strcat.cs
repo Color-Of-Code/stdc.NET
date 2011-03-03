@@ -31,7 +31,7 @@ namespace examples {
 
 		public static void main2 ()
 		{
-			StringBuilder str = new StringBuilder(8);
+			StringBuilder str = new StringBuilder(80);
 			C.strcpy (str, "these ");
 			C.strcat (str, "strings ");
 			C.strcat (str, "are ");

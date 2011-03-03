@@ -22,7 +22,7 @@ namespace examples {
 		{
 			string str1 = "To be or not to be";
 			char[] str2 = new char[6];
-			C.strncpy (str2, str1, 6);
+			C.strncpy (str2, str1, 5);
 			str2[5] = '\0';
 			C.puts (str2);
 		}
@@ -31,7 +31,7 @@ namespace examples {
 		{
 			string str1 = "To be or not to be";
 			StringBuilder str2 = new StringBuilder (6);
-			C.strncpy (str2, str1, 6);
+			C.strncpy (str2, str1, 5);
 			C.puts (str2);
 		}
 	}

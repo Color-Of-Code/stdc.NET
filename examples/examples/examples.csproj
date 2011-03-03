@@ -45,11 +45,14 @@
   <ItemGroup>
     <Compile Include="Alphabet.cs" />
     <Compile Include="Assert.cs" />
+    <Compile Include="Atexit.cs" />
     <Compile Include="FileCopy.cs" />
     <Compile Include="HelloWorld.cs" />
     <Compile Include="Power2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="Signal.cs" />
     <Compile Include="Strcat.cs" />
     <Compile Include="Strncpy.cs" />
   </ItemGroup>
