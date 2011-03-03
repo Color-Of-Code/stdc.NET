@@ -5,7 +5,51 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace stdc {
-	public static partial class c {
+
+	public class FILE {
+		internal FILE (FileStream stream)
+		{
+			_stream = stream;
+			if (_stream.CanRead)
+				_reader = new StreamReader (_stream, Encoding.ASCII);
+			if (_stream.CanWrite)
+				_writer = new StreamWriter (_stream, Encoding.ASCII);
+		}
+
+		internal FILE (TextReader reader)
+		{
+			_reader = reader;
+			_writer = null;
+		}
+
+		internal FILE (TextWriter writer)
+		{
+			_reader = null;
+			_writer = writer;
+		}
+
+		private FileStream _stream;
+		internal TextReader _reader;
+		internal TextWriter _writer;
+
+		internal int Close ()
+		{
+			if (_reader != null) {
+				_reader.Close ();
+				_reader = null;
+			}
+			if (_writer != null) {
+				_writer.Close ();
+				_writer = null;
+			}
+			//_stream.Flush ();
+			_stream.Close ();
+			_stream = null;
+			return 0;
+		}
+	}
+
+	public static partial class C {
 		#region Public Methods
 
 		#region IsNumericType
@@ -230,6 +274,16 @@ namespace stdc {
 
 		#endregion
 
+		//#define EOF (-1)
+		public static readonly int EOF = -1;
+
+		//#define stdin   (&_streams[0])
+		public static readonly FILE stdin = new FILE (Console.In);
+		//#define stdout  (&_streams[1])
+		public static readonly FILE stdout = new FILE (Console.Out);
+		//#define stderr  (&_streams[2])
+		public static readonly FILE stderr = new FILE (Console.Error);
+
 		#region SCANF functions (fscanf, scanf, sscanf)
 
 		public static int fscanf (TextReader stream, string format, params object[] parameters)
@@ -251,7 +305,7 @@ namespace stdc {
 
 		#endregion
 
-		#region PRINTF function (fprintf, printf, sprintf)
+		#region PRINTF functions (fprintf, printf, sprintf)
 
 		public static int fprintf (TextWriter stream, string format, params object[] parameters)
 		{
@@ -673,6 +727,390 @@ namespace stdc {
 		}
 		#endregion
 
+		#region FGET functions (fgetc, fgets)
+
+		/// <summary>
+		///		int fgetc ( FILE * stream );
+		///		
+		/// Get character from stream
+		/// Returns the character currently pointed by the internal file position
+		/// indicator of the specified stream. The internal file position indicator
+		/// is then advanced by one character to point to the next character.
+		/// 
+		/// fgetc and getc are equivalent, except that the latter one may be
+		/// implemented as a macro.
+		/// 
+		/// Parameters
+		///  stream
+		///   Pointer to a FILE object that identifies the stream on which the
+		///   operation is to be performed.
+		/// 
+		/// Return Value
+		///  The character read is returned as an int value.
+		///  If the End-of-File is reached or a reading error happens, the function
+		///  returns EOF and the corresponding error or eof indicator is set. You can
+		///  use either ferror or feof to determine whether an error happened or the
+		///  End-Of-File was reached.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public static int fgetc (FILE stream)
+		{
+			return stream._reader.Read ();
+		}
+
+		/// <summary>
+		///		int getc ( FILE * stream );
+		///		
+		/// Get character from stream
+		/// Returns the character currently pointed by the internal file position
+		/// indicator of the specified stream. The internal file position indicator
+		/// is then advanced by one character to point to the next character.
+		/// 
+		/// getc is equivalent to fgetc and also expects a stream as parameter, but
+		/// getc may be implemented as a macro, so the argument passed to it should
+		/// not be an expression with potential side effects.
+		/// 
+		/// See getchar for a similar function without stream parameter.
+		/// 
+		/// Parameters
+		///  stream
+		///   pointer to a FILE object that identifies the stream on which the
+		///   operation is to be performed.
+		///   
+		/// Return Value
+		///  The character read is returned as an int value.
+		///  If the End-of-File is reached or a reading error happens, the function
+		///  returns EOF and the corresponding error or eof indicator is set. You can
+		///  use either ferror or feof to determine whether an error happened or the
+		///  End-Of-File was reached.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public static int getc (FILE stream)
+		{
+			return fgetc (stream);
+		}
+
+		//int  ungetc(int , FILE *);
+		//char *fgets(char *, int , FILE *);
+		#endregion
+
+		#region FPUT functions (fputc, fputs, putc, puts)
+
+		/// <summary>
+		///		int fputc ( int character, FILE * stream );
+		///	
+		/// Write character to stream
+		///	Writes a character to the stream and advances the position indicator.
+		///	The character is written at the current position of the stream as
+		///	indicated by the internal position indicator, which is then advanced
+		///	one character.
+		///	
+		/// Parameters
+		///  character
+		///   Character to be written. The character is passed as its int promotion.
+		/// 
+		///  stream
+		///   Pointer to a FILE object that identifies the stream where the
+		///   character is to be written. 
+		///  
+		/// Return Value
+		///  If there are no errors, the same character that has been written is
+		///  returned.
+		///  If an error occurs, EOF is returned and the error indicator is set
+		///  (see ferror).
+		/// </summary>
+		/// <param name="character"></param>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public static int fputc (int character, FILE stream)
+		{
+			stream._writer.Write ((char)character);
+			return character;
+		}
+
+		/// <summary>
+		///		int putc ( int character, FILE * stream );
+		///	
+		/// Write character to stream
+		/// Writes a character to the stream and advances the position indicator.
+		/// The character is written at the current position of the stream as
+		/// indicated by the internal position indicator, which is then advanced
+		/// one character.
+		/// 
+		/// putc is equivalent to fputc and also expects a stream as parameter,
+		/// but putc may be implemented as a macro, so the argument passed should
+		/// not be an expression with potential side effects.
+		/// 
+		/// See putchar for a similar function without stream parameter.
+		/// 
+		/// Parameters
+		/// 
+		/// character
+		///  Character to be written. The character is passed as its int promotion.
+		///
+		/// stream
+		///  Pointer to a FILE object that identifies the stream where the character
+		///  is to be written. 
+		///  
+		/// Return Value
+		///  If there are no errors, the same character that has been written is
+		///  returned.
+		///  If an error occurs, EOF is returned and the error indicator is set.
+		/// </summary>
+		/// <param name="character"></param>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public static int putc (int character, FILE stream)
+		{
+			return fputc (character, stream);
+		}
+
+		/// <summary>
+		///		int fputs ( const char * str, FILE * stream );
+		///		
+		/// Write string to stream
+		/// Writes the string pointed by str to the stream.
+		/// 
+		/// The function begins copying from the address specified (str) until
+		/// it reaches the terminating null character ('\0'). This final null-
+		/// character is not copied to the stream.
+		/// 
+		/// Parameters
+		///  str
+		///   An array containing the null-terminated sequence of characters
+		///   to be written.
+		///   
+		///  stream
+		///   Pointer to a FILE object that identifies the stream where the
+		///   string is to be written.
+		///   
+		/// Return Value
+		///  On success, a non-negative value is returned.
+		///  On error, the function returns EOF.
+		/// </summary>
+		/// <param name="s"></param>
+		/// <param name="stream"></param>
+		public static int fputs (string str, FILE stream)
+		{
+			stream._writer.Write (str);
+			return str.Length;
+		}
+
+		/// <summary>
+		///		int puts ( const char * str );
+		/// 
+		/// Write string to stdout
+		/// Writes the C string pointed by str to stdout and appends a newline
+		/// character ('\n').
+		/// 
+		/// The function begins copying from the address specified (str) until
+		/// it reaches the terminating null character ('\0'). This final null-
+		/// character is not copied to stdout.
+		/// 
+		/// Using fputs(str,stdout) instead, performs the same operation as
+		/// puts(str) but without appending the newline character at the end.
+		/// 
+		/// Parameters
+		///  str
+		///   C string to be written.
+		///   
+		/// Return Value
+		///  On success, a non-negative value is returned.
+		///  On error, the function returns EOF.
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public static int puts (string str)
+		{
+			fputs (str, stdout);
+			fputs ("\n", stdout);
+			return str.Length + 1;
+		}
+
+		public static int puts (StringBuilder str)
+		{
+			return puts (str.ToString ());
+		}
+
+		public static int puts (char[] str)
+		{
+			return puts (new string (str, 0, strlen (str)));
+		}
+
+		#endregion
+
+		#region fopen, freopen, fclose
+
+		/// <summary>
+		/// FILE * fopen ( const char * filename, const char * mode );
+		/// 
+		/// Open file
+		/// Opens the file whose name is specified in the parameter filename and
+		/// associates it with a stream that can be identified in future
+		/// operations by the FILE object whose pointer is returned. The
+		/// operations that are allowed on the stream and how these are performed
+		/// are defined by the mode parameter.
+		/// 
+		/// The running environment supports at least FOPEN_MAX files open
+		/// simultaneously; FOPEN_MAX is a macro constant defined in cstdio.
+		/// 
+		/// Parameters
+		/// filename
+		///   C string containing the name of the file to be opened. This paramenter
+		///   must follow the file name specifications of the running environment and
+		///   can include a path if the system supports it.
+		///   
+		/// mode
+		///   C string containing a file access modes. It can be:
+		///   - "r"	 Open a file for reading. The file must exist.
+		///   - "w"	 Create an empty file for writing. If a file with the same name
+		///          already exists its content is erased and the file is treated as
+		///          a new empty file.
+		///   - "a"	 Append to a file. Writing operations append data at the end of the
+		///          file. The file is created if it does not exist.
+		///   - "r+" Open a file for update both reading and writing. The file must exist.
+		///   - "w+" Create an empty file for both reading and writing. If a file with the
+		///          same name already exists its content is erased and the file is
+		///          treated as a new empty file.
+		///   - "a+" Open a file for reading and appending. All writing operations are
+		///          performed at the end of the file, protecting the previous content to
+		///          be overwritten. You can reposition (fseek, rewind) the internal
+		///          pointer to anywhere in the file for reading, but writing operations
+		///          will move it back to the end of file. The file is created if it does
+		///          not exist.
+		///          
+		/// With the mode specifiers above the file is open as a text file. In order to open
+		/// a file as a binary file, a "b" character has to be included in the mode string.
+		/// This additional "b" character can either be appended at the end of the string
+		/// (thus making the following compound modes: "rb", "wb", "ab", "r+b", "w+b", "a+b")
+		/// or be inserted between the letter and the "+" sign for the mixed modes ("rb+",
+		/// "wb+", "ab+").
+		/// 
+		/// Additional characters may follow the sequence, although they should have no effect.
+		/// For example, "t" is sometimes appended to make explicit the file is a text file.
+		/// 
+		/// In the case of text files, depending on the environment where the application runs,
+		/// some special character conversion may occur in input/output operations to adapt
+		/// them to a system-specific text file format. In many environments, such as most
+		/// UNIX-based systems, it makes no difference to open a file as a text file or a
+		/// binary file; Both are treated exactly the same way, but differentiation is
+		/// recommended for a better portability.
+		/// 
+		/// For the modes where both read and writing (or appending) are allowed (those which
+		/// include a "+" sign), the stream should be flushed (fflush) or repositioned (fseek,
+		/// fsetpos, rewind) between either a reading operation followed by a writing operation
+		/// or a writing operation followed by a reading operation.
+		/// 
+		/// Return Value
+		/// If the file has been succesfully opened the function will return a pointer to a
+		/// FILE object that is used to identify the stream on all further operations involving
+		/// it. Otherwise, a null pointer is returned.
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <param name="mode"></param>
+		/// <returns></returns>
+		public static FILE fopen (string filename, string mode)
+		{
+			if (string.IsNullOrEmpty (mode))
+				throw new Exception ("invalid mode");
+			FileAccess a;
+			FileMode m;
+			switch (mode) {
+			case "r":
+			case "rt":
+			case "rb":
+				a = FileAccess.Read;
+				m = FileMode.Open;
+				break;
+			case "w":
+			case "wt":
+			case "wb":
+				a = FileAccess.Write;
+				m = FileMode.Create;
+				break;
+			case "a":
+			case "at":
+			case "ab":
+				a = FileAccess.Write;
+				m = FileMode.Append;
+				break;
+			case "r+":
+			case "r+t":
+			case "rb+":
+			case "r+b":
+				a = FileAccess.ReadWrite;
+				m = FileMode.Open;
+				break;
+			case "w+":
+			case "w+t":
+			case "wb+":
+			case "w+b":
+				a = FileAccess.ReadWrite;
+				m = FileMode.Create;
+				break;
+			case "a+":
+			case "a+t":
+			case "ab+":
+			case "a+b":
+				a = FileAccess.ReadWrite;
+				m = FileMode.Append;
+				break;
+			default:
+				throw new Exception ("invalid mode (2)");
+			}
+			FileStream stream = new FileStream (filename, m, a, FileShare.Read);
+			FILE file = new FILE (stream);
+			return file;
+		}
+
+		//FILE *freopen(const char *, const char *, FILE *);
+		//Reopen stream with different file or mode
+		//freopen first tries to close any file already associated with the stream given as third parameter and disassociates it.
+		//Then, whether that stream was successfuly closed or not, freopen opens the file whose name is passed in the first parameter, filename, and associates it with the specified stream just as fopen would do using the mode value specified as the second parameter.
+		//This function is specially useful for redirecting predefined streams like stdin, stdout and stderr to specific files (see the example below).
+
+		//Parameters
+
+		//filename
+		//    C string containing the name of the file to be opened. This parameter must follow the file specifications of the running environment and can include a path if the system supports it.
+		//    If this parameter is a null pointer, the function attemps to change the mode of the stream specified as third parater to the one specified in the mode parameter, as if the file name currently associated with that stream had been used.
+		//mode
+		//    C string containing the file access modes. It can be:
+		//    "r"	Open a file for reading. The file must exist.
+		//    "w"	Create an empty file for writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file.
+		//    "a"	Append to a file. Writing operations append data at the end of the file. The file is created if it does not exist.
+		//    "r+"	Open a file for update both reading and writing. The file must exist.
+		//    "w+"	Create an empty file for both reading and writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file.
+		//    "a+"	Open a file for reading and appending. All writing operations are performed at the end of the file, protecting the previous content to be overwritten. You can reposition (fseek, rewind) the internal pointer to anywhere in the file for reading, but writing operations will move it back to the end of file. The file is created if it does not exist.
+
+		//    An additional b is used to specify the file is to be reopened in binary mode. For more details on these modes, refer to fopen.
+		//stream
+		//    pointer to a FILE object that identifies the stream to be reopened.
+
+		//Return Value
+		//If the file was succesfully reopened, the function returns a pointer to an object identifying the stream. Otherwise, a null pointer is returned. 
+
+		/// <summary>
+		///		int fclose(FILE * stream);
+		///		
+		///	Close file
+		/// Closes the file associated with the stream and disassociates it.
+		/// All internal buffers associated with the stream are flushed: the
+		/// content of any unwritten buffer is written and the content of any
+		/// unread buffer is discarded.
+		/// Even if the call fails, the stream passed as parameter will no
+		/// longer be associated with the file.
+		/// </summary>
+		/// <param name="f">Pointer to a FILE object that specifies the stream to be closed. </param>
+		/// <returns>If the stream is successfully closed, a zero value is returned. On failure, EOF is returned.</returns>
+		public static int fclose (FILE stream)
+		{
+			return stream.Close ();
+		}
+		#endregion
+
 		#region Private Methods
 		#region FormatOCT
 		private static string FormatOct (string NativeFormat, bool Alternate,
@@ -783,5 +1221,106 @@ namespace stdc {
 		}
 		#endregion
 		#endregion
+
+		//typedef long    fpos_t;
+
+		//#define _IOFBF  0
+		//#define _IOLBF  1
+		//#define _IONBF  2
+
+		//#define FOPEN_MAX 8
+		//#define FILENAME_MAX 100
+		//#define BUFSIZ  256
+		//#define L_tmpnam    12
+		//#define SEEK_CUR    1
+		//#define SEEK_END    2
+		//#define SEEK_SET    0
+		//#define TMP_MAX     25
+		//extern  FILE    _streams[];
+
+		//void clearerr(FILE *);
+		//int  feof(FILE *);
+		//int  ferror(FILE *);
+		//int  fflush(FILE *);
+		//int  fgetpos(FILE *, fpos_t *);
+		//int  fprintf(FILE *, const char *, ...);
+		//size_t fread(void *, size_t , size_t , FILE *);
+		//int  fscanf(FILE *, const char *, ...);
+		//int  fseek(FILE *, long , int );
+		//int  fsetpos(FILE *, const fpos_t *);
+		//long ftell(FILE *);
+		//size_t fwrite(const void *, size_t , size_t , FILE *);
+		//char *gets(char *);
+
+		/// <summary>
+		///		void perror ( const char * str );
+		/// 
+		/// Print error message
+		/// Interprets the value of the global variable errno into a string and prints
+		/// that string to stderr (standard error output stream, usually the screen),
+		/// optionaly preceding it with the custom message specified in str.
+		/// 
+		/// errno is an integral variable whose value describes the last error produced
+		/// by a call to a library function. The error strings produced by perror
+		/// depend on the developing platform and compiler.
+		/// 
+		/// If the parameter str is not a null pointer, str is printed followed by a
+		/// colon (:) and a space. Then, whether str was a null pointer or not, the
+		/// generated error description is printed followed by a newline character ('\n').
+		/// 
+		/// perror should be called right after the error was produced, otherwise it
+		/// can be overwritten in calls to other functions.
+		///
+		/// Parameters.
+		/// str
+		///    C string containing a custom message to be printed before the error
+		///    message itself.
+		///    If it is a null pointer, no preceding custom message is printed, but the
+		///    error message is printed anyway.
+		///    By convention, the name of the application itself is generally used as
+		///    parameter.
+		/// </summary>
+		/// <param name="str"></param>
+		public static void perror (string str)
+		{
+			string errmsg = interpret_errno ();
+			if (str == null)
+				stderr._writer.WriteLine ("{0}", errmsg);
+			else
+				stderr._writer.WriteLine ("{0}: {1}", str, errmsg);
+		}
+
+		private static string interpret_errno ()
+		{
+			return errno.ToString ();
+		}
+
+
+		//int  printf(const char *, ...);
+		//int  remove(const char *);
+		//int  rename(const char *,const char *);
+		//void rewind(FILE *);
+		//int  scanf(const char *, ...);
+		//void setbuf(FILE *, char *);
+		//int  setvbuf(FILE *, char *, int, size_t );
+		//int  sprintf(char *, const char *, ...);
+		//int  sscanf(const char *, const char *, ...);
+		//FILE *tmpfile(void);
+		//char *tmpnam(char *);
+
+		//int getchar(void);
+		//int putchar(int);
+
+		//#ifndef __VA_LIST
+		//#define __VA_LIST
+		//typedef char *va_list;
+		//#endif
+
+		//int  vfprintf(FILE *, const char *, va_list );
+		//int  vprintf( const char *, va_list );
+		//int  vsprintf(char *,  const char *, va_list );
+
+		//#endif
+
 	}
 }

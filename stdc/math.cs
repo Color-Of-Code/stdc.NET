@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace stdc {
-	public static partial class c {
+	public static partial class C {
 
 		#region Trigonometric functions
 		public static double acos (double x)
