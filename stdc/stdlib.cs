@@ -49,15 +49,15 @@ namespace stdc {
 		public const int RAND_MAX = 0x7FFF;
 
 		//int abs (int);
-		public static int abs(int l)
+		public static int abs (int l)
 		{
-			return Math.Abs(l);
+			return Math.Abs (l);
 		}
 
 		//typedef void (* __atexit_t)(void);
 		public delegate void atexit_handler ();
 
-		private static List<atexit_handler> _atexitHandlers = new List<atexit_handler>();
+		private static List<atexit_handler> _atexitHandlers = new List<atexit_handler> ();
 
 		/// <summary>
 		///		int atexit ( void ( * function ) (void) );
@@ -89,32 +89,32 @@ namespace stdc {
 		/// <returns></returns>
 		public static int atexit (atexit_handler function)
 		{
-			_atexitHandlers.Insert(0, function);
+			_atexitHandlers.Insert (0, function);
 			return 0;
 		}
 
 		//double atof (const char *);
-		public static double atof(string s)
+		public static double atof (string s)
 		{
-			return double.Parse(s);
+			return double.Parse (s);
 		}
 
 		//int atoi (const char *);
-		public static int atoi(string s)
+		public static int atoi (string s)
 		{
-			return int.Parse(s);
+			return int.Parse (s);
 		}
 
 		//long atol (const char *);
-		public static long atol(string s)
+		public static long atol (string s)
 		{
-			return long.Parse(s);
+			return long.Parse (s);
 		}
 
 		//long labs (long);
-		public static long labs(long l)
+		public static long labs (long l)
 		{
-			return Math.Abs(l);
+			return Math.Abs (l);
 		}
 
 		//int rand (void);
@@ -151,12 +151,12 @@ namespace stdc {
 		///		An integer value between 0 and RAND_MAX. 
 		/// </summary>
 		/// <returns></returns>
-		public static int rand()
+		public static int rand ()
 		{
-			return _rg.Next(0, RAND_MAX);
+			return _rg.Next (0, RAND_MAX);
 		}
 
-		private static Random _rg = new Random(1);
+		private static Random _rg = new Random (1);
 
 		/// <summary>
 		///		void srand ( unsigned int seed );
@@ -193,7 +193,7 @@ namespace stdc {
 		/// <param name="seed"></param>
 		public static void srand (uint seed)
 		{
-			_rg = new Random((int)seed);
+			_rg = new Random ((int)seed);
 		}
 
 
@@ -204,14 +204,65 @@ namespace stdc {
 
 
 		//char * getenv (const char *);
-		public static string getenv(string name)
+		public static string getenv (string name)
 		{
-			return Environment.GetEnvironmentVariable(name);
+			return Environment.GetEnvironmentVariable (name);
 		}
-		
+
 		//ldiv_t ldiv (long, long);
-		//void qsort (void *, size_t, size_t,
-		//          int (*) (const void *, const void *));
+
+		/// <summary>
+		///		void qsort ( void * base, size_t num, size_t size, int ( * comparator ) ( const void *, const void * ) );
+		///		
+		/// Sort elements of array
+		/// Sorts the num elements of the array pointed by base, each element 
+		/// size bytes long, using the comparator function to determine the order.
+		/// 
+		/// The sorting algorithm used by this function compares pairs of values by
+		/// calling the specified comparator function with two pointers to elements
+		/// of the array.
+		/// 
+		/// The function does not return any value, but modifies the content of the
+		/// array pointed by base reordering its elements to the newly sorted order.
+		/// 
+		/// Parameters
+		/// base
+		///		Pointer to the first element of the array to be sorted.
+		///		
+		/// num
+		///		Number of elements in the array pointed by base.
+		///		
+		/// size
+		///		Size in bytes of each element in the array.
+		///		
+		/// comparator
+		///		Function that compares two elements. The function shall follow this prototype:
+		///		    int comparator ( const void * elem1, const void * elem2 );
+		///		    
+		///		The function must accept two parameters that are pointers to elements, type-
+		///		casted as void*. These parameters should be cast back to some data type and 
+		///		be compared.
+		///		The return value of this function should represent whether elem1 is considered
+		///		less than, equal to, or greater than elem2 by returning, respectively, a
+		///		negative value, zero or a positive value.
+		///		
+		/// Return Value
+		///		(none) 
+		/// </summary>
+		[Obsolete ("This call can usually be replaced by the 2 parameter variant: parameters count and size are only used to provide a consistency check")]
+		public static void qsort<T> (T[] b, int count, int size, Comparison<T> cp)
+		{
+			assert (count == b.Length);
+			assert (size == System.Runtime.InteropServices.Marshal.SizeOf (typeof (T)));
+			Array.Sort (b, cp);
+		}
+
+		public static void qsort<T> (T[] b, Comparison<T> cp)
+		{
+			Array.Sort (b, cp);
+		}
+
+
 		//double strtod (const char *, char **);
 		//long  strtol (const char *, char **, int);
 		//unsigned long strtoul (const char *, char **, int);

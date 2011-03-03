@@ -1,4 +1,8 @@
-﻿using System;
+﻿// must be defined so that the asserts are present in the release build
+// to be used from a debug compilation
+#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;

@@ -10,6 +10,7 @@ namespace examples {
 	class Program {
 		static void Main (string[] args)
 		{
+			C.RunVMain (args, Qsort.main);
 			C.RunVMain (args, Random.main_srand);
 			C.RunVMain (args, Random.main_rand);
 			C.RunVMain (args, Atexit.main);
