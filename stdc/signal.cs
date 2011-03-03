@@ -130,7 +130,7 @@ namespace stdc {
 			case SIGFPE:
 				throw new System.DivideByZeroException ();
 			case SIGILL:
-				throw new System.ExecutionEngineException ();
+				throw new System.SystemException ();
 			case SIGINT:
 			case SIGTERM:
 				throw new System.Threading.ThreadInterruptedException ();

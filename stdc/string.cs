@@ -132,13 +132,6 @@ namespace stdc {
 			return destination;
 		}
 
-		//char * strchr(const char *, int);
-		//int strcmp(const char *, const char *);
-		//int strcoll(const char *, const char *);
-		//size_t strxfrm(char *, const char *, size_t);
-		//size_t strcspn(const char *, const char *);
-		//char * strerror(int);
-
 		/// <summary>
 		///		size_t strlen ( const char * str );
 		///		
@@ -180,6 +173,12 @@ namespace stdc {
 
 
 		//char * strncat(char *, const char *, size_t);
+		//char * strchr(const char *, int);
+		//int strcmp(const char *, const char *);
+		//int strcoll(const char *, const char *);
+		//size_t strxfrm(char *, const char *, size_t);
+		//size_t strcspn(const char *, const char *);
+		//char * strerror(int);
 		//int strncmp(const char *, const char *, size_t);
 		//char * strpbrk(const char *, const char *);
 		//char * strrchr(const char *, int);

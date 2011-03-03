@@ -122,7 +122,7 @@ namespace stdc {
 				_sigsegvHandler (SIGSEGV);
 				return;
 			}
-			if (ex is ExecutionEngineException) {
+			if (ex is SystemException) {
 				_sigillHandler (SIGILL);
 				return;
 			}

@@ -14,31 +14,29 @@ namespace stdc {
 		public int tm_wday;        /* days since Sunday - [0,6] */
 		public int tm_yday;        /* days since January 1 - [0,365] */
 		public int tm_isdst;       /* daylight savings time flag */
-    }
+	}
 
-	public struct time_t
-	{
+	public struct time_t {
 		// seconds since January 1, 1970
 		public uint _time_t;
 	}
 
-	public struct clock_t
-	{
+	public struct clock_t {
 		public long _clock_t;
 	}
 
 	public static partial class C {
 
 
-	//#define CLOCKS_PER_SEC 1000
+		//#define CLOCKS_PER_SEC 1000
 
-	//char *asctime(const struct tm *);
-	//char *ctime(const time_t *);
-	//clock_t  clock(void);
-	//double  difftime(time_t, time_t);
-	//struct tm *gmtime(const time_t *);
-	//struct tm *localtime(const time_t *);
-	//time_t  mktime(struct tm *);
+		//char *asctime(const struct tm *);
+		//char *ctime(const time_t *);
+		//clock_t  clock(void);
+		//double  difftime(time_t, time_t);
+		//struct tm *gmtime(const time_t *);
+		//struct tm *localtime(const time_t *);
+		//time_t  mktime(struct tm *);
 		//time_t  time(time_t *);
 		/// <summary>
 		///		time_t time ( time_t * timer );
@@ -65,23 +63,23 @@ namespace stdc {
 		/// </summary>
 		/// <param name="t"></param>
 		/// <returns></returns>
-		public static uint time(time_t t)
+		public static uint time (time_t t)
 		{
 			uint val = (uint)(DateTime.Now - _time_origin).TotalSeconds;
 			t._time_t = val;
 			return val;
 		}
 
-		private static DateTime _time_origin = new DateTime(1970, 1, 1);
+		private static DateTime _time_origin = new DateTime (1970, 1, 1);
 
-		public static uint time(object ignored)
+		public static uint time (object ignored)
 		{
 			uint val = (uint)(DateTime.Now - _time_origin).TotalSeconds;
 			return val;
 		}
 
-	//size_t strftime(char *, size_t,
-	//    const char *, const struct tm *);
+		//size_t strftime(char *, size_t,
+		//    const char *, const struct tm *);
 
 
 	}
