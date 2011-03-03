@@ -10,11 +10,12 @@ namespace examples {
 	class Program {
 		static void Main (string[] args)
 		{
+			C.RunVMain (args, Sscanf.main);
 			C.RunVMain (args, Qsort.main);
 			C.RunVMain (args, Random.main_srand);
 			C.RunVMain (args, Random.main_rand);
 			C.RunVMain (args, Atexit.main);
-			C.RunVMain (args, Signal.main_term);
+			//C.RunVMain (args, Signal.main_term);
 			C.RunVMain (args, Signal.main_fpe);
 			C.RunVMain (args, HelloWorld.main);
 			C.RunVMain (args, Assert.main);

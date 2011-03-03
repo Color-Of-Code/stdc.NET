@@ -54,6 +54,7 @@
     <Compile Include="Qsort.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Signal.cs" />
+    <Compile Include="Sscanf.cs" />
     <Compile Include="Strcat.cs" />
     <Compile Include="Strncpy.cs" />
   </ItemGroup>

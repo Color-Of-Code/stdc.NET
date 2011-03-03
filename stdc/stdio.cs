@@ -61,7 +61,7 @@ namespace stdc {
 		/// <returns>
 		/// 	<c>true</c> if o is a numeric type; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsNumericType (object o)
+		private static bool IsNumericType (object o)
 		{
 			return (o is byte || o is sbyte ||
 				o is short || o is ushort ||
@@ -81,7 +81,7 @@ namespace stdc {
 		/// <returns>
 		/// 	<c>true</c> if the specified value is positive; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsPositive (object Value, bool ZeroIsPositive)
+		private static bool IsPositive (object Value, bool ZeroIsPositive)
 		{
 			switch (Type.GetTypeCode (Value.GetType ())) {
 			case TypeCode.SByte:
@@ -287,11 +287,34 @@ namespace stdc {
 
 		#region SCANF functions (fscanf, scanf, sscanf)
 
-		public static int fscanf (TextReader stream, string format, params object[] parameters)
+		#region fscanf variants
+		public static int fscanf (TextReader stream, string format, out object p1)
 		{
-			throw new NotImplementedException ();
-			//return 0;
+			string input = stream.ReadLine ();
+			return sscanf (input, format, out p1);
 		}
+
+		public static int fscanf (TextReader stream, string format, out object p1, out object p2)
+		{
+			string input = stream.ReadLine ();
+			return sscanf (input, format, out p1, out p2);
+		}
+		public static int fscanf (TextReader stream, string format, out object p1, out object p2, out object p3)
+		{
+			string input = stream.ReadLine ();
+			return sscanf (input, format, out p1, out p2, out p3);
+		}
+		public static int fscanf (TextReader stream, string format, out object p1, out object p2, out object p3, out object p4)
+		{
+			string input = stream.ReadLine ();
+			return sscanf (input, format, out p1, out p2, out p3, out p4);
+		}
+		public static int fscanf (TextReader stream, string format, out object p1, out object p2, out object p3, out object p4, out object p5)
+		{
+			string input = stream.ReadLine ();
+			return sscanf (input, format, out p1, out p2, out p3, out p4, out p5);
+		}
+		#endregion
 
 		//int  scanf ( const char * format, ... );
 
@@ -341,17 +364,76 @@ namespace stdc {
 		//Return Value
 		//On success, the function returns the number of items succesfully read. This count can match the expected number of readings or fewer, even zero, if a matching failure happens.
 		//In the case of an input failure before any data could be successfully read, EOF is returned.
-
-		public static int scanf (string format, params object[] parameters)
+		#region scanf variants
+		public static int scanf (string format, out object p1)
 		{
-			return fscanf (Console.In, format, parameters);
+			return fscanf (Console.In, format, out p1);
 		}
-
-		public static int sscanf (string input, string format, params object[] parameters)
+		public static int scanf (string format, out object p1, out object p2)
 		{
-			return Parse(input, format);
+			return fscanf (Console.In, format, out p1, out p2);
 		}
+		public static int scanf (string format, out object p1, out object p2, out object p3)
+		{
+			return fscanf (Console.In, format, out p1, out p2, out p3);
+		}
+		public static int scanf (string format, out object p1, out object p2, out object p3, out object p4)
+		{
+			return fscanf (Console.In, format, out p1, out p2, out p3, out p4);
+		}
+		public static int scanf (string format, out object p1, out object p2, out object p3, out object p4, out object p5)
+		{
+			return fscanf (Console.In, format, out p1, out p2, out p3, out p4, out p5);
+		}
+		#endregion
 
+		#region sscanf variants
+		public static int sscanf (string input, string format, out object p1)
+		{
+			List<object> results;
+			int count = Parse (input, format, out results);
+			p1 = results[0];
+			return count;
+		}
+		public static int sscanf (string input, string format, out object p1, out object p2)
+		{
+			List<object> results;
+			int count = Parse (input, format, out results);
+			p1 = results[0];
+			p2 = results[1];
+			return count;
+		}
+		public static int sscanf (string input, string format, out object p1, out object p2, out object p3)
+		{
+			List<object> results;
+			int count = Parse (input, format, out results);
+			p1 = results[0];
+			p2 = results[1];
+			p3 = results[2];
+			return count;
+		}
+		public static int sscanf (string input, string format, out object p1, out object p2, out object p3, out object p4)
+		{
+			List<object> results;
+			int count = Parse (input, format, out results);
+			p1 = results[0];
+			p2 = results[1];
+			p3 = results[2];
+			p4 = results[3];
+			return count;
+		}
+		public static int sscanf (string input, string format, out object p1, out object p2, out object p3, out object p4, out object p5)
+		{
+			List<object> results;
+			int count = Parse (input, format, out results);
+			p1 = results[0];
+			p2 = results[1];
+			p3 = results[2];
+			p4 = results[3];
+			p5 = results[4];
+			return count;
+		}
+		#endregion
 
 		#region Code Originally from http://www.blackbeltcoder.com/Articles/strings/a-sscanf-replacement-for-net
 
@@ -377,7 +459,7 @@ namespace stdc {
 		}
 
 		// Delegate to parse a type
-		private delegate bool ParseValue (TextParser input, FormatSpecifier spec);
+		private delegate bool ParseValue (TextParser input, FormatSpecifier spec, List<object> results);
 
 		// Class to associate format type with type parser
 		private class TypeParser {
@@ -398,25 +480,20 @@ namespace stdc {
 		// Lookup table to find parser by parser type
 		private static TypeParser[] _typeParsers;
 
-		// Holds results after calling Parse()
-		public static List<object> Results;
-
 		// Constructor
 		static C ()
 		{
 			// Populate parser type lookup table
 			_typeParsers = new TypeParser[] {
-            new TypeParser() { Type = Types.Character, Parser = ParseCharacter },
-            new TypeParser() { Type = Types.Decimal, Parser = ParseDecimal },
-            new TypeParser() { Type = Types.Float, Parser = ParseFloat },
-            new TypeParser() { Type = Types.Hexadecimal, Parser = ParseHexadecimal },
-            new TypeParser() { Type = Types.Octal, Parser = ParseOctal },
-            new TypeParser() { Type = Types.ScanSet, Parser = ParseScanSet },
-            new TypeParser() { Type = Types.String, Parser = ParseString },
-            new TypeParser() { Type = Types.Unsigned, Parser = ParseDecimal }
-        };
-			// Allocate results collection
-			Results = new List<object> ();
+				new TypeParser() { Type = Types.Character, Parser = ParseCharacter },
+				new TypeParser() { Type = Types.Decimal, Parser = ParseDecimal },
+				new TypeParser() { Type = Types.Float, Parser = ParseFloat },
+				new TypeParser() { Type = Types.Hexadecimal, Parser = ParseHexadecimal },
+				new TypeParser() { Type = Types.Octal, Parser = ParseOctal },
+				new TypeParser() { Type = Types.ScanSet, Parser = ParseScanSet },
+				new TypeParser() { Type = Types.String, Parser = ParseString },
+				new TypeParser() { Type = Types.Unsigned, Parser = ParseDecimal }
+			};
 		}
 
 		/// <summary>
@@ -427,23 +504,20 @@ namespace stdc {
 		/// </summary>
 		/// <param name="input">String to parse</param>
 		/// <param name="format">Specifies rules for parsing input</param>
-		private static int Parse (string input, string format)
+		private static int Parse (string input, string format, out List<object> results)
 		{
 			TextParser inp = new TextParser (input);
 			TextParser fmt = new TextParser (format);
-			List<object> results = new List<object> ();
+			results = new List<object> ();
 			FormatSpecifier spec = new FormatSpecifier ();
 			int count = 0;
-
-			// Clear any previous results
-			Results.Clear ();
 
 			// Process input string as indicated in format string
 			while (!fmt.EndOfText && !inp.EndOfText) {
 				if (ParseFormatSpecifier (fmt, spec)) {
 					// Found a format specifier
 					TypeParser parser = _typeParsers.First (tp => tp.Type == spec.Type);
-					if (parser.Parser (inp, spec))
+					if (parser.Parser (inp, spec, results))
 						count++;
 					else
 						break;
@@ -572,7 +646,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse a character field
 		/// </summary>
-		private static bool ParseCharacter (TextParser input, FormatSpecifier spec)
+		private static bool ParseCharacter (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			// Parse character(s)
 			int start = input.Position;
@@ -585,9 +659,9 @@ namespace stdc {
 				if (!spec.NoResult) {
 					string token = input.Extract (start, input.Position);
 					if (token.Length > 1)
-						Results.Add (token.ToCharArray ());
+						results.Add (token.ToCharArray ());
 					else
-						Results.Add (token[0]);
+						results.Add (token[0]);
 				}
 				return true;
 			}
@@ -597,7 +671,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse integer field
 		/// </summary>
-		private static bool ParseDecimal (TextParser input, FormatSpecifier spec)
+		private static bool ParseDecimal (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			int radix = 10;
 
@@ -633,9 +707,9 @@ namespace stdc {
 			if (input.Position > start) {
 				if (!spec.NoResult) {
 					if (spec.Type == Types.Decimal)
-						AddSigned (input.Extract (start, input.Position), spec.Modifier, radix);
+						AddSigned (input.Extract (start, input.Position), spec.Modifier, radix, results);
 					else
-						AddUnsigned (input.Extract (start, input.Position), spec.Modifier, radix);
+						AddUnsigned (input.Extract (start, input.Position), spec.Modifier, radix, results);
 				}
 				return true;
 			}
@@ -645,7 +719,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse a floating-point field
 		/// </summary>
-		private static bool ParseFloat (TextParser input, FormatSpecifier spec)
+		private static bool ParseFloat (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			// Skip any whitespace
 			input.MovePastWhitespace ();
@@ -694,9 +768,9 @@ namespace stdc {
 				if (!spec.NoResult) {
 					if (spec.Modifier == Modifiers.Long ||
 						spec.Modifier == Modifiers.LongLong)
-						Results.Add (result);
+						results.Add (result);
 					else
-						Results.Add ((float)result);
+						results.Add ((float)result);
 				}
 				return true;
 			}
@@ -706,7 +780,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse hexadecimal field
 		/// </summary>
-		private static bool ParseHexadecimal (TextParser input, FormatSpecifier spec)
+		private static bool ParseHexadecimal (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			// Skip any whitespace
 			input.MovePastWhitespace ();
@@ -730,7 +804,7 @@ namespace stdc {
 			// Extract token
 			if (input.Position > start) {
 				if (!spec.NoResult)
-					AddUnsigned (input.Extract (start, input.Position), spec.Modifier, 16);
+					AddUnsigned (input.Extract (start, input.Position), spec.Modifier, 16, results);
 				return true;
 			}
 			return false;
@@ -739,7 +813,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse an octal field
 		/// </summary>
-		private static bool ParseOctal (TextParser input, FormatSpecifier spec)
+		private static bool ParseOctal (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			// Skip any whitespace
 			input.MovePastWhitespace ();
@@ -759,7 +833,7 @@ namespace stdc {
 			// Extract token
 			if (input.Position > start) {
 				if (!spec.NoResult)
-					AddUnsigned (input.Extract (start, input.Position), spec.Modifier, 8);
+					AddUnsigned (input.Extract (start, input.Position), spec.Modifier, 8, results);
 				return true;
 			}
 			return false;
@@ -768,7 +842,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse a scan-set field
 		/// </summary>
-		private static bool ParseScanSet (TextParser input, FormatSpecifier spec)
+		private static bool ParseScanSet (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			// Parse characters
 			int start = input.Position;
@@ -790,7 +864,7 @@ namespace stdc {
 			// Extract token
 			if (input.Position > start) {
 				if (!spec.NoResult)
-					Results.Add (input.Extract (start, input.Position));
+					results.Add (input.Extract (start, input.Position));
 				return true;
 			}
 			return false;
@@ -799,7 +873,7 @@ namespace stdc {
 		/// <summary>
 		/// Parse a string field
 		/// </summary>
-		private static bool ParseString (TextParser input, FormatSpecifier spec)
+		private static bool ParseString (TextParser input, FormatSpecifier spec, List<object> results)
 		{
 			// Skip any whitespace
 			input.MovePastWhitespace ();
@@ -819,7 +893,7 @@ namespace stdc {
 			// Extract token
 			if (input.Position > start) {
 				if (!spec.NoResult)
-					Results.Add (input.Extract (start, input.Position));
+					results.Add (input.Extract (start, input.Position));
 				return true;
 			}
 			return false;
@@ -835,7 +909,7 @@ namespace stdc {
 		}
 
 		// Parse signed token and add to results
-		private static void AddSigned (string token, Modifiers mod, int radix)
+		private static void AddSigned (string token, Modifiers mod, int radix, List<object> results)
 		{
 			object obj;
 			if (mod == Modifiers.ShortShort)
@@ -847,11 +921,11 @@ namespace stdc {
 				obj = Convert.ToInt64 (token, radix);
 			else
 				obj = Convert.ToInt32 (token, radix);
-			Results.Add (obj);
+			results.Add (obj);
 		}
 
 		// Parse unsigned token and add to results
-		private static void AddUnsigned (string token, Modifiers mod, int radix)
+		private static void AddUnsigned (string token, Modifiers mod, int radix, List<object> results)
 		{
 			object obj;
 			if (mod == Modifiers.ShortShort)
@@ -863,7 +937,7 @@ namespace stdc {
 				obj = Convert.ToUInt64 (token, radix);
 			else
 				obj = Convert.ToUInt32 (token, radix);
-			Results.Add (obj);
+			results.Add (obj);
 		}
 
 		#endregion

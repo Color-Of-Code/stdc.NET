@@ -7,10 +7,7 @@
 //{
 //  int iSecret, iGuess;
 //
-//  /* initialize random seed: */
 //  srand ( time(NULL) );
-//
-//  /* generate secret number: */
 //  iSecret = rand() % 10 + 1;
 //
 //  do {
@@ -53,17 +50,17 @@ namespace examples {
 
 		public static void main_rand ()
 		{
-			int iSecret, iGuess = 0;
+			int iSecret;
+			object guess;
+			int iGuess;
 
-			/* initialize random seed: */
 			C.srand (C.time (C.NULL));
-
-			/* generate secret number: */
 			iSecret = C.rand () % 10 + 1;
 
 			do {
 				C.printf ("Guess the number (1 to 10): ");
-				//C.scanf ("%d", &iGuess);
+				C.scanf ("%d", out guess);
+				iGuess = (int)guess;	// can we get rid of this ugly casting here...
 				if (iSecret < iGuess)
 					C.puts ("The secret number is lower");
 				else if (iSecret > iGuess)
