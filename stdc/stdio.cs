@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
@@ -292,6 +293,55 @@ namespace stdc {
 			//return 0;
 		}
 
+		//int  scanf ( const char * format, ... );
+
+		//Read formatted data from stdin
+		//Reads data from stdin and stores them according to the parameter format into the locations pointed by the additional arguments. The additional arguments should point to already allocated objects of the type specified by their corresponding format tag within the format string.
+
+		//Parameters
+
+		//format
+		//    C string that contains one or more of the following items:
+
+		//            * Whitespace character: the function will read and ignore any whitespace characters (this includes blank spaces and the newline and tab characters) which are encountered before the next non-whitespace character. This includes any quantity of whitespace characters, or none.
+		//            * Non-whitespace character, except percentage signs (%): Any character that is not either a whitespace character (blank, newline or tab) or part of a format specifier (which begin with a % character) causes the function to read the next character from stdin, compare it to this non-whitespace character and if it matches, it is discarded and the function continues with the next character of format. If the character does not match, the function fails, returning and leaving subsequent characters of stdin unread.
+		//            * Format specifiers: A sequence formed by an initial percentage sign (%) indicates a format specifier, which is used to specify the type and format of the data to be retrieved from stdin and stored in the locations pointed by the additional arguments. A format specifier follows this prototype:
+
+		//              %[*][width][modifiers]type
+
+		//              where:
+
+		//              *	An optional starting asterisk indicates that the data is to be retrieved from stdin but ignored, i.e. it is not stored in the corresponding argument.
+		//              width	Specifies the maximum number of characters to be read in the current reading operation
+		//              modifiers	Specifies a size different from int (in the case of d, i and n), unsigned int (in the case of o, u and x) or float (in the case of e, f and g) for the data pointed by the corresponding additional argument:
+		//              h : short int (for d, i and n), or unsigned short int (for o, u and x)
+		//              l : long int (for d, i and n), or unsigned long int (for o, u and x), or double (for e, f and g)
+		//              L : long double (for e, f and g)
+		//              type	A character specifying the type of data to be read and how it is expected to be read. See next table.
+
+
+		//              scanf type specifiers:
+		//              type	Qualifying Input	Type of argument
+		//              c	Single character: Reads the next character. If a width different from 1 is specified, the function reads width characters and stores them in the successive locations of the array passed as argument. No null character is appended at the end.	char *
+		//              d	Decimal integer: Number optionally preceded with a + or - sign.	int *
+		//              e,E,f,g,G	Floating point: Decimal number containing a decimal point, optionally preceded by a + or - sign and optionally folowed by the e or E character and a decimal number. Two examples of valid entries are -732.103 and 7.12e4	float *
+		//              o	Octal integer.	int *
+		//              s	String of characters. This will read subsequent characters until a whitespace is found (whitespace characters are considered to be blank, newline and tab).	char *
+		//              u	Unsigned decimal integer.	unsigned int *
+		//              x,X	Hexadecimal integer.	int *
+
+		//additional arguments
+		//    The function expects a sequence of references as additional arguments, each one pointing to an object of the type specified by their corresponding %-tag within the format string, in the same order.
+		//    For each format specifier in the format string that retrieves data, an additional argument should be specified.
+		//    These arguments are expected to be references (pointers): if you want to store the result of a fscanf operation on a regular variable you should precede its identifier with the reference operator, i.e. an ampersand sign (&), like in:
+
+		//        int n;
+		//        scanf ("%d",&n);
+
+		//Return Value
+		//On success, the function returns the number of items succesfully read. This count can match the expected number of readings or fewer, even zero, if a matching failure happens.
+		//In the case of an input failure before any data could be successfully read, EOF is returned.
+
 		public static int scanf (string format, params object[] parameters)
 		{
 			return fscanf (Console.In, format, parameters);
@@ -299,9 +349,524 @@ namespace stdc {
 
 		public static int sscanf (string input, string format, params object[] parameters)
 		{
-			throw new NotImplementedException ();
-			//return 0;
+			return Parse(input, format);
 		}
+
+
+		#region Code Originally from http://www.blackbeltcoder.com/Articles/strings/a-sscanf-replacement-for-net
+
+		// Format type specifiers
+		private enum Types {
+			Character,
+			Decimal,
+			Float,
+			Hexadecimal,
+			Octal,
+			ScanSet,
+			String,
+			Unsigned
+		}
+
+		// Format modifiers
+		private enum Modifiers {
+			None,
+			ShortShort,
+			Short,
+			Long,
+			LongLong
+		}
+
+		// Delegate to parse a type
+		private delegate bool ParseValue (TextParser input, FormatSpecifier spec);
+
+		// Class to associate format type with type parser
+		private class TypeParser {
+			public Types Type { get; set; }
+			public ParseValue Parser { get; set; }
+		}
+
+		// Class to hold format specifier information
+		private class FormatSpecifier {
+			public Types Type { get; set; }
+			public Modifiers Modifier { get; set; }
+			public int Width { get; set; }
+			public bool NoResult { get; set; }
+			public string ScanSet { get; set; }
+			public bool ScanSetExclude { get; set; }
+		}
+
+		// Lookup table to find parser by parser type
+		private static TypeParser[] _typeParsers;
+
+		// Holds results after calling Parse()
+		public static List<object> Results;
+
+		// Constructor
+		static C ()
+		{
+			// Populate parser type lookup table
+			_typeParsers = new TypeParser[] {
+            new TypeParser() { Type = Types.Character, Parser = ParseCharacter },
+            new TypeParser() { Type = Types.Decimal, Parser = ParseDecimal },
+            new TypeParser() { Type = Types.Float, Parser = ParseFloat },
+            new TypeParser() { Type = Types.Hexadecimal, Parser = ParseHexadecimal },
+            new TypeParser() { Type = Types.Octal, Parser = ParseOctal },
+            new TypeParser() { Type = Types.ScanSet, Parser = ParseScanSet },
+            new TypeParser() { Type = Types.String, Parser = ParseString },
+            new TypeParser() { Type = Types.Unsigned, Parser = ParseDecimal }
+        };
+			// Allocate results collection
+			Results = new List<object> ();
+		}
+
+		/// <summary>
+		/// Parses the input string according to the rules in the
+		/// format string. Similar to the standard C library's
+		/// sscanf() function. Parsed fields are placed in the
+		/// class' Results member.
+		/// </summary>
+		/// <param name="input">String to parse</param>
+		/// <param name="format">Specifies rules for parsing input</param>
+		private static int Parse (string input, string format)
+		{
+			TextParser inp = new TextParser (input);
+			TextParser fmt = new TextParser (format);
+			List<object> results = new List<object> ();
+			FormatSpecifier spec = new FormatSpecifier ();
+			int count = 0;
+
+			// Clear any previous results
+			Results.Clear ();
+
+			// Process input string as indicated in format string
+			while (!fmt.EndOfText && !inp.EndOfText) {
+				if (ParseFormatSpecifier (fmt, spec)) {
+					// Found a format specifier
+					TypeParser parser = _typeParsers.First (tp => tp.Type == spec.Type);
+					if (parser.Parser (inp, spec))
+						count++;
+					else
+						break;
+				} else if (Char.IsWhiteSpace (fmt.Peek ())) {
+					// Whitespace
+					inp.MovePastWhitespace ();
+					fmt.MoveAhead ();
+				} else if (fmt.Peek () == inp.Peek ()) {
+					// Matching character
+					inp.MoveAhead ();
+					fmt.MoveAhead ();
+				} else
+					break;    // Break at mismatch
+			}
+
+			// Return number of fields successfully parsed
+			return count;
+		}
+
+		/// <summary>
+		/// Attempts to parse a field format specifier from the format string.
+		/// </summary>
+		private static bool ParseFormatSpecifier (TextParser format, FormatSpecifier spec)
+		{
+			// Return if not a field format specifier
+			if (format.Peek () != '%')
+				return false;
+			format.MoveAhead ();
+
+			// Return if "%%" (treat as '%' literal)
+			if (format.Peek () == '%')
+				return false;
+
+			// Test for asterisk, which indicates result is not stored
+			if (format.Peek () == '*') {
+				spec.NoResult = true;
+				format.MoveAhead ();
+			} else
+				spec.NoResult = false;
+
+			// Parse width
+			int start = format.Position;
+			while (Char.IsDigit (format.Peek ()))
+				format.MoveAhead ();
+			if (format.Position > start)
+				spec.Width = int.Parse (format.Extract (start, format.Position));
+			else
+				spec.Width = 0;
+
+			// Parse modifier
+			if (format.Peek () == 'h') {
+				format.MoveAhead ();
+				if (format.Peek () == 'h') {
+					format.MoveAhead ();
+					spec.Modifier = Modifiers.ShortShort;
+				} else
+					spec.Modifier = Modifiers.Short;
+			} else if (Char.ToLower (format.Peek ()) == 'l') {
+				format.MoveAhead ();
+				if (format.Peek () == 'l') {
+					format.MoveAhead ();
+					spec.Modifier = Modifiers.LongLong;
+				} else
+					spec.Modifier = Modifiers.Long;
+			} else
+				spec.Modifier = Modifiers.None;
+
+			// Parse type
+			switch (format.Peek ()) {
+			case 'c':
+				spec.Type = Types.Character;
+				break;
+			case 'd':
+			case 'i':
+				spec.Type = Types.Decimal;
+				break;
+			case 'a':
+			case 'A':
+			case 'e':
+			case 'E':
+			case 'f':
+			case 'F':
+			case 'g':
+			case 'G':
+				spec.Type = Types.Float;
+				break;
+			case 'o':
+				spec.Type = Types.Octal;
+				break;
+			case 's':
+				spec.Type = Types.String;
+				break;
+			case 'u':
+				spec.Type = Types.Unsigned;
+				break;
+			case 'x':
+			case 'X':
+				spec.Type = Types.Hexadecimal;
+				break;
+			case '[':
+				spec.Type = Types.ScanSet;
+				format.MoveAhead ();
+				// Parse scan set characters
+				if (format.Peek () == '^') {
+					spec.ScanSetExclude = true;
+					format.MoveAhead ();
+				} else
+					spec.ScanSetExclude = false;
+				start = format.Position;
+				// Treat immediate ']' as literal
+				if (format.Peek () == ']')
+					format.MoveAhead ();
+				format.MoveTo (']');
+				if (format.EndOfText)
+					throw new Exception ("Type specifier expected character : ']'");
+				spec.ScanSet = format.Extract (start, format.Position);
+				break;
+			default:
+				string msg = String.Format ("Unknown format type specified : '{0}'", format.Peek ());
+				throw new Exception (msg);
+			}
+			format.MoveAhead ();
+			return true;
+		}
+
+		/// <summary>
+		/// Parse a character field
+		/// </summary>
+		private static bool ParseCharacter (TextParser input, FormatSpecifier spec)
+		{
+			// Parse character(s)
+			int start = input.Position;
+			int count = (spec.Width > 1) ? spec.Width : 1;
+			while (!input.EndOfText && count-- > 0)
+				input.MoveAhead ();
+
+			// Extract token
+			if (count <= 0 && input.Position > start) {
+				if (!spec.NoResult) {
+					string token = input.Extract (start, input.Position);
+					if (token.Length > 1)
+						Results.Add (token.ToCharArray ());
+					else
+						Results.Add (token[0]);
+				}
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Parse integer field
+		/// </summary>
+		private static bool ParseDecimal (TextParser input, FormatSpecifier spec)
+		{
+			int radix = 10;
+
+			// Skip any whitespace
+			input.MovePastWhitespace ();
+
+			// Parse leading sign
+			int start = input.Position;
+			if (input.Peek () == '+' || input.Peek () == '-') {
+				input.MoveAhead ();
+			} else if (input.Peek () == '0') {
+				if (Char.ToLower (input.Peek (1)) == 'x') {
+					radix = 16;
+					input.MoveAhead (2);
+				} else {
+					radix = 8;
+					input.MoveAhead ();
+				}
+			}
+
+			// Parse digits
+			while (IsValidDigit (input.Peek (), radix))
+				input.MoveAhead ();
+
+			// Don't exceed field width
+			if (spec.Width > 0) {
+				int count = input.Position - start;
+				if (spec.Width < count)
+					input.MoveAhead (spec.Width - count);
+			}
+
+			// Extract token
+			if (input.Position > start) {
+				if (!spec.NoResult) {
+					if (spec.Type == Types.Decimal)
+						AddSigned (input.Extract (start, input.Position), spec.Modifier, radix);
+					else
+						AddUnsigned (input.Extract (start, input.Position), spec.Modifier, radix);
+				}
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Parse a floating-point field
+		/// </summary>
+		private static bool ParseFloat (TextParser input, FormatSpecifier spec)
+		{
+			// Skip any whitespace
+			input.MovePastWhitespace ();
+
+			// Parse leading sign
+			int start = input.Position;
+			if (input.Peek () == '+' || input.Peek () == '-')
+				input.MoveAhead ();
+
+			// Parse digits
+			bool hasPoint = false;
+			while (Char.IsDigit (input.Peek ()) || input.Peek () == '.') {
+				if (input.Peek () == '.') {
+					if (hasPoint)
+						break;
+					hasPoint = true;
+				}
+				input.MoveAhead ();
+			}
+
+			// Parse exponential notation
+			if (Char.ToLower (input.Peek ()) == 'e') {
+				input.MoveAhead ();
+				if (input.Peek () == '+' || input.Peek () == '-')
+					input.MoveAhead ();
+				while (Char.IsDigit (input.Peek ()))
+					input.MoveAhead ();
+			}
+
+			// Don't exceed field width
+			if (spec.Width > 0) {
+				int count = input.Position - start;
+				if (spec.Width < count)
+					input.MoveAhead (spec.Width - count);
+			}
+
+			// Because we parse the exponential notation before we apply
+			// any field-width constraint, it becomes awkward to verify
+			// we have a valid floating point token. To prevent an
+			// exception, we use TryParse() here instead of Parse().
+			double result;
+
+			// Extract token
+			if (input.Position > start &&
+				double.TryParse (input.Extract (start, input.Position), out result)) {
+				if (!spec.NoResult) {
+					if (spec.Modifier == Modifiers.Long ||
+						spec.Modifier == Modifiers.LongLong)
+						Results.Add (result);
+					else
+						Results.Add ((float)result);
+				}
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Parse hexadecimal field
+		/// </summary>
+		private static bool ParseHexadecimal (TextParser input, FormatSpecifier spec)
+		{
+			// Skip any whitespace
+			input.MovePastWhitespace ();
+
+			// Parse 0x prefix
+			int start = input.Position;
+			if (input.Peek () == '0' && input.Peek (1) == 'x')
+				input.MoveAhead (2);
+
+			// Parse digits
+			while (IsValidDigit (input.Peek (), 16))
+				input.MoveAhead ();
+
+			// Don't exceed field width
+			if (spec.Width > 0) {
+				int count = input.Position - start;
+				if (spec.Width < count)
+					input.MoveAhead (spec.Width - count);
+			}
+
+			// Extract token
+			if (input.Position > start) {
+				if (!spec.NoResult)
+					AddUnsigned (input.Extract (start, input.Position), spec.Modifier, 16);
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Parse an octal field
+		/// </summary>
+		private static bool ParseOctal (TextParser input, FormatSpecifier spec)
+		{
+			// Skip any whitespace
+			input.MovePastWhitespace ();
+
+			// Parse digits
+			int start = input.Position;
+			while (IsValidDigit (input.Peek (), 8))
+				input.MoveAhead ();
+
+			// Don't exceed field width
+			if (spec.Width > 0) {
+				int count = input.Position - start;
+				if (spec.Width < count)
+					input.MoveAhead (spec.Width - count);
+			}
+
+			// Extract token
+			if (input.Position > start) {
+				if (!spec.NoResult)
+					AddUnsigned (input.Extract (start, input.Position), spec.Modifier, 8);
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Parse a scan-set field
+		/// </summary>
+		private static bool ParseScanSet (TextParser input, FormatSpecifier spec)
+		{
+			// Parse characters
+			int start = input.Position;
+			if (!spec.ScanSetExclude) {
+				while (spec.ScanSet.Contains (input.Peek ()))
+					input.MoveAhead ();
+			} else {
+				while (!input.EndOfText && !spec.ScanSet.Contains (input.Peek ()))
+					input.MoveAhead ();
+			}
+
+			// Don't exceed field width
+			if (spec.Width > 0) {
+				int count = input.Position - start;
+				if (spec.Width < count)
+					input.MoveAhead (spec.Width - count);
+			}
+
+			// Extract token
+			if (input.Position > start) {
+				if (!spec.NoResult)
+					Results.Add (input.Extract (start, input.Position));
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Parse a string field
+		/// </summary>
+		private static bool ParseString (TextParser input, FormatSpecifier spec)
+		{
+			// Skip any whitespace
+			input.MovePastWhitespace ();
+
+			// Parse string characters
+			int start = input.Position;
+			while (!input.EndOfText && !Char.IsWhiteSpace (input.Peek ()))
+				input.MoveAhead ();
+
+			// Don't exceed field width
+			if (spec.Width > 0) {
+				int count = input.Position - start;
+				if (spec.Width < count)
+					input.MoveAhead (spec.Width - count);
+			}
+
+			// Extract token
+			if (input.Position > start) {
+				if (!spec.NoResult)
+					Results.Add (input.Extract (start, input.Position));
+				return true;
+			}
+			return false;
+		}
+
+		// Determines if the given digit is valid for the given radix
+		private static bool IsValidDigit (char c, int radix)
+		{
+			int i = "0123456789abcdef".IndexOf (Char.ToLower (c));
+			if (i >= 0 && i < radix)
+				return true;
+			return false;
+		}
+
+		// Parse signed token and add to results
+		private static void AddSigned (string token, Modifiers mod, int radix)
+		{
+			object obj;
+			if (mod == Modifiers.ShortShort)
+				obj = Convert.ToSByte (token, radix);
+			else if (mod == Modifiers.Short)
+				obj = Convert.ToInt16 (token, radix);
+			else if (mod == Modifiers.Long ||
+				mod == Modifiers.LongLong)
+				obj = Convert.ToInt64 (token, radix);
+			else
+				obj = Convert.ToInt32 (token, radix);
+			Results.Add (obj);
+		}
+
+		// Parse unsigned token and add to results
+		private static void AddUnsigned (string token, Modifiers mod, int radix)
+		{
+			object obj;
+			if (mod == Modifiers.ShortShort)
+				obj = Convert.ToByte (token, radix);
+			else if (mod == Modifiers.Short)
+				obj = Convert.ToUInt16 (token, radix);
+			else if (mod == Modifiers.Long ||
+				mod == Modifiers.LongLong)
+				obj = Convert.ToUInt64 (token, radix);
+			else
+				obj = Convert.ToUInt32 (token, radix);
+			Results.Add (obj);
+		}
+
+		#endregion
 
 		#endregion
 

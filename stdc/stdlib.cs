@@ -117,7 +117,6 @@ namespace stdc {
 			return Math.Abs (l);
 		}
 
-		//int rand (void);
 		/// <summary>
 		///		int rand ( void );
 		///		
