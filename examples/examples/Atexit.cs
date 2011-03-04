@@ -1,6 +1,19 @@
-﻿
-using System;
-using System.Text;
+﻿//#include <stdio.h>
+//#include <stdlib.h>
+
+//void atexit_handler1 (void) {
+//    puts ("handler 1");
+//}
+
+//void atexit_handler2 (void) {
+//    puts ("handler 1");
+//}
+
+//void main () {
+//    atexit (atexit_handler1);
+//    atexit (atexit_handler2);
+//    puts ("atexit handlers should be called in reverse order 2 and then 1!");
+//}
 
 namespace examples {
 

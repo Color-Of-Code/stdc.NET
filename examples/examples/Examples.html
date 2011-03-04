@@ -4,9 +4,9 @@
 </head>
 <body>
 
-<h2>Stdc - Helps porting C code to .NET</h2>
+<h1>Stdc - Helps porting C code to .NET</h1>
 
-<h3>Rationale</h3>
+<h2>Rationale</h2>
 <p>Porting C code to .NET doesn't sound like being fun. And it is mostly for sure not funny... 
 The mind breaking rewriting of printf formatting code to String.Format formats can cost a bunch of time and is error prone.
 The same difficulties arise with scanf, really tedious to port such code.
@@ -19,7 +19,7 @@ The Stdc libray enables a quick first shot so you have at least a running execut
 This can be important for portability between .NET on Linux (MONO) and Windows for example.
 A ported program should then run without recompilation under MONO and Microsoft .NET.</p>
 
-<h3>Who cares about Stdc</h3>
+<h2>Who cares about Stdc?</h2>
 <p>If you ...</p>
 <ul>
 <li>have to quickly port a large portion of code and defer a clean .NET implementation to later on</li>
@@ -29,10 +29,10 @@ A ported program should then run without recompilation under MONO and Microsoft 
 <p>Then you should give the Stdc library a try! (Contact me)</p>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <hr />
-<h4>Hello world</h4>
+<h3>Hello world</h3>
 <table>
 <thead><tr><td>C</td><td>C#</td></tr></thead>
 <tbody>
@@ -74,7 +74,7 @@ This first example is simplistic but it is there just to get a feeling for the b
 </table>
 
 <hr />
-<h4>Printing powers of 2 - printf()</h4>
+<h3>Printing powers of 2 - printf()</h3>
 <table>
 <thead><tr><td>C</td><td>C#</td></tr></thead>
 <tbody>
@@ -100,7 +100,7 @@ This first example is simplistic but it is there just to get a feeling for the b
 </td>
 <td>
 <pre>
-    using stdc; // ... code to embed in class/namespace omitted for readability
+    using stdc; // ... code to embed in class/namespace omitted
     
     private const int N = 16;
     
@@ -127,7 +127,7 @@ Note that absolutely no change was needed to be made to the formatting strings.
 </table>
 
 <br />
-<h4>Generating a file - FILE, fopen(), fclose(), putc()</h4>
+<h3>Generating a file - FILE, fopen(), fclose(), putc()</h3>
 <table>
 <thead><tr><td>C</td><td>C#</td></tr></thead>
 <tbody>
@@ -150,7 +150,7 @@ Note that absolutely no change was needed to be made to the formatting strings.
 </td>
 <td>
 <pre>
-    using stdc; // ... code to embed in class/namespace omitted for readability
+    using stdc; // ... code to embed in class/namespace omitted
 
     public static void main () {
         FILE pFile;
@@ -174,7 +174,7 @@ The fopen, fclose can be used exactly like in C, only the pointer symbol (*) dis
 </table>
 
 <br />
-<h4>A small guessing game - rand(), scanf()</h4>
+<h3>A small guessing game - rand(), scanf()</h3>
 <table>
 <thead><tr><td>C</td><td>C#</td></tr></thead>
 <tbody>
@@ -194,8 +194,10 @@ The fopen, fclose can be used exactly like in C, only the pointer symbol (*) dis
         do {
             printf ("Guess the number (1 to 10): ");
             scanf ("%d",&iGuess);
-            if (iSecret&lt;iGuess) puts ("The secret number is lower");
-            else if (iSecret&gt;iGuess) puts ("The secret number is higher");
+            if (iSecret&lt;iGuess)
+                puts ("The secret number is lower");
+            else if (iSecret&gt;iGuess)
+                puts ("The secret number is higher");
         } while (iSecret!=iGuess);
 
         puts ("Congratulations!");
@@ -204,7 +206,7 @@ The fopen, fclose can be used exactly like in C, only the pointer symbol (*) dis
 </td>
 <td>
 <pre>
-    using stdc; // ... code to embed in class/namespace omitted for readability
+    using stdc; // ... code to embed in class/namespace omitted
 
     public static void main () {
         int iSecret;
@@ -217,7 +219,8 @@ The fopen, fclose can be used exactly like in C, only the pointer symbol (*) dis
         do {
             C.printf ("Guess the number (1 to 10): ");
             C.scanf ("%d", out guess);
-            iGuess = (int)guess;	// can we get rid of this ugly casting here...
+            // can we get rid of this ugly casting here...
+            iGuess = (int)guess;
             if (iSecret < iGuess)
                 C.puts ("The secret number is lower");
             else if (iSecret > iGuess)
@@ -239,7 +242,7 @@ The API does not provide a solution for this dilemna right now.
 </table>
 
 <br />
-<h4>Quick Sort an array of ints, step by step refactoring - qsort()</h4>
+<h3>Quick Sort an array of ints, step by step refactoring - qsort()</h3>
 <table>
 <thead><tr><td>C</td><td>C#</td></tr></thead>
 <tbody>
@@ -265,7 +268,7 @@ The API does not provide a solution for this dilemna right now.
 </td>
 <td>
 <pre>
-    using stdc; // ... code to embed in class/namespace omitted for readability
+    using stdc; // ... code to embed in class/namespace omitted
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
@@ -283,10 +286,11 @@ The API does not provide a solution for this dilemna right now.
 </td>
 </tr>
 <tr>
-<td>Second step, refactoring, getting rid of the C-like syntax and use .NET strengths</td>
+<td>Second step, refactoring, getting rid of the C-like syntax and use .NET strengths.
+We transformed the "for" loop into a "foreach" loop, making the use of the magic number '6' superfluous.</td>
 <td>
 <pre>
-    using stdc; // ... code to embed in class/namespace omitted for readability
+    using stdc; // ... code to embed in class/namespace omitted
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
@@ -303,10 +307,10 @@ The API does not provide a solution for this dilemna right now.
 </td>
 </tr>
 <tr>
-<td>Third step, getting rid C functions and replace them with .NET equivalents</td>
+<td>Third step: get rid of all C functions and replace them with their .NET equivalents</td>
 <td>
 <pre>
-    using stdc; // ... code to embed in class/namespace omitted for readability
+    using stdc; // ... code to embed in class/namespace omitted
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
@@ -326,11 +330,12 @@ The API does not provide a solution for this dilemna right now.
 <td colspan="2">
 Did you notice? From the first step on, the C# compare method didn't need any casts unlike the C version.
 Thanks to the use of generics, the code readability is greaty improved.
+This also shows the basic steps in refactoring the C code. Stdc just helps you to keep a testable running version
+between successive steps of refactoring.
 </td>
 </tr>
 </tbody>
 </table>
-
 
 <br />
 <h3>Remarks</h3>
@@ -356,37 +361,84 @@ the library needs to control the code to be run. There is a trampoline from the 
 - void main(int argc, string[] argv)
 - void main()
 </pre>
-<p>The .NET arguments do not contain the program name unlike in C</p>
+<p>The .NET arguments do not contain the program name unlike in C where argv[0] contains the name of the executable.
+To enable to reuse code from C that expects this behaviour, you must use the C.RunI/VMain() function.
+The RunMain() function also provides an environment where the signal() and raise() C functions can be used.</p>
+
+
+<h2>Further examples</h2>
+
+<br />
+<h3>Using atexit - atexit()</h3>
+<table>
+<thead><tr><td>C</td><td>C#</td></tr></thead>
+<tbody>
+<tr>
+<td>
+<pre>
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+
+    void atexit_handler1 (void) {
+        puts ("handler 1");
+    }
+
+    void atexit_handler2 (void) {
+        puts ("handler 1");
+    }
+
+    void main () {
+        atexit (atexit_handler1);
+        atexit (atexit_handler2);
+        puts ("atexit handlers should be " +
+            "called in reverse order 2 and then 1!");
+    }
+</pre>
+</td>
+<td>
+<pre>
+namespace example {
+    using stdc;
+
+    public class Program {
+
+        public static void atexit_handler1() {
+            C.puts("handler 1");
+        }
+        public static void atexit_handler2() {
+            C.puts("handler 2");
+        }
+
+        public static void main () {
+            C.atexit(atexit_handler1);
+            C.atexit(atexit_handler2);
+            C.puts("atexit handlers should be " +
+                "called in reverse order 2 and then 1!");
+        }
+    
+        static void Main (string[] args) {
+            C.RunVMain (args, main); // trampoline
+        }
+    }
+}
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+The full code is provided for this example, to demonstrate how to let the RunMain() method call the ported main() function.
+RunMain() calls main() after initializing an environment where the signals can work properly.
+The behaviour expected from C regarding the order in which the handlers are called is implemented correctly: the handlers are called in reverse order or registration.
+</td>
+</tr>
+</tbody>
+</table>
 
 
 <h3>Contact</h3>
-<p>If you would like to get a beta version of the library let me know: 
- <script language='JavaScript' type='text/javascript'>
- <!--
-     var prefix = 'm&#97;&#105;lt&#111;:';
-     var suffix = '';
-     var attribs = '';
-     var path = 'hr' + 'ef' + '=';
-     var addy7088 = 'j&#97;&#97;p.d&#101;h&#97;&#97;n' + '&#64;';
-     addy7088 = addy7088 + 'c&#111;l&#111;r-&#111;f-c&#111;d&#101;' + '&#46;' + 'd&#101;';
-     document.write('<a ' + path + '\'' + prefix + addy7088 + suffix + '\'' + attribs + '>');
-     document.write(addy7088);
-     document.write('<\/a>');
- //-->
- </script><script language='JavaScript' type='text/javascript'>
- <!--
-              document.write('<span style=\'display: none;\'>');
- //-->
- </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
- <script language='JavaScript' type='text/javascript'>
- <!--
-     document.write('</');
-     document.write('span>');
- //-->
- </script>.</p>
+<p>If you would like to get a beta version of the library let me know: jaap.dehaan@color-of-code.de.</p>
+<p>The library is provided under this <a href="index.php?option=com_content&amp;view=article&amp;id=112:freeware-license-agreement&amp;catid=34:impressum&amp;Itemid=1">Freeware License Agreement</a>.</p>
 
-<p>The library is provided under this <a href="http://color-of-code.de/index.php?option=com_content&amp;view=article&amp;id=112:freeware-license-agreement&amp;catid=34:impressum&amp;Itemid=1">Freeware License Agreement</a>.</p>
-<p> </p>
 
 </body>
 </html>
