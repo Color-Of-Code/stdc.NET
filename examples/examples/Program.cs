@@ -24,7 +24,7 @@ namespace examples {
 			C.RunVMain (args, Strncpy.main);
 			C.RunVMain (args, Strncpy.main2);
 			C.RunIMain (args, Power2.main);
-			C.RunIMain (args, Alphabet.main);
+			C.RunVMain (args, Alphabet.main);
 			C.RunIMain (args, FileCopy.main);
 		}
 	}

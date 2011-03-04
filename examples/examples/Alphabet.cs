@@ -1,17 +1,16 @@
 ﻿
 //#include <stdio.h>
-
-//int main ()
+//
+//void main ()
 //{
-//  FILE * pFile;
-//  char c;
-
-//  pFile=fopen("alphabet.txt","wt");
-//  for (c = 'A' ; c <= 'Z' ; c++) {
-//    putc (c , pFile);
+//    FILE * pFile;
+//    char c;
+//
+//    pFile=fopen("alphabet.txt","wt");
+//    for (c = 'A' ; c <= 'Z' ; c++) {
+//        putc (c , pFile);
 //    }
-//  fclose (pFile);
-//  return 0;
+//    fclose (pFile);
 //}
 
 namespace examples {
@@ -21,7 +20,7 @@ namespace examples {
 
 	public class Alphabet {
 
-		public static int main ()
+		public static void main ()
 		{
 			FILE pFile;
 			char c;
@@ -31,7 +30,6 @@ namespace examples {
 				C.putc (c, pFile);
 			}
 			C.fclose (pFile);
-			return 0;
 		}
 
 	}

@@ -1,0 +1,392 @@
+﻿<html>
+<head>
+<title>Stdc</title>
+</head>
+<body>
+
+<h2>Stdc - Helps porting C code to .NET</h2>
+
+<h3>Rationale</h3>
+<p>Porting C code to .NET doesn't sound like being fun. And it is mostly for sure not funny... 
+The mind breaking rewriting of printf formatting code to String.Format formats can cost a bunch of time and is error prone.
+The same difficulties arise with scanf, really tedious to port such code.
+Signal handling is another topic where one can loose quite some hours.
+Stdc is a pure .NET library enabling a quick port of existing C code by emulating most of the C syntax in a very similar way,
+to not say in an identical manner.
+The code can be then refactored step by step further by removing the C functions.
+The Stdc libray enables a quick first shot so you have at least a running executable to work with.</p>
+<p>Note that the Stdc library is written in pure .NET no call to native functions is made (no "cheating" with P/Invoke, to call the native C runtime methods is performed).
+This can be important for portability between .NET on Linux (MONO) and Windows for example.
+A ported program should then run without recompilation under MONO and Microsoft .NET.</p>
+
+<h3>Who cares about Stdc</h3>
+<p>If you ...</p>
+<ul>
+<li>have to quickly port a large portion of code and defer a clean .NET implementation to later on</li>
+<li>are not used to the .NET framework and want to mimic the C API in .NET</li>
+<li>wonder how to port some parts of the code but want a working result right now</li>
+</ul>
+<p>Then you should give the Stdc library a try! (Contact me)</p>
+
+
+<h3>Examples</h3>
+
+<hr />
+<h4>Hello world</h4>
+<table>
+<thead><tr><td>C</td><td>C#</td></tr></thead>
+<tbody>
+<tr>
+<td>
+<pre>
+    #include &lt;stdio.h&gt;
+    
+    void main(void) {
+        printf("Hello World!\n");
+    }
+</pre>
+</td>
+<td>
+<pre>
+namespace Example {      // a namespace to contain the code
+    using stdc;          // instead of #include ...
+
+    public class HelloWorld { // in C# methods must be in a class
+        public static void main () {
+            C.printf("Hello World!\n");
+        }
+    }
+}
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+The main difference is that the code must be embedded in a class and a namespace.
+The functions turn consequently into public static methods (equivalent in .NET to C functions).
+In further examples we will omit this necessary code parts to keep the focus on the real code changes.
+Includes are replaced by a using statement and the C functions are part of a static class with called C.
+Therefore C.printf is used instead of a bare printf statement without C. as prefix.
+This first example is simplistic but it is there just to get a feeling for the basic principles in porting C to .NET.
+</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+<h4>Printing powers of 2 - printf()</h4>
+<table>
+<thead><tr><td>C</td><td>C#</td></tr></thead>
+<tbody>
+<tr>
+<td>
+<pre>
+    #include &lt;stdio.h&gt;
+
+    #define N 16
+
+    void main(void) {
+        int n;           /* The current exponent */
+        int val = 1;     /* The current power of 2  */
+    
+        printf (&quot;\t  n  \t    2^n\n&quot;);
+        printf (&quot;\t================\n&quot;);
+        for (n=0; n&lt;=N; n++) {
+            printf (&quot;\t%3d \t %6d\n&quot;, n, val); 
+            val = 2*val;
+        }
+    }
+</pre>
+</td>
+<td>
+<pre>
+    using stdc; // ... code to embed in class/namespace omitted for readability
+    
+    private const int N = 16;
+    
+    public static void main () {
+        int n;		    // The current exponent
+        int val = 1;    // The current power of 2
+        
+        C.printf (&quot;\t  n  \t    2^n\n&quot;);
+        C.printf (&quot;\t================\n&quot;);
+        for (n=0; n&lt;=N; n++) {
+            C.printf (&quot;\t%3d \t %6d\n&quot;, n, val); 
+            val = 2 * val;
+        }
+    }
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+Note that absolutely no change was needed to be made to the formatting strings.
+</td>
+</tr>
+</tbody>
+</table>
+
+<br />
+<h4>Generating a file - FILE, fopen(), fclose(), putc()</h4>
+<table>
+<thead><tr><td>C</td><td>C#</td></tr></thead>
+<tbody>
+<tr>
+<td>
+<pre>
+    #include &lt;stdio.h&gt;
+
+    void main () {
+        FILE * pFile;
+        char c;
+
+        pFile = fopen ("alphabet.txt", "wt");
+        for (c = 'A' ; c &lt;= 'Z' ; c++) {
+            putc (c , pFile);
+        }
+        fclose (pFile);
+    }
+</pre>
+</td>
+<td>
+<pre>
+    using stdc; // ... code to embed in class/namespace omitted for readability
+
+    public static void main () {
+        FILE pFile;
+        char c;
+
+        pFile = C.fopen ("alphabet.txt", "wt");
+        for (c = 'A'; c &lt;= 'Z'; c++) {
+            C.putc (c, pFile);
+        }
+        C.fclose (pFile);
+    }
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+The fopen, fclose can be used exactly like in C, only the pointer symbol (*) disappears.
+</td>
+</tr>
+</tbody>
+</table>
+
+<br />
+<h4>A small guessing game - rand(), scanf()</h4>
+<table>
+<thead><tr><td>C</td><td>C#</td></tr></thead>
+<tbody>
+<tr>
+<td>
+<pre>
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    #include &lt;time.h&gt;
+
+    void main () {
+        int iSecret, iGuess;
+
+        srand ( time(NULL) );
+        iSecret = rand() % 10 + 1;
+
+        do {
+            printf ("Guess the number (1 to 10): ");
+            scanf ("%d",&iGuess);
+            if (iSecret&lt;iGuess) puts ("The secret number is lower");
+            else if (iSecret&gt;iGuess) puts ("The secret number is higher");
+        } while (iSecret!=iGuess);
+
+        puts ("Congratulations!");
+    }
+</pre>
+</td>
+<td>
+<pre>
+    using stdc; // ... code to embed in class/namespace omitted for readability
+
+    public static void main () {
+        int iSecret;
+        object guess;
+        int iGuess;
+
+        C.srand (C.time (C.NULL));
+        iSecret = C.rand () % 10 + 1;
+
+        do {
+            C.printf ("Guess the number (1 to 10): ");
+            C.scanf ("%d", out guess);
+            iGuess = (int)guess;	// can we get rid of this ugly casting here...
+            if (iSecret < iGuess)
+                C.puts ("The secret number is lower");
+            else if (iSecret > iGuess)
+                C.puts ("The secret number is higher");
+        } while (iSecret != iGuess);
+
+        C.puts ("Congratulations!");
+    }
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+The only ugly step needed here is the need for a cast, as scanf implementation is only able to handle object's as out parameters.
+The API does not provide a solution for this dilemna right now.
+</td>
+</tr>
+</tbody>
+</table>
+
+<br />
+<h4>Quick Sort an array of ints, step by step refactoring - qsort()</h4>
+<table>
+<thead><tr><td>C</td><td>C#</td></tr></thead>
+<tbody>
+<tr>
+<td>
+<pre>
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+
+    int values[] = { 40, 10, 100, 90, 20, 25 };
+
+    int compare (const void * a, const void * b) {
+        return ( *(int*)a - *(int*)b );
+    }
+
+    void main () {
+        int n;
+        qsort (values, 6, sizeof(int), compare);
+        for (n=0; n&lt;6; n++)
+            printf ("%d ",values[n]);
+    }
+</pre>
+</td>
+<td>
+<pre>
+    using stdc; // ... code to embed in class/namespace omitted for readability
+
+    public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
+
+    public static int compare (int a, int b) {
+        return a - b;
+    }
+
+    public static void main () {
+        int n;
+        C.qsort (values, 6, sizeof (int), compare);
+        for (n = 0; n < 6; n++)
+            C.printf ("%d ", values[n]);
+    }
+</pre>
+</td>
+</tr>
+<tr>
+<td>Second step, refactoring, getting rid of the C-like syntax and use .NET strengths</td>
+<td>
+<pre>
+    using stdc; // ... code to embed in class/namespace omitted for readability
+
+    public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
+
+    public static int compare (int a, int b) {
+        return a - b;
+    }
+
+    public static void main () {
+        C.qsort (values, compare);
+        foreach (int v in values)
+            C.printf ("%d ", v);
+    }
+</pre>
+</td>
+</tr>
+<tr>
+<td>Third step, getting rid C functions and replace them with .NET equivalents</td>
+<td>
+<pre>
+    using stdc; // ... code to embed in class/namespace omitted for readability
+
+    public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
+
+    public static int compare (int a, int b) {
+        return a - b;
+    }
+
+    public static void main () {
+        Array.Sort (values, compare);
+        foreach (int v in values)
+            Console.Write ("{0} ", v);
+    }
+</pre>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+Did you notice? From the first step on, the C# compare method didn't need any casts unlike the C version.
+Thanks to the use of generics, the code readability is greaty improved.
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<br />
+<h3>Remarks</h3>
+<p>In order to provide the advanced emulation functionality (like signals and atexit support, argc, argv emulation),
+the library needs to control the code to be run. There is a trampoline from the .NET Main method to the ported main C function.</p>
+<p>This should be used like this:</p>
+
+<pre>namespace examples {
+    using stdc;
+    class Program {
+        static void Main (string[] args)
+        {
+            // use one of these
+            C.RunVMain (args, CProgram.main); // if the main is returning nothing (void)
+            C.RunIMain (args, CProgram.main); // if the main is returning an int
+        }
+    }
+}</pre>
+<p>The signature of the main function is one of:</p>
+<pre>
+- int main(int argc, string[] argv)
+- int main()
+- void main(int argc, string[] argv)
+- void main()
+</pre>
+<p>The .NET arguments do not contain the program name unlike in C</p>
+
+
+<h3>Contact</h3>
+<p>If you would like to get a beta version of the library let me know: 
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+     var prefix = 'm&#97;&#105;lt&#111;:';
+     var suffix = '';
+     var attribs = '';
+     var path = 'hr' + 'ef' + '=';
+     var addy7088 = 'j&#97;&#97;p.d&#101;h&#97;&#97;n' + '&#64;';
+     addy7088 = addy7088 + 'c&#111;l&#111;r-&#111;f-c&#111;d&#101;' + '&#46;' + 'd&#101;';
+     document.write('<a ' + path + '\'' + prefix + addy7088 + suffix + '\'' + attribs + '>');
+     document.write(addy7088);
+     document.write('<\/a>');
+ //-->
+ </script><script language='JavaScript' type='text/javascript'>
+ <!--
+              document.write('<span style=\'display: none;\'>');
+ //-->
+ </script>This e-mail address is being protected from spambots. You need JavaScript enabled to view it
+ <script language='JavaScript' type='text/javascript'>
+ <!--
+     document.write('</');
+     document.write('span>');
+ //-->
+ </script>.</p>
+
+<p>The library is provided under this <a href="http://color-of-code.de/index.php?option=com_content&amp;view=article&amp;id=112:freeware-license-agreement&amp;catid=34:impressum&amp;Itemid=1">Freeware License Agreement</a>.</p>
+<p> </p>
+
+</body>
+</html>
