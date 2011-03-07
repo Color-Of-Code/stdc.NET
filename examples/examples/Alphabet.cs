@@ -22,7 +22,7 @@ namespace examples {
 
 		public static void main ()
 		{
-			FILE pFile;
+			C.FILE pFile;
 			char c;
 
 			pFile = C.fopen ("alphabet.txt", "wt");

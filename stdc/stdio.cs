@@ -7,50 +7,67 @@ using System.Text.RegularExpressions;
 
 namespace stdc {
 
-	public class FILE {
-		internal FILE (FileStream stream)
-		{
-			_stream = stream;
-			if (_stream.CanRead)
-				_reader = new StreamReader (_stream, Encoding.ASCII);
-			if (_stream.CanWrite)
-				_writer = new StreamWriter (_stream, Encoding.ASCII);
-		}
+	public static partial class C {
 
-		internal FILE (TextReader reader)
-		{
-			_reader = reader;
-			_writer = null;
-		}
+		#region FILE
 
-		internal FILE (TextWriter writer)
-		{
-			_reader = null;
-			_writer = writer;
-		}
-
-		private FileStream _stream;
-		internal TextReader _reader;
-		internal TextWriter _writer;
-
-		internal int Close ()
-		{
-			if (_reader != null) {
-				_reader.Close ();
-				_reader = null;
+		public class FILE {
+			internal FILE (FileStream stream)
+			{
+				_error = 0;
+				_stream = stream;
+				if (_stream.CanRead)
+					_reader = new StreamReader (_stream, Encoding.ASCII);
+				if (_stream.CanWrite)
+					_writer = new StreamWriter (_stream, Encoding.ASCII);
 			}
-			if (_writer != null) {
-				_writer.Close ();
+
+			internal FILE (TextReader reader)
+			{
+				_reader = reader;
 				_writer = null;
 			}
-			//_stream.Flush ();
-			_stream.Close ();
-			_stream = null;
-			return 0;
-		}
-	}
 
-	public static partial class C {
+			internal FILE (TextWriter writer)
+			{
+				_reader = null;
+				_writer = writer;
+			}
+
+			private FileStream _stream;
+			internal Boolean _tempFile;
+			internal TextReader _reader;
+			internal TextWriter _writer;
+			internal int _error;
+			internal Boolean _eof;
+			internal String Name
+			{
+				get { return _stream.Name; }
+			}
+
+			internal void Flush ()
+			{
+				_stream.Flush (true);
+			}
+
+			internal int Close ()
+			{
+				String path = null;
+				if (_tempFile) {
+					path = _stream.Name;
+				}
+				_reader = null;
+				_writer = null;
+				_stream.Close ();
+				_stream = null;
+				if (_tempFile) {
+					File.Delete (path);
+				}
+				return 0;
+			}
+		}
+
+		#endregion
 
 		//#define EOF (-1)
 		public static readonly int EOF = -1;
@@ -738,26 +755,188 @@ namespace stdc {
 		}
 		#endregion
 
-		//typedef long    fpos_t;
+		public const int SEEK_CUR    = 1;
+		public const int SEEK_END    = 2;
+		public const int SEEK_SET    = 0;
 
-		//#define _IOFBF  0
-		//#define _IOLBF  1
-		//#define _IONBF  2
+		/// <summary>
+		/// void clearerr ( FILE * stream );
+		/// 
+		/// Clear error indicators
+		/// Resets both the error and the EOF indicators of the stream.
+		/// When a stream function fails either because of an error or because the end
+		/// of the file has been reached, one of these internal indicators may be set.
+		/// These indicators remain set until either this, rewind, fseek or fsetpos is
+		/// called.
+		/// 
+		/// Parameters
+		/// stream
+		///		Pointer to a FILE object that identifies the stream.
+		///	
+		/// Return Value
+		///	None
+		/// </summary>
+		/// <param name="file"></param>
+		public static void clearerr (FILE file)
+		{
+			file._error = 0;
+			file._eof = false;
+		}
 
-		//#define FOPEN_MAX 8
-		//#define FILENAME_MAX 100
-		//#define BUFSIZ  256
-		//#define L_tmpnam    12
-		//#define SEEK_CUR    1
-		//#define SEEK_END    2
-		//#define SEEK_SET    0
-		//#define TMP_MAX     25
-		//extern  FILE    _streams[];
+		/// <summary>
+		/// int ferror ( FILE * stream );
+		/// 
+		/// Check error indicator
+		/// Checks if the error indicator associated with stream is set, returning a
+		/// value different from zero if it is.
+		/// 
+		/// This indicator is generaly set by a previous operation on the stream that
+		/// failed.
+		/// 
+		/// Parameters
+		/// stream
+		///		Pointer to a FILE object that identifies the stream. 
+		///		
+		/// Return Value
+		///		If the error indicator associated with the stream was set, the function
+		///		returns a nonzero value. Otherwise, it returns a zero value.
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public static int ferror (FILE file)
+		{
+			return file._error;
+		}
 
-		//void clearerr(FILE *);
-		//int  feof(FILE *);
-		//int  ferror(FILE *);
-		//int  fflush(FILE *);
+		/// <summary>
+		/// int feof ( FILE * stream );
+		/// 
+		/// Check End-of-File indicator
+		/// Checks whether the End-of-File indicator associated with stream is set,
+		/// returning a value different from zero if it is.
+		/// This indicator is generally set by a previous operation on the stream that
+		/// reached the End-of-File.
+		/// Further operations on the stream once the End-of-File has been reached will
+		/// fail until either rewind, fseek or fsetpos is successfully called to set the
+		/// position indicator to a new value.
+		/// 
+		/// Parameters
+		/// stream
+		///		Pointer to a FILE object that identifies the stream.
+		///		
+		/// Return Value
+		/// A non-zero value is returned in the case that the End-of-File indicator
+		/// associated with the stream is set. Otherwise, a zero value is returned.
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public static Boolean feof (FILE file)
+		{
+			return file._eof;
+		}
+
+		/// <summary>
+		/// int fflush ( FILE * stream );
+		/// 
+		/// Flush stream
+		/// If the given stream was open for writing and the last i/o operation was
+		/// an output operation, any unwritten data in the output buffer is written
+		/// to the file.
+		/// If it was open for reading and the last operation was an input operation,
+		/// the behavior depends on the specific library implementation. In some
+		/// implementations this causes the input buffer to be cleared, but this is
+		/// not standard behavior.
+		/// If the argument is a null pointer, all open files are flushed.
+		/// The stream remains open after this call.
+		/// When a file is closed, either because of a call to fclose or because the
+		/// program terminates, all the buffers associated with it are automatically
+		/// flushed.
+		/// 
+		/// Parameters
+		/// stream
+		///		Pointer to a FILE object that specifies a buffered stream.
+		///		
+		/// Return Value
+		///		A zero value indicates success.
+		///		If an error occurs, EOF is returned and the error indicator is set (see feof).
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public static int fflush (FILE file)
+		{
+			try {
+				file.Flush ();
+				return 0;
+			}
+			catch (Exception ex) {
+				//TODO: set errno accordingly
+				return EOF;
+			}
+		}
+
+		/// <summary>
+		/// FILE * tmpfile ( void );
+		/// 
+		/// Open a temporary file
+		/// Creates a temporary binary file, open for update (wb+ mode -- see fopen
+		/// for details). The filename is guaranteed to be different from any other
+		/// existing file.
+		/// The temporary file created is automatically deleted when the stream is
+		/// closed (fclose) or when the program terminates normally.
+		/// 
+		/// Parameters
+		/// none
+		/// 
+		/// Return Value
+		///		If successful, the function returns a stream pointer to the temporary
+		///		file created.
+		///		If the file cannot be created, NULL is returned.
+		/// </summary>
+		/// <returns></returns>
+		public static FILE tmpfile ()
+		{
+			FILE f = fopen (Path.GetTempFileName (), "wb+");
+			f._tempFile = true;
+			return f;
+		}
+
+		/// <summary>
+		/// char * tmpnam ( char * str );
+		/// 
+		/// Generate temporary filename
+		/// A string containing a filename different from any existing file is generated.
+		/// This string can be used to create a temporary file without overwriting any other existing file.
+		/// If the str argument is a null pointer, the resulting string is stored in an internal static
+		/// array that can be accessed by the return value. The content of this string is stored until a
+		/// subsequent call to this same function erases it.
+		/// If the str argument is not a null pointer, it must point to an array of at least L_tmpnam bytes
+		/// that will be filled with the proposed tempname. L_tmpnam is a macro constant defined in <cstdio>.
+		/// The file name returned by this function can be used to create a regular file using fopen to be
+		/// used as a temp file. The file created this way, unlike those created with tmpfile is not
+		/// automatically deleted when closed; You should call remove to delete this file once closed.
+		/// 
+		/// Parameters
+		/// str
+		///		Pointer to an array of chars where the proposed tempname will be stored as a C string.
+		///		The size of this array should be at least L_tmpnam characters.
+		///		Alternativelly, a null pointer can be specified, in which case the string will be stored
+		///		in an internal static array that can be accessed with the return value.
+		///		
+		/// Return Value
+		///		A pointer to the C string containing the proposed name for a temporary file.
+		///		If str was a null pointer, this points to an internal buffer that will be overwritten the
+		///		next time this function is called.
+		///		If str was not a null pointer, str is returned.
+		///		If the function fails to create a suitable filename, it returns a null pointer.
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static string tmpnam ()
+		{
+			// only null supported at the moment
+			return Path.GetRandomFileName ();
+		}
+
 		//int  fgetpos(FILE *, fpos_t *);
 		//int  fprintf(FILE *, const char *, ...);
 		//size_t fread(void *, size_t , size_t , FILE *);
@@ -808,9 +987,8 @@ namespace stdc {
 
 		private static string interpret_errno ()
 		{
-			switch (errno)
-			{
-				//TODO: add the other values
+			switch (errno) {
+			//TODO: add the other values
 			case EDOM:
 				return "Math argument";
 			case ERANGE:
@@ -821,22 +999,79 @@ namespace stdc {
 				return "No such file or directory";
 			default:
 				errno = EINVAL;
-				return String.Format("Unknown error {0}", errno);
+				return String.Format ("Unknown error {0}", errno);
 			}
 		}
 
+		/// <summary>
+		/// int remove ( const char * filename );
+		/// 
+		/// Remove file
+		/// Deletes the file whose name is specified in filename.
+		/// This is an operation performed directly on a file; No streams are involved in the operation.
+		/// 
+		/// Parameters
+		/// filename
+		///		C string containing the name of the file to be deleted. This paramenter must follow the
+		///		file name specifications of the running environment and can include a path if the system
+		///		supports it.
+		///		
+		/// Return value
+		///		If the file is successfully deleted, a zero value is returned.
+		///		On failure, a nonzero value is reurned and the errno variable is set to the corresponding
+		///		error code. Error codes are numerical values representing the type of failure occurred.
+		///		A string interpreting this value can be printed to the standard error stream by a call
+		///		to perror.
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public static int remove (string filename)
+		{
+			File.Delete (filename);
+			return 0;
+		}
+
+		/// <summary>
+		/// int rename ( const char * oldname, const char * newname );
+		/// 
+		/// Rename file
+		/// Changes the name of the file or directory specified by oldname to newname.
+		/// If oldname and newname specify different paths and this is supported by the system, the file
+		/// is moved to the new location.
+		/// This is an operation performed directly on a file; No streams are involved in the operation.
+		/// 
+		/// Parameters
+		/// oldname
+		///		C string containing the name of the file to be renamed and/or moved. This file must exist
+		///		and the correct writing permissions should be available.
+		///		
+		/// newname
+		///		C string containing the new name for the file. This shall not be the name of an existing
+		///		file; if it is, the behavior to be expected depends on the running environment, which may
+		///		either be failure or overriding.
+		///		
+		/// Return value
+		///		If the file is successfully renamed, a zero value is returned.
+		///		On failure, a nonzero value is returned and the errno variable is set to the corresponding
+		///		error code. Error codes are numerical values representing the type of failure occurred. A
+		///		string interpreting this value can be printed to the standard error stream by a call to perror.
+		/// </summary>
+		/// <param name="from"></param>
+		/// <param name="to"></param>
+		/// <returns></returns>
+		public static int rename (string oldname, string newname)
+		{
+			File.Move (oldname, newname);
+			return 0;
+		}
 
 		//int  printf(const char *, ...);
-		//int  remove(const char *);
-		//int  rename(const char *,const char *);
 		//void rewind(FILE *);
 		//int  scanf(const char *, ...);
 		//void setbuf(FILE *, char *);
 		//int  setvbuf(FILE *, char *, int, size_t );
 		//int  sprintf(char *, const char *, ...);
 		//int  sscanf(const char *, const char *, ...);
-		//FILE *tmpfile(void);
-		//char *tmpnam(char *);
 
 		//int getchar(void);
 		//int putchar(int);
@@ -852,5 +1087,17 @@ namespace stdc {
 
 		//#endif
 
+		//typedef long    fpos_t;
+
+		//#define _IOFBF  0
+		//#define _IOLBF  1
+		//#define _IONBF  2
+
+		//#define FOPEN_MAX 8
+		//#define FILENAME_MAX 100
+		//#define BUFSIZ  256
+		//#define L_tmpnam    12
+		//#define TMP_MAX     25
+		//extern  FILE    _streams[];
 	}
 }

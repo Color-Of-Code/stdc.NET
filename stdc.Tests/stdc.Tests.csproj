@@ -49,6 +49,7 @@
     <Compile Include="math.cs" />
     <Compile Include="sprintf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sscanf.cs" />
     <Compile Include="stdio_file.cs" />
   </ItemGroup>
   <ItemGroup>

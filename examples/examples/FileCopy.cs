@@ -38,7 +38,7 @@ namespace examples {
 		//int main(int argc, char * argv[])
 		public static int main (int argc, string[] argv)
 		{
-			FILE fin, fout;
+			C.FILE fin, fout;
 			int c;  // char would need explicit conversions with the current API
 					// and the comparison with C.EOF would always fail, resulting in an
 					// endless loop!
