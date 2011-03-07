@@ -120,7 +120,7 @@ namespace stdc {
 		/// </summary>
 		/// <param name="Value">The value.</param>
 		/// <returns>A boxed numeric object whos type is unsigned.</returns>
-		public static object ToUnsigned (object Value)
+		private static object ToUnsigned (object Value)
 		{
 			switch (Type.GetTypeCode (Value.GetType ())) {
 			case TypeCode.SByte:
@@ -160,7 +160,7 @@ namespace stdc {
 		/// </summary>
 		/// <param name="Value">The value.</param>
 		/// <returns>A boxed numeric object whos type is an integer type.</returns>
-		public static object ToInteger (object Value, bool Round)
+		private static object ToInteger (object Value, bool Round)
 		{
 			switch (Type.GetTypeCode (Value.GetType ())) {
 			case TypeCode.SByte:
@@ -194,7 +194,7 @@ namespace stdc {
 		}
 		#endregion
 		#region UnboxToLong
-		public static long UnboxToLong (object Value, bool Round)
+		private static long UnboxToLong (object Value, bool Round)
 		{
 			switch (Type.GetTypeCode (Value.GetType ())) {
 			case TypeCode.SByte:
@@ -234,7 +234,7 @@ namespace stdc {
 		/// </summary>
 		/// <param name="input">The input.</param>
 		/// <returns>A string with all string meta chars are replaced</returns>
-		public static string ReplaceMetaChars (string input)
+		private static string ReplaceMetaChars (string input)
 		{
 			return Regex.Replace (input, @"(\\)(\d{3}|[^\d])?", new MatchEvaluator (ReplaceMetaCharsMatch));
 		}

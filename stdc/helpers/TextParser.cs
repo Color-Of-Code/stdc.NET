@@ -167,7 +167,7 @@ namespace stdc {
 		/// <param name="c">Character to find</param>
 		/// <param name="chars">Character array to search</param>
 		/// <returns></returns>
-		protected bool IsInArray (char c, char[] chars)
+		private bool IsInArray (char c, char[] chars)
 		{
 			foreach (char ch in chars) {
 				if (c == ch)
