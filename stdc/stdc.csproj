@@ -38,6 +38,8 @@
     <Compile Include="args.cs" />
     <Compile Include="assert.cs" />
     <Compile Include="errno.cs" />
+    <Compile Include="helpers\PrintfHelper.cs" />
+    <Compile Include="helpers\ScanfHelper.cs" />
     <Compile Include="locale.cs" />
     <Compile Include="math.cs" />
     <Compile Include="signal.cs" />

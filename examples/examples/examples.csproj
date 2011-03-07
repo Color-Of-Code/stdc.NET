@@ -59,13 +59,13 @@
     <Compile Include="Strncpy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Examples.html" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\stdc\stdc.csproj">
       <Project>{74C59C0F-24C7-4FF6-B68D-FA175A604B1B}</Project>
       <Name>stdc</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Examples.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

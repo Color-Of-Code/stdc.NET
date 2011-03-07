@@ -66,18 +66,30 @@ namespace stdc {
 		}
 		public static double sqrt (double x)
 		{
-			return Math.Sqrt (x);
+			double ret = Math.Sqrt (x);
+			errno = double.IsNaN(ret) ? EDOM : 0;
+			return ret;
 		}
 		#endregion
 
 		#region Logarithmic functions
 		public static double log (double x)
 		{
-			return Math.Log (x);
+			double ret = Math.Log (x);
+			errno = 
+				double.IsNaN(ret) ? EDOM :
+				double.IsNegativeInfinity(ret) ? ERANGE :
+				0;
+			return ret;
 		}
 		public static double log10 (double x)
 		{
-			return Math.Log10 (x);
+			double ret = Math.Log10 (x);
+			errno = 
+				double.IsNaN(ret) ? EDOM :
+				double.IsNegativeInfinity(ret) ? ERANGE :
+				0;
+			return ret;
 		}
 		public static double exp (double x)
 		{
@@ -93,7 +105,7 @@ namespace stdc {
 		//public static double fmod(double, double);
 		////public static double frexp(double, int *);
 		//public static double ldexp(double x, int y);
-		
+
 		//public static double modf(double, double *);
 
 	}
