@@ -30,8 +30,13 @@ namespace Csharpenizer {
 		private static void ProcessFile (FileInfo fi, FileInfo fo)
 		{
 			StringBuilder sb = new StringBuilder ();
+
 			foreach (string line in File.ReadAllLines (fi.FullName)) {
-				sb.AppendLine (line);
+				string newline = line;
+				if (line.Contains("#include"))
+				{
+				}
+				sb.AppendLine (newline);
 			}
 			File.WriteAllText (fo.FullName, sb.ToString ());
 		}
