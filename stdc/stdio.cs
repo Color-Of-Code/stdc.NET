@@ -57,6 +57,8 @@ namespace stdc {
 					path = _stream.Name;
 				}
 				_reader = null;
+				if (_writer != null)
+					_writer.Flush();
 				_writer = null;
 				_stream.Close ();
 				_stream = null;

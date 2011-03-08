@@ -7,7 +7,19 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* C.srand example */// #include <stdio.h>// #include <stdlib.h>// #include <C.time.h>int main (){  C.printf ("First number: %d\n", C.rand() % 100);  C.srand ( C.time(C.NULL) );  C.printf ("Random number: %d\n", C.rand() % 100);  C.srand ( 1 );  C.printf ("Again the first number: %d\n", C.rand() %100);  return 0;}
+/* C.fopen example */
+// #include <stdio.h>
+int main ()
+{
+  C.FILE pFile;
+  pFile = C.fopen ("myfile.txt","w");
+  if (pFile!=C.NULL)
+  {
+    C.fputs ("C.fopen example",pFile);
+    C.fclose (pFile);
+  }
+  return 0;
+}
 
     #region Main trampoline
     static int Main (string[] args) {
