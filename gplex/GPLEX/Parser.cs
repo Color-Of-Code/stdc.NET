@@ -2,11 +2,11 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-// GPPG version 1.4.1
+// GPPG version 1.4.4
 // Machine:  DESTQMBUILD
-// DateTime: 3/8/2011 4:43:28 PM
+// DateTime: 3/8/2011 4:47:36 PM
 // UserName: aoeuradmin
-// Input file <gplex.y>
+// Input file <gplex.y - 12/26/2010 2:09:01 AM>
 
 // options: no-lines gplex
 
