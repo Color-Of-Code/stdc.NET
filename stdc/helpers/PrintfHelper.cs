@@ -216,7 +216,10 @@ namespace stdc {
 				#region s - string
 				case 's':   // string
 					string t = "{0" + (fieldLength != int.MinValue ? "," + (flagLeft2Right ? "-" : String.Empty) + fieldLength.ToString () : String.Empty) + ":s}";
-					w = o.ToString ();
+					if (o is char[])
+						w = new string(o as char[]);
+					else
+						w = o.ToString ();
 					if (fieldPrecision >= 0)
 						w = w.Substring (0, fieldPrecision);
 
