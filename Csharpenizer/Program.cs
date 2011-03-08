@@ -66,6 +66,7 @@ namespace Csharpenizer {
 			newtext = Regex.Replace (newtext, @"\bFILE\s*\*\s+", "C.FILE ");
 			newtext = Regex.Replace (newtext, @"\bconst\s+void\s*\*\s*", "object ");
 			newtext = Regex.Replace (newtext, @"\bvoid\s*\*\s*", "object ");
+			newtext = Regex.Replace (newtext, @"&(\w+)", "out $1");
 			newtext = Regex.Replace (newtext, @"int\s+(\w+)\s*\[\s*\]", "int[] $1");
 			newtext = Regex.Replace (newtext, @"char\s+(\w+)\s*\[(\d+)\]\s*;", "char[] $1 = new char[$2];");
 			newtext = Regex.Replace (newtext, @"(const\s+)?char\s+(\w+)\s*\[\s*\]\s*=", "string $2 =");

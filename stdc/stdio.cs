@@ -84,12 +84,11 @@ namespace stdc {
 		#region SCANF functions (fscanf, scanf, sscanf)
 
 		#region fscanf variants
-		public static int fscanf (TextReader stream, string format, out object p1)
+		public static int fscanf<T> (TextReader stream, string format, out T p1)
 		{
 			string input = stream.ReadLine ();
 			return sscanf (input, format, out p1);
 		}
-
 		public static int fscanf (TextReader stream, string format, out object p1, out object p2)
 		{
 			string input = stream.ReadLine ();
@@ -161,7 +160,7 @@ namespace stdc {
 		//On success, the function returns the number of items succesfully read. This count can match the expected number of readings or fewer, even zero, if a matching failure happens.
 		//In the case of an input failure before any data could be successfully read, EOF is returned.
 		#region scanf variants
-		public static int scanf (string format, out object p1)
+		public static int scanf<T> (string format, out T p1)
 		{
 			return fscanf (Console.In, format, out p1);
 		}
@@ -184,11 +183,14 @@ namespace stdc {
 		#endregion
 
 		#region sscanf variants
-		public static int sscanf (string input, string format, out object p1)
+		public static int sscanf<T> (string input, string format, out T p1)
 		{
 			List<object> results;
 			int count = ScanfHelper.Parse (input, format, out results);
-			p1 = results[0];
+			if (typeof(T) == typeof(Char[]))
+				p1 = (T)(object)(((string)results[0]).ToCharArray());
+			else
+				p1 = (T)results[0];
 			return count;
 		}
 		public static int sscanf (string input, string format, out object p1, out object p2)
