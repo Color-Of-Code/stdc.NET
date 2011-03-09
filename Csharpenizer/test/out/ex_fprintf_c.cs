@@ -7,14 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* C.fprintf example */// #include <stdio.h>int main (){   C.FILE pFile;   int n;   char[] name = new char[100];   pFile = C.fopen ("myfile.txt","w");   for (n=0 ; n<3 ; n++)   {     C.puts ("please, enter a name: ");     C.gets (name);     C.fprintf (pFile, "Name %d [%-10.10s]\n",n,name);   }   C.fclose (pFile);   return 0;}
-
-    #region Main trampoline
-    static int Main (string[] args) {
-      Program p = new Program();
-      return C.RunIMain (args, p.main);
-    }
-    #endregion
+/*[  fprintf example  ]*/#include <stdio.h>int main (){   FILE * pFile;   int n;   char name [100];   pFile = fopen ("myfile.txt","w");   for (n=0 ; n<3 ; n++)   {     puts ("please, enter a name: ");     gets (name);     fprintf (pFile, "Name %d [%-10.10s]\n",n,name);   }   fclose (pFile);   return 0;}
 #region Namespace wrapping
   }
 }

@@ -7,7 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/*[  strcat example  ]*/#include <stdio.h>#include <string.h>int main (){  char str[80];  strcpy (str,"these ");  strcat (str,"strings ");  strcat (str,"are ");  strcat (str,"concatenated.");  puts (str);  return 0;}
+//LC line comment/*[  stream comment  ]*/"//LC string constant"	/*[  stream /* comment with comment in comment  ]*///LC  line comment	/*[  stream		comment 			multi-line  ]*/
 #region Namespace wrapping
   }
 }

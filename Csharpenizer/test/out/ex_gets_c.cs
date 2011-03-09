@@ -7,7 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/*[  strcat example  ]*/#include <stdio.h>#include <string.h>int main (){  char str[80];  strcpy (str,"these ");  strcat (str,"strings ");  strcat (str,"are ");  strcat (str,"concatenated.");  puts (str);  return 0;}
+/*[  gets example  ]*/#include <stdio.h>int main(){  char string [256];  printf ("Insert your full address: ");  gets (string);  printf ("Your address is: %s\n",string);  return 0;}
 #region Namespace wrapping
   }
 }

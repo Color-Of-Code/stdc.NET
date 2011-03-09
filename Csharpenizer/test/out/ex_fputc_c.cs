@@ -7,32 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* C.fputc example: alphabet writer */
-// #include <stdio.h>
-
-int main ()
-{
-  C.FILE pFile;
-  char c;
-
-  pFile = C.fopen ("alphabet.txt","w");
-  if (pFile!=C.NULL)
-  {
-    for (c = 'A' ; c <= 'Z' ; c++)
-    {
-      C.fputc ( (int) c , pFile );
-    }
-    C.fclose (pFile);
-  }
-  return 0;
-}
-
-    #region Main trampoline
-    static int Main (string[] args) {
-      Program p = new Program();
-      return C.RunIMain (args, p.main);
-    }
-    #endregion
+/*[  fputc example: alphabet writer  ]*/#include <stdio.h>int main (){  FILE * pFile;  char c;  pFile = fopen ("alphabet.txt","w");  if (pFile!=NULL)  {    for (c = 'A' ; c <= 'Z' ; c++)    {      fputc ( (int) c , pFile );    }    fclose (pFile);  }  return 0;}
 #region Namespace wrapping
   }
 }
