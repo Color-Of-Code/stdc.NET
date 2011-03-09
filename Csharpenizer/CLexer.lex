@@ -30,9 +30,9 @@ int{WS}+main			{ ContainsIMain = true; Text.Append(yytext); }
 void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 
 // C stuff
-FILE{WS}*{STAR}			{ Text.Append("C.FILE"); }
-const{WS}+void{WS}+*	{ Text.Append("object"); }
-void{WS}+*				{ Text.Append("object"); }
+FILE{WS}*{STAR}				{ Text.Append("C.FILE"); }
+const{WS}+void{WS}+{STAR}	{ Text.Append("object"); }
+void{WS}+{STAR}				{ Text.Append("object"); }
 
 // C functions
 fclose			|
