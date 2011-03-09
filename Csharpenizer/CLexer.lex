@@ -6,7 +6,8 @@ LINE_COMMENT 		\/\/
 START_COMMENT 		\/\*
 END_COMMENT 		\*\/
 
-%x CMNT
+%x LineComment
+%x StreamComment
 
 
 %%
@@ -14,10 +15,18 @@ END_COMMENT 		\*\/
 // string constants
 
 // comment parsing
-{LINE_COMMENT}			Text.Append(yytext); Text.Append("LC ");
-{START_COMMENT}			if (YY_START != CMNT) { Text.Append(yytext); Text.Append("[ "); yy_push_state(CMNT); }
-<CMNT>{END_COMMENT}		Text.Append(" ]"); Text.Append(yytext); yy_pop_state();
-<CMNT>.					Text.Append(yytext); // comment text
+{LINE_COMMENT}			if (YY_START != LineComment)   { Text.Append(yytext); Text.Append("[ "); yy_push_state(LineComment); }
+{START_COMMENT}			if (YY_START != StreamComment) { Text.Append(yytext); Text.Append("[ "); yy_push_state(StreamComment); }
+
+<LineComment> {
+	\r					Text.Append(" ]"); Text.Append(yytext); yy_pop_state();
+	.					Text.Append(yytext); // comment text
+}
+<StreamComment> {
+	{END_COMMENT}		Text.Append(" ]"); Text.Append(yytext); yy_pop_state();
+	<<EOF>>				{ throw new Exception("comment is unterminated"); }
+	.					Text.Append(yytext); // comment text
+}
 
 <*>.					Text.Append(yytext);
 

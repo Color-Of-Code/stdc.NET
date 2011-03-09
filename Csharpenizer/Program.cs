@@ -41,10 +41,15 @@ namespace Csharpenizer {
 
 		private static void ProcessFile (FileInfo fi, DirectoryInfo dout)
 		{
-			if (fi.Name.EndsWith (".c", StringComparison.InvariantCultureIgnoreCase) ||
-				fi.Name.EndsWith (".h", StringComparison.InvariantCultureIgnoreCase)) {
-				FileInfo fout = new FileInfo (Path.Combine (dout.FullName, fi.Name.Replace (".", "_") + ".cs"));
-				ProcessFile (fi, fout);
+			try {
+				if (fi.Name.EndsWith (".c", StringComparison.InvariantCultureIgnoreCase) ||
+					fi.Name.EndsWith (".h", StringComparison.InvariantCultureIgnoreCase)) {
+					FileInfo fout = new FileInfo (Path.Combine (dout.FullName, fi.Name.Replace (".", "_") + ".cs"));
+					ProcessFile (fi, fout);
+				}
+			}
+			catch (Exception ex) {
+				Console.Error.WriteLine(String.Format("{0}: {1}", fi.Name, ex.Message));
 			}
 		}
 

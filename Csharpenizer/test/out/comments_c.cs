@@ -7,7 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-//LC line comment/*[  stream comment  ]*/"//LC string constant"	/*[  stream /* comment with comment in comment  ]*///LC  line comment	/*[  stream		comment 			multi-line  ]*/
+//[ line comment ]/*[  stream comment  ]*///[ line comment with another // line comment ]"//[ string constant" ]	/*[  stream /* comment with comment in comment  ]*///[  line comment ]	/*[  stream		comment 			multi-line  ]*/
 #region Namespace wrapping
   }
 }
