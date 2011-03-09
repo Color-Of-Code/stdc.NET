@@ -7,7 +7,26 @@ namespace main {
   public partial class Program {
 #endregion
 
-/*[  fopen example  ]*/#include <stdio.h>int main (){  FILE * pFile;  pFile = fopen ("myfile.txt","w");  if (pFile!=NULL)  {    fputs ("fopen example",pFile);    fclose (pFile);  }  return 0;}
+/* C.fopen example */
+// #include <stdio.h>
+int main ()
+{
+  C.FILE pFile;
+  pFile = C.fopen ("myfile.txt","w");
+  if (pFile!=C.NULL)
+  {
+    C.fputs ("C.fopen example",pFile);
+    C.fclose (pFile);
+  }
+  return 0;
+}
+
+    #region Main trampoline
+    static int Main (string[] args) {
+      Program p = new Program();
+      return C.RunIMain (args, p.main);
+    }
+    #endregion
 #region Namespace wrapping
   }
 }

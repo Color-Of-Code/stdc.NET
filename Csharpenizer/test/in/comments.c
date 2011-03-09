@@ -7,6 +7,8 @@
 "//string constant"
 	/* stream /* comment with comment in comment */
 
+	"//string constant\" with escaped \"\" "
+
 // line comment
 
 	/* stream

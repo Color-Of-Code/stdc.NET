@@ -7,7 +7,24 @@ namespace main {
   public partial class Program {
 #endregion
 
-/*[  gets example  ]*/#include <stdio.h>int main(){  char string [256];  printf ("Insert your full address: ");  gets (string);  printf ("Your address is: %s\n",string);  return 0;}
+/* C.gets example */
+// #include <stdio.h>
+
+int main()
+{
+  char[] string = new char[256];
+  C.printf ("Insert your full address: ");
+  C.gets (string);
+  C.printf ("Your address is: %s\n",string);
+  return 0;
+}
+
+    #region Main trampoline
+    static int Main (string[] args) {
+      Program p = new Program();
+      return C.RunIMain (args, p.main);
+    }
+    #endregion
 #region Namespace wrapping
   }
 }

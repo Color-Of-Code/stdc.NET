@@ -7,7 +7,32 @@ namespace main {
   public partial class Program {
 #endregion
 
-/*[  scanf example  ]*/#include <stdio.h>int main (){  char str [80];  int i;  printf ("Enter your family name: ");  scanf ("%s",str);    printf ("Enter your age: ");  scanf ("%d",&i);  printf ("Mr. %s , %d years old.\n",str,i);  printf ("Enter a hexadecimal number: ");  scanf ("%x",&i);  printf ("You have entered %#x (%d).\n",i,i);    return 0;}
+/* C.scanf example */
+// #include <stdio.h>
+
+int main ()
+{
+  char[] str = new char[80];
+  int i;
+
+  C.printf ("Enter your family name: ");
+  C.scanf ("%s",str);  
+  C.printf ("Enter your age: ");
+  C.scanf ("%d",out i);
+  C.printf ("Mr. %s , %d years old.\n",str,i);
+  C.printf ("Enter a hexadecimal number: ");
+  C.scanf ("%x",out i);
+  C.printf ("You have entered %#x (%d).\n",i,i);
+  
+  return 0;
+}
+
+    #region Main trampoline
+    static int Main (string[] args) {
+      Program p = new Program();
+      return C.RunIMain (args, p.main);
+    }
+    #endregion
 #region Namespace wrapping
   }
 }
