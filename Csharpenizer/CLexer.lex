@@ -23,9 +23,16 @@ STAR				[*]
 {START_COMMENT}			{ /*Text.Append("<cmt>");*/ Text.Append(yytext); yy_push_state(StreamComment); }
 
 // here we go with preprocessor stuff
+#						{ Text.Append("// "); Text.Append(yytext); }
+
+// try to recognize main
+int{WS}+main			{ ContainsIMain = true; Text.Append(yytext); }
+void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 
 // C stuff
 FILE{WS}*{STAR}			{ Text.Append("C.FILE"); }
+const{WS}+void{WS}+*	{ Text.Append("object"); }
+void{WS}+*				{ Text.Append("object"); }
 
 // C functions
 fclose			|
@@ -65,5 +72,7 @@ NULL					{ Text.Append("C."); Text.Append(yytext); }
 
 %%
 
+	public Boolean ContainsIMain = false;
+	public Boolean ContainsVMain = false;
 	public StringBuilder Text = new StringBuilder ();
 

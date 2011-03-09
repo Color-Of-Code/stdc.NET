@@ -55,44 +55,40 @@ namespace Csharpenizer {
 
 		private static void ProcessFile (FileInfo fi, FileInfo fo)
 		{
-			Boolean containsIMain = false;
-			Boolean containsVMain = false;
 			StringBuilder sb = new StringBuilder ();
 
 			Prefix (sb);
 
 			string text = File.ReadAllText (fi.FullName);
 
-			//CLexer.Scanner scanner = new CLexer.Scanner ();
-			//scanner.SetSource (text, 0);
-			//scanner.yylex ();
+			CLexer.Scanner scanner = new CLexer.Scanner ();
+			scanner.SetSource (text, 0);
+			scanner.yylex ();
 
-			containsIMain = Regex.IsMatch (text, @"\bint\s+main\s*\(");
-			containsVMain = Regex.IsMatch (text, @"\bvoid\s+main\s*\(");
+			//string newtext = text;
+			//newtext = Regex.Replace (newtext, @"(#\s*include\s)", "// $1");
+			//newtext = Regex.Replace (newtext, @"\bFILE\s*\*\s+", "C.FILE ");
+			//newtext = Regex.Replace (newtext, @"\bconst\s+void\s*\*\s*", "object ");
+			//newtext = Regex.Replace (newtext, @"\bvoid\s*\*\s*", "object ");
+			//newtext = Regex.Replace (newtext, @"&(\w+)", "out $1");
+			//newtext = Regex.Replace (newtext, @"int\s+(\w+)\s*\[\s*\]", "int[] $1");
+			//newtext = Regex.Replace (newtext, @"char\s+(\w+)\s*\[(\d+)\]\s*;", "char[] $1 = new char[$2];");
+			//newtext = Regex.Replace (newtext, @"(const\s+)?char\s+(\w+)\s*\[\s*\]\s*=", "string $2 =");
+			//foreach (string func in CFunctions)
+			//    newtext = Regex.Replace (newtext, String.Format (@"\b({0})\b", func), "C.$1");
 
-			string newtext = text;
-			newtext = Regex.Replace (newtext, @"(#\s*include\s)", "// $1");
-			newtext = Regex.Replace (newtext, @"\bFILE\s*\*\s+", "C.FILE ");
-			newtext = Regex.Replace (newtext, @"\bconst\s+void\s*\*\s*", "object ");
-			newtext = Regex.Replace (newtext, @"\bvoid\s*\*\s*", "object ");
-			newtext = Regex.Replace (newtext, @"&(\w+)", "out $1");
-			newtext = Regex.Replace (newtext, @"int\s+(\w+)\s*\[\s*\]", "int[] $1");
-			newtext = Regex.Replace (newtext, @"char\s+(\w+)\s*\[(\d+)\]\s*;", "char[] $1 = new char[$2];");
-			newtext = Regex.Replace (newtext, @"(const\s+)?char\s+(\w+)\s*\[\s*\]\s*=", "string $2 =");
-			foreach (string func in CFunctions)
-			    newtext = Regex.Replace (newtext, String.Format (@"\b({0})\b", func), "C.$1");
+			//sb.AppendLine (newtext);
+			////foreach (string line in File.ReadAllLines (fi.FullName)) {
+			////    string newline = line;
+			////    if (line.Contains ("#include")) {
+			////        newline = String.Format ("// {0}", line);
+			////    }
+			////    sb.AppendLine (newline);
+			////}
+			sb.Append (scanner.Text);
+			sb.AppendLine ();
 
-			sb.AppendLine (newtext);
-			//foreach (string line in File.ReadAllLines (fi.FullName)) {
-			//    string newline = line;
-			//    if (line.Contains ("#include")) {
-			//        newline = String.Format ("// {0}", line);
-			//    }
-			//    sb.AppendLine (newline);
-			//}
-			//sb.Append (scanner.Text);
-
-			Postfix (containsIMain, containsVMain, sb);
+			Postfix (scanner.ContainsIMain, scanner.ContainsVMain, sb);
 			File.WriteAllText (fo.FullName, sb.ToString ());
 		}
 
