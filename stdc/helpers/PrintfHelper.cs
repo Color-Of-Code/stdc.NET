@@ -217,10 +217,10 @@ namespace stdc {
 				case 's':   // string
 					string t = "{0" + (fieldLength != int.MinValue ? "," + (flagLeft2Right ? "-" : String.Empty) + fieldLength.ToString () : String.Empty) + ":s}";
 					if (o is char[])
-						w = new string(o as char[]);
+						w = new string(o as char[], 0, C.strlen(o as char[]));
 					else
 						w = o.ToString ();
-					if (fieldPrecision >= 0)
+					if (fieldPrecision >= 0 && w.Length>fieldPrecision)
 						w = w.Substring (0, fieldPrecision);
 
 					if (fieldLength != int.MinValue)
