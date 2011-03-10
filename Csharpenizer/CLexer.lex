@@ -29,7 +29,7 @@ CONST				(const{WS}+)
 {START_COMMENT}			{ /*Text.Append("<cmt>");*/ Text.Append(yytext); yy_push_state(StreamComment); }
 
 // here we go with preprocessor stuff
-#						{ Text.Append("// "); Text.Append(yytext); }
+#[^\r\n]*				{ Text.Append("// "); Text.Append(yytext); }
 
 // try to recognize main
 int{WS}+main			{ ContainsIMain = true; Text.Append(yytext); }

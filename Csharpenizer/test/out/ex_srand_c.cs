@@ -7,7 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* srand example */// #include <stdio.h>// #include <stdlib.h>// #include <C.time.h>int main (){  C.printf ("First number: %d\n", C.rand() % 100);  C.srand ( C.time(C.NULL) );  C.printf ("Random number: %d\n", C.rand() % 100);  C.srand ( 1 );  C.printf ("Again the first number: %d\n", C.rand() %100);  return 0;}
+/* srand example */// #include <stdio.h>// #include <stdlib.h>// #include <time.h>int main (){  C.printf ("First number: %d\n", C.rand() % 100);  C.srand ( C.time(C.NULL) );  C.printf ("Random number: %d\n", C.rand() % 100);  C.srand ( 1 );  C.printf ("Again the first number: %d\n", C.rand() %100);  return 0;}
 
     #region Main trampoline
     static int Main (string[] args) {
