@@ -6,7 +6,7 @@ int main ()
   FILE * pFile;
   char c;
 
-  pFile = fopen ("alphabet.txt","w");
+  pFile = fopen ("ex_fputc.txt","w");
   if (pFile!=NULL)
   {
     for (c = 'A' ; c <= 'Z' ; c++)

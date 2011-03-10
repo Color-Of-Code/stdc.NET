@@ -58,7 +58,7 @@ namespace stdc {
 				}
 				_reader = null;
 				if (_writer != null)
-					_writer.Flush();
+					_writer.Flush ();
 				_writer = null;
 				_stream.Close ();
 				_stream = null;
@@ -187,8 +187,8 @@ namespace stdc {
 		{
 			List<object> results;
 			int count = ScanfHelper.Parse (input, format, out results);
-			if (typeof(T) == typeof(Char[]))
-				p1 = (T)(object)(((string)results[0]).ToCharArray());
+			if (typeof (T) == typeof (Char[]))
+				p1 = (T)(object)(((string)results[0]).ToCharArray ());
 			else
 				p1 = (T)results[0];
 			return count;
@@ -244,6 +244,11 @@ namespace stdc {
 			int count = sprintf (out result, format, parameters);
 			stream.Write (result);
 			return count;
+		}
+
+		public static int fprintf (FILE file, string format, params object[] parameters)
+		{
+			return fprintf (file._writer, format, parameters);
 		}
 
 		public static int printf (string format, params object[] parameters)
@@ -363,7 +368,7 @@ namespace stdc {
 		}
 		#endregion
 
-		#region FGET functions (fgetc, fgets)
+		#region FGET functions (fgetc, getc, fgets, gets)
 
 		/// <summary>
 		///		int fgetc ( FILE * stream );
@@ -430,6 +435,44 @@ namespace stdc {
 
 		//int  ungetc(int , FILE *);
 		//char *fgets(char *, int , FILE *);
+
+		/// <summary>
+		/// 		char * gets ( char * str );
+		/// 		
+		/// Get string from stdin
+		/// Reads characters from stdin and stores them as a string into str until
+		/// a newline character ('\n') or the End-of-File is reached.
+		/// The ending newline character ('\n') is not included in the string.
+		/// A null character ('\0') is automatically appended after the last character
+		/// copied to str to signal the end of the C string.
+		/// 
+		/// Notice that gets does not behave exactly as fgets does with stdin as
+		/// argument: First, the ending newline character is not included with gets
+		/// while with fgets it is. And second, gets does not let you specify a
+		/// limit on how many characters are to be read, so you must be careful
+		/// with the size of the array pointed by str to avoid buffer overflows.
+		/// 
+		/// Parameters
+		/// str
+		///		Pointer to an array of chars where the C string is stored. 
+		///		
+		/// Return Value
+		///		On success, the function returns the same str parameter.
+		/// If the End-of-File is encountered and no characters have been read, the
+		/// contents of str remain unchanged and a null pointer is returnes.
+		/// If an error occurs, a null pointer is returned.
+		/// Use either ferror or feof to check whether an error happened or the
+		/// End-of-File was reached.
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static char[] gets (char[] str)
+		{
+			string result = stdin._reader.ReadLine ();
+			strcpy (str, result);
+			return str;
+		}
+
 		#endregion
 
 		#region FPUT functions (fputc, fputs, putc, puts)
@@ -759,9 +802,9 @@ namespace stdc {
 		}
 		#endregion
 
-		public const int SEEK_CUR    = 1;
-		public const int SEEK_END    = 2;
-		public const int SEEK_SET    = 0;
+		public const int SEEK_CUR = 1;
+		public const int SEEK_END = 2;
+		public const int SEEK_SET = 0;
 
 		/// <summary>
 		/// void clearerr ( FILE * stream );

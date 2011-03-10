@@ -3,7 +3,7 @@
 int main ()
 {
   FILE * pFile;
-  pFile = fopen ("myfile.txt","w");
+  pFile = fopen ("ex_fopen.txt","w");
   if (pFile!=NULL)
   {
     fputs ("fopen example",pFile);
