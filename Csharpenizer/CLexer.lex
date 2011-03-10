@@ -39,11 +39,15 @@ void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
 {CONST}?void{WS}+{STAR}			{ Text.Append("object"); }
 &{WS}*{IDENTIFIER}									{ Text.Append(Regex.Replace(yytext, @"&", "out ")); }
+
+// casts
 {STAR}{WS}*\({WS}*{IDENTIFIER}{WS}*{STAR}{WS}*\)	{ /* remove casts */ }
+//{STAR}{WS}*\({WS}*{IDENTIFIER}{WS}*{STAR}{WS}*\)	{ Text.Append(Regex.Replace(yytext, @".*?\(([^*]*).*", "($1)")); }
 
 
 // array declaration transformation
 {CONST}?char{WS}+{IDENTIFIER}{WS}*\[{WS}*\]{WS}*=	{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[.*?\]", "string $1")); }
+{CONST}?int{WS}+{IDENTIFIER}{WS}*\[[^\]]*\]{WS}*=	{ Text.Append(Regex.Replace(yytext, @".*?int\s+(\S+)\s*\[.*?\]\s*=", "int[] $1 = new int[]")); }
 char{WS}+{IDENTIFIER}{WS}*\[[^\]]*\];				{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]")); }
 
 // C functions
