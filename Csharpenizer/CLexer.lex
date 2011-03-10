@@ -51,17 +51,25 @@ FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
 char{WS}+{IDENTIFIER}{WS}*\[[^\]]*\];				{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]")); }
 
 // C functions
+exit			|
 fclose			|
+fgetc			|
+fgets			|
 fopen			|
 fprintf			|
 fputc			|
 fputs			|
+getch			|
 gets			|
 printf			|
+putc			|
 puts			|
 qsort			|
 rand			|
+raise			|
 scanf			|
+signal			|
+sprintf			|
 srand			|
 strcat			|
 strcpy			|
