@@ -49,6 +49,7 @@ scanf			|
 srand			|
 strcat			|
 strcpy			|
+strlen			|
 time			|
 NULL					{ Text.Append("C."); Text.Append(yytext); }
 
