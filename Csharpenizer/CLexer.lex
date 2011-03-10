@@ -40,8 +40,8 @@ FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
 {CONST}?void{WS}+{STAR}			{ Text.Append("object"); }
 
 // array declaration transformation
-char{WS}+{IDENTIFIER}{WS}*\[(.*)?\];				{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]")); }
-{CONST}?char{WS}+{IDENTIFIER}{WS}*\[{WS}*\]{WS}*=;	{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[.*?\]", "string $1")); }
+{CONST}?char{WS}+{IDENTIFIER}{WS}*\[{WS}*\]{WS}*=	{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[.*?\]", "string $1")); }
+char{WS}+{IDENTIFIER}{WS}*\[[^\]]*\];				{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]")); }
 
 // C functions
 fclose			|
