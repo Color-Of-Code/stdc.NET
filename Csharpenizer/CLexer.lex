@@ -38,6 +38,7 @@ void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 // C stuff
 FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
 {CONST}?void{WS}+{STAR}			{ Text.Append("object"); }
+&{WS}*{IDENTIFIER}									{ Text.Append(Regex.Replace(yytext, @"&", "out ")); }
 
 // array declaration transformation
 {CONST}?char{WS}+{IDENTIFIER}{WS}*\[{WS}*\]{WS}*=	{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[.*?\]", "string $1")); }

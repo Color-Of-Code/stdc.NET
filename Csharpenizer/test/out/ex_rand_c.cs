@@ -7,7 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* rand example: guess the number */// #include <stdio.h>// #include <stdlib.h>// #include <time.h>int main (){  int iSecret, iGuess;  /* initialize random seed: */  C.srand ( C.time(C.NULL) );  /* generate secret number: */  iSecret = C.rand() % 10 + 1;  do {    C.printf ("Guess the number (1 to 10): ");    C.scanf ("%d",&iGuess);    if (iSecret<iGuess) C.puts ("The secret number is lower");    else if (iSecret>iGuess) C.puts ("The secret number is higher");  } while (iSecret!=iGuess);  C.puts ("Congratulations!");  return 0;}
+/* rand example: guess the number */// #include <stdio.h>// #include <stdlib.h>// #include <time.h>int main (){  int iSecret, iGuess;  /* initialize random seed: */  C.srand ( C.time(C.NULL) );  /* generate secret number: */  iSecret = C.rand() % 10 + 1;  do {    C.printf ("Guess the number (1 to 10): ");    C.scanf ("%d",out iGuess);    if (iSecret<iGuess) C.puts ("The secret number is lower");    else if (iSecret>iGuess) C.puts ("The secret number is higher");  } while (iSecret!=iGuess);  C.puts ("Congratulations!");  return 0;}
 
     #region Main trampoline
     static int Main (string[] args) {
