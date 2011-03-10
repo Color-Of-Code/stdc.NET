@@ -7,7 +7,7 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* strcat example */// #include <stdio.h>// #include <string.h>int main (){  char str[80];  C.strcpy (str,"these ");  C.strcat (str,"strings ");  C.strcat (str,"are ");  C.strcat (str,"concatenated.");  C.puts (str);  return 0;}
+/* strcat example */// #include <stdio.h>// #include <string.h>int main (){  char[] str = new char[80];  C.strcpy (str,"these ");  C.strcat (str,"strings ");  C.strcat (str,"are ");  C.strcat (str,"concatenated.");  C.puts (str);  return 0;}
 
     #region Main trampoline
     static int Main (string[] args) {

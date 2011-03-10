@@ -1,5 +1,6 @@
 
 %namespace CLexer
+%using System.Text.RegularExpressions;
 %option noparser nofiles stack
 
 LINE_COMMENT 		\/\/
@@ -7,6 +8,11 @@ START_COMMENT 		\/\*
 END_COMMENT 		\*\/
 WS					[ \t]
 STAR				[*]
+LETTER				[a-zA-Z_]
+DIGIT				[0-9]
+IDENTIFIER			{LETTER}({LETTER}|{DIGIT})*
+INTEGER				{DIGIT}+
+CONST				(const{WS}+)
 
 %x StringLiteral
 %x LineComment
@@ -30,9 +36,12 @@ int{WS}+main			{ ContainsIMain = true; Text.Append(yytext); }
 void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 
 // C stuff
-FILE{WS}*{STAR}				{ Text.Append("C.FILE"); }
-const{WS}+void{WS}+{STAR}	{ Text.Append("object"); }
-void{WS}+{STAR}				{ Text.Append("object"); }
+FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
+{CONST}?void{WS}+{STAR}			{ Text.Append("object"); }
+
+// array declaration transformation
+char{WS}+{IDENTIFIER}{WS}*\[(.*)?\];				{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]")); }
+{CONST}?char{WS}+{IDENTIFIER}{WS}*\[{WS}*\]{WS}*=;	{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[.*?\]", "string $1")); }
 
 // C functions
 fclose			|
