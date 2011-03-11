@@ -25,7 +25,7 @@ namespace main {
 // #else
 	 // #define __CPPARGS
 // #endif
-struct SnakeParts{
+SnakeParts{
 		 int x;
 		 int y;
 }box[50],target;

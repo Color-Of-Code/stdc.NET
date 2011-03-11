@@ -18,7 +18,7 @@ start:
 	char c;
 	static int nod=0,nn=0,sc[2]={0,0};
 	nod++;
-	clrscr();
+	C.clrscr();
 	int driver=DETECT,mode;
 	initgraph(out driver,out mode,"c:\tc\bgi");
 	setbkcolor(RED);

@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="args.cs" />
     <Compile Include="assert.cs" />
+    <Compile Include="conio.cs" />
     <Compile Include="errno.cs" />
     <Compile Include="helpers\PrintfHelper.cs" />
     <Compile Include="helpers\ScanfHelper.cs" />

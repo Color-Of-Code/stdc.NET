@@ -5,8 +5,9 @@
 
 void main()
 {
-	clrscr(); // non standard but supported
 	int d,m,y,year,month,day,i,n;
+
+	clrscr(); // non standard but supported
 	printf("Enter how many times you want to run this program : ");
 	scanf("%d",&n);
 	for(i=1;i<=n;i++)

@@ -36,7 +36,7 @@ do{
    turn=1;
     score=0;
    do{
-   clrscr();
+   C.clrscr();
    cleardevice();
    C.printf(" Enter Your Choice");
    C.printf(" Basic Level.......... 1");
@@ -45,7 +45,7 @@ do{
    C.printf(" Experts Level........ 4");
    C.printf(" Professional Level... 5");
    y=C.getch();
-   clrscr();
+   C.clrscr();
    cleardevice();
    if(y=='1') {spd=200; settextstyle(2,0,6);outtextxy(2,150,"   BasicLevel ");break;}
    if(y=='2') {spd=150; settextstyle(2,0,6);outtextxy(2,150,"   MiddleLevel ");break;}

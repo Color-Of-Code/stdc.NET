@@ -14,8 +14,9 @@ namespace main {
 
 void main()
 {
-	clrscr(); // non standard but supported
 	int d,m,y,year,month,day,i,n;
+
+	C.clrscr(); // non standard but supported
 	C.printf("Enter how many times you want to run this program : ");
 	C.scanf("%d",out n);
 	for(i=1;i<=n;i++)

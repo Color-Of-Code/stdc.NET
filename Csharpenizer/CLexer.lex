@@ -41,6 +41,7 @@ int{WS}+main			{ ContainsIMain = true; Text.Append(yytext); }
 void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 
 // C stuff
+struct{WS}+{IDENTIFIER}{WS}*[^{\r\n]				{ Text.Append(Regex.Replace(yytext, @"struct\s+(\S+)", "$1")); }
 FILE{WS}*{STAR}										{ Text.Append("C.FILE"); }
 {CONST}?void{WS}+{STAR}								{ Text.Append("object"); }
 \({WS}*void{WS}*\) 									{ Text.Append("()"); }
@@ -59,6 +60,7 @@ char{WS}+{IDENTIFIER}{WS}*\[[^\]]*\];				{ Text.Append(Regex.Replace(yytext, @".
 
 // C functions
 atexit			|
+clrscr			|
 exit			|
 fclose			|
 fgetc			|

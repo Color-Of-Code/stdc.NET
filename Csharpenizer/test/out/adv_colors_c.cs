@@ -13,14 +13,14 @@ namespace main {
 
 // #define TOTAL_COLORS   12
 
-struct colour {
+colour {
 	char[] name = new char[28];
 	int red;
 	int green;
 	int blue;
 };
 
-struct colour whitetab[] = {
+colour whitetab[] = {
 	{ "antique white",       250, 235, 215 },
 	{ "azure",               240, 255, 255 },
 	{ "bisque",              255, 228, 196 },
@@ -53,7 +53,7 @@ struct colour whitetab[] = {
 	{ "zinc white",          253, 248, 255 }
 };
 
-struct colour greytab[] = {
+colour greytab[] = {
 	{ "cold grey",           128, 138, 135 },
 	{ "dim grey",            105, 105, 105 },
 	{ "grey",                192, 192, 192 },
@@ -64,13 +64,13 @@ struct colour greytab[] = {
 	{ "warm grey",           128, 128, 105 }
 };
 
-struct colour blacktab[] = {
+colour blacktab[] = {
 	{ "black",       0,  0,  0  },
 	{ "ivory black", 41, 36, 33 },
 	{ "lamp black",  46, 71, 59 }
 };
 
-struct colour redtab[] = {
+colour redtab[] = {
 	{ "alizarin crimson",    227,  38,  54 },
 	{ "brick",               156, 102,  31 },
 	{ "cadmium red deep",    227,  23,  13 },
@@ -95,7 +95,7 @@ struct colour redtab[] = {
 	{ "venetian red",        212,  26,  31 }
 };
 
-struct colour browntab[] = {
+colour browntab[] = {
 	{ "beige",               163, 148, 128 },
 	{ "brown",               128,  42,  42 },
 	{ "brown madder",        219,  41,  41 },
@@ -124,7 +124,7 @@ struct colour browntab[] = {
 	{ "van dyke brown",       94,  38,   5 }
 };
 
-struct colour orangetab[] = {
+colour orangetab[] = {
 	{ "cadmium orange",    255,  97,   3 },
 	{ "cadmium red_light", 255,   3,  13 },
 	{ "carrot",            237, 145,  33 },
@@ -136,7 +136,7 @@ struct colour orangetab[] = {
 	{ "yellow ochre",      227, 130,  23 }
 };
 
-struct colour yellowtab[] = {
+colour yellowtab[] = {
 	{ "aureoline yellow",     255, 168,  36 },
 	{ "banana",               227, 207,  87 },
 	{ "cadmium lemon",        255, 227,   3 },
@@ -154,7 +154,7 @@ struct colour yellowtab[] = {
 	{ "yellow light",         255, 255, 224 }
 };
 
-struct colour greentab[] = {
+colour greentab[] = {
 	{ "chartreuse",          127, 255,   0 },
 	{ "chrome oxide green",  102, 128,  20 },
 	{ "cinnabar green",       97, 179,  41 },
@@ -184,7 +184,7 @@ struct colour greentab[] = {
 	{ "yellow green",        154, 205,  50 },
 };
 
-struct colour cyantab[] = {
+colour cyantab[] = {
 	{ "aquamarine",        127, 255, 212 },
 	{ "aquamarine medium", 102, 205, 170 },
 	{ "cyan",              000, 255, 255 },
@@ -195,7 +195,7 @@ struct colour cyantab[] = {
 	{ "turquoise pale",    175, 238, 238 }
 };
 
-struct colour bluetab[] = {
+colour bluetab[] = {
 	{ "alice blue",        240, 248, 255 },
 	{ "blue",                0,   0, 255 },
 	{ "blue light",        173, 216, 230 },
@@ -225,7 +225,7 @@ struct colour bluetab[] = {
 	{ "ultramarine",        18,  10, 143 }
 };
 
-struct colour magentatab[] = {
+colour magentatab[] = {
 	{ "blue violet",          138,  43, 226 },
 	{ "cobalt violet deep",   145,  33, 158 },
 	{ "magenta",              255,   0, 255 },
@@ -245,7 +245,7 @@ struct colour magentatab[] = {
 };
 
 
-struct colour namedtab[] = {
+colour namedtab[] = {
 	{ "aqua",      0, 255, 255 },
 	{ "black",     0,   0,   0 },
 	{ "blue",      0,   0, 255 },
@@ -264,8 +264,8 @@ struct colour namedtab[] = {
 	{ "yellow",  255, 255,   0 }
 };
 
-struct tabs {
-	struct colour *table;
+tabs {
+	colour *table;
 	int tabsize;
 } coltab[TOTAL_COLORS];
 
