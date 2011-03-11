@@ -7,7 +7,27 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* fprintf example */// #include <stdio.h>int main (){   C.FILE pFile;   int n;   char[] name = new char[100];   pFile = C.fopen ("ex_fprintf.txt","w");   for (n=0 ; n<3 ; n++)   {     C.puts ("please, enter a name: ");     C.gets (name);     C.fprintf (pFile, "Name %d [%-10.10s]\n",n,name);   }   C.fclose (pFile);   return 0;}
+/* fprintf example */
+// #include <stdio.h>
+
+int main ()
+{
+   C.FILE pFile;
+   int n;
+   char[] name = new char[100];
+
+   pFile = C.fopen ("ex_fprintf.txt","w");
+   for (n=0 ; n<3 ; n++)
+   {
+     C.puts ("please, enter a name: ");
+     C.gets (name);
+     C.fprintf (pFile, "Name %d [%-10.10s]\n",n,name);
+   }
+   C.fclose (pFile);
+
+   return 0;
+}
+
 
     #region Main trampoline
     static int Main (string[] args) {

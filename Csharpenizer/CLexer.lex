@@ -31,13 +31,20 @@ CONST				(const{WS}+)
 // here we go with preprocessor stuff
 #[^\r\n]*				{ Text.Append("// "); Text.Append(yytext); }
 
+// convert Mac & unix EOL to windows EOL
+\r\n	|
+\n		|
+\r						{ Text.AppendLine(); }
+
 // try to recognize main
 int{WS}+main			{ ContainsIMain = true; Text.Append(yytext); }
 void{WS}+main			{ ContainsVMain = true; Text.Append(yytext); }
 
 // C stuff
-FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
-{CONST}?void{WS}+{STAR}			{ Text.Append("object"); }
+FILE{WS}*{STAR}										{ Text.Append("C.FILE"); }
+{CONST}?void{WS}+{STAR}								{ Text.Append("object"); }
+\({WS}*void{WS}*\) 									{ Text.Append("()"); }
+&&													{ Text.Append(yytext); }
 &{WS}*{IDENTIFIER}									{ Text.Append(Regex.Replace(yytext, @"&", "out ")); }
 
 // casts
@@ -51,6 +58,7 @@ FILE{WS}*{STAR}					{ Text.Append("C.FILE"); }
 char{WS}+{IDENTIFIER}{WS}*\[[^\]]*\];				{ Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]")); }
 
 // C functions
+atexit			|
 exit			|
 fclose			|
 fgetc			|
@@ -84,7 +92,9 @@ NULL					{ Text.Append("C."); Text.Append(yytext); }
 	.					Text.Append(yytext); // literal text
 }
 <LineComment> {
-	\r					/*Text.Append("</cmt>");*/ Text.Append(yytext); yy_pop_state();
+	\r\n	|
+	\n		|
+	\r					/*Text.Append("</cmt>");*/ Text.AppendLine(); yy_pop_state();
 	.					Text.Append(yytext); // comment text
 }
 <StreamComment> {

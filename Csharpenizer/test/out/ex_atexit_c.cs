@@ -7,23 +7,25 @@ namespace main {
   public partial class Program {
 #endregion
 
-/* scanf example */
+/* atexit example */
 // #include <stdio.h>
+// #include <stdlib.h>
+
+void fnExit1 ()
+{
+  C.puts ("Exit function 1.");
+}
+
+void fnExit2 ()
+{
+  C.puts ("Exit function 2.");
+}
 
 int main ()
 {
-  char[] str = new char[80];
-  int i;
-
-  C.printf ("Enter your family name: ");
-  C.scanf ("%s",str);  
-  C.printf ("Enter your age: ");
-  C.scanf ("%d",out i);
-  C.printf ("Mr. %s , %d years old.\n",str,i);
-  C.printf ("Enter a hexadecimal number: ");
-  C.scanf ("%x",out i);
-  C.printf ("You have entered %#x (%d).\n",i,i);
-  
+  C.atexit (fnExit1);
+  C.atexit (fnExit2);
+  C.puts ("Main function.");
   return 0;
 }
 
