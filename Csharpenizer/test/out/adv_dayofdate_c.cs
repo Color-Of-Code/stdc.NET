@@ -34,6 +34,8 @@ void main()
 		year = year+y-1900;
 		switch(m)
 		{
+		default:
+			throw new System.Exception("Invalid value");
 		case 1:
 		case 10:
 			month = 1;

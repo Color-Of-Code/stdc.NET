@@ -84,27 +84,27 @@ namespace stdc {
 		#region SCANF functions (fscanf, scanf, sscanf)
 
 		#region fscanf variants
-		public static int fscanf<T> (TextReader stream, string format, out T p1)
+		public static int fscanf<T1> (TextReader stream, string format, out T1 p1)
 		{
 			string input = stream.ReadLine ();
 			return sscanf (input, format, out p1);
 		}
-		public static int fscanf (TextReader stream, string format, out object p1, out object p2)
+		public static int fscanf<T1, T2> (TextReader stream, string format, out T1 p1, out T2 p2)
 		{
 			string input = stream.ReadLine ();
 			return sscanf (input, format, out p1, out p2);
 		}
-		public static int fscanf (TextReader stream, string format, out object p1, out object p2, out object p3)
+		public static int fscanf<T1, T2, T3> (TextReader stream, string format, out T1 p1, out T2 p2, out T3 p3)
 		{
 			string input = stream.ReadLine ();
 			return sscanf (input, format, out p1, out p2, out p3);
 		}
-		public static int fscanf (TextReader stream, string format, out object p1, out object p2, out object p3, out object p4)
+		public static int fscanf<T1, T2, T3, T4> (TextReader stream, string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4)
 		{
 			string input = stream.ReadLine ();
 			return sscanf (input, format, out p1, out p2, out p3, out p4);
 		}
-		public static int fscanf (TextReader stream, string format, out object p1, out object p2, out object p3, out object p4, out object p5)
+		public static int fscanf<T1, T2, T3, T4, T5> (TextReader stream, string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4, out T5 p5)
 		{
 			string input = stream.ReadLine ();
 			return sscanf (input, format, out p1, out p2, out p3, out p4, out p5);
@@ -160,75 +160,82 @@ namespace stdc {
 		//On success, the function returns the number of items succesfully read. This count can match the expected number of readings or fewer, even zero, if a matching failure happens.
 		//In the case of an input failure before any data could be successfully read, EOF is returned.
 		#region scanf variants
-		public static int scanf<T> (string format, out T p1)
+		public static int scanf<T1> (string format, out T1 p1)
 		{
 			return fscanf (Console.In, format, out p1);
 		}
-		public static int scanf (string format, out object p1, out object p2)
+		public static int scanf<T1, T2> (string format, out T1 p1, out T2 p2)
 		{
 			return fscanf (Console.In, format, out p1, out p2);
 		}
-		public static int scanf (string format, out object p1, out object p2, out object p3)
+		public static int scanf<T1, T2, T3> (string format, out T1 p1, out T2 p2, out T3 p3)
 		{
 			return fscanf (Console.In, format, out p1, out p2, out p3);
 		}
-		public static int scanf (string format, out object p1, out object p2, out object p3, out object p4)
+		public static int scanf<T1, T2, T3, T4> (string format, out T2 p1, out T2 p2, out T3 p3, out T4 p4)
 		{
 			return fscanf (Console.In, format, out p1, out p2, out p3, out p4);
 		}
-		public static int scanf (string format, out object p1, out object p2, out object p3, out object p4, out object p5)
+		public static int scanf<T1, T2, T3, T4, T5> (string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4, out T5 p5)
 		{
 			return fscanf (Console.In, format, out p1, out p2, out p3, out p4, out p5);
 		}
 		#endregion
 
-		#region sscanf variants
-		public static int sscanf<T> (string input, string format, out T p1)
+		private static T AssignResult<T> (object result)
 		{
-			List<object> results;
-			int count = ScanfHelper.Parse (input, format, out results);
+			T p1;
 			if (typeof (T) == typeof (Char[]))
-				p1 = (T)(object)(((string)results[0]).ToCharArray ());
+				p1 = (T)(object)(((string)result).ToCharArray ());
 			else
-				p1 = (T)results[0];
-			return count;
+				p1 = (T)result;
+			return p1;
 		}
-		public static int sscanf (string input, string format, out object p1, out object p2)
+
+		#region sscanf variants
+		public static int sscanf<T1> (string input, string format, out T1 p1)
 		{
 			List<object> results;
 			int count = ScanfHelper.Parse (input, format, out results);
-			p1 = results[0];
-			p2 = results[1];
+			p1 = AssignResult<T1> (results[0]);
 			return count;
 		}
-		public static int sscanf (string input, string format, out object p1, out object p2, out object p3)
+		public static int sscanf<T1, T2> (string input, string format, out T1 p1, out T2 p2)
 		{
 			List<object> results;
 			int count = ScanfHelper.Parse (input, format, out results);
-			p1 = results[0];
-			p2 = results[1];
-			p3 = results[2];
+			p1 = AssignResult<T1> (results[0]);
+			p2 = AssignResult<T2> (results[1]);
 			return count;
 		}
-		public static int sscanf (string input, string format, out object p1, out object p2, out object p3, out object p4)
+		public static int sscanf<T1, T2, T3> (string input, string format, out T1 p1, out T2 p2, out T3 p3)
 		{
 			List<object> results;
 			int count = ScanfHelper.Parse (input, format, out results);
-			p1 = results[0];
-			p2 = results[1];
-			p3 = results[2];
-			p4 = results[3];
+			p1 = AssignResult<T1> (results[0]);
+			p2 = AssignResult<T2> (results[1]);
+			p3 = AssignResult<T3> (results[2]);
 			return count;
 		}
-		public static int sscanf (string input, string format, out object p1, out object p2, out object p3, out object p4, out object p5)
+		public static int sscanf<T1, T2, T3, T4> (string input, string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4)
 		{
 			List<object> results;
 			int count = ScanfHelper.Parse (input, format, out results);
-			p1 = results[0];
-			p2 = results[1];
-			p3 = results[2];
-			p4 = results[3];
-			p5 = results[4];
+			p1 = AssignResult<T1> (results[0]);
+			p2 = AssignResult<T2> (results[1]);
+			p3 = AssignResult<T3> (results[2]);
+			p4 = AssignResult<T4> (results[3]);
+			return count;
+		}
+		public static int sscanf<T1, T2, T3, T4, T5> (string input, string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4, out T5 p5)
+		{
+			List<object> results;
+			int count = ScanfHelper.Parse (input, format, out results);
+			p1 = AssignResult<T1> (results[0]);
+			p2 = AssignResult<T2> (results[1]);
+			p3 = AssignResult<T3> (results[2]);
+			p4 = AssignResult<T4> (results[3]);
+			p5 = AssignResult<T5> (results[4]);
 			return count;
 		}
 		#endregion
