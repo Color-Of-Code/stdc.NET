@@ -1,5 +1,5 @@
 // Gardens Point Scanner Generator
-// Copyright (c) K John Gough, QUT 2006-2010
+// Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
 using System;
@@ -489,8 +489,8 @@ namespace QUT.Gplex.Parser
         /// <returns></returns>
         internal RangeList SUB(RangeList rhOp)
         {
-            if (!isCanonical || !rhOp.isCanonical) 
-                throw new GplexInternalException("RangeList not canonicalized");
+            if (!this.isCanonical || !rhOp.isCanonical)
+                throw new GplexInternalException( "RangeList not canonicalized" );
             if (this.ranges.Count == 0)
                 return new RangeList(false);
             else if (rhOp.ranges.Count == 0)
@@ -526,8 +526,12 @@ namespace QUT.Gplex.Parser
         /// </summary>
         internal void Canonicalize()
         {
-            if (!invert && this.ranges.Count <= 1 || this.isCanonical)
+            if (this.isCanonical)
+                return;
+            if (!invert && this.ranges.Count <= 1) {
+                this.isCanonical = true;
                 return; // Empty, singleton and upper/lower pair RangeLists are trivially canonical
+            }
             // Process non-empty lists.
             int listIx = 0;
             this.ranges.Sort();
@@ -566,8 +570,10 @@ namespace QUT.Gplex.Parser
         /// <returns>New case-insensitive list</returns>
         internal RangeList MakeCaseAgnosticList() {
             if (isAgnostic) return this; // Function is idempotent. Do not repeat.
-
-            if (!isCanonical) this.Canonicalize();
+            //
+            // Do not canonicalize! We need to make the list case-
+            // agnostic *before* we process the set inversion.
+            //
             List<CharRange> agnosticList = new List<CharRange>();
             foreach (CharRange range in this.ranges) {
                 for (int ch = range.minChr; ch <= range.maxChr; ch++) {
@@ -578,8 +584,14 @@ namespace QUT.Gplex.Parser
                         if (lo == hi)
                             agnosticList.Add(new CharRange(c));
                         else {
-                            agnosticList.Add(new CharRange(lo));
-                            agnosticList.Add(new CharRange(hi));
+                            // There is a scary possibility with some 8-bit character
+                            // sets that some characters may have case-pairs that are
+                            // outside the character-set range limits. Must use guard!
+                            //
+                            if (lo < CharRange.SymCard)
+                                agnosticList.Add( new CharRange( lo ) );
+                            if (hi < CharRange.SymCard)
+                                agnosticList.Add( new CharRange( hi ) );
                         }
                     }
                     else
@@ -589,12 +601,12 @@ namespace QUT.Gplex.Parser
             RangeList result = new RangeList(agnosticList, false);
             result.isCanonical = false;
             result.isAgnostic = true;
+            result.invert = this.invert; // Result is inverted if input is.
             return result;
         }
 
-#if PARTITION_DIAGNOSTICS
-        internal string LexRepresentation()
-        {
+#if RANGELIST_DIAGNOSTICS
+        public override string ToString() {
             StringBuilder rslt = new StringBuilder();
             rslt.Append('[');
             if (invert)

@@ -10,6 +10,14 @@
 
 %option stack, classes, minimize, parser, verbose, persistbuffer, noembedbuffers, out:Scanner.cs
 
+/* 
+ *  gplex.lex file, Version 1.2.1 including charset operators {-}, {+}, {*}
+ *
+ *  Expected file format is Unicode. In the event that no 
+ *  byte order mark prefix is found, revert to raw bytes.
+ */
+%option unicode, codepage:raw
+
 %{
         // User code is all now in ScanHelper.cs
 %}
@@ -55,7 +63,7 @@ CShOps       [+\-*/%&|<>=@?:!#]
 Dgrphs       (\+\+|--|==|!=|\+=|-=|\*=|\/=|%=|>=|<=|<<|>>)
 
 RgxChs       [^ \t\r\n\\[\"\{]
-Regex        ({RgxChs}|{ClsRef}|{RepMrk}|{EscChr}|{LitStr}|{ChrCls})
+Regex        ({RgxChs}|{ClsRef}|{RepMrk}|{EscChr}|{LitStr}|{ChrCls}|"{-}"|"{+}"|"{*}")
 
 OneLineCmnt  \/\/{DotChr}*
 

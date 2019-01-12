@@ -1,6 +1,6 @@
 //
 // Gardens Point Scanner Generator
-// Copyright (c) K John Gough, QUT 2006-2010
+// Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 // 
 // These utilities are used in GPLEX and GPPG
@@ -258,7 +258,7 @@ namespace QUT.Gplex.Parser
                 case '1':
                 case '2':
                 case '3':
-                    if (chr == '0' && !IsOctDigit(source[index]))
+                    if (chr == '0' && (index>=source.Length || !IsOctDigit(source[index])))
                         return (int)'\0';
                     valu = GetOctalChar(GetSubstring(source, index - 1, 3)); index += 2;
                     if (valu >= 0)
