@@ -1,53 +1,48 @@
-﻿<html>
-<head>
-<title>Stdc</title>
-</head>
-<body>
+﻿# Stdc Examples
 
-<h1>Stdc - Helps porting C code to .NET</h1>
+## Stdc - Helps porting C code to .NET
 
-<h2>Rationale</h2>
-<p>Porting C code to .NET doesn't sound like being fun. And it is mostly for sure not funny... 
-The mind breaking rewriting of printf formatting code to String.Format formats can cost a bunch of time and is error prone.
-The same difficulties arise with scanf, really tedious to port such code.
+## Rationale
+
+Porting C code to .NET doesn't sound like being fun. And it is mostly for sure not funny...
+The mind breaking rewriting of `printf` formatting code to String.Format formats can cost a bunch of time and is error prone.
+
+The same difficulties arise with `scanf`, really tedious to port such code.
+
 Signal handling is another topic where one can loose quite some hours.
+
 Stdc is a pure .NET library enabling a quick port of existing C code by emulating most of the C syntax in a very similar way,
 to not say in an identical manner.
 The code can be then refactored step by step further by removing the C functions.
-The Stdc libray enables a quick first shot so you have at least a running executable to work with.</p>
-<p>Note that the Stdc library is written in pure .NET no call to native functions is made (no "cheating" with P/Invoke, to call the native C runtime methods is performed).
-This can be important for portability between .NET on Linux (MONO) and Windows for example.
-A ported program should then run without recompilation under MONO and Microsoft .NET.</p>
+The Stdc libray enables a quick first shot so you have at least a running executable to work with.
 
-<h2>Who cares about Stdc?</h2>
-<p>If you ...</p>
-<ul>
-<li>have to quickly port a large portion of code and defer a clean .NET implementation to later on</li>
-<li>are not used to the .NET framework and want to mimic the C API in .NET</li>
-<li>wonder how to port some parts of the code but want a working result right now</li>
-</ul>
-<p>Then you should give the Stdc library a try! (Contact me)</p>
+Note that the Stdc library is written in pure .NET core. No call to native functions is made (no "cheating" with P/Invoke, to call the native C runtime methods is performed).
 
+This can be important for portability between .NET on Linux and Windows for example.
 
-<h2>Examples</h2>
+A ported program should then run without recompilation under different platforms.
 
-<hr />
-<h3>Hello world</h3>
-<table>
-<thead><tr><td>C</td><td>C#</td></tr></thead>
-<tbody>
-<tr>
-<td>
-<pre>
-    #include &lt;stdio.h&gt;
-    
+## Who cares about Stdc?
+
+If you...
+
+- have to quickly port a large portion of code and defer a clean .NET implementation to later on
+- are not used to the .NET framework and want to mimic the C API in .NET
+- wonder how to port some parts of the code but want a working result right now
+
+## Examples
+
+### Hello world
+
+```c
+    #include <stdio.h>
+
     void main(void) {
         printf("Hello World!\n");
     }
-</pre>
-</td>
-<td>
-<pre>
+```
+
+```csharp
 namespace Example {      // a namespace to contain the code
     using stdc;          // instead of #include ...
 
@@ -57,99 +52,73 @@ namespace Example {      // a namespace to contain the code
         }
     }
 }
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">
+```
+
 The main difference is that the code must be embedded in a class and a namespace.
 The functions turn consequently into public static methods (equivalent in .NET to C functions).
 In further examples we will omit this necessary code parts to keep the focus on the real code changes.
 Includes are replaced by a using statement and the C functions are part of a static class with called C.
-Therefore C.printf is used instead of a bare printf statement without C. as prefix.
+Therefore `C.printf` is used instead of a bare `printf` statement without `C.` as prefix.
 This first example is simplistic but it is there just to get a feeling for the basic principles in porting C to .NET.
-</td>
-</tr>
-</tbody>
-</table>
 
-<hr />
-<h3>Printing powers of 2 - printf()</h3>
-<table>
-<thead><tr><td>C</td><td>C#</td></tr></thead>
-<tbody>
-<tr>
-<td>
-<pre>
-    #include &lt;stdio.h&gt;
+### Printing powers of 2 - printf()
+
+```c
+    #include <stdio.h>
 
     #define N 16
 
     void main(void) {
         int n;           /* The current exponent */
         int val = 1;     /* The current power of 2  */
-    
-        printf (&quot;\t  n  \t    2^n\n&quot;);
-        printf (&quot;\t================\n&quot;);
-        for (n=0; n&lt;=N; n++) {
-            printf (&quot;\t%3d \t %6d\n&quot;, n, val); 
+
+        printf ("\t  n  \t    2^n\n");
+        printf ("\t================\n");
+        for (n=0; n<=N; n++) {
+            printf ("\t%3d \t %6d\n", n, val);
             val = 2*val;
         }
     }
-</pre>
-</td>
-<td>
-<pre>
+```
+
+```csharp
     using stdc; // ... code to embed in class/namespace omitted
-    
+
     private const int N = 16;
-    
+
     public static void main () {
-        int n;		    // The current exponent
+        int n;          // The current exponent
         int val = 1;    // The current power of 2
-        
-        C.printf (&quot;\t  n  \t    2^n\n&quot;);
-        C.printf (&quot;\t================\n&quot;);
-        for (n=0; n&lt;=N; n++) {
-            C.printf (&quot;\t%3d \t %6d\n&quot;, n, val); 
+
+        C.printf ("\t  n  \t    2^n\n");
+        C.printf ("\t================\n");
+        for (n=0; n<=N; n++) {
+            C.printf ("\t%3d \t %6d\n", n, val);
             val = 2 * val;
         }
     }
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-Note that absolutely no change was needed to be made to the formatting strings.
-</td>
-</tr>
-</tbody>
-</table>
+```
 
-<br />
-<h3>Generating a file - FILE, fopen(), fclose(), putc()</h3>
-<table>
-<thead><tr><td>C</td><td>C#</td></tr></thead>
-<tbody>
-<tr>
-<td>
-<pre>
-    #include &lt;stdio.h&gt;
+Note that absolutely no change was needed to be made to the formatting strings.
+
+### Generating a file - FILE, fopen(), fclose(), putc()
+
+```c
+    #include <stdio.h>
 
     void main () {
         FILE * pFile;
         char c;
 
         pFile = fopen ("alphabet.txt", "wt");
-        for (c = 'A' ; c &lt;= 'Z' ; c++) {
+        for (c = 'A' ; c <= 'Z' ; c++) {
             putc (c , pFile);
         }
         fclose (pFile);
     }
-</pre>
-</td>
-<td>
-<pre>
+```
+
+```csharp
     using stdc; // ... code to embed in class/namespace omitted
 
     public static void main () {
@@ -157,33 +126,21 @@ Note that absolutely no change was needed to be made to the formatting strings.
         char c;
 
         pFile = C.fopen ("alphabet.txt", "wt");
-        for (c = 'A'; c &lt;= 'Z'; c++) {
+        for (c = 'A'; c <= 'Z'; c++) {
             C.putc (c, pFile);
         }
         C.fclose (pFile);
     }
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-The fopen, fclose can be used exactly like in C, only the pointer symbol (*) disappears.
-</td>
-</tr>
-</tbody>
-</table>
+```
 
-<br />
-<h3>A small guessing game - rand(), scanf()</h3>
-<table>
-<thead><tr><td>C</td><td>C#</td></tr></thead>
-<tbody>
-<tr>
-<td>
-<pre>
-    #include &lt;stdio.h&gt;
-    #include &lt;stdlib.h&gt;
-    #include &lt;time.h&gt;
+The `fopen`, `fclose` can be used exactly like in C, only the pointer symbol (*) disappears.
+
+### A small guessing game - rand(), scanf()
+
+```c
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <time.h>
 
     void main () {
         int iSecret, iGuess;
@@ -194,18 +151,17 @@ The fopen, fclose can be used exactly like in C, only the pointer symbol (*) dis
         do {
             printf ("Guess the number (1 to 10): ");
             scanf ("%d",&iGuess);
-            if (iSecret&lt;iGuess)
+            if (iSecret<iGuess)
                 puts ("The secret number is lower");
-            else if (iSecret&gt;iGuess)
+            else if (iSecret>iGuess)
                 puts ("The secret number is higher");
         } while (iSecret!=iGuess);
 
         puts ("Congratulations!");
     }
-</pre>
-</td>
-<td>
-<pre>
+```
+
+```csharp
     using stdc; // ... code to embed in class/namespace omitted
 
     public static void main () {
@@ -229,28 +185,16 @@ The fopen, fclose can be used exactly like in C, only the pointer symbol (*) dis
 
         C.puts ("Congratulations!");
     }
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-The only ugly step needed here is the need for a cast, as scanf implementation is only able to handle object's as out parameters.
-The API does not provide a solution for this dilemna right now.
-</td>
-</tr>
-</tbody>
-</table>
+```
 
-<br />
-<h3>Quick Sort an array of ints, step by step refactoring - qsort()</h3>
-<table>
-<thead><tr><td>C</td><td>C#</td></tr></thead>
-<tbody>
-<tr>
-<td>
-<pre>
-    #include &lt;stdio.h&gt;
-    #include &lt;stdlib.h&gt;
+The only ugly step needed here is the need for a cast, as `scanf` implementation is only able to handle object's as out parameters.
+The API does not provide a solution for this dilemma right now.
+
+### Quick Sort an array of ints, step by step refactoring - qsort()
+
+```c
+    #include <stdio.h>
+    #include <stdlib.h>
 
     int values[] = { 40, 10, 100, 90, 20, 25 };
 
@@ -261,13 +205,12 @@ The API does not provide a solution for this dilemna right now.
     void main () {
         int n;
         qsort (values, 6, sizeof(int), compare);
-        for (n=0; n&lt;6; n++)
+        for (n=0; n<6; n++)
             printf ("%d ",values[n]);
     }
-</pre>
-</td>
-<td>
-<pre>
+```
+
+```csharp
     using stdc; // ... code to embed in class/namespace omitted
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
@@ -282,14 +225,13 @@ The API does not provide a solution for this dilemna right now.
         for (n = 0; n < 6; n++)
             C.printf ("%d ", values[n]);
     }
-</pre>
-</td>
-</tr>
-<tr>
-<td>Second step, refactoring, getting rid of the C-like syntax and use .NET strengths.
-We transformed the "for" loop into a "foreach" loop, making the use of the magic number '6' superfluous.</td>
-<td>
-<pre>
+```
+
+Second step, refactoring, getting rid of the C-like syntax and use .NET strengths.
+
+We transformed the `for` loop into a `foreach` loop, making the use of the magic number '6' superfluous.
+
+```csharp
     using stdc; // ... code to embed in class/namespace omitted
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
@@ -303,13 +245,11 @@ We transformed the "for" loop into a "foreach" loop, making the use of the magic
         foreach (int v in values)
             C.printf ("%d ", v);
     }
-</pre>
-</td>
-</tr>
-<tr>
-<td>Third step: get rid of all C functions and replace them with their .NET equivalents</td>
-<td>
-<pre>
+```
+
+Third step: get rid of all C functions and replace them with their .NET equivalents
+
+```csharp
     using stdc; // ... code to embed in class/namespace omitted
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
@@ -323,27 +263,22 @@ We transformed the "for" loop into a "foreach" loop, making the use of the magic
         foreach (int v in values)
             Console.Write ("{0} ", v);
     }
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">
+```
+
 Did you notice? From the first step on, the C# compare method didn't need any casts unlike the C version.
 Thanks to the use of generics, the code readability is greaty improved.
 This also shows the basic steps in refactoring the C code. Stdc just helps you to keep a testable running version
 between successive steps of refactoring.
-</td>
-</tr>
-</tbody>
-</table>
 
-<br />
-<h3>Remarks</h3>
-<p>In order to provide the advanced emulation functionality (like signals and atexit support, argc, argv emulation),
-the library needs to control the code to be run. There is a trampoline from the .NET Main method to the ported main C function.</p>
-<p>This should be used like this:</p>
+#### Remarks
 
-<pre>namespace examples {
+In order to provide the advanced emulation functionality (like signals and atexit support, argc, argv emulation),
+the library needs to control the code to be run. There is a trampoline from the .NET Main method to the ported main C function.
+
+This should be used like this:
+
+```csharp
+namespace examples {
     using stdc;
     class Program {
         static void Main (string[] args)
@@ -353,31 +288,27 @@ the library needs to control the code to be run. There is a trampoline from the 
             C.RunIMain (args, CProgram.main); // if the main is returning an int
         }
     }
-}</pre>
-<p>The signature of the main function is one of:</p>
-<pre>
-- int main(int argc, string[] argv)
-- int main()
-- void main(int argc, string[] argv)
-- void main()
-</pre>
-<p>The .NET arguments do not contain the program name unlike in C where argv[0] contains the name of the executable.
-To enable to reuse code from C that expects this behaviour, you must use the C.RunI/VMain() function.
-The RunMain() function also provides an environment where the signal() and raise() C functions can be used.</p>
+}
+```
 
+The signature of the main function is one of:
 
-<h2>Further examples</h2>
+- `int main(int argc, string[] argv)`
+- `int main()`
+- `void main(int argc, string[] argv)`
+- `void main()`
 
-<br />
-<h3>Using atexit - atexit()</h3>
-<table>
-<thead><tr><td>C</td><td>C#</td></tr></thead>
-<tbody>
-<tr>
-<td>
-<pre>
-    #include &lt;stdio.h&gt;
-    #include &lt;stdlib.h&gt;
+The .NET arguments do not contain the program name unlike in C where argv[0] contains the name of the executable.
+To enable to reuse code from C that expects this behavior, you must use the C.RunI/VMain() function.
+The RunMain() function also provides an environment where the signal() and raise() C functions can be used.
+
+## Further examples
+
+### Using atexit - atexit()
+
+```c
+    #include <stdio.h>
+    #include <stdlib.h>
 
     void atexit_handler1 (void) {
         puts ("handler 1");
@@ -393,10 +324,9 @@ The RunMain() function also provides an environment where the signal() and raise
         puts ("atexit handlers should be " +
             "called in reverse order 2 and then 1!");
     }
-</pre>
-</td>
-<td>
-<pre>
+```
+
+```csharp
 namespace example {
     using stdc;
 
@@ -415,30 +345,14 @@ namespace example {
             C.puts("atexit handlers should be " +
                 "called in reverse order 2 and then 1!");
         }
-    
+
         static void Main (string[] args) {
             C.RunVMain (args, main); // trampoline
         }
     }
 }
-</pre>
-</td>
-</tr>
-<tr>
-<td colspan="2">
+```
+
 The full code is provided for this example, to demonstrate how to let the RunMain() method call the ported main() function.
 RunMain() calls main() after initializing an environment where the signals can work properly.
-The behaviour expected from C regarding the order in which the handlers are called is implemented correctly: the handlers are called in reverse order or registration.
-</td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>Contact</h3>
-<p>If you would like to get a beta version of the library let me know: jaap.dehaan@color-of-code.de.</p>
-<p>The library is provided under this <a href="index.php?option=com_content&amp;view=article&amp;id=112:freeware-license-agreement&amp;catid=34:impressum&amp;Itemid=1">Freeware License Agreement</a>.</p>
-
-
-</body>
-</html>
+The behavior expected from C regarding the order in which the handlers are called is implemented correctly: the handlers are called in reverse order or registration.

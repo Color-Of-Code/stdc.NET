@@ -4,6 +4,19 @@
 
 [![Travis build status](https://img.shields.io/travis/Color-Of-Code/stdc.NET/master.svg?label=master&style=flat-square)](https://travis-ci.org/Color-Of-Code/stdc.NET)
 
+## Goals
+
+Provide a set of C# static methods mimicking standard C library's behavior to be able to
+straightforwardly make a first port of a C application to .NET core.
+
+This initial port can then iteratively be converted into a more idiomatic .NET core
+application, keeping it functional all the way through.
+
+Ideally you would also have a strong set of unit tests that would support the refactoring
+process.
+
+As a starter, have some look at these [simple examples](./Examples.md)
+
 ## Notes
 
 Could not find this anymore
