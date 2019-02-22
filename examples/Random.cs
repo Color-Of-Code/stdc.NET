@@ -38,45 +38,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace examples {
+namespace examples
+{
 
-	//#include <stdio.h>
-	//#include <stdlib.h>
-	//#include <time.h>
-	using stdc;
+    //#include <stdio.h>
+    //#include <stdlib.h>
+    //#include <time.h>
+    using stdc;
 
-	public class Random {
+    public class Random
+    {
 
-		public static void main_rand ()
-		{
-			int iSecret;
-			object guess;
-			int iGuess;
+        public static void main_rand()
+        {
+            int iSecret;
+            object guess;
+            int iGuess;
 
-			C.srand (C.time (C.NULL));
-			iSecret = C.rand () % 10 + 1;
+            C.srand(C.time(C.NULL));
+            iSecret = C.rand() % 10 + 1;
 
-			do {
-				C.printf ("Guess the number (1 to 10): ");
-				C.scanf ("%d", out guess);
-				iGuess = (int)guess;	// can we get rid of this ugly casting here...
-				if (iSecret < iGuess)
-					C.puts ("The secret number is lower");
-				else if (iSecret > iGuess)
-					C.puts ("The secret number is higher");
-			} while (iSecret != iGuess);
+            do
+            {
+                C.printf("Guess the number (1 to 10): ");
+                C.scanf("%d", out guess);
+                iGuess = (int)guess;    // can we get rid of this ugly casting here...
+                if (iSecret < iGuess)
+                    C.puts("The secret number is lower");
+                else if (iSecret > iGuess)
+                    C.puts("The secret number is higher");
+            } while (iSecret != iGuess);
 
-			C.puts ("Congratulations!");
-		}
+            C.puts("Congratulations!");
+        }
 
-		public static void main_srand ()
-		{
-			C.printf ("First number: %d\n", C.rand () % 100);
-			C.srand (C.time (C.NULL));
-			C.printf ("Random number: %d\n", C.rand () % 100);
-			C.srand (1);
-			C.printf ("Again the first number: %d\n", C.rand () % 100);
-		}
+        public static void main_srand()
+        {
+            C.printf("First number: %d\n", C.rand() % 100);
+            C.srand(C.time(C.NULL));
+            C.printf("Random number: %d\n", C.rand() % 100);
+            C.srand(1);
+            C.printf("Again the first number: %d\n", C.rand() % 100);
+        }
 
-	}
+    }
 }

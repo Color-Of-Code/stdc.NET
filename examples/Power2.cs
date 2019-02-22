@@ -38,27 +38,30 @@
 
 */
 
-namespace examples {
-	
-	//#include <stdio.h>
-	using stdc;
+namespace examples
+{
 
-	public class Power2 {
+    //#include <stdio.h>
+    using stdc;
 
-		private const int N = 16;
+    public class Power2
+    {
 
-		public static int main ()
-		{
-			int n;			// The current exponent
-			int val = 1;    // The current power of 2
+        private const int N = 16;
 
-			C.printf("\t  n  \t    2^n\n");
-			C.printf("\t================\n");
-			for (n=0; n<=N; n++) {
-				C.printf("\t%3d \t %6d\n", n, val); 
-				val = 2*val;
-			}
-			return 0;
-		}
-	}
+        public static int main()
+        {
+            int n;          // The current exponent
+            int val = 1;    // The current power of 2
+
+            C.printf("\t  n  \t    2^n\n");
+            C.printf("\t================\n");
+            for (n = 0; n <= N; n++)
+            {
+                C.printf("\t%3d \t %6d\n", n, val);
+                val = 2 * val;
+            }
+            return 0;
+        }
+    }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stdc", "stdc\stdc.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stdc.Tests", "stdc.Tests\stdc.Tests.csproj", "{BFBAB9D6-B421-4806-B940-8F8647728437}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "examples", "examples\examples.csproj", "{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{BFBAB9D6-B421-4806-B940-8F8647728437}.Release|x64.Build.0 = Release|Any CPU
 		{BFBAB9D6-B421-4806-B940-8F8647728437}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFBAB9D6-B421-4806-B940-8F8647728437}.Release|x86.Build.0 = Release|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Debug|x64.Build.0 = Debug|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Debug|x86.Build.0 = Debug|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Release|x64.ActiveCfg = Release|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Release|x64.Build.0 = Release|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Release|x86.ActiveCfg = Release|Any CPU
+		{8BFE8468-AB99-4F92-AB87-7E28BE6F54AF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

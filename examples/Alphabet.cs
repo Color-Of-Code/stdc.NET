@@ -13,24 +13,27 @@
 //    fclose (pFile);
 //}
 
-namespace examples {
+namespace examples
+{
 
-	//#include <stdio.h>
-	using stdc;
+    //#include <stdio.h>
+    using stdc;
 
-	public class Alphabet {
+    public class Alphabet
+    {
 
-		public static void main ()
-		{
-			C.FILE pFile;
-			char c;
+        public static void main()
+        {
+            C.FILE pFile;
+            char c;
 
-			pFile = C.fopen ("alphabet.txt", "wt");
-			for (c = 'A'; c <= 'Z'; c++) {
-				C.putc (c, pFile);
-			}
-			C.fclose (pFile);
-		}
+            pFile = C.fopen("alphabet.txt", "wt");
+            for (c = 'A'; c <= 'Z'; c++)
+            {
+                C.putc(c, pFile);
+            }
+            C.fclose(pFile);
+        }
 
-	}
+    }
 }

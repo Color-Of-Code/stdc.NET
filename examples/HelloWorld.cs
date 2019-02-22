@@ -5,21 +5,23 @@
 //  printf("Hello World!\n");
 //}
 
-namespace examples {
-	
-	//#include <stdio.h>
-	using stdc;
+namespace examples
+{
 
-	public class HelloWorld {
+    //#include <stdio.h>
+    using stdc;
 
-		//void main(void) {
-		//  printf("Hello World!\n");
-		//  return 0; 
-		//}
-		public static void main ()
-		{
-			C.printf("Hello World!\n");
-		}
+    public class HelloWorld
+    {
 
-	}
+        //void main(void) {
+        //  printf("Hello World!\n");
+        //  return 0;
+        //}
+        public static void main()
+        {
+            C.printf("Hello World!\n");
+        }
+
+    }
 }
