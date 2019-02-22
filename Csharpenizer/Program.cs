@@ -12,8 +12,8 @@ namespace Csharpenizer
 
         static void Main(string[] args)
         {
-            string input = @"G:\tests\dotNet_Tests\Projekte\Projekte\stdc\Csharpenizer\test\in";
-            string output = @"G:\tests\dotNet_Tests\Projekte\Projekte\stdc\Csharpenizer\test\out";
+            string input = @".\test\in";
+            string output = @".\test\out";
 
             DirectoryInfo din = new DirectoryInfo(input);
             DirectoryInfo dout = new DirectoryInfo(output);
