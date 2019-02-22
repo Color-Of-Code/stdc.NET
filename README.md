@@ -1,6 +1,4 @@
-﻿
-
-# stdc.NET
+﻿# stdc.NET
 
 Could not find this anymore
 
@@ -22,4 +20,3 @@ Excellent hints on parsing in C#:
 * https://github.com/KommuSoft/Gardens-Point-LEX
 * https://github.com/deAtog/gplex
 * https://github.com/k-john-gough/gpcp (pascal)
-
