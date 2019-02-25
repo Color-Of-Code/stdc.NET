@@ -9,14 +9,13 @@ namespace Csharpenizer
 {
     class Program
     {
-
         static void Main(string[] args)
         {
             string input = @".\test\in";
             string output = @".\test\out";
 
-            DirectoryInfo din = new DirectoryInfo(input);
-            DirectoryInfo dout = new DirectoryInfo(output);
+            var din = new DirectoryInfo(input);
+            var dout = new DirectoryInfo(output);
             foreach (FileInfo fi in din.GetFiles())
             {
                 ProcessFile(fi, dout);
@@ -30,7 +29,7 @@ namespace Csharpenizer
                 if (fi.Name.EndsWith(".c", StringComparison.InvariantCultureIgnoreCase) ||
                     fi.Name.EndsWith(".h", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    FileInfo fout = new FileInfo(Path.Combine(dout.FullName, fi.Name.Replace(".", "_") + ".cs"));
+                    var fout = new FileInfo(Path.Combine(dout.FullName, fi.Name.Replace(".", "_") + ".cs"));
                     ProcessFile(fi, fout);
                 }
             }
@@ -42,7 +41,7 @@ namespace Csharpenizer
 
         private static void ProcessFile(FileInfo fi, FileInfo fo)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             Prefix(sb);
 
