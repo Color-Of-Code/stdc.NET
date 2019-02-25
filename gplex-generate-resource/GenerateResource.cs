@@ -10,7 +10,7 @@ namespace ResourceGenerator
     {
         public static void Main()
         {
-            System.Resources.ResXResourceWriter resourceWriter = new ResXResourceWriter("Content.resx");
+            var resourceWriter = new ResXResourceWriter("Content.resx");
             FileStream contentFile;
             StreamReader fileReader;
 
