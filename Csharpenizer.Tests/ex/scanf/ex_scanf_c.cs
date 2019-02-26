@@ -16,7 +16,7 @@ int main ()
   int i;
 
   C.printf ("Enter your family name: ");
-  C.scanf ("%s",str);  
+  C.scanf ("%s",out str);  
   C.printf ("Enter your age: ");
   C.scanf ("%d",out i);
   C.printf ("Mr. %s , %d years old.\n",str,i);
