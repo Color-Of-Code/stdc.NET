@@ -13,7 +13,7 @@ namespace main {
 
 int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
-int compare (object a, object b)
+int compare (int a, int b)
 {
   return ( a - b );
 }
