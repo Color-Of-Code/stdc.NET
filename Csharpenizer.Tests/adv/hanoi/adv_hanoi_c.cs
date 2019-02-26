@@ -24,7 +24,7 @@ void solution(int n,char from,char to,char temp)
 int main()
 {
 	int n;
-	C.printf("Tower of honai problem.\n");
+	C.printf("Tower of hanoi problem.\n");
 	C.printf("Enter the no. disks:");
 	C.scanf("%d",out n);
 	C.printf("The solution.\n");

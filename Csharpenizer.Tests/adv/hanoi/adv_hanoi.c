@@ -15,7 +15,7 @@ void solution(int n,char from,char to,char temp)
 int main()
 {
 	int n;
-	printf("Tower of honai problem.\n");
+	printf("Tower of hanoi problem.\n");
 	printf("Enter the no. disks:");
 	scanf("%d",&n);
 	printf("The solution.\n");

@@ -16,7 +16,7 @@ namespace Csharpenizer
         [Option('i', "input", Required = true, HelpText = "Set input directory.")]
         public string Input { get; set; }
 
-        [Option('o', "output", Required = true, HelpText = "Set output directory.")]
+        [Option('o', "output", Required = false, HelpText = "Set output directory.")]
         public string Output { get; set; }
     }
 
@@ -28,7 +28,7 @@ namespace Csharpenizer
                    .WithParsed<Options>(o =>
                    {
                         string input = o.Input;
-                        string output = o.Output;
+                        string output = o.Output ?? input;
                         var din = new DirectoryInfo(input);
                         var dout = new DirectoryInfo(output);
                         foreach (FileInfo fi in din.GetFiles())
