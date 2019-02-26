@@ -54,6 +54,7 @@ namespace QUT.GplexBuffers
             return new LineBuffer(source);
         }
 
+#if (!NOFILES)
         public static ScanBuff GetBuffer(Stream source)
         {
             return new BuildBuffer(source);
@@ -64,7 +65,8 @@ namespace QUT.GplexBuffers
         {
             return new BuildBuffer(source, fallbackCodePage);
         }
-#endif
+#endif // !BYTEMODE
+#endif // !NOFILES
     }
 
     #region Buffer classes
@@ -187,7 +189,7 @@ namespace QUT.GplexBuffers
             {
                 ix = lstart = 0;
             }
-            for (; ; )
+            while (ix < numLines)
             {
                 int len = line[ix].Length + 1;
                 if (pos < lstart + len) break;
@@ -245,7 +247,8 @@ namespace QUT.GplexBuffers
             {
                 cPos = value;
                 findIndex(cPos, out cLine, out curLineStart);
-                curLine = line[cLine];
+                // cLine should be the *next* line after curLine.
+                curLine = (cLine < numLines ? line[cLine++] : "");
                 curLineEnd = curLineStart + curLine.Length;
             }
         }
@@ -253,7 +256,7 @@ namespace QUT.GplexBuffers
         public override string ToString() { return "LineBuffer"; }
     }
 
-
+#if (!NOFILES)
     // ==============================================================
     // =====     class BuildBuff : for unicode text files    ========
     // ==============================================================
@@ -494,12 +497,13 @@ namespace QUT.GplexBuffers
         }
 #endif // !BYTEMODE
     }
+#endif // !NOFILES
     #endregion Buffer classes
 
     // ==============================================================
     // ============      class CodePageHandling         =============
     // ==============================================================
-
+#if (!NOFILES)
     public static class CodePageHandling
     {
         public static int GetCodePage(string option)
@@ -710,6 +714,7 @@ namespace QUT.GplexBuffers
     
 #endif // !BYTEMODE
 #endregion
+#endif // !NOFILES
 
 // End of code copied from embedded resource
 }
