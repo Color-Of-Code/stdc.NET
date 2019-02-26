@@ -7,7 +7,6 @@ namespace main {
   public partial class Program {
 #endregion
 
-Tetris Game in C
 
 // #include <graphics.h>
 // #include <stdlib.h>
@@ -592,6 +591,7 @@ void again()
  else C.exit(0);
 
  }
+
 
 
     #region Main trampoline
