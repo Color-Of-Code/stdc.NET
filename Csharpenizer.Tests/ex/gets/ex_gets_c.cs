@@ -12,10 +12,10 @@ namespace main {
 
 int main()
 {
-  char[] string = new char[256];
+  char[] @string = new char[256];
   C.printf ("Insert your full address: ");
-  C.gets (string);
-  C.printf ("Your address is: %s\n",string);
+  C.gets (@string);
+  C.printf ("Your address is: %s\n",@string);
   return 0;
 }
 
