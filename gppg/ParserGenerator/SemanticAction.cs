@@ -170,7 +170,7 @@ namespace QUT.GPGen
                             if (commands[i] == '<') // $<kind>n
                             {
                                 i++;
-                                StringBuilder builder = new StringBuilder();
+                                var builder = new StringBuilder();
                                 while (i < length && commands[i] != '>')
                                 {
                                     builder.Append(commands[i]);

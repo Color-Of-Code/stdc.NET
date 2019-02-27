@@ -391,7 +391,7 @@ namespace QUT.Gplex.Parser
         // -----------------------------------------------------
 
         internal void DumpErrorsInMsbuildFormat( ScanBuff buff, TextWriter wrtr ) {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             //
             // Message prefix
             //

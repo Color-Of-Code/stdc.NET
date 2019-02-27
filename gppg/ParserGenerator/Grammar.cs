@@ -8,14 +8,13 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
-using QUT.GPGen.Lexers;
 using QUT.GPGen.Parser;
 
 
 namespace QUT.GPGen
 {
-	internal class Grammar
-	{
+    internal class Grammar
+    {
         internal const string DefaultValueTypeName = "ValueType";
         internal const int LineLength = 80;
 
@@ -23,15 +22,15 @@ namespace QUT.GPGen
         internal void BumpPrec() { currentPrec += 10; }
         internal int Prec { get { return currentPrec; } }
 
-		internal List<Production> productions = new List<Production>();
+        internal List<Production> productions = new List<Production>();
         internal LexSpan unionType;
-		internal int NumActions;
-		internal List<LexSpan> prologCode = new List<LexSpan>();	// before first %%
-        internal LexSpan epilogCode;	// after last %%
-		internal NonTerminal startSymbol;
-		internal Production rootProduction;
-		internal Dictionary<string, NonTerminal> nonTerminals = new Dictionary<string, NonTerminal>();
-		internal Dictionary<string, Terminal> terminals = new Dictionary<string, Terminal>();
+        internal int NumActions;
+        internal List<LexSpan> prologCode = new List<LexSpan>();	// before first %%
+        internal LexSpan epilogCode;    // after last %%
+        internal NonTerminal startSymbol;
+        internal Production rootProduction;
+        internal Dictionary<string, NonTerminal> nonTerminals = new Dictionary<string, NonTerminal>();
+        internal Dictionary<string, Terminal> terminals = new Dictionary<string, Terminal>();
         internal Dictionary<string, Terminal> aliasTerms = new Dictionary<string, Terminal>();
         internal List<string> usingList = new List<string>();
         internal List<Conflict> conflicts = new List<Conflict>();
@@ -57,15 +56,16 @@ namespace QUT.GPGen
         ErrorHandler handler;
         bool hasNonTerminatingNonTerms;
 
-        internal bool HasNonTerminatingNonTerms { 
-            get { return hasNonTerminatingNonTerms; } 
+        internal bool HasNonTerminatingNonTerms
+        {
+            get { return hasNonTerminatingNonTerms; }
         }
         // end
 
         internal Grammar()
         {
-			LookupTerminal(Token.ident, "error");
-			LookupTerminal(Token.ident, "EOF");
+            LookupTerminal(Token.ident, "error");
+            LookupTerminal(Token.ident, "EOF");
             // emptyTerminalList = new List<Terminal>();
         }
 
@@ -102,29 +102,29 @@ namespace QUT.GPGen
         }
 
 
-		internal NonTerminal LookupNonTerminal(string name)
-		{
-			if (!nonTerminals.ContainsKey(name))
-				nonTerminals[name] = new NonTerminal(name);
+        internal NonTerminal LookupNonTerminal(string name)
+        {
+            if (!nonTerminals.ContainsKey(name))
+                nonTerminals[name] = new NonTerminal(name);
 
-			return nonTerminals[name];
-		}
-
-
-		internal void AddProduction(Production production)
-		{
-			productions.Add(production);
-			production.num = productions.Count;
-		}
+            return nonTerminals[name];
+        }
 
 
-		internal void CreateSpecialProduction(NonTerminal root)
-		{
-			rootProduction = new Production(LookupNonTerminal("$accept"));
-			AddProduction(rootProduction);
-			rootProduction.rhs.Add(root);
+        internal void AddProduction(Production production)
+        {
+            productions.Add(production);
+            production.num = productions.Count;
+        }
+
+
+        internal void CreateSpecialProduction(NonTerminal root)
+        {
+            rootProduction = new Production(LookupNonTerminal("$accept"));
+            AddProduction(rootProduction);
+            rootProduction.rhs.Add(root);
             rootProduction.rhs.Add(LookupTerminal(Token.ident, "EOF"));
-		}
+        }
 
         void MarkReachable()
         {
@@ -276,7 +276,7 @@ namespace QUT.GPGen
                         popped = stack.Pop();
                         popped.depth = finishMark;
                         SCC.Add(popped);
-                    } 
+                    }
                     while (popped != node);
                     handler.AddWarning(String.Format(CultureInfo.InvariantCulture,
                         "The following {2} symbols form a non-terminating cycle {0}{{{1}}}",
@@ -376,12 +376,12 @@ namespace QUT.GPGen
 
         private void LeafExperiment(NonTerminal probe, List<NonTerminal> component)
         {
-                // Test what happens with probe terminating ...
-                probe.terminating = true;
-                LeafPropagate(probe, component);
-                // Then reset the values of all components
-                foreach (NonTerminal element in component)
-                    element.terminating = false;
+            // Test what happens with probe terminating ...
+            probe.terminating = true;
+            LeafPropagate(probe, component);
+            // Then reset the values of all components
+            foreach (NonTerminal element in component)
+                element.terminating = false;
         }
 
 
@@ -446,7 +446,7 @@ namespace QUT.GPGen
                 }
             }
             if (this.HasNonTerminatingNonTerms) ok = false;
-            return ok;    
+            return ok;
         }
 
         internal void ReportConflicts(StreamWriter wrtr)
@@ -480,7 +480,7 @@ namespace QUT.GPGen
 
             WriteProductions(writer);
             DiagnosticHelp.PopulatePrefixes(statelist);
-            Mapper<string, AutomatonState> map = delegate(AutomatonState elemState) { return StateRef(elemState.num); };
+            Mapper<string, AutomatonState> map = delegate (AutomatonState elemState) { return StateRef(elemState.num); };
 
             foreach (AutomatonState state in statelist)
             {
@@ -685,9 +685,9 @@ namespace QUT.GPGen
         int chosen;
         AutomatonState inState;
 
-        internal ReduceReduceConflict(Terminal sy, string s1, string s2, int prod, AutomatonState state) 
+        internal ReduceReduceConflict(Terminal sy, string s1, string s2, int prod, AutomatonState state)
             : base(sy, s1, s2)
-        { 
+        {
             chosen = prod;
             inState = state;
             state.Link(this);
@@ -723,7 +723,7 @@ namespace QUT.GPGen
         AutomatonState toState;
         internal ShiftReduceConflict(Terminal sy, string s1, string s2, AutomatonState from, AutomatonState to)
             : base(sy, s1, s2)
-        { 
+        {
             fromState = from; toState = to;
             fromState.Link(this);
         }
