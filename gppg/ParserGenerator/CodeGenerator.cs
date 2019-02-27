@@ -140,7 +140,7 @@ namespace QUT.GPGen
             if (GPCG.IncludeInfo) {
               Console.WriteLine("// GPPG version " + GPCG.versionInfo);
               Console.WriteLine("// Machine:  " + Environment.MachineName);
-              Console.WriteLine("// DateTime: " + DateTime.Now.ToString());
+              Console.WriteLine("// DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
               Console.WriteLine("// UserName: " + Environment.UserName);
               Console.WriteLine("// Input file <{0}>", grammar.InputFileIdent);
             }
