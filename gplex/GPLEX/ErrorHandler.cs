@@ -424,7 +424,7 @@ namespace QUT.Gplex.Parser
             // Message prefix
             //
             string location = (buff != null ? buff.FileName : "GPLEX");
-            foreach (Error err in errors)
+            foreach (var err in errors)
             {
                 builder.Length = 0; // Works for V2.0 even.
                 //

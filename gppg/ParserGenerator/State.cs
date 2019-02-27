@@ -116,7 +116,7 @@ namespace QUT.GPGen
             builder.AppendLine();
             builder.AppendLine();
 
-            foreach (ProductionItem item in kernelItems)
+            foreach (var item in kernelItems)
             {
                 builder.AppendFormat("    {0}", item);
                 builder.AppendLine();
@@ -124,7 +124,7 @@ namespace QUT.GPGen
 
             builder.AppendLine();
 
-            foreach (KeyValuePair<Terminal, ParserAction> a in parseTable)
+            foreach (var a in parseTable)
             {
                 builder.AppendFormat("    {0,-14} {1}", a.Key, a.Value);
                 builder.AppendLine();
@@ -132,7 +132,7 @@ namespace QUT.GPGen
 
             builder.AppendLine();
 
-            foreach (KeyValuePair<NonTerminal, Transition> n in nonTerminalTransitions)
+            foreach (var n in nonTerminalTransitions)
             {
                 builder.AppendFormat("    {0,-14} go to state {1}", n.Key, Goto[n.Key].num);
                 builder.AppendLine();

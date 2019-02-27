@@ -43,7 +43,7 @@ namespace QUT.GPGen
             if (isNullable == null)
             {
                 isNullable = false;
-                foreach (Production p in productions)
+                foreach (var p in productions)
                 {
                     bool nullable = true;
                     foreach (Symbol rhs in p.rhs)

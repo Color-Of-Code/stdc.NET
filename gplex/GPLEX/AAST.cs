@@ -172,7 +172,7 @@ namespace QUT.Gplex.Parser
 
         internal void AddToAllStates(RuleDesc rule)
         {
-            foreach (KeyValuePair<string, StartState> p in startStates)
+            foreach (var p in startStates)
             {
                 StartState s = p.Value;
                 if (!s.IsAll && !s.IsDummy)
@@ -182,7 +182,7 @@ namespace QUT.Gplex.Parser
 
         internal void FixupBarActions()
         {
-            foreach (LexCategory cat in this.lexCatsWithPredicates)
+            foreach (var cat in this.lexCatsWithPredicates)
                 ruleList.Add(RuleDesc.MkDummyRuleDesc(cat, this));
 
             LexSpan lastSpan = Parser.BlankSpan;
@@ -307,13 +307,13 @@ namespace QUT.Gplex.Parser
             if (rule.list == null || rule.list.Count == 0)
             {
                 StartState.initState.AddRule(rule);       // Add to initial state
-                foreach (StartState inclS in inclStates)  // Add to inclusive states
+                foreach (var inclS in inclStates)  // Add to inclusive states
                     inclS.AddRule(rule);
             }
             else if (rule.list[0].IsAll)
                 AddToAllStates(rule);
             else
-                foreach (StartState state in rule.list)
+                foreach (var state in rule.list)
                     state.AddRule(rule);
         }
 
@@ -1027,7 +1027,7 @@ namespace QUT.Gplex.Parser
             //  Active list of start states should be "all states"
             //
             List<StartState> newTop = null;
-            List<StartState> current = this.Current;
+            var current = this.Current;
             if (list.Contains(StartState.allState))
                 newTop = list;
             else if (current.Contains(StartState.allState))

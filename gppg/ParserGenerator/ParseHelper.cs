@@ -155,7 +155,7 @@ namespace QUT.GPGen.Parser
             return new Production(currentLHS);
         }
 
-        private Production NewProduction(List<string> symbols, ActionProxy proxy)
+        private Production NewProduction(IEnumerable<string> symbols, ActionProxy proxy)
         {
             Production rslt = new Production(currentLHS);
             if (symbols != null)
@@ -165,7 +165,7 @@ namespace QUT.GPGen.Parser
             return rslt;
         }
 
-        private void AddSymbolsToProduction(Production prod, List<string> list)
+        private void AddSymbolsToProduction(Production prod, IEnumerable<string> list)
         {
             // Version 1.3.1 sends even empty lists to this method.
             // Furthermore, version 1.3.1 no longer explicitly calls

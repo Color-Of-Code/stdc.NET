@@ -424,7 +424,7 @@ namespace QUT.Gplex.Parser
         {
             int rslt = 0;
             string[] lines = source.Split(new Char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string line in lines)
+            foreach (var line in lines)
                 if (line.Length > rslt)
                     rslt = line.Length;
             return rslt;

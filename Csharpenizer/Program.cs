@@ -28,7 +28,7 @@ namespace Csharpenizer
                         string output = o.Output ?? input;
                         var din = new DirectoryInfo(input);
                         var dout = new DirectoryInfo(output);
-                        foreach (FileInfo fi in din.GetFiles())
+                        foreach (var fi in din.GetFiles())
                         {
                             ProcessFile(fi, dout, o.Verbose);
                         }

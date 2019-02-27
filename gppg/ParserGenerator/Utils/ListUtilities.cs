@@ -31,9 +31,9 @@ namespace QUT.GPGen
             bool more = false;
             string indentStr = new String(' ', indent);
             string listBreak = System.Environment.NewLine + indentStr;
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            var builder = new System.Text.StringBuilder();
 
-            IEnumerator<T> e = list.GetEnumerator();
+            var e = list.GetEnumerator();
             if (e.MoveNext())
                 do
                 {

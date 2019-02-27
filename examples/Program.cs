@@ -32,7 +32,7 @@ namespace examples
             #region Main trampoline
             static int Main(string[] args)
             {
-                var p = newProgram();
+                var p = new Program();
                 return C.RunIMain(args, p.main);
             }
             #endregion

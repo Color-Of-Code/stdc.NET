@@ -10,119 +10,119 @@ using System.Globalization;
 
 namespace QUT.GPGen
 {
-	internal class LR0Generator
-	{
-		protected List<AutomatonState> states = new List<AutomatonState>();
-		protected Grammar grammar;
-		private Dictionary<Symbol, List<AutomatonState>> accessedBy = new Dictionary<Symbol,List<AutomatonState>>();
+    internal class LR0Generator
+    {
+        protected List<AutomatonState> states = new List<AutomatonState>();
+        protected Grammar grammar;
+        private Dictionary<Symbol, List<AutomatonState>> accessedBy = new Dictionary<Symbol, List<AutomatonState>>();
 
 
-		internal LR0Generator(Grammar grammar)
-		{
-			this.grammar = grammar;
-		}
+        internal LR0Generator(Grammar grammar)
+        {
+            this.grammar = grammar;
+        }
 
 
         internal List<AutomatonState> BuildStates()
-		{
-			// create state for root production and expand recursively
-			ExpandState(grammar.rootProduction.lhs, new AutomatonState(grammar.rootProduction));
-            
+        {
+            // create state for root production and expand recursively
+            ExpandState(grammar.rootProduction.lhs, new AutomatonState(grammar.rootProduction));
+
             return states;
-		}
+        }
 
 
-		private void ExpandState(Symbol sym, AutomatonState newState)
-		{
-			//newState.accessedBy = sym;
-			states.Add(newState);
+        private void ExpandState(Symbol sym, AutomatonState newState)
+        {
+            //newState.accessedBy = sym;
+            states.Add(newState);
 
-			if (!accessedBy.ContainsKey(sym))
-				accessedBy[sym] = new List<AutomatonState>();
-			accessedBy[sym].Add(newState);
+            if (!accessedBy.ContainsKey(sym))
+                accessedBy[sym] = new List<AutomatonState>();
+            accessedBy[sym].Add(newState);
 
-			newState.AddClosure();
-			ComputeGoto(newState);
-		}
-
-
-		private void ComputeGoto(AutomatonState state)
-		{
-			foreach (ProductionItem item in state.allItems)
-				if (!item.expanded && !item.isReduction())
-				{
-					item.expanded = true;
-					Symbol s1 = item.production.rhs[item.pos];
-
-					// Create itemset for new state ...
-					List<ProductionItem> itemSet = new List<ProductionItem>();
-					itemSet.Add(new ProductionItem(item.production, item.pos+1));
-
-					foreach (ProductionItem item2 in state.allItems)
-						if (!item2.expanded && !item2.isReduction())
-						{
-							Symbol s2 = item2.production.rhs[item2.pos];
-
-							if (s1 == s2)
-							{
-								item2.expanded = true;
-								itemSet.Add(new ProductionItem(item2.production, item2.pos+1));
-							}
-						}
-
-					AutomatonState existingState = FindExistingState(s1, itemSet);
-
-					if (existingState == null)
-					{
-						AutomatonState newState = new AutomatonState(itemSet);
-						state.AddGoto(s1, newState);
-						ExpandState(s1, newState);
-					}
-					else
-						state.AddGoto(s1, existingState);
-				}
-		}
+            newState.AddClosure();
+            ComputeGoto(newState);
+        }
 
 
-		private AutomatonState FindExistingState(Symbol sym, List<ProductionItem> itemSet)
-		{
-			if (accessedBy.ContainsKey(sym))
-				foreach (AutomatonState state in accessedBy[sym])
-					if (ProductionItem.SameProductions(state.kernelItems, itemSet))
-						return state;
+        private void ComputeGoto(AutomatonState state)
+        {
+            foreach (var item in state.allItems)
+                if (!item.expanded && !item.isReduction())
+                {
+                    item.expanded = true;
+                    Symbol s1 = item.production.rhs[item.pos];
 
-			return null;
-		}
+                    // Create itemset for new state ...
+                    var itemSet = new List<ProductionItem>();
+                    itemSet.Add(new ProductionItem(item.production, item.pos + 1));
+
+                    foreach (ProductionItem item2 in state.allItems)
+                        if (!item2.expanded && !item2.isReduction())
+                        {
+                            Symbol s2 = item2.production.rhs[item2.pos];
+
+                            if (s1 == s2)
+                            {
+                                item2.expanded = true;
+                                itemSet.Add(new ProductionItem(item2.production, item2.pos + 1));
+                            }
+                        }
+
+                    AutomatonState existingState = FindExistingState(s1, itemSet);
+
+                    if (existingState == null)
+                    {
+                        AutomatonState newState = new AutomatonState(itemSet);
+                        state.AddGoto(s1, newState);
+                        ExpandState(s1, newState);
+                    }
+                    else
+                        state.AddGoto(s1, existingState);
+                }
+        }
+
+
+        private AutomatonState FindExistingState(Symbol sym, List<ProductionItem> itemSet)
+        {
+            if (accessedBy.ContainsKey(sym))
+                foreach (AutomatonState state in accessedBy[sym])
+                    if (ProductionItem.SameProductions(state.kernelItems, itemSet))
+                        return state;
+
+            return null;
+        }
 
 
 
 
-		internal void BuildParseTable()
-		{
-			foreach (AutomatonState state in states)
-			{
-				// Add shift actions ...
-				foreach (Terminal t in state.terminalTransitions)
-					state.parseTable[t] = new Shift(state.Goto[t]);
+        internal void BuildParseTable()
+        {
+            foreach (var state in states)
+            {
+                // Add shift actions ...
+                foreach (var t in state.terminalTransitions)
+                    state.parseTable[t] = new Shift(state.Goto[t]);
 
-				// Add reduce actions ...
-				foreach (ProductionItem item in state.allItems)
-					if (item.isReduction())
-					{
-						// Accept on everything
-						if (item.production == grammar.rootProduction)
-							foreach (Terminal t in grammar.terminals.Values)
-								state.parseTable[t] = new Reduce(item);
+                // Add reduce actions ...
+                foreach (var item in state.allItems)
+                    if (item.isReduction())
+                    {
+                        // Accept on everything
+                        if (item.production == grammar.rootProduction)
+                            foreach (var t in grammar.terminals.Values)
+                                state.parseTable[t] = new Reduce(item);
 
-						foreach (Terminal t in item.LA)
-						{
-							// possible conflict with existing action
-							if (state.parseTable.ContainsKey(t))
-							{
+                        foreach (var t in item.LA)
+                        {
+                            // possible conflict with existing action
+                            if (state.parseTable.ContainsKey(t))
+                            {
                                 Reduce reduceAction;
-								ParserAction other = state.parseTable[t];
-                                Production iProd = item.production;
-								if ((reduceAction = other as Reduce)!= null)
+                                var other = state.parseTable[t];
+                                var iProd = item.production;
+                                if ((reduceAction = other as Reduce) != null)
                                 {
                                     Production oProd = reduceAction.item.production;
 
@@ -147,8 +147,8 @@ namespace QUT.GPGen
                                         Console.Error.WriteLine("Reduce/Reduce conflict, state {0}: {1} vs {2} on {3}",
                                                                                     state.num, iProd.num, oProd.num, t);
                                 }
-								else
-								{
+                                else
+                                {
                                     if (iProd.prec != null && t.prec != null)
                                     {
                                         if (iProd.prec.prec > t.prec.prec ||
@@ -178,16 +178,16 @@ namespace QUT.GPGen
                                         else
                                             Console.Error.WriteLine("Shift/Reduce conflict, state {0} on {1}", state.num, t);
                                     }
-									// choose in favour of the shift
-								}
-							}
-							else
-								state.parseTable[t] = new Reduce(item);
-						}
-					}
-			}
-		}
-	}
+                                    // choose in favour of the shift
+                                }
+                            }
+                            else
+                                state.parseTable[t] = new Reduce(item);
+                        }
+                    }
+            }
+        }
+    }
 
     // ===========================================================
     #region Diagnostics
@@ -219,7 +219,7 @@ namespace QUT.GPGen
             do
             {
                 changed = false;
-                foreach (AutomatonState state in states)
+                foreach (var state in states)
                 {
                     List<Symbol> newfix;
                     List<Symbol> prefix = state.shortestPrefix;
@@ -228,7 +228,7 @@ namespace QUT.GPGen
 
                     if (prefix != null)
                     {
-                        foreach (KeyValuePair<Symbol, AutomatonState> a in state.Goto)
+                        foreach (var a in state.Goto)
                         {
                             Symbol smbl = a.Key;
                             AutomatonState nextState = a.Value;
