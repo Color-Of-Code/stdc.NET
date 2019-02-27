@@ -6,11 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace QUT.GPGen
 {
-    public delegate TOut Mapper<TOut,TIn>(TIn input);
+    public delegate TOut Mapper<TOut, TIn>(TIn input);
 
     public static class ListUtilities
     {
@@ -36,7 +35,8 @@ namespace QUT.GPGen
 
             IEnumerator<T> e = list.GetEnumerator();
             if (e.MoveNext())
-                do {
+                do
+                {
                     T nt = e.Current;
                     string addend = nt.ToString();
                     if (lineBreak && builder.Length + addend.Length >= lastBreak + LineLength)
