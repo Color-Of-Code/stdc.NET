@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  gest4425
-//  DateTime: 2/26/19 9:52:40 PM
-//  UserName: jdehaan
-//  GPLEX input file <../Csharpenizer/CLexer.lex - 1/7/19 12:48:00 PM>
+//  Machine:  dehaan
+//  DateTime: 2019-02-27T20:49:02Z
+//  UserName: jaap
+//  GPLEX input file <CLexer.lex - 1/6/19 10:30:04 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: noParser, noFiles, stack, minimize
