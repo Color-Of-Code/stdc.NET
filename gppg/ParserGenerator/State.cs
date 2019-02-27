@@ -63,7 +63,7 @@ namespace QUT.GPGen
 
         private void AddKernel(Production production, int pos)
         {
-            ProductionItem item = new ProductionItem(production, pos);
+            var item = new ProductionItem(production, pos);
             kernelItems.Add(item);
             allItems.Add(item);
         }
@@ -71,7 +71,7 @@ namespace QUT.GPGen
 
         private void AddNonKernel(Production production)
         {
-            ProductionItem item = new ProductionItem(production, 0);
+            var item = new ProductionItem(production, 0);
 
             if (!allItems.Contains(item))
             {

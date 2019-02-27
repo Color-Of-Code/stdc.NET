@@ -18,7 +18,7 @@ namespace QUT.GPGen
 
         public override string ToString()
         {
-            return "reduce using rule " + item.production.num + " (" + item.production.lhs + ")";
+            return $"reduce using rule {item.production.num} ({item.production.lhs})";
         }
 
         internal override int ToNum()

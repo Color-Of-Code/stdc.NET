@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using QUT.GPGen.Parser;
-using QUT.GPGen.Lexers;
 
 [assembly: CLSCompliant(true)]
 namespace QUT.GPGen
@@ -20,7 +19,7 @@ namespace QUT.GPGen
         const int MC_OK = 0;
         const int MC_FILEERROR = 1;
         const int MC_TOOMANYERRORS = 2;
-        const int MC_EXCEPTION = 3; 
+        const int MC_EXCEPTION = 3;
 
         public static bool Babel;
         public static bool Lines = true;
@@ -38,7 +37,7 @@ namespace QUT.GPGen
         public static bool NoFilename;
         public static string OutFileName;
         public static string LinesFilename;
-        
+
         private static int Main(string[] args)
         {
             Stream inputFile = null;
@@ -69,12 +68,12 @@ namespace QUT.GPGen
                     string message;
                     inputFile = null;
                     if (x is FileNotFoundException)
-                        message = String.Format(CultureInfo.InvariantCulture, 
-                            "Source file <{0}> not found{1}", 
+                        message = String.Format(CultureInfo.InvariantCulture,
+                            "Source file <{0}> not found{1}",
                             filename, Environment.NewLine);
                     else
-                        message = String.Format(CultureInfo.InvariantCulture, 
-                            "Source file <{0}> could not be opened{1}", 
+                        message = String.Format(CultureInfo.InvariantCulture,
+                            "Source file <{0}> could not be opened{1}",
                             filename, Environment.NewLine);
                     handler.AddError(message, null); // aast.AtStart;
                     return MC_FILEERROR;
@@ -105,11 +104,12 @@ namespace QUT.GPGen
                     // If the grammar has non-terminating non-terms we cannot
                     // create a diagnostic report as the grammar is incomplete.
                     //
-                    if (!handler.Errors) {
+                    if (!handler.Errors)
+                    {
                         CodeGenerator code = new CodeGenerator();
                         code.Generate(states, grammar);
                     }
-                    
+
                     bool DoDiagnose = Diagnose && !grammar.HasNonTerminatingNonTerms;
                     if (Report || DoDiagnose)
                     {
@@ -146,10 +146,11 @@ namespace QUT.GPGen
                     return MC_TOOMANYERRORS;
                 Console.Error.WriteLine("Unexpected Error {0}", e.Message);
 
-                if (NoThrowOnError) {
-                   // report the error, do not let it go into the void
-                   Console.Error.WriteLine(e);
-                   return MC_EXCEPTION;
+                if (NoThrowOnError)
+                {
+                    // report the error, do not let it go into the void
+                    Console.Error.WriteLine(e);
+                    return MC_EXCEPTION;
                 }
             }
             finally
@@ -190,17 +191,19 @@ namespace QUT.GPGen
             {
                 if (arg[0] == '-' || arg[0] == '/')
                 {
-                  string command;
-                  string argument = null;
-                  // split off the ':' part
-                  int colonIndex = arg.IndexOf(':');
-                  if (colonIndex == -1) {
-                    command = arg.Substring(1).ToUpperInvariant();
-                  }
-                  else {
-                    command = arg.Substring(1, colonIndex - 1).ToUpperInvariant();
-                    argument = arg.Substring(colonIndex + 1);
-                  }
+                    string command;
+                    string argument = null;
+                    // split off the ':' part
+                    int colonIndex = arg.IndexOf(':');
+                    if (colonIndex == -1)
+                    {
+                        command = arg.Substring(1).ToUpperInvariant();
+                    }
+                    else
+                    {
+                        command = arg.Substring(1, colonIndex - 1).ToUpperInvariant();
+                        argument = arg.Substring(colonIndex + 1);
+                    }
                     switch (command)
                     {
                         case "?":
@@ -267,8 +270,8 @@ namespace QUT.GPGen
                             break;
                         case "NOTHROWONERROR":
                         case "NOTHROW":
-                             NoThrowOnError = true;
-                             break;
+                            NoThrowOnError = true;
+                            break;
                     }
                 }
                 else
@@ -291,7 +294,7 @@ namespace QUT.GPGen
             Console.WriteLine("/defines        Emit \"tokens\" file with token name list");
             Console.WriteLine("/gplex          Generate scanner base class for GPLEX");
             Console.WriteLine("/help           Display this help message");
-            Console.WriteLine("/line-filename:name Point #line markers at file \"name\""); 
+            Console.WriteLine("/line-filename:name Point #line markers at file \"name\"");
             Console.WriteLine("/listing        Emit listing file, even if no errors");
             Console.WriteLine("/no-info        Do not write extra information to parser header comment");
             Console.WriteLine("/no-filename    Do not write the filename in the parser output file");

@@ -22,17 +22,10 @@ namespace QUT.GPGen
             this.name = name;
         }
 
-        //protected void Rename(string newname)
-        //{
-        //    this.name = newname;
-        //}
-
-
         public override string ToString()
         {
             return name;
         }
-
 
         internal abstract bool IsNullable();
     }

@@ -18,7 +18,7 @@ namespace QUT.GPGen
 
         public override string ToString()
         {
-            return "shift, and go to state " + next.num;
+            return $"shift, and go to state {next.num}";
         }
 
         internal override int ToNum()
