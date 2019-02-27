@@ -5,8 +5,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using System.Globalization;
 using System.Diagnostics.CodeAnalysis;
 
@@ -80,10 +78,10 @@ namespace QUT.Gplex
             {
                 if (index < min) lKid.GetRange(index, out rMin, out rMax);
                 else if (index > max) rKid.GetRange(index, out rMin, out rMax);
-                else 
+                else
                 {
-                    rMin = min; 
-                    rMax = max; 
+                    rMin = min;
+                    rMax = max;
                 }
             }
 
@@ -154,7 +152,7 @@ namespace QUT.Gplex
             {
                 foreach (Parser.CharRange range in pElem.list.Ranges)
                 {
-                    count++; 
+                    count++;
                     TreeNode node = new TreeNode(range.minChr, range.maxChr, pElem.ord);
                     if (root == null) root = node; else root.InsertNewNode(node);
                 }
@@ -195,7 +193,7 @@ namespace QUT.Gplex
             internal bool Lookup(int key)
             {
                 if (key == value) return true;
-                if (key < value) 
+                if (key < value)
                     return lKid != null && lKid.Lookup(key);
                 else // (key > value)
                     return rKid != null && rKid.Lookup(key);
@@ -290,7 +288,7 @@ namespace QUT.Gplex
         internal bool this[int thisChar]
         {
             get { return root != null && root.Lookup(thisChar); }
-            set 
+            set
             {
                 if (value == false)
                     Node.Delete(ref root, thisChar);

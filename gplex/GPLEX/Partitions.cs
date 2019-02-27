@@ -3,10 +3,8 @@
 // (see accompanying GPLEXcopyright.rtf)
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using QUT.Gplex.Automaton;
 
 namespace QUT.Gplex.Parser
@@ -50,7 +48,8 @@ namespace QUT.Gplex.Parser
         /// Create a new partition
         /// </summary>
         /// <param name="symCard">The symbol alphabet cardinality</param>
-        internal Partition(int symCard, TaskState task) {
+        internal Partition(int symCard, TaskState task)
+        {
             this.myTask = task;
             CharRange.Init(symCard);
             PartitionElement.Reset();
@@ -296,7 +295,7 @@ namespace QUT.Gplex.Parser
 #endif
             if (this.partition.myTask.CaseAgnostic)
                 partition.Refine(RangeLiteral.NewCaseAgnosticPair(ch));
-            else 
+            else
                 partition.Refine(new RangeLiteral(ch));
         }
 
@@ -323,7 +322,7 @@ namespace QUT.Gplex.Parser
                         DoSingleton(leaf.chVal);
                         break;
                     case RegOp.litStr:
-                        for (int index = 0; ; )
+                        for (int index = 0; ;)
                         {
                             // Use CodePoint in case string has surrogate pairs.
                             int code = CharacterUtilities.CodePoint(leaf.str, ref index);
@@ -331,7 +330,7 @@ namespace QUT.Gplex.Parser
                                 break;
                             else
                                 DoSingleton(code);
-                        } 
+                        }
                         break;
                     case RegOp.charClass:
                         DoLiteral(leaf.rangeLit);
@@ -382,7 +381,8 @@ namespace QUT.Gplex.Parser
         /// </summary>
         /// <param name="ranges">the list of ranges</param>
         /// <param name="invert">if true, means the inverse of the list</param>
-        internal RangeList(List<CharRange> ranges, bool invert) {
+        internal RangeList(List<CharRange> ranges, bool invert)
+        {
             this.invert = invert;
             this.ranges = ranges;
         }
@@ -392,9 +392,10 @@ namespace QUT.Gplex.Parser
         /// the invert flag specified.
         /// </summary>
         /// <param name="invert"></param>
-        internal RangeList(bool invert) {
+        internal RangeList(bool invert)
+        {
             this.invert = invert;
-            ranges = new List<CharRange>(); 
+            ranges = new List<CharRange>();
         }
 
         internal bool IsEmpty { get { return ranges.Count == 0; } }
@@ -414,7 +415,7 @@ namespace QUT.Gplex.Parser
         /// <returns></returns>
         internal RangeList AND(RangeList rhOp)
         {
-            if (!isCanonical || !rhOp.isCanonical) 
+            if (!isCanonical || !rhOp.isCanonical)
                 throw new GplexInternalException("RangeList non canonicalized");
             if (this.ranges.Count == 0 || rhOp.ranges.Count == 0)
                 return new RangeList(false); // return empty RangeList
@@ -453,7 +454,7 @@ namespace QUT.Gplex.Parser
                         break;
                     else if (rhOpIx == rhOpNm)
                         return result;
-                    else 
+                    else
                         rhOpElem = rhOp.ranges[rhOpIx++];
                 }
             }
@@ -490,12 +491,12 @@ namespace QUT.Gplex.Parser
         internal RangeList SUB(RangeList rhOp)
         {
             if (!this.isCanonical || !rhOp.isCanonical)
-                throw new GplexInternalException( "RangeList not canonicalized" );
+                throw new GplexInternalException("RangeList not canonicalized");
             if (this.ranges.Count == 0)
                 return new RangeList(false);
             else if (rhOp.ranges.Count == 0)
                 return this;
-            return this.AND(new RangeList(rhOp.InvertedList(), false)); 
+            return this.AND(new RangeList(rhOp.InvertedList(), false));
         }
 
         /// <summary>
@@ -514,7 +515,7 @@ namespace QUT.Gplex.Parser
             else
             {
                 for (int i = 0; i < this.ranges.Count; i++)
-                    if (rhOp.ranges[i].CompareTo(ranges[i]) != 0) 
+                    if (rhOp.ranges[i].CompareTo(ranges[i]) != 0)
                         return false;
                 return true;
             }
@@ -528,7 +529,8 @@ namespace QUT.Gplex.Parser
         {
             if (this.isCanonical)
                 return;
-            if (!invert && this.ranges.Count <= 1) {
+            if (!invert && this.ranges.Count <= 1)
+            {
                 this.isCanonical = true;
                 return; // Empty, singleton and upper/lower pair RangeLists are trivially canonical
             }
@@ -568,30 +570,35 @@ namespace QUT.Gplex.Parser
         /// The returned list will, in general, be seriously non-canonical.
         /// </summary>
         /// <returns>New case-insensitive list</returns>
-        internal RangeList MakeCaseAgnosticList() {
+        internal RangeList MakeCaseAgnosticList()
+        {
             if (isAgnostic) return this; // Function is idempotent. Do not repeat.
             //
             // Do not canonicalize! We need to make the list case-
             // agnostic *before* we process the set inversion.
             //
             List<CharRange> agnosticList = new List<CharRange>();
-            foreach (CharRange range in this.ranges) {
-                for (int ch = range.minChr; ch <= range.maxChr; ch++) {
-                    if (ch < char.MaxValue) {
+            foreach (CharRange range in this.ranges)
+            {
+                for (int ch = range.minChr; ch <= range.maxChr; ch++)
+                {
+                    if (ch < char.MaxValue)
+                    {
                         char c = (char)ch;
                         char lo = char.ToLower(c);
                         char hi = char.ToUpper(c);
                         if (lo == hi)
                             agnosticList.Add(new CharRange(c));
-                        else {
+                        else
+                        {
                             // There is a scary possibility with some 8-bit character
                             // sets that some characters may have case-pairs that are
                             // outside the character-set range limits. Must use guard!
                             //
                             if (lo < CharRange.SymCard)
-                                agnosticList.Add( new CharRange( lo ) );
+                                agnosticList.Add(new CharRange(lo));
                             if (hi < CharRange.SymCard)
-                                agnosticList.Add( new CharRange( hi ) );
+                                agnosticList.Add(new CharRange(hi));
                         }
                     }
                     else
@@ -655,7 +662,7 @@ namespace QUT.Gplex.Parser
             if (minChr == maxChr)
                 return String.Format(CultureInfo.InvariantCulture, "singleton char {0}", CharacterUtilities.Map(minChr));
             else
-                return String.Format(CultureInfo.InvariantCulture, "char range {0} .. {1}, {2} chars", 
+                return String.Format(CultureInfo.InvariantCulture, "char range {0} .. {1}, {2} chars",
                     CharacterUtilities.Map(minChr), CharacterUtilities.Map(maxChr), maxChr - minChr + 1);
         }
 
@@ -740,7 +747,8 @@ namespace QUT.Gplex.Parser
             list = new RangeList(false);
             list.Add(new CharRange(ch, ch)); // AddToRange
         }
-        private RangeLiteral(int lo, int hi) {
+        private RangeLiteral(int lo, int hi)
+        {
             list = new RangeList(false);
             list.Add(new CharRange(lo, lo));
             list.Add(new CharRange(hi, hi));
@@ -754,8 +762,10 @@ namespace QUT.Gplex.Parser
         /// </summary>
         /// <param name="ch">the code point to test</param>
         /// <returns>a pair or a singleton RangeLiteral</returns>
-        internal static RangeLiteral NewCaseAgnosticPair(int ch) {
-            if (ch < Char.MaxValue) {
+        internal static RangeLiteral NewCaseAgnosticPair(int ch)
+        {
+            if (ch < Char.MaxValue)
+            {
                 char c = (char)ch;
                 char lo = char.ToLower(c);
                 char hi = char.ToUpper(c);
@@ -772,8 +782,9 @@ namespace QUT.Gplex.Parser
         /// For ASCII case just [\n\r], for 
         /// unicode [\r\n\u0085\u2028\u2029]
         /// </summary>
-        internal static RangeLiteral RightAnchors { 
-            get 
+        internal static RangeLiteral RightAnchors
+        {
+            get
             {
                 if (rAnchor == null)
                 {
@@ -819,10 +830,11 @@ namespace QUT.Gplex.Parser
                 tag = TagType.shortRun;
         }
 
-        internal MapRun(int min, int max) : this(min, max, 0) {}
+        internal MapRun(int min, int max) : this(min, max, 0) { }
 
-        internal int Length { 
-            get { return ((int)range.maxChr - (int)range.minChr + 1); } 
+        internal int Length
+        {
+            get { return ((int)range.maxChr - (int)range.minChr + 1); }
         }
 
         internal int TableOrd { get { return tableOrd; } set { tableOrd = value; } }
@@ -831,7 +843,7 @@ namespace QUT.Gplex.Parser
 
         internal void Merge(int min, int max, int val)
         {
-            if (this.range.maxChr != (min - 1)) 
+            if (this.range.maxChr != (min - 1))
                 throw new GplexInternalException("Bad MapRun Merge");
             this.range.maxChr = max;
             this.tag = TagType.mixedValues;

@@ -2,14 +2,8 @@
 // Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
-using System;
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Text;
-using QUT.Gplex.Parser;
 
 namespace QUT.Gplex.Automaton
 {
@@ -58,7 +52,8 @@ namespace QUT.Gplex.Automaton
             blk.AddNode(node);
         }
 
-        internal PartitionBlock(int symbolCardinality) {
+        internal PartitionBlock(int symbolCardinality)
+        {
             symbolsLeft = symbolCardinality;            // Default cardinality of symbol alphabet.
             members = new LinkedList<DFSA.DState>();
         }
@@ -76,8 +71,9 @@ namespace QUT.Gplex.Automaton
         PartitionBlock startStates;
         List<PartitionBlock> acceptStates = new List<PartitionBlock>();
         List<PartitionBlock> allBlocks = new List<PartitionBlock>();
-        
-        internal Minimizer(DFSA dfsa) { 
+
+        internal Minimizer(DFSA dfsa)
+        {
             this.dfsa = dfsa;
             otherStates = MkNewBlock();
             startStates = MkNewBlock();
@@ -177,11 +173,11 @@ namespace QUT.Gplex.Automaton
                     else
                     {
                         if (first.lhCntx > 0 && first.lhCntx == dSt.lhCntx)
-                            // From now on only add states with matching lhs length
-                            { first.rhCntx = 0; dSt.rhCntx = 0; return blk; }
+                        // From now on only add states with matching lhs length
+                        { first.rhCntx = 0; dSt.rhCntx = 0; return blk; }
                         if (first.rhCntx > 0 && first.rhCntx == dSt.rhCntx)
-                            // From now on only add states with matching rhs length
-                            { first.lhCntx = 0; dSt.lhCntx = 0; return blk; }
+                        // From now on only add states with matching rhs length
+                        { first.lhCntx = 0; dSt.lhCntx = 0; return blk; }
                     }
             }
             PartitionBlock nxt = MkNewBlock();
@@ -222,7 +218,8 @@ namespace QUT.Gplex.Automaton
                 PartitionBlock blk = worklist.Peek();
 
                 int sym = blk.Sym - 1;
-                if (sym < 0) { 
+                if (sym < 0)
+                {
                     worklist.Pop();           // Remove block from the worklist.
                     continue;                 // Go around again to get new block.
                 }

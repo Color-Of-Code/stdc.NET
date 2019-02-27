@@ -37,7 +37,7 @@ namespace QUT.Gplex.Parser
         /// <returns>A span from the start of 'this' to the end of 'end'</returns>
         public LexSpan Merge(LexSpan end)
         {
-            return new LexSpan(startLine, startColumn, end.endLine, end.endColumn, startIndex, end.endIndex, buffer); 
+            return new LexSpan(startLine, startColumn, end.endLine, end.endColumn, startIndex, end.endIndex, buffer);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace QUT.Gplex.Parser
 
         static LexSpan blank = new LexSpan();  // marked by buff == null
         internal static LexSpan BlankSpan { get { return blank; } }
- 
+
         ErrorHandler handler;
         StartStateScope scope = new StartStateScope();
 
@@ -123,7 +123,8 @@ namespace QUT.Gplex.Parser
 
         internal static AAST.Destination Dest
         {
-            get { // only the first declaration can go in the usingDcl group
+            get
+            { // only the first declaration can go in the usingDcl group
                 return AAST.Destination.codeIncl;
             }
         }
@@ -148,7 +149,7 @@ namespace QUT.Gplex.Parser
             {
                 string s = nameList[i];
                 LexSpan l = nameLocs[i];
-                if (Char.IsDigit(s[0])) handler.ListError(l, 72, s); 
+                if (Char.IsDigit(s[0])) handler.ListError(l, 72, s);
                 else if (!aast.AddStartState(isExcl, s)) handler.ListError(l, 50, s);
             }
             // And now clear the nameList
@@ -233,7 +234,7 @@ namespace QUT.Gplex.Parser
             string verb = aast.scanner.Buffer.GetString(vLoc.startIndex, vLoc.endIndex);
             if (!aast.AddLexCategory(name, verb, vLoc))
                 handler.ListError(nLoc, 52, name);
-                // handler.AddError("Error: name " + name + " already defined", nLoc);
+            // handler.AddError("Error: name " + name + " already defined", nLoc);
         }
 
     }

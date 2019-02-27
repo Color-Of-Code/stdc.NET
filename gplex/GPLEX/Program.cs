@@ -3,28 +3,25 @@
 // (see accompanying GPLEXcopyright.rtf)
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using QUT.Gplex.Automaton;
 using QUT.Gplex.Parser;
 
 [assembly: CLSCompliant(true)]
 namespace QUT.Gplex
 {
-	static class Program
-	{
-		const string prefix = "GPLEX: ";
+    static class Program
+    {
+        const string prefix = "GPLEX: ";
 
-		static void Main(string[] args)
-		{
+        static void Main(string[] args)
+        {
             bool fileArg = false;
-			TaskState task = new TaskState();
+            TaskState task = new TaskState();
             OptionState opResult = OptionState.clear;
-			if (args.Length == 0)
-				Usage("No arguments");
-			for (int i = 0; i < args.Length; i++)
-			{
+            if (args.Length == 0)
+                Usage("No arguments");
+            for (int i = 0; i < args.Length; i++)
+            {
                 if (args[i][0] == '/' || args[i][0] == '-')
                 {
                     string arg = args[i].Substring(1);
@@ -38,7 +35,7 @@ namespace QUT.Gplex
                     Usage("Too many arguments");
                 else
                     fileArg = true;
-			}
+            }
             if (task.Version)
                 task.Msg.WriteLine("GPLEX version: " + task.VerString);
             if (opResult == OptionState.needCodepageHelp)
@@ -74,10 +71,10 @@ namespace QUT.Gplex
                 Environment.Exit(1);
             else
                 Environment.Exit(0);
-		}
+        }
 
-		static void BadOption(string arg, OptionState rslt)
-		{
+        static void BadOption(string arg, OptionState rslt)
+        {
             string marker = "";
             switch (rslt)
             {
@@ -92,22 +89,22 @@ namespace QUT.Gplex
                     break;
             }
             Console.Error.WriteLine("{0} {1}: {2}", prefix, marker, arg);
-		}
+        }
 
-		static void Usage() // print the usage message but do not abort.
-		{
-			Console.WriteLine(prefix + "Usage");
-			Console.WriteLine("gplex [options] filename");
-			Console.WriteLine("default filename extension is \".lex\"");
-  			Console.WriteLine("  options:  /babel           -- create extra interface for Managed Babel scanner");
+        static void Usage() // print the usage message but do not abort.
+        {
+            Console.WriteLine(prefix + "Usage");
+            Console.WriteLine("gplex [options] filename");
+            Console.WriteLine("default filename extension is \".lex\"");
+            Console.WriteLine("  options:  /babel           -- create extra interface for Managed Babel scanner");
             Console.WriteLine("            /caseInsensitive -- create a case-insensitive automaton");
             Console.WriteLine("            /check           -- create automaton but do not create output file");
             Console.WriteLine("            /codePage:NN     -- default codepage NN if no unicode prefix (BOM)");
             Console.WriteLine("            /codePageHelp    -- display codepage help");
             Console.WriteLine("            /classes         -- use character equivalence classes");
             Console.WriteLine("            /errorsToConsole -- legacy error-messages (not MSBUILD friendly)");
-            Console.WriteLine("            /frame:path      -- use \"path\" as frame file" );
-            Console.WriteLine("            /help            -- display this usage message" );
+            Console.WriteLine("            /frame:path      -- use \"path\" as frame file");
+            Console.WriteLine("            /help            -- display this usage message");
             Console.WriteLine("            /info            -- scanner has header comment (on by default)");
             Console.WriteLine("            /listing         -- emit listing even if no errors");
             Console.WriteLine("            /noCompress      -- do not compress scanner tables");
@@ -152,13 +149,13 @@ namespace QUT.Gplex
             }
         }
 
-		static void Usage(string msg)  // print the usage message and die.
-		{
-			if (msg != null)
-				Console.WriteLine(prefix + msg);
-			Usage();
-			Console.WriteLine("  Terminating ...");
-			Environment.Exit(1);
-		}
-	}
+        static void Usage(string msg)  // print the usage message and die.
+        {
+            if (msg != null)
+                Console.WriteLine(prefix + msg);
+            Usage();
+            Console.WriteLine("  Terminating ...");
+            Environment.Exit(1);
+        }
+    }
 }

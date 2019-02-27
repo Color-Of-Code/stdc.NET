@@ -4,17 +4,14 @@
 
 using System;
 using System.IO;
-using System.Xml;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using QUT.Gplex.Parser;
 using QUT.GplexBuffers;
 
 namespace QUT.Gplex.Automaton
 {
-	internal enum OptionState { clear, needUsage, needCodepageHelp, inconsistent, alphabetLocked, errors};
+    internal enum OptionState { clear, needUsage, needCodepageHelp, inconsistent, alphabetLocked, errors };
 
     /// <summary>
     /// A singleton of this type holds the main program state during
@@ -25,7 +22,7 @@ namespace QUT.Gplex.Automaton
     /// from the managed babel wrapper.
     /// </summary>
 	internal class TaskState : IDisposable
-	{
+    {
         internal const int minGplexxVersion = 285;
 
         internal const int utf8CP = 65001;    // ==> Create a UTF-8 decoder buffer.
@@ -50,14 +47,14 @@ namespace QUT.Gplex.Automaton
 
         bool stack;
         bool babel;
-		bool verbose;
+        bool verbose;
         bool caseAgnostic;
         bool emitInfo = true;
-		bool checkOnly;
+        bool checkOnly;
         bool parseOnly;
         bool persistBuff = true;
-		bool summary;
-		bool listing;
+        bool summary;
+        bool listing;
         bool emitVer;
         bool files = true;
         bool embedBuffers = true;
@@ -72,7 +69,7 @@ namespace QUT.Gplex.Automaton
         bool hasParser = true;
         bool charClasses;
         bool useUnicode;
-		string fileName;                   // Filename of the input file.
+        string fileName;                   // Filename of the input file.
         string inputInfo;                  // Pathname plus last write DateTime.
         string pathName;                   // Input file path string from user.
         string outName;                    // Output file path string (possibly empty)
@@ -90,16 +87,16 @@ namespace QUT.Gplex.Automaton
         StreamWriter listWriter;
         TextWriter msgWrtr = Console.Out;
 
-		NFSA nfsa;
-		DFSA dfsa;
+        NFSA nfsa;
+        DFSA dfsa;
         internal Partition partition;
 
-		internal AAST aast;
+        internal AAST aast;
         internal ErrorHandler handler;
         internal QUT.Gplex.Parser.Parser parser;
         internal QUT.Gplex.Lexer.Scanner scanner;
 
-		internal TaskState() 
+        internal TaskState()
         {
             Assembly assm = Assembly.GetExecutingAssembly();
             object info = Attribute.GetCustomAttribute(assm, typeof(AssemblyFileVersionAttribute));
@@ -119,7 +116,7 @@ namespace QUT.Gplex.Automaton
             GC.SuppressFinalize(this);
         }
 
-		// Support for various properties of the task
+        // Support for various properties of the task
         internal bool Files { get { return files; } }
         internal bool Stack { get { return stack; } }
         internal bool Babel { get { return babel; } }
@@ -130,14 +127,15 @@ namespace QUT.Gplex.Automaton
         internal bool CaseAgnostic { get { return caseAgnostic; } }
         internal bool EmitInfoHeader { get { return emitInfo; } }
 
-        internal bool Version    { get { return emitVer; } }
-        internal bool Summary    { get { return summary; } }
-		internal bool Listing    { get { return listing; } }
+        internal bool Version { get { return emitVer; } }
+        internal bool Summary { get { return summary; } }
+        internal bool Listing { get { return listing; } }
 
-        internal bool ParseOnly  { get { return parseOnly; } }
-        internal bool Persist    { get { return persistBuff; } }
-        internal bool Errors     { get { return handler.Errors; } }
-        internal bool CompressMap  {
+        internal bool ParseOnly { get { return parseOnly; } }
+        internal bool Persist { get { return persistBuff; } }
+        internal bool Errors { get { return handler.Errors; } }
+        internal bool CompressMap
+        {
             // If useUnicode, we obey the compressMap Boolean.
             // If compressMapExplicit, we obey the compressMap Boolean.
             // Otherwise we return false.
@@ -145,33 +143,35 @@ namespace QUT.Gplex.Automaton
             // The result of this is that the default for unicode
             // is to compress both map and next-state tables, while
             // for 8-bit scanners we compress next-state but not map.
-            get {
+            get
+            {
                 if (useUnicode || compressMapExplicit)
                     return compressMap;
                 else
                     return false;
-            } 
+            }
         }
         internal bool Squeeze { get { return squeeze; } }
         internal bool CompressNext { get { return compressNext; } }
-        internal bool Minimize   { get { return minimize; } }
-        internal bool Warnings   { get { return handler.Warnings; } }
-        internal bool Unicode    { get { return useUnicode; } }
+        internal bool Minimize { get { return minimize; } }
+        internal bool Warnings { get { return handler.Warnings; } }
+        internal bool Unicode { get { return useUnicode; } }
         internal bool ErrorsToConsole { get { return errorsToConsole; } }
 
-        internal int    CodePage   { get { return fallbackCodepage; } }
-        internal int    ErrNum     { get { return handler.ErrNum; } }
-        internal int    WrnNum     { get { return handler.WrnNum; } }
-        internal string VerString  { get { return version; } }
+        internal int CodePage { get { return fallbackCodepage; } }
+        internal int ErrNum { get { return handler.ErrNum; } }
+        internal int WrnNum { get { return handler.WrnNum; } }
+        internal string VerString { get { return version; } }
         internal string FileName { get { return fileName; } }
         internal string InputInfo { get { return inputInfo; } }
         internal string FrameName { get { return frameName; } }
-        internal TextWriter Msg    { get { return msgWrtr; } }
+        internal TextWriter Msg { get { return msgWrtr; } }
 
         internal int HostSymCardinality { get { return hostSymCardinality; } }
 
-        internal int TargetSymCardinality { 
-            get 
+        internal int TargetSymCardinality
+        {
+            get
             {
                 if (targetSymCardinality == notSet)
                     targetSymCardinality = asciiCardinality;
@@ -183,15 +183,15 @@ namespace QUT.Gplex.Automaton
         {
             get
             {
-                if (listWriter == null) 
+                if (listWriter == null)
                     listWriter = ListingFile(baseName + dotLst);
                 return listWriter;
             }
         }
 
-		// parse the command line options
-		internal OptionState ParseOption(string option)
-		{
+        // parse the command line options
+        internal OptionState ParseOption(string option)
+        {
             string arg = option.ToUpperInvariant();
             if (arg.StartsWith("OUT:", StringComparison.Ordinal))
             {
@@ -213,7 +213,7 @@ namespace QUT.Gplex.Automaton
             {
                 bool negate = arg.StartsWith("NO", StringComparison.Ordinal);
 
-                if (negate) 
+                if (negate)
                     arg = arg.Substring(2);
                 if (arg.Equals("CHECK", StringComparison.Ordinal)) checkOnly = !negate;
                 else if (arg.StartsWith("CASEINSEN", StringComparison.Ordinal)) caseAgnostic = !negate;
@@ -236,21 +236,25 @@ namespace QUT.Gplex.Automaton
                     else
                         fallbackCodepage = utf8CP;
                 }
-                else if (arg.Equals("COMPRESSMAP", StringComparison.Ordinal)) {
+                else if (arg.Equals("COMPRESSMAP", StringComparison.Ordinal))
+                {
                     compressMap = !negate;
                     compressMapExplicit = true;
                 }
-                else if (arg.Equals("COMPRESSNEXT", StringComparison.Ordinal)) {
+                else if (arg.Equals("COMPRESSNEXT", StringComparison.Ordinal))
+                {
                     compressNext = !negate;
                     //compressNextExplicit = true;
                 }
-                else if (arg.Equals("COMPRESS", StringComparison.Ordinal)) {
+                else if (arg.Equals("COMPRESS", StringComparison.Ordinal))
+                {
                     compressMap = !negate;
                     compressNext = !negate;
                     compressMapExplicit = true;
                     //compressNextExplicit = true;
                 }
-                else if (arg.Equals("SQUEEZE", StringComparison.Ordinal)) {
+                else if (arg.Equals("SQUEEZE", StringComparison.Ordinal))
+                {
                     // Compress both map and next-state
                     // but do not use two-level compression
                     // ==> trade time for space.
@@ -260,7 +264,8 @@ namespace QUT.Gplex.Automaton
                     compressMapExplicit = true;
                     //compressNextExplicit = true;
                 }
-                else if (arg.Equals("UNICODE", StringComparison.Ordinal)) {
+                else if (arg.Equals("UNICODE", StringComparison.Ordinal))
+                {
                     // Have to do some checks here. If an attempt is made to
                     // set (no)unicode after the alphabet size has been set
                     // it is a command line or inline option error.
@@ -270,17 +275,20 @@ namespace QUT.Gplex.Automaton
                         targetSymCardinality = cardinality;
                     else
                         return OptionState.alphabetLocked;
-                    if (useUnicode) {
+                    if (useUnicode)
+                    {
                         charClasses = true;
                         if (!compressMapExplicit)
                             compressMap = true;
                     }
                 }
-                else if (arg.Equals("VERBOSE", StringComparison.Ordinal)) {
+                else if (arg.Equals("VERBOSE", StringComparison.Ordinal))
+                {
                     verbose = !negate;
                     if (verbose) emitVer = true;
                 }
-                else if (arg.Equals("CLASSES", StringComparison.Ordinal)) {
+                else if (arg.Equals("CLASSES", StringComparison.Ordinal))
+                {
                     if (negate && useUnicode)
                         return OptionState.inconsistent;
                     charClasses = !negate;
@@ -289,15 +297,16 @@ namespace QUT.Gplex.Automaton
                     return OptionState.errors;
             }
             return OptionState.clear;
-		}
+        }
 
-		internal void ErrorReport()
-		{
-            try {
+        internal void ErrorReport()
+        {
+            try
+            {
                 if (errorsToConsole)
-                    handler.DumpAll( scanner.Buffer, msgWrtr );
+                    handler.DumpAll(scanner.Buffer, msgWrtr);
                 else
-                    handler.DumpErrorsInMsbuildFormat( scanner.Buffer, msgWrtr );
+                    handler.DumpErrorsInMsbuildFormat(scanner.Buffer, msgWrtr);
             }
             catch (IOException)
             {
@@ -316,8 +325,8 @@ namespace QUT.Gplex.Automaton
                     listWriter = ListingFile(baseName + dotLst);
                 handler.MakeListing(scanner.Buffer, listWriter, fileName, version);
             }
-            catch (IOException) 
-            { 
+            catch (IOException)
+            {
                 /* ignore exception, can't error-list it anyway */
                 Console.Error.WriteLine("Failed to create listing");
             }
@@ -377,7 +386,7 @@ namespace QUT.Gplex.Automaton
             {
                 inputFile = null;
                 handler = new ErrorHandler(); // To stop handler.ErrNum faulting!
-                string message = String.Format(CultureInfo.InvariantCulture, 
+                string message = String.Format(CultureInfo.InvariantCulture,
                     "Source file <{0}> not found{1}", fileName, Environment.NewLine);
                 handler.AddError(message, null); // aast.AtStart;
                 throw new ArgumentException(message);
@@ -403,7 +412,7 @@ namespace QUT.Gplex.Automaton
                 return null;
             }
         }
-        
+
         TextReader FrameReader()
         {
             if (this.userFrame != null)
@@ -523,7 +532,7 @@ namespace QUT.Gplex.Automaton
         internal void ListDivider()
         {
             ListStream.WriteLine(
-            "============================================================================="); 
+            "=============================================================================");
         }
 
         void Status(DateTime start)
@@ -547,7 +556,7 @@ namespace QUT.Gplex.Automaton
         }
 
         internal void Process(string fileArg)
-		{
+        {
             GetNames(fileArg);
             // check for file exists
             OpenSource();
@@ -565,21 +574,22 @@ namespace QUT.Gplex.Automaton
                     aast = parser.Aast;
                     parser.Parse();
                     // aast.DiagnosticDump();
-                    if (verbose) 
+                    if (verbose)
                         Status(start);
                     CheckOptions();
                     if (!Errors && !ParseOnly)
                     {	// build NFSA
-                        if (ChrClasses) {
+                        if (ChrClasses)
+                        {
                             DateTime t0 = DateTime.Now;
-                            partition = new Partition( TargetSymCardinality, this );
-                            partition.FindClasses( aast );
+                            partition = new Partition(TargetSymCardinality, this);
+                            partition.FindClasses(aast);
                             partition.FixMap();
                             if (verbose)
-                                ClassStatus( t0, partition.Length );
+                                ClassStatus(t0, partition.Length);
                         }
                         else
-                            CharRange.Init( TargetSymCardinality );
+                            CharRange.Init(TargetSymCardinality);
                         nfsa = new NFSA(this);
                         nfsa.Build(aast);
                         if (!Errors)
@@ -599,9 +609,9 @@ namespace QUT.Gplex.Automaton
                                     if (!embedBuffers)
                                         CopyBufferCode();
                                     // Clean up!
-                                    if (frameRdr != null) 
+                                    if (frameRdr != null)
                                         frameRdr.Close();
-                                    if (outputWrtr != null) 
+                                    if (outputWrtr != null)
                                         outputWrtr.Close();
                                 }
                             }
@@ -615,6 +625,6 @@ namespace QUT.Gplex.Automaton
                     throw;
                 }
             }
-		}
-	}
+        }
+    }
 }

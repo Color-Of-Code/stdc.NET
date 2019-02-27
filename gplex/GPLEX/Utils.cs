@@ -258,7 +258,7 @@ namespace QUT.Gplex.Parser
                 case '1':
                 case '2':
                 case '3':
-                    if (chr == '0' && (index>=source.Length || !IsOctDigit(source[index])))
+                    if (chr == '0' && (index >= source.Length || !IsOctDigit(source[index])))
                         return (int)'\0';
                     valu = GetOctalChar(GetSubstring(source, index - 1, 3)); index += 2;
                     if (valu >= 0)
@@ -351,7 +351,7 @@ namespace QUT.Gplex.Parser
             if (source != null)
             {
                 int index = 0;
-                for (int point; (point = CodePoint(source, ref index)) != -1; )
+                for (int point; (point = CodePoint(source, ref index)) != -1;)
                     rslt += StrMap(point);
             }
             return rslt;

@@ -5,7 +5,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using QUT.Gplex.Parser;
 
 namespace QUT.Gplex.Automaton
@@ -462,12 +461,15 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             /// <param name="chr">The character value</param>
             /// <param name="nxt">The destination state</param>
-            public void AddChrTrns(int chr, NState nxt) {
-                if (myNfaInst.parent.task.CaseAgnostic  && chr < Char.MaxValue) {
+            public void AddChrTrns(int chr, NState nxt)
+            {
+                if (myNfaInst.parent.task.CaseAgnostic && chr < Char.MaxValue)
+                {
                     char c = (char)chr;
                     char lo = Char.ToLower(c);
                     char hi = Char.ToUpper(c);
-                    if (lo != hi) {
+                    if (lo != hi)
+                    {
                         AddTrns(lo, nxt);
                         AddTrns(hi, nxt);
                         return;
@@ -476,7 +478,8 @@ namespace QUT.Gplex.Automaton
                 AddTrns(chr, nxt);
             }
 
-            private void AddTrns(int chr, NState nxt) {
+            private void AddTrns(int chr, NState nxt)
+            {
                 if (myNfaInst.Pack)
                     chr = myNfaInst.parent.task.partition[chr];
                 AddRawTransition(chr, nxt);
@@ -525,7 +528,8 @@ namespace QUT.Gplex.Automaton
             /// <param name="nxt">The destination state</param>
             public void AddClsTrans(Leaf leaf, NState nxt)
             {
-                if (myNfaInst.parent.task.CaseAgnostic) {
+                if (myNfaInst.parent.task.CaseAgnostic)
+                {
                     leaf.rangeLit.list = leaf.rangeLit.list.MakeCaseAgnosticList();
                     leaf.rangeLit.list.Canonicalize();
                 }

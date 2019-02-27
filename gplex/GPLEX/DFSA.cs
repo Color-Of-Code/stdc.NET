@@ -4,10 +4,8 @@
 
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using QUT.Gplex.Parser;
 
 namespace QUT.Gplex.Automaton
@@ -76,7 +74,7 @@ namespace QUT.Gplex.Automaton
         /// "newNext" is the new dictionary in which the replacement next
         /// state table is built, in the event that the FSA is minimized.
         /// </summary>
-        internal Dictionary<ulong, DState> newNext; 
+        internal Dictionary<ulong, DState> newNext;
         void InitNewNext() { newNext = new Dictionary<ulong, DState>(); }
         void OverwriteOldNext() { next = newNext; }
 
@@ -401,7 +399,7 @@ namespace QUT.Gplex.Automaton
                             if (nStCh != null)                         // ==> we have a transition
                             {
                                 // Create next state set on demand, and insert ord in set.
-                                if (nxSet == null) 
+                                if (nxSet == null)
                                     nxSet = factory.MkNewSet();
                                 nxSet.Insert(nStCh.ord);
                             }
@@ -530,11 +528,11 @@ namespace QUT.Gplex.Automaton
 
             internal int listOrd;                           // only used by the minimizer algorithm
             internal object block;                          // only used by the minimizer algorithm
-            internal LinkedListNode<DState> listNode ;      // only used by the minimizer algorithm
-            private List<DState>[] predecessors ;           // inverse nextState, only used by minimizer
+            internal LinkedListNode<DState> listNode;      // only used by the minimizer algorithm
+            private List<DState>[] predecessors;           // inverse nextState, only used by minimizer
 
             readonly uint serialNumber;                      // immutable value used in the dictionary key
-            private ulong Key(int sym) { return (((ulong)serialNumber) << 22) + (uint)sym;  }
+            private ulong Key(int sym) { return (((ulong)serialNumber) << 22) + (uint)sym; }
 
             internal DState(DFSA dfsa)
             {
@@ -542,7 +540,7 @@ namespace QUT.Gplex.Automaton
                 myDfsa = dfsa;
             }
 
-            internal DState(DfsaInstance inst) 
+            internal DState(DfsaInstance inst)
             {
                 serialNumber = nextSN++;
                 myDfaInst = inst;
@@ -555,7 +553,8 @@ namespace QUT.Gplex.Automaton
             /// Final global number of this DState. Not valid until
             /// allocation, after separation into accept and non-accept states
             /// </summary>
-            public int Num { 
+            public int Num
+            {
                 get { return globOrd; }
                 set { globOrd = value; }
             }
@@ -619,13 +618,13 @@ namespace QUT.Gplex.Automaton
             /// <returns>predicate "next-state tables are equal"</returns>
             public bool EquivalentNextStates(DState other)
             {
-                if (this.DefaultNext == other.DefaultNext && 
+                if (this.DefaultNext == other.DefaultNext &&
                     this.trList.Count == other.trList.Count)
                 {
                     for (int i = 0; i < this.trList.Count; i++)
                     {
                         int sym = this.trList[i];
-                        if (sym != other.trList[i] || this.GetNext(sym) != other.GetNext(sym)) 
+                        if (sym != other.trList[i] || this.GetNext(sym) != other.GetNext(sym))
                             return false;
                     }
                     return true;
@@ -658,7 +657,7 @@ namespace QUT.Gplex.Automaton
             {
                 if (!HasPredecessors())
                     InitPredecessors();
-                if (GetPredecessors(smbl) == null) 
+                if (GetPredecessors(smbl) == null)
                     SetPredecessors(smbl, new List<DState>());
                 GetPredecessors(smbl).Add(pred);
             }
@@ -704,7 +703,7 @@ namespace QUT.Gplex.Automaton
                 for (int i = 0; i < max * 2; i++) // Cater for wrap-around runs;
                 {
                     int nxt = NextOn(i % max);
-                    if (nxt == current) 
+                    if (nxt == current)
                         runLeng++;
                     else
                     {
@@ -720,14 +719,14 @@ namespace QUT.Gplex.Automaton
                 }
                 if (bestRun == max * 2)
                 {
-                    min = 0; 
-                    rng = 0; 
+                    min = 0;
+                    rng = 0;
                     pop = bestNxt;
                 }
                 else
                 {
-                    min = (uint)(bestIdx % max); 
-                    rng = (uint)(max - bestRun); 
+                    min = (uint)(bestIdx % max);
+                    rng = (uint)(max - bestRun);
                     pop = bestNxt;
                 }
             }
@@ -790,7 +789,7 @@ namespace QUT.Gplex.Automaton
                 {
                     if (rule.replacedBy != null)
                     {
-                        myTask.handler.ListError(rule.replacedBy.pSpan, 117, rule.Pattern, '"'); 
+                        myTask.handler.ListError(rule.replacedBy.pSpan, 117, rule.Pattern, '"');
                         myTask.handler.ListError(rule.pSpan, 116, rule.replacedBy.Pattern, '"');
                     }
                     else
@@ -848,9 +847,9 @@ namespace QUT.Gplex.Automaton
                                         ", backup states = " + backupCount);
             if (hasLeftAnchors)
                 myTask.ListStream.WriteLine("Automaton will cater for left-anchored patterns");
-            
+
             if (myTask.Minimize)
-                myTask.ListStream.WriteLine("Original state number was {0}, minimized machine has {1} states", 
+                myTask.ListStream.WriteLine("Original state number was {0}, minimized machine has {1} states",
                     origLength, globNext);
             else
                 myTask.ListStream.WriteLine("No state minimization.");
@@ -879,11 +878,11 @@ namespace QUT.Gplex.Automaton
                     }
 
                 }
-                myTask.ListStream.WriteLine("Compression summary: used {0:N0} nextstate entries, plus {1:N0} map entries", 
+                myTask.ListStream.WriteLine("Compression summary: used {0:N0} nextstate entries, plus {1:N0} map entries",
                     tranNum, entries);
                 myTask.ListStream.WriteLine("- Uncompressed automaton would have {0:N0} nextstate entries", fullNum);
                 myTask.ListStream.WriteLine("- Input characters are packed into {0:N0} equivalence classes", MaxSym);
-                myTask.ListStream.WriteLine("- CharClass compression {0:F2}%, {1:N0} entries Vs {2:N0}", 
+                myTask.ListStream.WriteLine("- CharClass compression {0:F2}%, {1:N0} entries Vs {2:N0}",
                     classCompression, MaxSym, symCard);
                 if (myTask.CompressNext)
                 {
@@ -1032,34 +1031,35 @@ namespace QUT.Gplex.Automaton
 
                 string line;
                 // Write the expanatory header
-                sWrtr.WriteLine( "//" );
-                sWrtr.WriteLine( "//  This CSharp output file generated by Gardens Point LEX" );
-                sWrtr.WriteLine( "//  Gardens Point LEX (GPLEX) is Copyright (c) John Gough, QUT 2006-2014." );
-                sWrtr.WriteLine( "//  Output produced by GPLEX is the property of the user." );
-                sWrtr.WriteLine( "//  See accompanying file GPLEXcopyright.rtf." );
-                sWrtr.WriteLine( "//" );
-                sWrtr.WriteLine( "//  GPLEX Version:  " + myTask.VerString );
-                if (myTask.EmitInfoHeader) {
-                    sWrtr.WriteLine( "//  Machine:  " + Environment.MachineName );
-                    sWrtr.WriteLine( "//  DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") );
-                    sWrtr.WriteLine( "//  UserName: " + Environment.UserName );
+                sWrtr.WriteLine("//");
+                sWrtr.WriteLine("//  This CSharp output file generated by Gardens Point LEX");
+                sWrtr.WriteLine("//  Gardens Point LEX (GPLEX) is Copyright (c) John Gough, QUT 2006-2014.");
+                sWrtr.WriteLine("//  Output produced by GPLEX is the property of the user.");
+                sWrtr.WriteLine("//  See accompanying file GPLEXcopyright.rtf.");
+                sWrtr.WriteLine("//");
+                sWrtr.WriteLine("//  GPLEX Version:  " + myTask.VerString);
+                if (myTask.EmitInfoHeader)
+                {
+                    sWrtr.WriteLine("//  Machine:  " + Environment.MachineName);
+                    sWrtr.WriteLine("//  DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    sWrtr.WriteLine("//  UserName: " + Environment.UserName);
                 }
-                sWrtr.WriteLine( "//  GPLEX input file <" + myTask.InputInfo + ">" );
-                sWrtr.WriteLine( "//  GPLEX frame file <" + myTask.FrameName + ">" );
-                sWrtr.WriteLine( "//" );
-                sWrtr.WriteLine( "//  Option settings:{0}{1}{2}{3}{4}{5}",
+                sWrtr.WriteLine("//  GPLEX input file <" + myTask.InputInfo + ">");
+                sWrtr.WriteLine("//  GPLEX frame file <" + myTask.FrameName + ">");
+                sWrtr.WriteLine("//");
+                sWrtr.WriteLine("//  Option settings:{0}{1}{2}{3}{4}{5}",
                     (myTask.Unicode ? " unicode," : ""),
                     (myTask.Verbose ? " verbose," : ""),
                     (myTask.HasParser ? " parser," : " noParser,"),
                     (myTask.Files ? "" : " noFiles,"),
                     (myTask.Stack ? " stack," : ""),
-                    (myTask.Minimize ? " minimize" : " noMinimize") );
-                sWrtr.WriteLine( "//  Option settings:{0}{1}{2}{3}{4}",
+                    (myTask.Minimize ? " minimize" : " noMinimize"));
+                sWrtr.WriteLine("//  Option settings:{0}{1}{2}{3}{4}",
                     (myTask.ChrClasses ? " classes," : ""),
                     (myTask.ChrClasses ? (myTask.CompressMap ? " compressMap," : " noCompressMap,") : ""),
                     (myTask.CompressNext ? " compressNext," : " noCompressNext,"),
                     (myTask.Files ? (myTask.Persist ? " persistBuffer," : " noPersistBuffer,") : ""),
-                    (myTask.EmbedBuffers ? " embedbuffers" : " noEmbedBuffers") );
+                    (myTask.EmbedBuffers ? " embedbuffers" : " noEmbedBuffers"));
 
                 if (myTask.Unicode && myTask.Files)
                 {
@@ -1090,7 +1090,7 @@ namespace QUT.Gplex.Automaton
                 for (int i = 0; i < stateList.Count; i++)
                 {
                     DState dSt = stateList[i];
-                    if (dSt.Num == unset) 
+                    if (dSt.Num == unset)
                         dSt.Num = globNext++;
                 }
                 stateList.Sort();           // sorted on globOrd number
@@ -1161,8 +1161,9 @@ namespace QUT.Gplex.Automaton
                             }
                             if (selector.StartsWith("version", StringComparison.Ordinal))
                             {
-                                try {
-                                  frameVersion = int.Parse(selector.Substring(7, selector.Length - 7), CultureInfo.InvariantCulture);
+                                try
+                                {
+                                    frameVersion = int.Parse(selector.Substring(7, selector.Length - 7), CultureInfo.InvariantCulture);
                                 }
                                 catch (ArgumentException) { }
                                 catch (OverflowException) { }
@@ -1273,13 +1274,13 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector.StartsWith("visibility", StringComparison.Ordinal))
                             {
-                                sWrtr.Write("    "); 
-                                sWrtr.WriteLine(Translate(selector)); 
+                                sWrtr.Write("    ");
+                                sWrtr.WriteLine(Translate(selector));
                             }
                             else if (selector.StartsWith("translate", StringComparison.Ordinal))
                             {
-                                sWrtr.Write("    "); 
-                                sWrtr.WriteLine(Translate(selector.Substring(9))); 
+                                sWrtr.Write("    ");
+                                sWrtr.WriteLine(Translate(selector.Substring(9)));
                             }
                         }
                         // Else this line is script comment, do no copy
@@ -1325,7 +1326,7 @@ namespace QUT.Gplex.Automaton
 
         internal static void EmitPredicate(TextWriter sWrtr, LexCategory cat)
         {
-            sWrtr.WriteLine("        // Character Set Predicate (auto-generated)"); 
+            sWrtr.WriteLine("        // Character Set Predicate (auto-generated)");
             sWrtr.WriteLine("        public bool Is_{0}(int val) {{", cat.Name);
             sWrtr.WriteLine("            int here = startState[{0}];", cat.PredDummyName);
             sWrtr.WriteLine("            return TestNextState(here, val) == here;");
@@ -1382,13 +1383,13 @@ namespace QUT.Gplex.Automaton
                         for (int j = i + 1; j < dfas.Length; j++)
                         {
                             DfsaInstance nInst = dfas[j];
-                            if (nInst != null && 
-                                nInst.eofCode != null && 
-                                nInst.eofCode.IsInitialized && 
+                            if (nInst != null &&
+                                nInst.eofCode != null &&
+                                nInst.eofCode.IsInitialized &&
                                 !eofDone[j] &&
                                 SpansEqual(dInst.eofCode, nInst.eofCode))
                             {
-                                int n = nInst.start.Num; 
+                                int n = nInst.start.Num;
                                 eofDone[j] = true;
                                 if (!stateDone[n])
                                 {
@@ -1492,10 +1493,10 @@ namespace QUT.Gplex.Automaton
                 mapTyNm = "short";
             else
                 mapTyNm = "int";
-            sWrtr.WriteLine("#region CharacterMap"); 
-            sWrtr.WriteLine("    static {0}[] map = new {0}[{1}] {{", 
+            sWrtr.WriteLine("#region CharacterMap");
+            sWrtr.WriteLine("    static {0}[] map = new {0}[{1}] {{",
                 mapTyNm, domain);
-            for (int i = 0; i < domain-1; i++)
+            for (int i = 0; i < domain - 1; i++)
             {
                 if ((i % 16) == 0)
                     sWrtr.Write("/* {0,8} */ ", CharacterUtilities.QuoteMap(i));
@@ -1503,7 +1504,7 @@ namespace QUT.Gplex.Automaton
                 if ((i % 16) == 15)
                     sWrtr.WriteLine();
             }
-            sWrtr.Write("{0} ", myTask.partition[(domain-1)]);
+            sWrtr.Write("{0} ", myTask.partition[(domain - 1)]);
             sWrtr.WriteLine("};");
             sWrtr.WriteLine("#endregion");
             sWrtr.WriteLine();
@@ -1542,8 +1543,8 @@ namespace QUT.Gplex.Automaton
             // if there is a single MapRun, but it has a mixed tag.
             // The second disjunct is almost impossible in practice,
             // but, hey, we want to be correct.
-            bool needCmpMap = 
-                myTask.partition.runsInNonBMPs.Count > 1 || 
+            bool needCmpMap =
+                myTask.partition.runsInNonBMPs.Count > 1 ||
                 myTask.partition.runsInNonBMPs[0].tag == MapRun.TagType.mixedValues;
 
             // int symCrd = myTask.TargetSymCardinality;
@@ -1602,7 +1603,7 @@ namespace QUT.Gplex.Automaton
             sWrtr.WriteLine("    static {0} Map(int code)", mapTyNm);
             sWrtr.WriteLine("    { ");
             sWrtr.WriteLine("        if (code <= {0})", (int)Char.MaxValue);
-            sWrtr.WriteLine(String.Format(CultureInfo.InvariantCulture, 
+            sWrtr.WriteLine(String.Format(CultureInfo.InvariantCulture,
                 "            return map[code / {0}][code % {0}];", Partition.PageSize));
             sWrtr.WriteLine("        else");
             if (needCmpMap)
@@ -2081,7 +2082,7 @@ namespace QUT.Gplex.Automaton
             {
                 sWrtr.WriteLine();
                 sWrtr.WriteLine("  static {0}() {{", myTask.aast.scannerTypeName);
-                for (int i = 0; i < aliasPairs.Count; )
+                for (int i = 0; i < aliasPairs.Count;)
                 {
                     int leftIndex = aliasPairs[i++];
                     int rightIndex = aliasPairs[i++];

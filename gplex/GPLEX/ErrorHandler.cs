@@ -39,15 +39,15 @@ namespace QUT.Gplex.Parser
             else return 0;
         }
     }
-    
-    
+
+
     internal class ErrorHandler
     {
         const int maxErrors = 50; // Will this be enough for all users?
 
         List<Error> errors;
         int errNum;
-        int wrnNum; 
+        int wrnNum;
 
         internal bool Errors { get { return errNum > 0; } }
         internal bool Warnings { get { return wrnNum > 0; } }
@@ -64,7 +64,7 @@ namespace QUT.Gplex.Parser
         //   Public utility methods
         // -----------------------------------------------------
 
- 
+
         internal List<Error> SortedErrorList()
         {
             if (errors.Count > 1) errors.Sort();
@@ -102,71 +102,98 @@ namespace QUT.Gplex.Parser
             string prefix, suffix, message;
             switch (num)
             {
-                case   1: prefix = "Parser error"; suffix = "";
+                case 1:
+                    prefix = "Parser error"; suffix = "";
                     break;
-                case  50: prefix = "Start state"; suffix = "already defined";
+                case 50:
+                    prefix = "Start state"; suffix = "already defined";
                     break;
-                case  51: prefix = "Start state"; suffix = "undefined";
+                case 51:
+                    prefix = "Start state"; suffix = "undefined";
                     break;
-                case  52: prefix = "Lexical category"; suffix = "already defined";
+                case 52:
+                    prefix = "Lexical category"; suffix = "already defined";
                     break;
-                case  53: prefix = "Expected character"; suffix = "";
+                case 53:
+                    prefix = "Expected character"; suffix = "";
                     break;
-                case 55: prefix = "Unknown lexical category"; suffix = "";
+                case 55:
+                    prefix = "Unknown lexical category"; suffix = "";
                     break;
-                case 61: prefix = "Missing matching construct"; suffix = "";
+                case 61:
+                    prefix = "Missing matching construct"; suffix = "";
                     break;
-                case 62: prefix = "Unexpected symbol, skipping to "; suffix = "";
+                case 62:
+                    prefix = "Unexpected symbol, skipping to "; suffix = "";
                     break;
-                case 70: prefix = "Illegal character escape "; suffix = "";
+                case 70:
+                    prefix = "Illegal character escape "; suffix = "";
                     break;
-                case 71: prefix = "Lexical category must be a character class "; suffix = "";
+                case 71:
+                    prefix = "Lexical category must be a character class "; suffix = "";
                     break;
-                case 72: prefix = "Illegal name for start condition "; suffix = "";
+                case 72:
+                    prefix = "Illegal name for start condition "; suffix = "";
                     break;
-                case 74: prefix = "Unrecognized \"%option\" command "; suffix = "";
+                case 74:
+                    prefix = "Unrecognized \"%option\" command "; suffix = "";
                     break;
-                case 76: prefix = "Unknown character predicate"; suffix = "";
+                case 76:
+                    prefix = "Unknown character predicate"; suffix = "";
                     break;
-                case 83: prefix = "Cannot set /unicode option inconsistently"; suffix = "";
+                case 83:
+                    prefix = "Cannot set /unicode option inconsistently"; suffix = "";
                     break;
-                case 84: prefix = "Inconsistent \"%option\" command "; suffix = "";
+                case 84:
+                    prefix = "Inconsistent \"%option\" command "; suffix = "";
                     break;
-                case 85: prefix = "Unicode literal too large:"; suffix = "use %option unicode";
+                case 85:
+                    prefix = "Unicode literal too large:"; suffix = "use %option unicode";
                     break;
-                case 86: prefix = "Illegal octal character escape "; suffix = "";
+                case 86:
+                    prefix = "Illegal octal character escape "; suffix = "";
                     break;
-                case 87: prefix = "Illegal hexadecimal character escape "; suffix = "";
+                case 87:
+                    prefix = "Illegal hexadecimal character escape "; suffix = "";
                     break;
-                case 88: prefix = "Illegal unicode character escape "; suffix = "";
+                case 88:
+                    prefix = "Illegal unicode character escape "; suffix = "";
                     break;
-                case 96: prefix = "Class"; suffix = "not found in assembly"; 
+                case 96:
+                    prefix = "Class"; suffix = "not found in assembly";
                     break;
-                case 97: prefix = "Method"; suffix = "not found in class";
+                case 97:
+                    prefix = "Method"; suffix = "not found in class";
                     break;
-                case 99: prefix = "Illegal escape sequence"; suffix = "";
+                case 99:
+                    prefix = "Illegal escape sequence"; suffix = "";
                     break;
-                case 103: prefix = "Expected character with property"; suffix = "";
+                case 103:
+                    prefix = "Expected character with property"; suffix = "";
                     break;
 
                 // Warnings ...
 
-                case 111: prefix = "This char"; suffix = "does not need escape in character class";
+                case 111:
+                    prefix = "This char"; suffix = "does not need escape in character class";
                     break;
-                case 113: prefix = "Special case:"; suffix = "included as set class member";
+                case 113:
+                    prefix = "Special case:"; suffix = "included as set class member";
                     break;
-                case 114: prefix = "No upper bound to range,"; suffix = "included as set class members";
+                case 114:
+                    prefix = "No upper bound to range,"; suffix = "included as set class members";
                     break;
                 case 116: prefix = "This pattern always overridden by"; suffix = ""; break;
                 case 117: prefix = "This pattern always overrides"; suffix = ""; break;
                 case 121: prefix = "char class"; suffix = ""; break;
 
-                default: prefix = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); suffix = "";
+                default:
+                    prefix = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); suffix = "";
                     break;
             }
             // message = prefix + " <" + key + "> " + suffix;
             message = String.Format(CultureInfo.InvariantCulture, "{0} {1}{2}{3} {4}", prefix, lh, key, rh, suffix);
-            this.AddError(new Error(num, message, spn, num >= Error.minWrn)); 
+            this.AddError(new Error(num, message, spn, num >= Error.minWrn));
             if (num < Error.minWrn) errNum++; else wrnNum++;
         }
 
@@ -220,13 +247,13 @@ namespace QUT.Gplex.Parser
                 case 116: message = "This pattern is never matched"; break;
                 case 118: message = "This constructed set is empty"; break;
 
-                default:  message = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); break;
+                default: message = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); break;
             }
             this.AddError(new Error(num, message, spn, num >= Error.minWrn));
             if (num < Error.minWrn) errNum++; else wrnNum++;
         }
- 
-        
+
+
         // -----------------------------------------------------
         //   Error Listfile Reporting Method
         // -----------------------------------------------------
@@ -250,7 +277,7 @@ namespace QUT.Gplex.Parser
             //  Reset the source file buffer to the start
             //
             buff.Pos = 0;
-            sWrtr.WriteLine(); 
+            sWrtr.WriteLine();
             ListDivider(sWrtr);
             sWrtr.WriteLine("//  GPLEX error listing for lex source file <"
                                                            + name + ">");
@@ -390,47 +417,51 @@ namespace QUT.Gplex.Parser
         //   Console Error Reporting Method
         // -----------------------------------------------------
 
-        internal void DumpErrorsInMsbuildFormat( ScanBuff buff, TextWriter wrtr ) {
+        internal void DumpErrorsInMsbuildFormat(ScanBuff buff, TextWriter wrtr)
+        {
             var builder = new StringBuilder();
             //
             // Message prefix
             //
             string location = (buff != null ? buff.FileName : "GPLEX");
-            foreach (Error err in errors) {
+            foreach (Error err in errors)
+            {
                 builder.Length = 0; // Works for V2.0 even.
                 //
                 // Origin
                 //
-                builder.Append( location );
-                if (buff != null) {
-                    builder.Append( '(' );
-                    builder.Append( err.span.startLine );
-                    builder.Append( ',' );
-                    builder.Append( err.span.startColumn );
-                    builder.Append( ')' );
+                builder.Append(location);
+                if (buff != null)
+                {
+                    builder.Append('(');
+                    builder.Append(err.span.startLine);
+                    builder.Append(',');
+                    builder.Append(err.span.startColumn);
+                    builder.Append(')');
                 }
-                builder.Append( ':' );
+                builder.Append(':');
                 //
                 // Category                builder.Append( ':' );
                 //
-                builder.Append( err.isWarn ? "warning " : "error " );
-                builder.Append( err.code );
-                builder.Append( ':' );
+                builder.Append(err.isWarn ? "warning " : "error ");
+                builder.Append(err.code);
+                builder.Append(':');
                 //
                 // Message
                 //
-                builder.Append( err.message );
-                Console.Error.WriteLine( builder.ToString() );
+                builder.Append(err.message);
+                Console.Error.WriteLine(builder.ToString());
             }
         }
 
 
 
-        internal void DumpAll(ScanBuff buff, TextWriter wrtr) {
-            int  line = 1;
-            int  eNum = 0;
-            int  eLin = 0;
-            int nxtC = (int)'\n'; 
+        internal void DumpAll(ScanBuff buff, TextWriter wrtr)
+        {
+            int line = 1;
+            int eNum = 0;
+            int eLin = 0;
+            int nxtC = (int)'\n';
             //
             //  Initialize the error group
             //
@@ -451,57 +482,67 @@ namespace QUT.Gplex.Parser
             //
             //  Now, for each error do
             //
-            for (eNum = 0; eNum < errors.Count; eNum++) {
+            for (eNum = 0; eNum < errors.Count; eNum++)
+            {
                 eLin = errors[eNum].span.startLine;
-                if (eLin > currentLine) {
+                if (eLin > currentLine)
+                {
                     //
                     // Spill all the waiting messages
                     //
-                    if (currentCol > 0) {
+                    if (currentCol > 0)
+                    {
                         wrtr.WriteLine();
                         currentCol = 0;
                     }
-                    for (int i = groupFirst; i < eNum; i++) {
+                    for (int i = groupFirst; i < eNum; i++)
+                    {
                         Error err = errors[i];
                         wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
-                        wrtr.Write(err.message);    
-                        wrtr.WriteLine();    
+                        wrtr.Write(err.message);
+                        wrtr.WriteLine();
                     }
                     currentLine = eLin;
-                    groupFirst  = eNum;
-                } 
+                    groupFirst = eNum;
+                }
                 //
                 //  Skip lines up to *but not including* the error line
                 //
-                while (line < eLin) {
+                while (line < eLin)
+                {
                     nxtC = buff.Read();
                     if (nxtC == (int)'\n') line++;
                     else if (nxtC == ScanBuff.EndOfFile) break;
-                } 
+                }
                 //
                 //  Emit the error line
                 //
-                if (line <= eLin) {
-                    wrtr.Write((char)((eLin/1000)%10+(int)'0'));
-                    wrtr.Write((char)((eLin/100)%10+(int)'0'));
-                    wrtr.Write((char)((eLin/10)%10+(int)'0'));
-                    wrtr.Write((char)((eLin)%10+(int)'0'));
+                if (line <= eLin)
+                {
+                    wrtr.Write((char)((eLin / 1000) % 10 + (int)'0'));
+                    wrtr.Write((char)((eLin / 100) % 10 + (int)'0'));
+                    wrtr.Write((char)((eLin / 10) % 10 + (int)'0'));
+                    wrtr.Write((char)((eLin) % 10 + (int)'0'));
                     wrtr.Write(' ');
-                    while (line <= eLin) {
+                    while (line <= eLin)
+                    {
                         nxtC = buff.Read();
                         if (nxtC == (int)'\n') line++;
                         else if (nxtC == ScanBuff.EndOfFile) break;
                         wrtr.Write((char)nxtC);
-                    } 
-                } 
+                    }
+                }
                 //
                 //  Now emit the error message(s)
                 //
-                if (errors[eNum].span.startColumn >= 0 && errors[eNum].span.startColumn < 75) {
-                    if (currentCol == 0) {
+                if (errors[eNum].span.startColumn >= 0 && errors[eNum].span.startColumn < 75)
+                {
+                    if (currentCol == 0)
+                    {
                         wrtr.Write("-----");
                     }
-                    for (int i = currentCol; i < errors[eNum].span.startColumn; i++, currentCol++) {
+                    for (int i = currentCol; i < errors[eNum].span.startColumn; i++, currentCol++)
+                    {
                         wrtr.Write('-');
                     }
                     for (; currentCol < errors[eNum].span.endColumn && currentCol < 75; currentCol++)
@@ -512,15 +553,17 @@ namespace QUT.Gplex.Parser
             //  Clean up after last message listing
             //  Spill all the waiting messages
             //
-            if (currentCol > 0) {
+            if (currentCol > 0)
+            {
                 wrtr.WriteLine();
             }
-            for (int i = groupFirst; i < errors.Count; i++) {
+            for (int i = groupFirst; i < errors.Count; i++)
+            {
                 Error err = errors[i];
                 wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
-                wrtr.Write(errors[i].message);    
-                wrtr.WriteLine();    
+                wrtr.Write(errors[i].message);
+                wrtr.WriteLine();
             }
-        } 
+        }
     }
 }
