@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  gest4425
-//  DateTime: 2/26/19 9:45:42 PM
-//  UserName: jdehaan
-//  GPLEX input file <SpecFiles/gplex.lex - 12/15/17 3:20:20 PM>
+//  Machine:  dehaan
+//  DateTime: 2019-02-27T20:43:33Z
+//  UserName: jaap
+//  GPLEX input file <gplex.lex - 1/20/19 6:39:09 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, verbose, parser, stack, minimize
