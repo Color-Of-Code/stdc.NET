@@ -2,11 +2,11 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-// GPPG version 1.4.4
-// Machine:  DESTQMBUILD
-// DateTime: 3/8/2011 4:47:31 PM
-// UserName: aoeuradmin
-// Input file <gppg.y - 1/6/2011 2:03:55 PM>
+// GPPG version 1.0.0.0
+// Machine:  dehaan
+// DateTime: 2019-02-27T20:33:44Z
+// UserName: jaap
+// Input file <gppg.y - 2019-01-06T22:30:04Z>
 
 // options: no-lines gplex
 
@@ -44,13 +44,13 @@ internal abstract class ScanBase : AbstractScanner<ValueType,LexSpan> {
 
 internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
 {
-  // Verbatim content from gppg.y - 1/6/2011 2:03:55 PM
+  // Verbatim content from gppg.y - 2019-01-06T22:30:04Z
 /*
  *  Parser spec for GPPG
  *  gppg.y: Author: John Gough, August 2008
  *  Process with > GPPG /gplex /no-lines gppg.y
  */
-  // End verbatim content from gppg.y - 1/6/2011 2:03:55 PM
+  // End verbatim content from gppg.y - 2019-01-06T22:30:04Z
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;

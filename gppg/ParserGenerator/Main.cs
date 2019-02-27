@@ -62,7 +62,7 @@ namespace QUT.GPGen
                 try
                 {
                     inputFile = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    inputFileInfo = filename + " - " + File.GetLastWriteTime(filename).ToString();
+                    inputFileInfo = filename + " - " + File.GetLastWriteTime(filename).ToString("yyyy-MM-ddTHH:mm:ssZ");
                 }
                 catch (IOException x)
                 {
