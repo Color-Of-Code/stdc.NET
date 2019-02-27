@@ -111,7 +111,7 @@ namespace QUT.Gplex.Parser
                 return false;
             else
             {
-                LexCategory cls = new LexCategory(name, verb, spn);
+                var cls = new LexCategory(name, verb, spn);
                 lexCategories.Add(name, cls);
                 cls.ParseRE(this);
                 return true;
@@ -154,7 +154,7 @@ namespace QUT.Gplex.Parser
                     return false;
                 else
                 {
-                    StartState state = new StartState(isDummy, name);
+                    var state = new StartState(isDummy, name);
                     startStates.Add(name, state);
                     if (!isX)
                         inclStates.Add(state);
@@ -317,7 +317,7 @@ namespace QUT.Gplex.Parser
                     state.AddRule(rule);
         }
 
-        internal LexSpan AtStart { get { LexSpan tmp = new LexSpan(1, 1, 1, 1, 0, 0, scanner.Buffer); return tmp; } }
+        internal LexSpan AtStart { get { var tmp = new LexSpan(1, 1, 1, 1, 0, 0, scanner.Buffer); return tmp; } }
 
         // =============================================================================
         #region Regular Expression Parser class
@@ -681,7 +681,7 @@ namespace QUT.Gplex.Parser
                     tmp = UseRegexRef();
                 else if (!esc && chr == '.')
                 {
-                    Leaf leaf = new Leaf(RegOp.charClass);
+                    var leaf = new Leaf(RegOp.charClass);
                     leaf.rangeLit = new RangeLiteral(true);
                     scan();
                     leaf.rangeLit.list.Add(new CharRange('\n'));
@@ -769,7 +769,7 @@ namespace QUT.Gplex.Parser
             {
                 // Assert chr == '['
                 // Need to build a new string taking into account char escapes
-                Leaf leaf = new Leaf(RegOp.charClass);
+                var leaf = new Leaf(RegOp.charClass);
                 bool invert = false;
                 scan();                           // read past '['
                 if (!esc && chr == '^')
