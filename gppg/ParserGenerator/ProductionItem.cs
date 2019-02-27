@@ -5,6 +5,7 @@
 
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 
@@ -37,26 +38,12 @@ namespace QUT.GPGen
         }
 
 
-        internal static bool SameProductions(List<ProductionItem> list1, List<ProductionItem> list2)
+        internal static bool SameProductions(IEnumerable<ProductionItem> list1, IEnumerable<ProductionItem> list2)
         {
-            if (list1.Count != list2.Count)
+            if (list1.Count() != list2.Count())
                 return false;
 
-            foreach (ProductionItem item1 in list1)
-            {
-                bool found = false;
-                foreach (ProductionItem item2 in list2)
-                {
-                    if (item1.Equals(item2))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found)
-                    return false;
-            }
-            return true;
+            return (!list1.Except(list2).Any() || !list2.Except(list1).Any());
         }
 
 
