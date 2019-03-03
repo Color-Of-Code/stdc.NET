@@ -67,10 +67,7 @@ namespace QUT.Gplex
                     task.Msg.WriteLine("GPLEX <" + task.FileName + "> Completed successfully");
                 task.Dispose();
             }
-            if (task.ErrNum > 0)
-                Environment.Exit(1);
-            else
-                Environment.Exit(0);
+            Environment.Exit(task.ErrNum > 0 ? 1 : 0);
         }
 
         static void BadOption(string arg, OptionState rslt)
@@ -88,7 +85,7 @@ namespace QUT.Gplex
                     marker = "can't change alphabet";
                     break;
             }
-            Console.Error.WriteLine("{0} {1}: {2}", prefix, marker, arg);
+            Console.Error.WriteLine($"{prefix} {marker}: {arg}");
         }
 
         static void Usage() // print the usage message but do not abort.

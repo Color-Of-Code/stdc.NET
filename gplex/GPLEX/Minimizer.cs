@@ -33,7 +33,7 @@ namespace QUT.Gplex.Automaton
         /// <param name="dSt"></param>
         internal void AddState(DFSA.DState dSt)
         {
-            LinkedListNode<DFSA.DState> node = new LinkedListNode<DFSA.DState>(dSt);
+            var node = new LinkedListNode<DFSA.DState>(dSt);
             dSt.listNode = node;
             this.members.AddLast(node);
         }
@@ -46,7 +46,7 @@ namespace QUT.Gplex.Automaton
         internal void MoveMember(DFSA.DState dSt, PartitionBlock blk)
         {
             // Assert: dSt must belong to LinkedList this.members
-            LinkedListNode<DFSA.DState> node = dSt.listNode;
+            var node = dSt.listNode;
             this.members.Remove(node);
             this.predCount--;
             blk.AddNode(node);
@@ -262,7 +262,7 @@ namespace QUT.Gplex.Automaton
                 //
                 if (predSet.Count != 0)
                 {
-                    List<PartitionBlock> splits = new List<PartitionBlock>();
+                    var splits = new List<PartitionBlock>();
                     foreach (DFSA.DState lSt in predSet)
                     {
                         PartitionBlock tBlk = null;
