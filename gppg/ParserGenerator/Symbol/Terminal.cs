@@ -2,9 +2,6 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-
-
-
 namespace QUT.GPGen
 {
     internal class Terminal : Symbol
@@ -66,10 +63,7 @@ namespace QUT.GPGen
 
         public override string ToString()
         {
-            if (this.alias != null)
-                return this.alias;
-            else
-                return base.ToString();
+            return this.alias ?? base.ToString();
         }
 
         internal string EnumName()

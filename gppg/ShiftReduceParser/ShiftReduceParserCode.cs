@@ -26,13 +26,12 @@ namespace QUT.Gppg
 #endif
  where TSpan : IMerge<TSpan>, new()
     {
-        private AbstractScanner<TValue, TSpan> scanner;
         /// <summary>
         /// The abstract scanner for this parser.
         /// </summary>
         protected AbstractScanner<TValue, TSpan> Scanner {
-            get { return scanner; }
-            set { scanner = value; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace QUT.Gppg
         /// <param name="scanner">Scanner instance for this parser</param>
         protected ShiftReduceParser(AbstractScanner<TValue, TSpan> scanner)
         {
-            this.scanner = scanner;
+            this.Scanner = scanner;
         }
 
         // ==============================================================
@@ -235,8 +234,8 @@ namespace QUT.Gppg
                         // We save the last token span, so that the location span
                         // of production right hand sides that begin or end with a
                         // nullable production will be correct.
-                        LastSpan = scanner.yylloc;
-                        NextToken = scanner.yylex();
+                        LastSpan = Scanner.yylloc;
+                        NextToken = Scanner.yylex();
                     }
 
 #if TRACE_ACTIONS
@@ -284,9 +283,9 @@ namespace QUT.Gppg
 #endif
             FsaState = states[stateIndex];
 
-            valueStack.Push(scanner.yylval);
+            valueStack.Push(Scanner.yylval);
             StateStack.Push(FsaState);
-            LocationStack.Push(scanner.yylloc);
+            LocationStack.Push(Scanner.yylloc);
 
             if (recovering)
             {
@@ -326,8 +325,8 @@ namespace QUT.Gppg
                     // beginning of the next lexeme, and end with the finish of the
                     // previous lexeme.  This gives the correct behaviour when this
                     // nonsense value is used in later Merge operations.
-                    CurrentLocationSpan = (scanner.yylloc != null && LastSpan != null ?
-                        scanner.yylloc.Merge(LastSpan) :
+                    CurrentLocationSpan = (Scanner.yylloc != null && LastSpan != null ?
+                        Scanner.yylloc.Merge(LastSpan) :
                         default(TSpan));
                 }
                 else
@@ -411,7 +410,7 @@ namespace QUT.Gppg
                     first = false;
                 }
             }
-            scanner.yyerror(errorMsg.ToString());
+            Scanner.yyerror(errorMsg.ToString());
         }
 
         private void ShiftErrorToken()
@@ -473,7 +472,7 @@ namespace QUT.Gppg
 #if TRACE_ACTIONS
                             Console.Error.Write("Reading a token: ");
 #endif                       
-                        NextToken = scanner.yylex();
+                        NextToken = Scanner.yylex();
                     }
 
 #if TRACE_ACTIONS
