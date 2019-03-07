@@ -114,11 +114,11 @@ namespace QUT.GPGen
             int length = source.Length;
             if (length != 4 && length != 8)
                 return -1;
-            for (int i = 0; i < source.Length; i++)
+            foreach (Char c in source)
             {
-                if (!IsHexDigit(source[i]))
+                if (!IsHexDigit(c))
                     return -1;
-                rslt = rslt * 16 + (uint)ValOfHex(source[i]);
+                rslt = rslt * 16 + (uint)ValOfHex(c);
             }
             return (int)rslt;
         }

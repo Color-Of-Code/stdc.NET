@@ -57,7 +57,7 @@ namespace QUT.GPGen
         {
             var builder = new StringBuilder();
 
-            builder.AppendFormat("{0} {1}: ", production.num, production.lhs);
+            builder.AppendFormat($"{production.num} {production.lhs}: ");
 
 
             for (int i = 0; i < production.rhs.Count; i++)

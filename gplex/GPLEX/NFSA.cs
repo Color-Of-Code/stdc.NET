@@ -52,9 +52,8 @@ namespace QUT.Gplex.Automaton
                     nInst.key = name;
 
                     // for each pattern do ...
-                    for (int i = 0; i < s.rules.Count; i++)
+                    foreach (RuleDesc rule in s.rules)
                     {
-                        RuleDesc rule = s.rules[i];
                         RegExTree tree = rule.Tree;
 
                         // This test constructs the disjoint automata
@@ -138,9 +137,8 @@ namespace QUT.Gplex.Automaton
             task.ListDivider();
             task.ListStream.WriteLine("Total NFSA states = " + this.next.Count.ToString());
             task.ListStream.WriteLine("Number of Start Conditions = " + (nfas.Length - 1));
-            for (int i = 0; i < nfas.Length; i++)
+            foreach (NfsaInstance inst in nfas)
             {
-                NfsaInstance inst = nfas[i];
                 if (inst != null)
                 {
                     task.ListStream.WriteLine("Start condition " + inst.key + ":");
