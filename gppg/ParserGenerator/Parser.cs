@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using QUT.Gppg;
-using System.Collections;
 
 namespace QUT.GPGen.Parser
 {

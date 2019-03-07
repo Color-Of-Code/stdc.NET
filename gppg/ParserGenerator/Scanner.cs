@@ -35,7 +35,6 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 using QUT.GplexBuffers;
-using System.Collections;
 using QUT.GPGen.Parser;
 
 namespace QUT.GPGen.Lexers

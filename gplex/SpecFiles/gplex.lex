@@ -2,7 +2,6 @@
 
 // =============================================================
 
-%using System.Collections;
 %using QUT.Gplex.Parser;
 %namespace QUT.Gplex.Lexer
 

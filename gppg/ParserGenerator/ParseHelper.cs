@@ -3,8 +3,6 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using System;
-using System.IO;
-using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Runtime.Serialization;

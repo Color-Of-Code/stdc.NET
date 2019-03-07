@@ -111,5 +111,5 @@ NULL					{ Text.Append("C."); Text.Append(yytext); }
 
 	public Boolean ContainsIMain = false;
 	public Boolean ContainsVMain = false;
-	public var Text = newStringBuilder ();
+	public StringBuilder Text = new StringBuilder();
 

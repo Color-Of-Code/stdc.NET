@@ -1,7 +1,6 @@
 
 /* gppg.lex: Author: John Gough, August 2008 */
 
-%using System.Collections;
 %using QUT.GPGen.Parser;
 %namespace QUT.GPGen.Lexers
 %visibility internal

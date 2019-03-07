@@ -7,7 +7,6 @@
 %}
 
 %output=Parser.cs 
-%using System.Collections;
 %namespace QUT.GPGen.Parser
 %tokentype Token
 
