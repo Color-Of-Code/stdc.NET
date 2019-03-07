@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using QUT.Gplex.Automaton;
 
 namespace QUT.Gplex.Parser
@@ -372,8 +373,8 @@ namespace QUT.Gplex.Parser
         private bool isAgnostic = false;
         private bool invert;
 
-        private List<CharRange> ranges;
-        internal List<CharRange> Ranges { get { return ranges; } }
+        private IList<CharRange> ranges;
+        internal IList<CharRange> Ranges { get { return ranges; } }
 
         /// <summary>
         /// Construct a new RangeList with the given
@@ -381,7 +382,7 @@ namespace QUT.Gplex.Parser
         /// </summary>
         /// <param name="ranges">the list of ranges</param>
         /// <param name="invert">if true, means the inverse of the list</param>
-        internal RangeList(List<CharRange> ranges, bool invert)
+        internal RangeList(IList<CharRange> ranges, bool invert)
         {
             this.invert = invert;
             this.ranges = ranges;
@@ -468,10 +469,10 @@ namespace QUT.Gplex.Parser
         /// completely canonicalized.
         /// </summary>
         /// <returns></returns>
-        internal List<CharRange> InvertedList()
+        internal IList<CharRange> InvertedList()
         {
             int index = 0;
-            List<CharRange> result = new List<CharRange>();
+            var result = new List<CharRange>();
             foreach (CharRange range in this.ranges)
             {
                 if (range.minChr > index)
@@ -536,8 +537,8 @@ namespace QUT.Gplex.Parser
             }
             // Process non-empty lists.
             int listIx = 0;
-            this.ranges.Sort();
-            List<CharRange> newList = new List<CharRange>();
+            this.ranges = this.ranges.OrderBy(x => x).ToList();
+            var newList = new List<CharRange>();
             CharRange currentRange = ranges[listIx++];
             while (listIx < ranges.Count)
             {
@@ -577,7 +578,7 @@ namespace QUT.Gplex.Parser
             // Do not canonicalize! We need to make the list case-
             // agnostic *before* we process the set inversion.
             //
-            List<CharRange> agnosticList = new List<CharRange>();
+            var agnosticList = new List<CharRange>();
             foreach (CharRange range in this.ranges)
             {
                 for (int ch = range.minChr; ch <= range.maxChr; ch++)
@@ -605,7 +606,7 @@ namespace QUT.Gplex.Parser
                         agnosticList.Add(new CharRange(ch));
                 }
             }
-            RangeList result = new RangeList(agnosticList, false);
+            var result = new RangeList(agnosticList, false);
             result.isCanonical = false;
             result.isAgnostic = true;
             result.invert = this.invert; // Result is inverted if input is.
@@ -711,9 +712,9 @@ namespace QUT.Gplex.Parser
         /// <summary>
         /// List of literals that contain this partition element.
         /// </summary>
-        internal List<RangeLiteral> literals = new List<RangeLiteral>();
+        internal IList<RangeLiteral> literals = new List<RangeLiteral>();
 
-        internal PartitionElement(List<CharRange> ranges, bool invert)
+        internal PartitionElement(IList<CharRange> ranges, bool invert)
         {
             ord = nextOrd++;
             list = new RangeList(ranges, invert);

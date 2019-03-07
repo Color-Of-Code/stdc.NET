@@ -235,7 +235,7 @@ namespace QUT.Gplex.Automaton
                 {
                     if (dSt.HasPredecessors())
                     {
-                        List<DFSA.DState> prds = dSt.GetPredecessors(sym);
+                        var prds = dSt.GetPredecessors(sym);
                         if (prds != null && prds.Count > 0)
                             foreach (DFSA.DState pSt in prds)
                                 // The same predecessor state might appear on the

@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using QUT.GPGen.Parser;
 
 
@@ -196,7 +197,7 @@ namespace QUT.GPGen
             //
             if (nonTerminatingCount > 0)
             {
-                List<NonTerminal> ntDependencies = BuildDependencyGraph();
+                var ntDependencies = BuildDependencyGraph();
                 hasNonTerminatingNonTerms = true;
                 handler.AddError(
                     String.Format(CultureInfo.InvariantCulture, "There are {0} non-terminating NonTerminal Symbols{1} {{{2}}}",
@@ -225,7 +226,7 @@ namespace QUT.GPGen
         // We first construct a graph modelling these dependencies, and then
         // find strongly connected regions in the dependency graph.
         //
-        private void FindNonTerminatingSCC(List<NonTerminal> ntDependencies)
+        private void FindNonTerminatingSCC(IList<NonTerminal> ntDependencies)
         {
             int count = 0;
             // ntStack is the working stack used to find Strongly Connected 
@@ -294,18 +295,14 @@ namespace QUT.GPGen
         }
 
         // Return a new list with only the terminating (fixed) elements of the input.
-        private static List<NonTerminal> FilterTerminatingElements(List<NonTerminal> input)
+        private static IEnumerable<NonTerminal> FilterTerminatingElements(IEnumerable<NonTerminal> input)
         {
-            List<NonTerminal> rslt = new List<NonTerminal>();
-            foreach (NonTerminal nt in input)
-                if (nt.terminating)
-                    rslt.Add(nt);
-            return rslt;
+            return input.Where(x => x.terminating);
         }
 
-        private List<NonTerminal> BuildDependencyGraph()
+        private IList<NonTerminal> BuildDependencyGraph()
         {
-            List<NonTerminal> rslt = new List<NonTerminal>();
+            var rslt = new List<NonTerminal>();
             foreach (KeyValuePair<string, NonTerminal> kvp in this.nonTerminals)
             {
                 NonTerminal nonTerm = kvp.Value;
@@ -374,7 +371,7 @@ namespace QUT.GPGen
                 fixes.Add(root);
         }
 
-        private void LeafExperiment(NonTerminal probe, List<NonTerminal> component)
+        private void LeafExperiment(NonTerminal probe, IList<NonTerminal> component)
         {
             // Test what happens with probe terminating ...
             probe.terminating = true;
@@ -386,7 +383,7 @@ namespace QUT.GPGen
 
 
 
-        private void LeafPropagate(NonTerminal root, List<NonTerminal> thisTestConfig)
+        private void LeafPropagate(NonTerminal root, IList<NonTerminal> thisTestConfig)
         {
             int count = 0;
             bool changed = false;
@@ -411,11 +408,11 @@ namespace QUT.GPGen
             }
             while (changed);
 
-            List<NonTerminal> filtered = FilterTerminatingElements(thisTestConfig);
+            var filtered = FilterTerminatingElements(thisTestConfig);
             handler.AddWarning(String.Format(CultureInfo.InvariantCulture,
                         "Terminating {0} fixes the following size-{1} NonTerminal set{2}{{{3}}}",
                         root.ToString(),
-                        filtered.Count,
+                        filtered.Count(),
                         System.Environment.NewLine,
                         ListUtilities.GetStringFromList(filtered)), null);
         }

@@ -604,7 +604,7 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             /// <param name="ord">symbol for transitions from predecessors</param>
             /// <returns>list of states which transition to this on ord</returns>
-            public List<DState> GetPredecessors(int ord) { return predecessors[ord]; }
+            public IList<DState> GetPredecessors(int ord) { return predecessors[ord]; }
             public void SetPredecessors(int ord, List<DState> lst) { predecessors[ord] = lst; }
             public bool HasPredecessors() { return predecessors != null; }
             public void InitPredecessors() { predecessors = new List<DState>[myDfsa.MaxSym]; }
