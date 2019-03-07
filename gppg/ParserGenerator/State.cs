@@ -17,14 +17,14 @@ namespace QUT.GPGen
 
         internal List<ProductionItem> kernelItems = new List<ProductionItem>();
         internal List<ProductionItem> allItems = new List<ProductionItem>();
-        internal Dictionary<Symbol, AutomatonState> Goto = new Dictionary<Symbol, AutomatonState>();
+        internal IDictionary<Symbol, AutomatonState> Goto = new Dictionary<Symbol, AutomatonState>();
         internal SetCollection<Terminal> terminalTransitions = new SetCollection<Terminal>();
-        internal Dictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
-        internal Dictionary<Terminal, ParserAction> parseTable = new Dictionary<Terminal, ParserAction>();
+        internal IDictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
+        internal IDictionary<Terminal, ParserAction> parseTable = new Dictionary<Terminal, ParserAction>();
 
-        internal List<Symbol> shortestPrefix;
-        internal List<AutomatonState> statePath;
-        internal List<Conflict> conflicts;
+        internal IList<Symbol> shortestPrefix;
+        internal IList<AutomatonState> statePath;
+        internal IList<Conflict> conflicts;
 
         internal AutomatonState(Production production)
         {
@@ -33,7 +33,7 @@ namespace QUT.GPGen
         }
 
 
-        internal AutomatonState(List<ProductionItem> itemSet)
+        internal AutomatonState(IList<ProductionItem> itemSet)
         {
             num = TotalStates++;
             kernelItems.AddRange(itemSet);

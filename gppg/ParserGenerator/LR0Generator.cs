@@ -12,9 +12,9 @@ namespace QUT.GPGen
 {
     internal class LR0Generator
     {
-        protected List<AutomatonState> states = new List<AutomatonState>();
+        protected IList<AutomatonState> states = new List<AutomatonState>();
         protected Grammar grammar;
-        private Dictionary<Symbol, List<AutomatonState>> accessedBy = new Dictionary<Symbol, List<AutomatonState>>();
+        private IDictionary<Symbol, IList<AutomatonState>> accessedBy = new Dictionary<Symbol, IList<AutomatonState>>();
 
 
         internal LR0Generator(Grammar grammar)
@@ -23,7 +23,7 @@ namespace QUT.GPGen
         }
 
 
-        internal List<AutomatonState> BuildStates()
+        internal IList<AutomatonState> BuildStates()
         {
             // create state for root production and expand recursively
             ExpandState(grammar.rootProduction.lhs, new AutomatonState(grammar.rootProduction));
@@ -200,15 +200,15 @@ namespace QUT.GPGen
     /// </summary>
     internal static class DiagnosticHelp
     {
-        private static List<T> ListClone<T>(List<T> list)
+        private static IList<T> ListClone<T>(IList<T> list)
         {
-            List<T> rslt = new List<T>(list.Count + 1);
-            for (int i = 0; i < list.Count; i++)
-                rslt.Add(list[i]);
+            IList<T> rslt = new List<T>(list.Count + 1);
+            foreach (T item in list)
+                rslt.Add(item);
             return rslt;
         }
 
-        internal static void PopulatePrefixes(List<AutomatonState> states)
+        internal static void PopulatePrefixes(IList<AutomatonState> states)
         {
             AutomatonState start = states[0];
             start.shortestPrefix = new List<Symbol>(); // The empty list.
@@ -221,10 +221,10 @@ namespace QUT.GPGen
                 changed = false;
                 foreach (var state in states)
                 {
-                    List<Symbol> newfix;
-                    List<Symbol> prefix = state.shortestPrefix;
-                    List<AutomatonState> newPath;
-                    List<AutomatonState> oldPath = state.statePath;
+                    IList<Symbol> newfix;
+                    IList<Symbol> prefix = state.shortestPrefix;
+                    IList<AutomatonState> newPath;
+                    IList<AutomatonState> oldPath = state.statePath;
 
                     if (prefix != null)
                     {

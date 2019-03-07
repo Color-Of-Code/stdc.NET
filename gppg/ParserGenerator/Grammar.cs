@@ -462,7 +462,7 @@ namespace QUT.GPGen
         // =====================================================================================
 
 
-        internal void GenerateReport(StreamWriter writer, string inputFilename, List<AutomatonState> statelist)
+        internal void GenerateReport(StreamWriter writer, string inputFilename, IList<AutomatonState> statelist)
         {
             writer.WriteLine("<b>Grammar {0}</b>", inputFilename);
             WriteProductions(writer);
@@ -474,7 +474,7 @@ namespace QUT.GPGen
             }
         }
 
-        internal void GenerateCompoundReport(StreamWriter writer, string inputFilename, List<AutomatonState> statelist)
+        internal void GenerateCompoundReport(StreamWriter writer, string inputFilename, IList<AutomatonState> statelist)
         {
             writer.WriteLine("<b>Grammar and Diagnosis {0}</b>", inputFilename);
 

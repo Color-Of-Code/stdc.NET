@@ -95,7 +95,7 @@ namespace QUT.GPGen
                         handler.ListError(null, 103, CharacterUtilities.Map(Terminal.Max), '\'');
 
                     LALRGenerator generator = new LALRGenerator(grammar);
-                    List<AutomatonState> states = generator.BuildStates();
+                    IList<AutomatonState> states = generator.BuildStates();
                     generator.ComputeLookAhead();
                     generator.BuildParseTable();
                     if (!grammar.CheckGrammar(handler))

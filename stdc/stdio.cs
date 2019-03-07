@@ -198,14 +198,14 @@ namespace stdc
         #region sscanf variants
         public static int sscanf<T1>(string input, string format, out T1 p1)
         {
-            List<object> results;
+            IList<object> results;
             int count = ScanfHelper.Parse(input, format, out results);
             p1 = AssignResult<T1>(results[0]);
             return count;
         }
         public static int sscanf<T1, T2>(string input, string format, out T1 p1, out T2 p2)
         {
-            List<object> results;
+            IList<object> results;
             int count = ScanfHelper.Parse(input, format, out results);
             p1 = AssignResult<T1>(results[0]);
             p2 = AssignResult<T2>(results[1]);
@@ -213,7 +213,7 @@ namespace stdc
         }
         public static int sscanf<T1, T2, T3>(string input, string format, out T1 p1, out T2 p2, out T3 p3)
         {
-            List<object> results;
+            IList<object> results;
             int count = ScanfHelper.Parse(input, format, out results);
             p1 = AssignResult<T1>(results[0]);
             p2 = AssignResult<T2>(results[1]);
@@ -222,7 +222,7 @@ namespace stdc
         }
         public static int sscanf<T1, T2, T3, T4>(string input, string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4)
         {
-            List<object> results;
+            IList<object> results;
             int count = ScanfHelper.Parse(input, format, out results);
             p1 = AssignResult<T1>(results[0]);
             p2 = AssignResult<T2>(results[1]);
@@ -232,7 +232,7 @@ namespace stdc
         }
         public static int sscanf<T1, T2, T3, T4, T5>(string input, string format, out T1 p1, out T2 p2, out T3 p3, out T4 p4, out T5 p5)
         {
-            List<object> results;
+            IList<object> results;
             int count = ScanfHelper.Parse(input, format, out results);
             p1 = AssignResult<T1>(results[0]);
             p2 = AssignResult<T2>(results[1]);

@@ -15,7 +15,7 @@ namespace QUT.GPGen
     {
         internal Grammar grammar;
 
-        internal void Generate(List<AutomatonState> states, Grammar grammar)
+        internal void Generate(IList<AutomatonState> states, Grammar grammar)
         {
             StreamWriter tWrtr = null;
             StreamWriter sWrtr = null;
@@ -227,8 +227,8 @@ namespace QUT.GPGen
             Console.WriteLine("// Abstract base class for GPLEX scanners");
             Console.WriteLine("{0} abstract class {1} : AbstractScanner<{2},{3}> {{",
                 grammar.Visibility, grammar.ScanBaseName, grammar.ValueTypeName, grammar.LocationTypeName);
-            Console.WriteLine("  private {0} __yylloc = new {0}();", grammar.LocationTypeName);
-            Console.Write("  public override {0} yylloc", grammar.LocationTypeName);
+            Console.WriteLine($"  private {grammar.LocationTypeName} __yylloc = new {grammar.LocationTypeName}();");
+            Console.Write($"  public override {grammar.LocationTypeName} yylloc");
             Console.WriteLine(" { get { return __yylloc; } set { __yylloc = value; } }");
             Console.WriteLine("  protected virtual bool yywrap() { return true; }");
             if (GPCG.Babel)
@@ -262,15 +262,13 @@ namespace QUT.GPGen
 
 
         private static void GenerateClassFooter()
-        {
-            Console.WriteLine('}');
-        }
+            => Console.WriteLine('}');
 
 
         private void GenerateInitializeMethod(
-            List<AutomatonState> states,
-            List<Production> productions,
-            Dictionary<string, NonTerminal> nonTerminals)
+            IList<AutomatonState> states,
+            IList<Production> productions,
+            IDictionary<string, NonTerminal> nonTerminals)
         {
             Console.WriteLine("#pragma warning disable 649");
             Console.WriteLine("  private static Dictionary<int, string> aliasses;");
@@ -311,7 +309,7 @@ namespace QUT.GPGen
             var aliasList = new List<Terminal>();
             foreach (var pair in grammar.terminals)
             {
-                Terminal term = pair.Value;
+                var term = pair.Value;
                 if (term.Alias != null)
                     aliasList.Add(term);
             }

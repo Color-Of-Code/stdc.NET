@@ -33,7 +33,7 @@ namespace stdc
         }
 
         // Delegate to parse a type
-        private delegate bool ParseValue(TextParser input, FormatSpecifier spec, List<object> results);
+        private delegate bool ParseValue(TextParser input, FormatSpecifier spec, IList<object> results);
 
         // Class to associate format type with type parser
         private class TypeParser
@@ -80,7 +80,7 @@ namespace stdc
         /// </summary>
         /// <param name="input">String to parse</param>
         /// <param name="format">Specifies rules for parsing input</param>
-        public static int Parse(string input, string format, out List<object> results)
+        public static int Parse(string input, string format, out IList<object> results)
         {
             TextParser inp = new TextParser(input);
             TextParser fmt = new TextParser(format);
@@ -242,7 +242,7 @@ namespace stdc
         /// <summary>
         /// Parse a character field
         /// </summary>
-        private static bool ParseCharacter(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseCharacter(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             // Parse character(s)
             int start = input.Position;
@@ -269,7 +269,7 @@ namespace stdc
         /// <summary>
         /// Parse integer field
         /// </summary>
-        private static bool ParseDecimal(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseDecimal(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             int radix = 10;
 
@@ -326,7 +326,7 @@ namespace stdc
         /// <summary>
         /// Parse a floating-point field
         /// </summary>
-        private static bool ParseFloat(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseFloat(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             // Skip any whitespace
             input.MovePastWhitespace();
@@ -393,7 +393,7 @@ namespace stdc
         /// <summary>
         /// Parse hexadecimal field
         /// </summary>
-        private static bool ParseHexadecimal(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseHexadecimal(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             // Skip any whitespace
             input.MovePastWhitespace();
@@ -428,7 +428,7 @@ namespace stdc
         /// <summary>
         /// Parse an octal field
         /// </summary>
-        private static bool ParseOctal(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseOctal(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             // Skip any whitespace
             input.MovePastWhitespace();
@@ -459,7 +459,7 @@ namespace stdc
         /// <summary>
         /// Parse a scan-set field
         /// </summary>
-        private static bool ParseScanSet(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseScanSet(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             // Parse characters
             int start = input.Position;
@@ -495,7 +495,7 @@ namespace stdc
         /// <summary>
         /// Parse a string field
         /// </summary>
-        private static bool ParseString(TextParser input, FormatSpecifier spec, List<object> results)
+        private static bool ParseString(TextParser input, FormatSpecifier spec, IList<object> results)
         {
             // Skip any whitespace
             input.MovePastWhitespace();
@@ -533,7 +533,7 @@ namespace stdc
         }
 
         // Parse signed token and add to results
-        private static void AddSigned(string token, Modifiers mod, int radix, List<object> results)
+        private static void AddSigned(string token, Modifiers mod, int radix, IList<object> results)
         {
             object obj;
             if (mod == Modifiers.ShortShort)
@@ -549,7 +549,7 @@ namespace stdc
         }
 
         // Parse unsigned token and add to results
-        private static void AddUnsigned(string token, Modifiers mod, int radix, List<object> results)
+        private static void AddUnsigned(string token, Modifiers mod, int radix, IList<object> results)
         {
             object obj;
             if (mod == Modifiers.ShortShort)

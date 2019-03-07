@@ -14,14 +14,14 @@ namespace QUT.GPGen
         internal bool reached;
 
         // Start experimental features
-        internal List<NonTerminal> dependsOnList;
+        internal IList<NonTerminal> dependsOnList;
         internal int depth;
         internal bool terminating;
         // end
 
         static int count;
         private int n;
-        internal List<Production> productions = new List<Production>();
+        internal IList<Production> productions = new List<Production>();
 
         internal NonTerminal(string name)
             : base(name)

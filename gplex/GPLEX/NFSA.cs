@@ -167,8 +167,8 @@ namespace QUT.Gplex.Automaton
             internal string key;
             internal LexSpan eofAction;
             internal StartState myStartCondition;           // from the LEX start state
-            internal List<int> acceptStates = new List<int>();
-            internal List<NState> nStates = new List<NState>();
+            internal IList<int> acceptStates = new List<int>();
+            internal IList<NState> nStates = new List<NState>();
             internal NFSA parent;
 
             private bool pack;
