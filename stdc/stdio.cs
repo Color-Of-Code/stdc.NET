@@ -756,15 +756,15 @@ namespace stdc
                 FILE file = new FILE(stream);
                 return file;
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 errno = ENOENT;
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 errno = EINVAL;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 errno = EIO;
             }
@@ -931,7 +931,7 @@ namespace stdc
                 file.Flush();
                 return 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //TODO: set errno accordingly
                 return EOF;
