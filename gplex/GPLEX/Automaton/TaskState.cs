@@ -11,7 +11,6 @@ using QUT.GplexBuffers;
 
 namespace QUT.Gplex.Automaton
 {
-    internal enum OptionState { clear, needUsage, needCodepageHelp, inconsistent, alphabetLocked, errors };
 
     /// <summary>
     /// A singleton of this type holds the main program state during
