@@ -2,20 +2,17 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-
 using System;
-
 
 namespace QUT.GPGen
 {
-    internal enum PrecType { left, right, nonassoc, token };
 
     internal class Precedence
     {
-        internal PrecType type;
+        internal PrecedenceType type;
         internal int prec;
 
-        internal Precedence(PrecType type, int prec)
+        internal Precedence(PrecedenceType type, int prec)
         {
             this.type = type;
             this.prec = prec;

@@ -382,7 +382,7 @@ internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
 { grammar.prologCode.Add(LocationStack[LocationStack.Depth-2]); }
         break;
       case 18: // Declaration -> "%token", KindOpt, TokenList
-{ DeclareTokens(PrecType.token, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
+{ DeclareTokens(PrecedenceType.token, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
         break;
       case 19: // Declaration -> "%type", Kind, NtSymbolList
 {
@@ -391,13 +391,13 @@ internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
 						}
         break;
       case 20: // Declaration -> "%left", KindOpt, TokenList
-{ DeclareTokens(PrecType.left, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
+{ DeclareTokens(PrecedenceType.left, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
         break;
       case 21: // Declaration -> "%right", KindOpt, TokenList
-{ DeclareTokens(PrecType.right, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
+{ DeclareTokens(PrecedenceType.right, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
         break;
       case 22: // Declaration -> "%nonassoc", KindOpt, TokenList
-{ DeclareTokens(PrecType.nonassoc, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
+{ DeclareTokens(PrecedenceType.nonassoc, LocationStack[LocationStack.Depth-2].ToString(), ValueStack[ValueStack.Depth-1].tokenList); }
         break;
       case 23: // Declaration -> "%start", NtSymbol
 { grammar.startSymbol = grammar.LookupNonTerminal(LocationStack[LocationStack.Depth-1].ToString()); }

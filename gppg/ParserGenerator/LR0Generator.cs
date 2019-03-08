@@ -153,7 +153,7 @@ namespace QUT.GPGen
                                     {
                                         if (iProd.prec.prec > t.prec.prec ||
                                             (iProd.prec.prec == t.prec.prec &&
-                                             iProd.prec.type == PrecType.left))
+                                             iProd.prec.type == PrecedenceType.left))
                                         {
                                             // resolve in favour of reduce (without error)
                                             state.parseTable[t] = new Reduce(item);
