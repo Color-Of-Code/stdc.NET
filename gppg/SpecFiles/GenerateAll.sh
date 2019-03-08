@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pushd `dirname "$0"`
+
 # generate a fresh copy of parser.cs
 dotnet run --project ../gppg.csproj /gplex /nolines gppg.y
 mv Parser.cs ../ParserGenerator
@@ -13,3 +15,5 @@ dotnet run --project ../../gplex/gplex.csproj ScanAction.lex
 mv ScanAction.cs ../ParserGenerator
 
 mv GplexBuffers.cs ../ParserGenerator
+
+popd
