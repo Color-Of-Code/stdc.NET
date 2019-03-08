@@ -18,7 +18,7 @@ namespace QUT.GPGen
         internal AutomatonState next;
 
         internal SetCollection<Terminal> DR;
-        internal List<Transition> includes = new List<Transition>();
+        internal IList<Transition> includes = new List<Transition>();
         internal SetCollection<Terminal> Read;
         internal SetCollection<Terminal> Follow;
 

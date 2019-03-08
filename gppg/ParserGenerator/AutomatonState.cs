@@ -52,11 +52,13 @@ namespace QUT.GPGen
         {
             if (item.pos < item.production.rhs.Count)
             {
-                NonTerminal nonTerm = null;
                 Symbol rhs = item.production.rhs[item.pos];
-                if ((nonTerm = rhs as NonTerminal) != null)
+                NonTerminal nonTerm = rhs as NonTerminal;
+                if (nonTerm != null)
+                {
                     foreach (Production p in nonTerm.productions)
                         AddNonKernel(p);
+                }
             }
         }
 
@@ -84,9 +86,9 @@ namespace QUT.GPGen
         internal void AddGoto(Symbol s, AutomatonState next)
         {
             this.Goto[s] = next;
-            Terminal term;
+            Terminal term = s as Terminal;
 
-            if ((term = s as Terminal) != null)
+            if (term != null)
                 terminalTransitions.Add(term);
             else
             {
@@ -145,8 +147,7 @@ namespace QUT.GPGen
 
         internal void Link(Conflict conflict)
         {
-            if (this.conflicts == null)
-                conflicts = new List<Conflict>();
+            conflicts = conflicts ?? new List<Conflict>();
             conflicts.Add(conflict);
         }
     }
