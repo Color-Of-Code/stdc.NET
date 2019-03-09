@@ -1,5 +1,5 @@
-﻿namespace QUT.Gplex.IncludeResources {
-    using System;
+﻿namespace QUT.Gplex.IncludeResources
+{
     using System.IO;
     using System.Reflection;
 
@@ -13,9 +13,11 @@
     /// gplex.SpecFiles.gplexx.frame
     /// gplex.SpecFiles.guesser.frame
     /// </summary>    
-    internal class Content {
-        
-        internal Content() {
+    internal class Content
+    {
+
+        internal Content()
+        {
         }
 
         private static string GetString(string resourceName)
@@ -27,21 +29,27 @@
                 return reader.ReadToEnd();
             }
         }
-        
-        internal static string GplexBuffers {
-            get {
+
+        internal static string GplexBuffers
+        {
+            get
+            {
                 return GetString("gplex.SpecFiles.GplexBuffers.txt");
             }
         }
-        
-        internal static string GplexxFrame {
-            get {
+
+        internal static string GplexxFrame
+        {
+            get
+            {
                 return GetString("gplex.SpecFiles.gplexx.frame");
             }
         }
-        
-        internal static string ResourceHeader {
-            get {
+
+        internal static string ResourceHeader
+        {
+            get
+            {
                 return GetString("gplex.SpecFiles.ResourceHeader.txt");
             }
         }

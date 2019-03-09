@@ -55,7 +55,6 @@ namespace QUT.Gplex.Automaton
         bool summary;
         bool listing;
         bool emitVer;
-        bool files = true;
         bool embedBuffers = true;
         bool errorsToConsole;
         //bool utf8default;
@@ -116,7 +115,7 @@ namespace QUT.Gplex.Automaton
         }
 
         // Support for various properties of the task
-        internal bool Files { get { return files; } }
+        internal bool Files { get; private set; }
         internal bool Stack { get { return stack; } }
         internal bool Babel { get { return babel; } }
         internal bool Verbose { get { return verbose; } }
@@ -225,7 +224,7 @@ namespace QUT.Gplex.Automaton
                 else if (arg.StartsWith("PERSISTBUFF", StringComparison.Ordinal)) persistBuff = !negate;
                 else if (arg.Equals("PARSER", StringComparison.Ordinal)) hasParser = !negate;
                 else if (arg.Equals("BABEL", StringComparison.Ordinal)) babel = !negate;
-                else if (arg.Equals("FILES", StringComparison.Ordinal)) files = !negate;
+                else if (arg.Equals("FILES", StringComparison.Ordinal)) Files = !negate;
                 else if (arg.StartsWith("EMBEDBUFF", StringComparison.Ordinal)) embedBuffers = !negate;
                 else if (arg.Equals("INFO", StringComparison.Ordinal)) emitInfo = !negate;
                 else if (arg.Equals("UTF8DEFAULT", StringComparison.Ordinal)) // Deprecated, compatability only.
@@ -362,9 +361,8 @@ namespace QUT.Gplex.Automaton
                 this.fileName = flnm;
             this.baseName = Path.GetFileNameWithoutExtension(this.fileName);
 
-            if (this.outName == null) // do the default outfilename
-                this.outName = this.baseName + dotCs;
-
+            // do the default outfilename
+            this.outName = this.outName ?? this.baseName + dotCs;
         }
 
         /// <summary>
@@ -474,50 +472,47 @@ namespace QUT.Gplex.Automaton
             }
         }
 
-        FileStream BufferCodeFile()
+        private FileStream BufferCodeFile()
         {
-            try
-            {
-                FileStream codeFile = new FileStream(bufferCodeName, FileMode.Create);
-                if (verbose) msgWrtr.WriteLine("GPLEX: created file <{0}>", bufferCodeName);
-                return codeFile;
-            }
-            catch (IOException)
-            {
-                handler.AddError("GPLEX: buffer code file <" + bufferCodeName + "> not created", aast.AtStart);
-                return null;
-            }
+            FileStream codeFile = new FileStream(bufferCodeName, FileMode.Create);
+            if (verbose) msgWrtr.WriteLine("GPLEX: created file <{0}>", bufferCodeName);
+            return codeFile;
         }
 
         void CopyBufferCode()
         {
-            string GplexBuffers = "";
-            StreamWriter writer = new StreamWriter(BufferCodeFile());
-            GplexBuffers = QUT.Gplex.IncludeResources.Content.GplexBuffers;
+            try
+            {
+                using (var writer = new StreamWriter(BufferCodeFile()))
+                {
+                    string GplexBuffers = QUT.Gplex.IncludeResources.Content.GplexBuffers;
 
-            writer.WriteLine(QUT.Gplex.IncludeResources.Content.ResourceHeader);
-            writer.WriteLine("using System;");
-            writer.WriteLine("using System.IO;");
-            writer.WriteLine("using System.Text;");
-            writer.WriteLine("using System.Collections.Generic;");
-            writer.WriteLine("using System.Diagnostics.CodeAnalysis;");
-            writer.WriteLine("using System.Runtime.Serialization;");
-            writer.WriteLine("using System.Globalization;");
-            writer.WriteLine();
-            writer.WriteLine("namespace QUT.GplexBuffers");
-            writer.WriteLine('{');
-            writer.WriteLine("// Code copied from GPLEX embedded resource");
-            writer.WriteLine(GplexBuffers);
-            writer.WriteLine("// End of code copied from embedded resource");
-            writer.WriteLine('}');
-            writer.Flush();
-            writer.Close();
+                    writer.WriteLine(QUT.Gplex.IncludeResources.Content.ResourceHeader);
+                    writer.WriteLine("using System;");
+                    writer.WriteLine("using System.IO;");
+                    writer.WriteLine("using System.Text;");
+                    writer.WriteLine("using System.Collections.Generic;");
+                    writer.WriteLine("using System.Diagnostics.CodeAnalysis;");
+                    writer.WriteLine("using System.Runtime.Serialization;");
+                    writer.WriteLine("using System.Globalization;");
+                    writer.WriteLine();
+                    writer.WriteLine("namespace QUT.GplexBuffers");
+                    writer.WriteLine('{');
+                    writer.WriteLine("// Code copied from GPLEX embedded resource");
+                    writer.WriteLine(GplexBuffers);
+                    writer.WriteLine("// End of code copied from embedded resource");
+                    writer.WriteLine('}');
+                }
+            }
+            catch (IOException)
+            {
+                handler.AddError("GPLEX: buffer code file <" + bufferCodeName + "> not created", aast.AtStart);
+            }
         }
 
         internal static void EmbedBufferCode(TextWriter writer)
         {
-            string GplexBuffers = "";
-            GplexBuffers = QUT.Gplex.IncludeResources.Content.GplexBuffers;
+            string GplexBuffers = QUT.Gplex.IncludeResources.Content.GplexBuffers;
 
             writer.WriteLine(QUT.Gplex.IncludeResources.Content.ResourceHeader);
 
