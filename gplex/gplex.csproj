@@ -9,4 +9,8 @@
     <EmbeddedResource Include="SpecFiles/*.txt" />
     <EmbeddedResource Include="SpecFiles/*.frame" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\gplib\gplib.csproj" />
+  </ItemGroup>
 </Project>
