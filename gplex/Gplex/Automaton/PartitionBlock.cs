@@ -8,7 +8,6 @@ namespace QUT.Gplex.Automaton
 {
     internal class PartitionBlock
     {
-        private int predCount;                 //  Number of predecessors from the current generation.
         internal PartitionBlock twinBlk;       //  During a split, the two fragments reference each other.
         internal LinkedList<DFSA.DState> members;
 
@@ -16,7 +15,8 @@ namespace QUT.Gplex.Automaton
         public int SymbolsLeft { get; set; }
         //  The current splitting generation.
         public int Generation { get; set; }
-        public int PredCount { get { return predCount; } set { predCount = value; } }
+        //  Number of predecessors from the current generation.
+        public int PredCount { get; set; }
         public int MemberCount { get { return members.Count; } }
         public DFSA.DState FirstMember { get { return members.First.Value; } }
 
@@ -24,7 +24,10 @@ namespace QUT.Gplex.Automaton
         /// Add the given node to the linked list
         /// </summary>
         /// <param name="node"></param>
-        private void AddNode(LinkedListNode<DFSA.DState> node) { this.members.AddLast(node); }
+        private void AddNode(LinkedListNode<DFSA.DState> node)
+        {
+            this.members.AddLast(node);
+        }
 
         /// <summary>
         /// Add a new node to the list, with value given by the dSt
@@ -47,7 +50,7 @@ namespace QUT.Gplex.Automaton
             // Assert: dSt must belong to LinkedList this.members
             var node = dSt.listNode;
             this.members.Remove(node);
-            this.predCount--;
+            this.PredCount--;
             blk.AddNode(node);
         }
 
