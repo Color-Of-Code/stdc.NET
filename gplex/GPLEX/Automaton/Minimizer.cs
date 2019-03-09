@@ -164,7 +164,7 @@ namespace QUT.Gplex.Automaton
                 //
                 PartitionBlock blk = worklist.Peek();
 
-                int sym = blk.Sym - 1;
+                int sym = blk.SymbolsLeft - 1;
                 if (sym < 0)
                 {
                     worklist.Pop();           // Remove block from the worklist.
@@ -192,9 +192,9 @@ namespace QUT.Gplex.Automaton
                                 {
                                     PartitionBlock predBlk = (pSt.block as PartitionBlock);
                                     pSt.listOrd = generation;
-                                    if (predBlk.Gen != generation)
+                                    if (predBlk.Generation != generation)
                                     {
-                                        predBlk.Gen = generation;
+                                        predBlk.Generation = generation;
                                         predBlk.PredCount = 0;
                                     }
                                     predSet.Add(pSt);       // Add the predecessor to the set
@@ -202,7 +202,7 @@ namespace QUT.Gplex.Automaton
                                 }
                     }
                 }
-                blk.Sym--;                         // "Remove" (blk,sym) from the pair list.
+                blk.SymbolsLeft--;                         // "Remove" (blk,sym) from the pair list.
                 //
                 // Now, if the predecessor set is not empty,
                 // we split all blocks with respect to (blk,sym)
@@ -232,7 +232,7 @@ namespace QUT.Gplex.Automaton
                     {
                         PartitionBlock lBlk = tBlk.twinBlk;
                         PartitionBlock push = null;
-                        if (lBlk.Sym == 0)    // lBlk is not currently on the list so push smaller block
+                        if (lBlk.SymbolsLeft == 0)    // lBlk is not currently on the list so push smaller block
                         {
                             if (lBlk.MemberCount < tBlk.MemberCount)
                                 push = lBlk;
@@ -245,8 +245,8 @@ namespace QUT.Gplex.Automaton
                             if (lBlk.MemberCount < tBlk.MemberCount)
                             {
                                 // tBlk has the larger cardinality, so give it the smaller Sym value
-                                tBlk.Sym = lBlk.Sym;
-                                lBlk.Sym = dfsa.MaxSym;
+                                tBlk.SymbolsLeft = lBlk.SymbolsLeft;
+                                lBlk.SymbolsLeft = dfsa.MaxSym;
                             }
                         }
                         worklist.Push(push);
