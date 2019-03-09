@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using QUT.GPGen.Parser;
+using QUT.Gplib;
 
-[assembly: CLSCompliant(true)]
 namespace QUT.GPGen
 {
     class GPCG

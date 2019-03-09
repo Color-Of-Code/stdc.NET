@@ -2,6 +2,8 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
+using QUT.Gplib;
+
 namespace QUT.GPGen
 {
     internal class Terminal : Symbol

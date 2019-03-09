@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using QUT.Gplex.Automaton;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {

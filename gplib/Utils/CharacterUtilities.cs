@@ -10,7 +10,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace QUT.Gplex.Parser
+namespace QUT.Gplib
 {
     /// <summary>
     /// This class supplies character escape 
@@ -188,10 +188,10 @@ namespace QUT.Gplex.Parser
         /// Throws a StringInterpretException if character
         /// ordinal exceeds "symLimit".
         /// </summary>
-        /// <param name="str">the string representation</param>
+        /// <param name="source">the string representation</param>
         /// <param name="offset">start index of character</param>
         /// <returns>code point of character</returns>
-        public static int OrdinalOfCharLiteral(string source, int offset)
+        public static int OrdinalOfCharacterLiteral(string source, int offset)
         {
             char chr0 = source[offset++];
             if (chr0 != '\\')

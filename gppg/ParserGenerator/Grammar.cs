@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using QUT.GPGen.Parser;
+using QUT.Gplib;
 
 
 namespace QUT.GPGen
