@@ -8,6 +8,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using QUT.GplexBuffers;
+using QUT.Gplib;
 
 namespace QUT.GPGen.Parser
 {

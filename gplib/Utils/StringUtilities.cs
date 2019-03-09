@@ -7,8 +7,9 @@
 //
 
 using System;
+using System.Linq;
 
-namespace QUT.Gplex.Parser
+namespace QUT.Gplib
 {
     public static class StringUtilities
     {
@@ -29,16 +30,12 @@ namespace QUT.Gplex.Parser
         /// <summary>
         /// Returns the character width of a (possibly multiline) string.
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="source">The text to measure</param>
         /// <returns></returns>
         public static int MaxWidth(string source)
         {
-            int rslt = 0;
-            string[] lines = source.Split(new Char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-                if (line.Length > rslt)
-                    rslt = line.Length;
-            return rslt;
+            return source.Split(new Char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                .Max(x => x.Length);
         }
     }
 }

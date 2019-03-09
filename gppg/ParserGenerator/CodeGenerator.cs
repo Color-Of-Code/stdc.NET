@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
 using QUT.GPGen.Parser;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
