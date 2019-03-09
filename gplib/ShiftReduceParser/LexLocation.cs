@@ -13,31 +13,26 @@ namespace QUT.Gplib
     /// </summary>
     public class LexLocation : IMerge<LexLocation>
     {
-        private int startLine;   // start line
-        private int startColumn; // start column
-        private int endLine;     // end line
-        private int endColumn;   // end column
-
         /// <summary>
         /// The line at which the text span starts.
         /// </summary>
-        public int StartLine { get { return startLine; } }
+        public int StartLine { get; private set; }
 
         /// <summary>
         /// The column at which the text span starts.
         /// </summary>
-        public int StartColumn { get { return startColumn; } }
+        public int StartColumn { get; private set; }
 
         /// <summary>
         /// The line on which the text span ends.
         /// </summary>
-        public int EndLine { get { return endLine; } }
+        public int EndLine { get; private set; }
 
         /// <summary>
         /// The column of the first character
         /// beyond the end of the text span.
         /// </summary>
-        public int EndColumn { get { return endColumn; } }
+        public int EndColumn { get; private set; }
 
         /// <summary>
         /// Default no-arg constructor.
@@ -53,7 +48,12 @@ namespace QUT.Gplib
         /// <param name="el">end line </param>
         /// <param name="ec">end column</param>
         public LexLocation(int sl, int sc, int el, int ec)
-        { startLine = sl; startColumn = sc; endLine = el; endColumn = ec; }
+        { 
+            StartLine = sl;
+            StartColumn = sc;
+            EndLine = el;
+            EndColumn = ec;
+        }
 
         /// <summary>
         /// Create a text location which spans from the 
@@ -62,6 +62,8 @@ namespace QUT.Gplib
         /// <param name="last">The last location in the result span</param>
         /// <returns>The merged span</returns>
         public LexLocation Merge(LexLocation last)
-        { return new LexLocation(this.startLine, this.startColumn, last.endLine, last.endColumn); }
+        { 
+            return new LexLocation(this.StartLine, this.StartColumn, last.EndLine, last.EndColumn);
+        }
     }
 }

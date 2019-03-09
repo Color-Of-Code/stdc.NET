@@ -16,9 +16,9 @@ namespace QUT.Gplib
         /// The number of states in the automaton.
         /// </summary>
         public int number;
-        internal Dictionary<int, int> ParserTable;   // Terminal -> ParseAction
-        internal Dictionary<int, int> Goto;          // NonTerminal -> State;
-        internal int defaultAction; // = 0;		     // ParseAction
+        internal IDictionary<int, int> ParserTable;  // Terminal -> ParseAction
+        internal IDictionary<int, int> Goto;         // NonTerminal -> State;
+        internal int defaultAction; // = 0;          // ParseAction
 
         /// <summary>
         /// State transition data for this state. Pairs of elements of the 
