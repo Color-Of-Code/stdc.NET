@@ -28,7 +28,7 @@ namespace QUT.Gplex.Automaton
             internal int ord;
             private uint serialNumber;
             internal BitArray epsilons;                 // epsilon transitions.
-            internal List<NState> epsList = new List<NState>();
+            internal IList<NState> epsList = new List<NState>();
             internal RuleDesc accept;                   // rule matched OR null
             internal int rhCntx;                        // length of fixed right context
             internal int lhCntx;                        // length of fixed context lhs

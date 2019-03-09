@@ -63,19 +63,19 @@ namespace QUT.Gplex.Automaton
         /// <summary>
         /// A list of all created DStates
         /// </summary>
-        List<DState> stateList = new List<DState>();
+        private List<DState> stateList = new List<DState>();
         internal int origLength;
 
         /// <summary>
         /// "next" is the global next state table
         /// </summary>
-        internal Dictionary<ulong, DState> next = new Dictionary<ulong, DState>();
+        internal IDictionary<ulong, DState> next = new Dictionary<ulong, DState>();
 
         /// <summary>
         /// "newNext" is the new dictionary in which the replacement next
         /// state table is built, in the event that the FSA is minimized.
         /// </summary>
-        internal Dictionary<ulong, DState> newNext;
+        internal IDictionary<ulong, DState> newNext;
         void InitNewNext() { newNext = new Dictionary<ulong, DState>(); }
         void OverwriteOldNext() { next = newNext; }
 
@@ -622,7 +622,7 @@ namespace QUT.Gplex.Automaton
         /// <param name="list">The minimizer object</param>
         public void RewriteStateList()
         {
-            List<DState> newList = new List<DState>();
+            var newList = new List<DState>();
             InitNewNext();
             foreach (DfsaInstance inst in dfas)
             {
@@ -1306,7 +1306,7 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="sWrtr">output stream</param>
         /// <param name="mapRuns">list of dense regions</param>
-        private void WriteCompressedMap(TextWriter sWrtr, List<MapRun> mapRuns)
+        private void WriteCompressedMap(TextWriter sWrtr, IList<MapRun> mapRuns)
         {
             string mapTyNm;
             int mixs = 0;                   // Number of mixed runs
@@ -1400,7 +1400,7 @@ namespace QUT.Gplex.Automaton
         /// <param name="first">Lowest numbered run to consider</param>
         /// <param name="last">Highest numbered run to consider</param>
         private void EmitDecisionCode(
-            TextWriter sWrtr, string mapTyNm, List<MapRun> mapRuns, int indent, int min, int max, int first, int last)
+            TextWriter sWrtr, string mapTyNm, IList<MapRun> mapRuns, int indent, int min, int max, int first, int last)
         {
             sWrtr.Write("// '{0}' <= code <= '{1}'", CharacterUtilities.Map(min), CharacterUtilities.Map(max));
             Indent(sWrtr, indent + 2);
@@ -1616,7 +1616,7 @@ namespace QUT.Gplex.Automaton
             // bool isByte = stateList.Count < 128;
             bool doMap = myTask.ChrClasses;
             bool bigMap = doMap && myTask.CompressMap;
-            List<int> aliasPairs = new List<int>();
+            var aliasPairs = new List<int>();
             string eType; //  = (isByte ? "sbyte" : "short");
             string symStr;
 

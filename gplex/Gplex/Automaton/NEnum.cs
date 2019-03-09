@@ -8,7 +8,7 @@ namespace QUT.Gplex.Automaton
 {
     internal partial class DFSA
     {
-                internal partial class NSetFactory
+        internal partial class NSetFactory
         {
             /// <summary>
             /// This is a custom enumerator.  It does not implement 

@@ -984,15 +984,15 @@ namespace QUT.Gplex.Parser
     /// </summary>
     internal sealed class StartStateScope
     {
-        private Stack<List<StartState>> stack;
+        private Stack<IList<StartState>> stack;
 
         internal StartStateScope()
         {
-            stack = new Stack<List<StartState>>();
+            stack = new Stack<IList<StartState>>();
             stack.Push(new List<StartState>());
         }
 
-        internal List<StartState> Current
+        internal IList<StartState> Current
         {
             get { return stack.Peek(); }
         }
@@ -1012,7 +1012,7 @@ namespace QUT.Gplex.Parser
         }
 #endif
 
-        internal void EnterScope(List<StartState> list)
+        internal void EnterScope(IList<StartState> list)
         {
             //  There are a couple of tricky cases here.
             //  Neither of them are sensible, but both are
@@ -1025,7 +1025,7 @@ namespace QUT.Gplex.Parser
             //            <*>{ ...
             //  Active list of start states should be "all states"
             //
-            List<StartState> newTop = null;
+            IList<StartState> newTop = null;
             var current = this.Current;
             if (list.Contains(StartState.allState))
                 newTop = list;
@@ -1053,7 +1053,7 @@ namespace QUT.Gplex.Parser
         {
             if (stack.Count != 1)
             {
-                stack = new Stack<List<StartState>>();
+                stack = new Stack<IList<StartState>>();
                 stack.Push(new List<StartState>());
             }
         }
@@ -1071,7 +1071,7 @@ namespace QUT.Gplex.Parser
         internal bool isBarAction;
         //internal bool isRightAnchored;
         internal bool isPredDummyRule;
-        internal List<StartState> list;
+        internal IList<StartState> list;
 
         /// <summary>
         /// How many times this rule is used
@@ -1108,7 +1108,7 @@ namespace QUT.Gplex.Parser
 
         private RuleDesc() { }
 
-        internal RuleDesc(LexSpan loc, LexSpan act, List<StartState> aList, bool bar)
+        internal RuleDesc(LexSpan loc, LexSpan act, IList<StartState> aList, bool bar)
         {
             pSpan = loc;
             aSpan = act;

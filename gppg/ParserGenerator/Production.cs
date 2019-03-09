@@ -13,18 +13,16 @@ namespace QUT.GPGen
     {
         internal int num;
         internal NonTerminal lhs;
-        internal List<Symbol> rhs = new List<Symbol>();
+        internal IList<Symbol> rhs = new List<Symbol>();
         internal SemanticAction semanticAction;
         internal Precedence prec;
         internal Parser.LexSpan precSpan;
-
 
         internal Production(NonTerminal lhs)
         {
             this.lhs = lhs;
             lhs.productions.Add(this);
         }
-
 
         public override string ToString()
         {

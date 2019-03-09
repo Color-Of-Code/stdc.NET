@@ -51,14 +51,6 @@ namespace QUT.GPGen
             return builder.ToString();
         }
 
-        //public static List<TOut> Map<TOut, TIn>(List<TIn> input, Mapper<TOut, TIn> map)
-        //{
-        //    List<TOut> rslt = new List<TOut>(input.Count);
-        //    foreach (TIn elem in input)
-        //        rslt.Add(map(elem));
-        //    return rslt;
-        //}
-
         public static Collection<TOut> MapC<TOut, TIn>(IEnumerable<TIn> input, Mapper<TOut, TIn> map)
         {
             Collection<TOut> rslt = new Collection<TOut>();

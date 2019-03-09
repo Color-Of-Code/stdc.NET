@@ -139,7 +139,7 @@ namespace QUT.Gplex.Parser
         /// these may include the number '0' as a synonym for "INITIAL"
         /// </summary>
         /// <param name="lst">The list of supposed start state names</param>
-        internal void AddNameListToStateList(List<StartState> lst)
+        internal void AddNameListToStateList(IList<StartState> lst)
         {
             for (int i = 0; i < nameList.Count; i++)
             {

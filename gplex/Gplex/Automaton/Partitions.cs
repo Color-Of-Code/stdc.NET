@@ -34,14 +34,14 @@ namespace QUT.Gplex.Parser
         internal const int CutOff = 128; // Shortest run to consider
         internal const int PageSize = 256; // Pagesize for two-level map
 
-        internal List<PartitionElement> elements = new List<PartitionElement>();
+        internal IList<PartitionElement> elements = new List<PartitionElement>();
 
-        internal List<MapRun> mapRuns;
-        internal List<MapRun> runsInBMP = new List<MapRun>();
-        internal List<MapRun> runsInNonBMPs = new List<MapRun>();
+        internal IList<MapRun> mapRuns;
+        internal IList<MapRun> runsInBMP = new List<MapRun>();
+        internal IList<MapRun> runsInNonBMPs = new List<MapRun>();
         internal TaskState myTask;
 
-        internal List<MapRun> pages;
+        internal IList<MapRun> pages;
 
         int[] iMap;
         CharClassMap tMap;
@@ -83,8 +83,7 @@ namespace QUT.Gplex.Parser
             Accumulator visitor = new Accumulator(this);
             foreach (RuleDesc rule in aast.ruleList)
             {
-                RegExTree reTree = rule.Tree;
-                reTree.Visit(visitor);
+                rule.Tree.Visit(visitor);
             }
         }
 

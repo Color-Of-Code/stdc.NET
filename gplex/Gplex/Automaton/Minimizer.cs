@@ -16,8 +16,8 @@ namespace QUT.Gplex.Automaton
 
         PartitionBlock otherStates;
         PartitionBlock startStates;
-        List<PartitionBlock> acceptStates = new List<PartitionBlock>();
-        List<PartitionBlock> allBlocks = new List<PartitionBlock>();
+        IList<PartitionBlock> acceptStates = new List<PartitionBlock>();
+        IList<PartitionBlock> allBlocks = new List<PartitionBlock>();
 
         internal Minimizer(DFSA dfsa)
         {
@@ -56,7 +56,7 @@ namespace QUT.Gplex.Automaton
         /// time as the initial partition is performed.
         /// </summary>
         /// <param name="list">The list of all DStates</param>
-        internal void PopulatePartitions(List<DFSA.DState> list)
+        internal void PopulatePartitions(IList<DFSA.DState> list)
         {
             PartitionBlock blk = null;
             dfsa.origLength = list.Count;
@@ -152,7 +152,6 @@ namespace QUT.Gplex.Automaton
             int generation = 0;
             while (worklist.Count > 0)
             {
-                List<DFSA.DState> predSet = null;
                 //
                 // We are going to split all blocks with respect to a
                 // particular (Block, Symbol) pair. 
@@ -171,7 +170,7 @@ namespace QUT.Gplex.Automaton
                     continue;                 // Go around again to get new block.
                 }
                 generation++;
-                predSet = new List<DFSA.DState>();
+                var predSet = new List<DFSA.DState>();
                 //
                 // Form a set of all those states that have a
                 // next-state in "blk" on symbol "sym".

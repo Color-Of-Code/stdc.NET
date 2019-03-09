@@ -24,18 +24,18 @@ namespace QUT.GPGen
         internal void BumpPrec() { currentPrec += 10; }
         internal int Prec { get { return currentPrec; } }
 
-        internal List<Production> productions = new List<Production>();
+        internal IList<Production> productions = new List<Production>();
         internal LexSpan unionType;
         internal int NumActions;
-        internal List<LexSpan> prologCode = new List<LexSpan>();	// before first %%
+        internal IList<LexSpan> prologCode = new List<LexSpan>();	// before first %%
         internal LexSpan epilogCode;    // after last %%
         internal NonTerminal startSymbol;
         internal Production rootProduction;
-        internal Dictionary<string, NonTerminal> nonTerminals = new Dictionary<string, NonTerminal>();
-        internal Dictionary<string, Terminal> terminals = new Dictionary<string, Terminal>();
-        internal Dictionary<string, Terminal> aliasTerms = new Dictionary<string, Terminal>();
-        internal List<string> usingList = new List<string>();
-        internal List<Conflict> conflicts = new List<Conflict>();
+        internal IDictionary<string, NonTerminal> nonTerminals = new Dictionary<string, NonTerminal>();
+        internal IDictionary<string, Terminal> terminals = new Dictionary<string, Terminal>();
+        internal IDictionary<string, Terminal> aliasTerms = new Dictionary<string, Terminal>();
+        internal IList<string> usingList = new List<string>();
+        internal IList<Conflict> conflicts = new List<Conflict>();
 
         internal bool IsPartial;
         internal string OutFileName;

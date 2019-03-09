@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Linq;
 using QUT.GPGen.Parser;
 using QUT.Gplib;
 
@@ -181,7 +182,7 @@ namespace QUT.GPGen
             Console.WriteLine();
         }
 
-        private void GenerateTokens(Dictionary<string, Terminal> terminals, StreamWriter writer)
+        private void GenerateTokens(IDictionary<string, Terminal> terminals, StreamWriter writer)
         {
             Console.Write("{0} enum {1} {{", grammar.Visibility, grammar.TokenName);
             bool first = true;
@@ -407,22 +408,20 @@ namespace QUT.GPGen
         }
 
 
-        private void GenerateActionMethod(List<Production> productions)
+        private void GenerateActionMethod(IEnumerable<Production> productions)
         {
             Console.WriteLine("  protected override void DoAction(int action)");
             Console.WriteLine("  {");
             Console.WriteLine("    switch (action)");
             Console.WriteLine("    {");
-            foreach (Production production in productions)
+            foreach (Production production in productions
+                .Where(x => x.semanticAction != null))
             {
-                if (production.semanticAction != null)
-                {
-                    string prefix = String.Format(CultureInfo.InvariantCulture, "      case {0}: ", production.num);
-                    Console.WriteLine("{0}// {1}", prefix,
-                        StringUtilities.MakeComment(prefix.Length, production.ToString()));
-                    production.semanticAction.GenerateCode(this);
-                    Console.WriteLine("        break;");
-                }
+                string prefix = String.Format(CultureInfo.InvariantCulture, "      case {0}: ", production.num);
+                Console.WriteLine("{0}// {1}", prefix,
+                    StringUtilities.MakeComment(prefix.Length, production.ToString()));
+                production.semanticAction.GenerateCode(this);
+                Console.WriteLine("        break;");
             }
             Console.WriteLine("    }");
             Console.WriteLine("  }");

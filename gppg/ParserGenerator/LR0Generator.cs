@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 
 namespace QUT.GPGen
@@ -58,17 +59,16 @@ namespace QUT.GPGen
                     var itemSet = new List<ProductionItem>();
                     itemSet.Add(new ProductionItem(item.production, item.pos + 1));
 
-                    foreach (ProductionItem item2 in state.allItems)
-                        if (!item2.expanded && !item2.isReduction())
+                    foreach (ProductionItem item2 in state.allItems
+                        .Where(x => !x.expanded && !x.isReduction()))
+                    {
+                        Symbol s2 = item2.production.rhs[item2.pos];
+                        if (s1 == s2)
                         {
-                            Symbol s2 = item2.production.rhs[item2.pos];
-
-                            if (s1 == s2)
-                            {
-                                item2.expanded = true;
-                                itemSet.Add(new ProductionItem(item2.production, item2.pos + 1));
-                            }
+                            item2.expanded = true;
+                            itemSet.Add(new ProductionItem(item2.production, item2.pos + 1));
                         }
+                    }
 
                     AutomatonState existingState = FindExistingState(s1, itemSet);
 
@@ -83,19 +83,13 @@ namespace QUT.GPGen
                 }
         }
 
-
         private AutomatonState FindExistingState(Symbol sym, List<ProductionItem> itemSet)
         {
             if (accessedBy.ContainsKey(sym))
-                foreach (AutomatonState state in accessedBy[sym])
-                    if (ProductionItem.SameProductions(state.kernelItems, itemSet))
-                        return state;
-
+                return accessedBy[sym]
+                    .FirstOrDefault(x => ProductionItem.SameProductions(x.kernelItems, itemSet));
             return null;
         }
-
-
-
 
         internal void BuildParseTable()
         {
@@ -189,68 +183,4 @@ namespace QUT.GPGen
         }
     }
 
-    // ===========================================================
-    #region Diagnostics
-    /// <summary>
-    /// Class for determining input token sequences that
-    /// lead to each state by the shortest token sequence.
-    /// The corresponding sequence for each NonTerminal is
-    /// already computed in Grammar.MarkTerminating() as a
-    /// side-effect of detecting non-terminating NonTerms.
-    /// </summary>
-    internal static class DiagnosticHelp
-    {
-        private static IList<T> ListClone<T>(IList<T> list)
-        {
-            IList<T> rslt = new List<T>(list.Count + 1);
-            foreach (T item in list)
-                rslt.Add(item);
-            return rslt;
-        }
-
-        internal static void PopulatePrefixes(IList<AutomatonState> states)
-        {
-            AutomatonState start = states[0];
-            start.shortestPrefix = new List<Symbol>(); // The empty list.
-            start.statePath = new List<AutomatonState>();
-            start.statePath.Add(start);
-
-            bool changed = false;
-            do
-            {
-                changed = false;
-                foreach (var state in states)
-                {
-                    IList<Symbol> newfix;
-                    IList<Symbol> prefix = state.shortestPrefix;
-                    IList<AutomatonState> newPath;
-                    IList<AutomatonState> oldPath = state.statePath;
-
-                    if (prefix != null)
-                    {
-                        foreach (var a in state.Goto)
-                        {
-                            Symbol smbl = a.Key;
-                            AutomatonState nextState = a.Value;
-                            newfix = ListClone<Symbol>(prefix);
-                            newPath = ListClone<AutomatonState>(oldPath);
-
-                            newPath.Add(nextState);
-                            if (!smbl.IsNullable())
-                                newfix.Add(smbl);
-                            if (nextState.shortestPrefix == null ||
-                                nextState.shortestPrefix.Count > newfix.Count)
-                            {
-                                nextState.shortestPrefix = newfix;
-                                nextState.statePath = newPath;
-                                changed = true;
-                            }
-                        }
-                    }
-                }
-            } while (changed);
-        }
-    }
-    #endregion
-    // ===========================================================
 }
