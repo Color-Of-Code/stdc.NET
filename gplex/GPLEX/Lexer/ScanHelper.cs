@@ -6,10 +6,6 @@
 //  kjg 08 September 2008 2006
 //
 
-using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
 using QUT.Gplex.Parser;
 
 namespace QUT.Gplex.Lexer

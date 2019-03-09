@@ -6,18 +6,18 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using QUT.GplexBuffers;
 
 namespace QUT.Gplex.Parser
 {
-
-
     internal class ErrorHandler
     {
         const int maxErrors = 50; // Will this be enough for all users?
 
-        List<Error> errors;
+        private List<Error> errors;
+
         int errNum;
         int wrnNum;
 
@@ -36,8 +36,7 @@ namespace QUT.Gplex.Parser
         //   Public utility methods
         // -----------------------------------------------------
 
-
-        internal List<Error> SortedErrorList()
+        internal IEnumerable<Error> SortedErrorList()
         {
             if (errors.Count > 1) errors.Sort();
             return errors;
@@ -244,7 +243,7 @@ namespace QUT.Gplex.Parser
             //
             //  Errors are sorted by line number
             //
-            errors = SortedErrorList();
+            errors = SortedErrorList().ToList();
             //
             //  Reset the source file buffer to the start
             //

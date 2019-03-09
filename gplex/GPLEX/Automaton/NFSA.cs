@@ -216,6 +216,13 @@ namespace QUT.Gplex.Automaton
                 return s;
             }
 
+            internal NState MkState(NState entryState)
+            {
+                NState s = MkState();
+                s.AddEpsTrns(entryState);
+                return s;
+            }
+
             /// <summary>
             /// NfsaInst objects only have an anchorState if there is one or more
             /// left-anchored patterns for the corresponding start condition.
@@ -226,11 +233,7 @@ namespace QUT.Gplex.Automaton
             {
                 get
                 {
-                    if (anchorState == null)
-                    {
-                        anchorState = MkState();
-                        anchorState.AddEpsTrns(entryState);
-                    }
+                    anchorState = anchorState ?? MkState(entryState);
                     return anchorState;
                 }
             }

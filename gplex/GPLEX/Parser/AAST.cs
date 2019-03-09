@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace QUT.Gplex.Parser
@@ -18,56 +19,52 @@ namespace QUT.Gplex.Parser
     /// This class represents the Attributed Abstract Syntax Tree
     /// corresponding to an input LEX file.
     /// </summary>
-    internal sealed class AAST
+    internal sealed partial class AAST
     {
         internal QUT.Gplex.Lexer.Scanner scanner;
         internal ErrorHandler hdlr;
 
-        private List<LexSpan> prolog = new List<LexSpan>();   // Verbatim declarations for scanning routine
-        private List<LexSpan> epilog = new List<LexSpan>();   // Epilog code for the scanning routine
-        private List<LexSpan> codeIncl = new List<LexSpan>();   // Text to copy verbatim into output file
-
-        internal List<LexSpan> usingStrs = new List<LexSpan>();  // "using" dotted names
+        internal IList<LexSpan> usingStrs = new List<LexSpan>();  // "using" dotted names
         internal LexSpan nameString;                             // Namespace dotted name
-        private LexSpan userCode;                                // Text from the user code section
 
         internal string visibility = "public";                   // Visibility name "public" or "internal"
         internal string scanBaseName = "ScanBase";               // Name of scan base class.
         internal string tokenTypeName = "Tokens";                // Name of the token enumeration type.
         internal string scannerTypeName = "Scanner";             // Name of the generated scanner class.
 
-        internal List<RuleDesc> ruleList = new List<RuleDesc>();
-        internal List<LexCategory> lexCatsWithPredicates = new List<LexCategory>();
-        Dictionary<string, LexCategory> lexCategories = new Dictionary<string, LexCategory>();
+        internal IList<RuleDesc> ruleList = new List<RuleDesc>();
+        internal IList<LexCategory> lexCatsWithPredicates = new List<LexCategory>();
+        internal IDictionary<string, LexCategory> lexCategories = new Dictionary<string, LexCategory>();
         internal Dictionary<string, PredicateLeaf> cats; // Allocated on demand
         internal Dictionary<string, StartState> startStates = new Dictionary<string, StartState>();
         private List<StartState> inclStates = new List<StartState>();
 
-        Automaton.TaskState task;
-
-        internal Automaton.TaskState Task { get { return task; } }
-        internal int CodePage { get { return task.CodePage; } }
-        internal bool IsVerbose { get { return task.Verbose; } }
-        internal bool HasPredicates { get { return lexCatsWithPredicates.Count > 0; } }
-
-        internal enum Destination { scanProlog, scanEpilog, codeIncl }
+        internal Automaton.TaskState Task { get; private set; }
+        internal int CodePage { get { return Task.CodePage; } }
+        internal bool IsVerbose { get { return Task.Verbose; } }
+        internal bool HasPredicates { get { return lexCatsWithPredicates.Any(); } }
 
         internal AAST(Automaton.TaskState t)
         {
-            task = t;
+            Task = t;
             startStates.Add(StartState.initState.Name, StartState.initState);
             startStates.Add(StartState.allState.Name, StartState.allState);
+            Prolog = new List<LexSpan>();
+            Epilog = new List<LexSpan>();
+            CodeIncl = new List<LexSpan>();
         }
 
-        internal LexSpan UserCode
-        {
-            get { return userCode; }
-            set { userCode = value; }
-        }
+        // Text from the user code section
+        internal LexSpan UserCode { get; set; }
 
-        internal List<LexSpan> CodeIncl { get { return codeIncl; } }
-        internal List<LexSpan> Prolog { get { return prolog; } }
-        internal List<LexSpan> Epilog { get { return epilog; } }
+        // Text to copy verbatim into output file
+        internal IList<LexSpan> CodeIncl { get; private set; }
+        
+        // Verbatim declarations for scanning routine
+        internal IList<LexSpan> Prolog { get; private set; }
+        
+        // Epilog code for the scanning routine
+        internal IList<LexSpan> Epilog { get; private set; }
 
         internal void AddCodeSpan(Destination dest, LexSpan span)
         {
@@ -390,9 +387,10 @@ namespace QUT.Gplex.Parser
 
             internal ReParser(string str, LexSpan spn, AAST parent)
             {
-                if (parent.task.Unicode)
+                var parentTask = parent.Task;
+                if (parentTask.Unicode)
                     CharacterUtilities.SetUnicode();
-                symCard = parent.task.HostSymCardinality;
+                symCard = parentTask.HostSymCardinality;
                 pat = str;
                 span = spn;
                 InitReParser();
@@ -402,7 +400,7 @@ namespace QUT.Gplex.Parser
                 //  RangeLists unless the alphabet upper bound
                 //  is known to the code of class Partition.
                 //
-                CharRange.Init(parent.task.TargetSymCardinality);
+                CharRange.Init(parentTask.TargetSymCardinality);
             }
 
 
