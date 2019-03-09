@@ -87,7 +87,7 @@ Definition
     
 Declaration
     : kwToken KindOpt TokenList
-						{ DeclareTokens(PrecType.token, @2.ToString(), $3); }
+						{ DeclareTokens(PrecedenceType.token, @2.ToString(), $3); }
 						
     | kwType Kind NtSymbolList
 						{
@@ -96,13 +96,13 @@ Declaration
 						}
 
     | kwLeft KindOpt TokenList
-						{ DeclareTokens(PrecType.left, @2.ToString(), $3); }
+						{ DeclareTokens(PrecedenceType.left, @2.ToString(), $3); }
 
     | kwRight KindOpt TokenList
-						{ DeclareTokens(PrecType.right, @2.ToString(), $3); }
+						{ DeclareTokens(PrecedenceType.right, @2.ToString(), $3); }
 
     | kwNonassoc KindOpt TokenList
-						{ DeclareTokens(PrecType.nonassoc, @2.ToString(), $3); }
+						{ DeclareTokens(PrecedenceType.nonassoc, @2.ToString(), $3); }
 
     | kwStart NtSymbol
 						{ grammar.startSymbol = grammar.LookupNonTerminal(@2.ToString()); }

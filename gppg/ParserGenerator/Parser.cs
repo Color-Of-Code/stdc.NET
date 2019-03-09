@@ -4,9 +4,9 @@
 
 // GPPG version 1.0.0.0
 // Machine:  dehaan
-// DateTime: 2019-02-27T20:33:44Z
+// DateTime: 2019-03-09T07:13:50Z
 // UserName: jaap
-// Input file <gppg.y - 2019-01-06T22:30:04Z>
+// Input file <gppg.y - 2019-03-09T08:13:39Z>
 
 // options: no-lines gplex
 
@@ -43,13 +43,13 @@ internal abstract class ScanBase : AbstractScanner<ValueType,LexSpan> {
 
 internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
 {
-  // Verbatim content from gppg.y - 2019-01-06T22:30:04Z
+  // Verbatim content from gppg.y - 2019-03-09T08:13:39Z
 /*
  *  Parser spec for GPPG
  *  gppg.y: Author: John Gough, August 2008
  *  Process with > GPPG /gplex /no-lines gppg.y
  */
-  // End verbatim content from gppg.y - 2019-01-06T22:30:04Z
+  // End verbatim content from gppg.y - 2019-03-09T08:13:39Z
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;
