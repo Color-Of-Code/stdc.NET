@@ -11,12 +11,13 @@ using System.IO;
 using System.Collections.Generic;
 using QUT.Gplex.Lexer;
 using QUT.GplexBuffers;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {
     internal delegate QUT.Gplex.Automaton.OptionState OptionParser2(string s);
 
-    internal class LexSpan : QUT.Gppg.IMerge<LexSpan>
+    internal class LexSpan : QUT.Gplib.IMerge<LexSpan>
     {
         internal int startLine;       // start line of span
         internal int startColumn;     // start column of span

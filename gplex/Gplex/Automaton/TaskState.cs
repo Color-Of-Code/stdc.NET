@@ -96,6 +96,7 @@ namespace QUT.Gplex.Automaton
 
         internal TaskState()
         {
+            Files = true;
             Assembly assm = Assembly.GetExecutingAssembly();
             object info = Attribute.GetCustomAttribute(assm, typeof(AssemblyFileVersionAttribute));
             this.version = ((AssemblyFileVersionAttribute)info).Version;

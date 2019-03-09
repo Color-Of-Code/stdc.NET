@@ -340,7 +340,7 @@ namespace QUT.GPGen.Parser
     /// The fields record both line:column information and also 
     /// file position data and buffer object identity.
     /// </summary>
-    internal class LexSpan : QUT.Gppg.IMerge<LexSpan>
+    internal class LexSpan : QUT.Gplib.IMerge<LexSpan>
     {
         internal int startLine;     // start line of span
         internal int startColumn;   // start column of span

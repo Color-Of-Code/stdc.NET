@@ -1,5 +1,5 @@
 // Gardens Point Parser Generator
-// Copyright (c) Wayne Kelly, QUT 2005-2010
+// Copyright (c) Wayne Kelly, QUT 2005-2014
 // (see accompanying GPPGcopyright.rtf)
 
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace QUT.Gppg
+namespace QUT.Gplib
 {
     /// <summary>
     /// Abstract class for GPPG shift-reduce parsers.
@@ -19,13 +19,10 @@ namespace QUT.Gppg
     /// </summary>
     /// <typeparam name="TValue">Semantic value type</typeparam>
     /// <typeparam name="TSpan">Location type</typeparam>
-#if EXPORT_GPPG
     public abstract class ShiftReduceParser<TValue, TSpan>
-#else
-    internal abstract class ShiftReduceParser<TValue, TSpan>
-#endif
- where TSpan : IMerge<TSpan>, new()
+        where TSpan : IMerge<TSpan>, new()
     {
+        private AbstractScanner<TValue, TSpan> scanner;
         /// <summary>
         /// The abstract scanner for this parser.
         /// </summary>
@@ -50,7 +47,7 @@ namespace QUT.Gppg
         // These fields are of the generic parameter types, and are
         // frequently instantiated as struct types in derived classes.
         // Semantic actions are defined in the derived classes and refer
-        // to instance fields of these structs.  Is such cases the code
+        // to instance fields of these structs.  In such cases the code
         // "get_CurrentSemanticValue().myField = blah;" will fail since
         // the getter pushes the value of the field, not the reference.
         // So, in the presence of properties, gppg would need to encode
@@ -72,9 +69,9 @@ namespace QUT.Gppg
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
         protected TSpan CurrentLocationSpan;
+        protected int NextToken;
 
         private TSpan LastSpan;
-        private int NextToken;
         private State FsaState;
         private bool recovering;
         private int tokensSinceLastError;
@@ -221,6 +218,7 @@ namespace QUT.Gppg
             {
 #if TRACE_ACTIONS
                     Console.Error.WriteLine("Entering state {0} ", FsaState.number);
+                DisplayStack();
 #endif
                 int action = FsaState.defaultAction;
 
@@ -228,18 +226,18 @@ namespace QUT.Gppg
                 {
                     if (NextToken == 0)
                     {
-#if TRACE_ACTIONS
-                            Console.Error.Write("Reading a token: ");
-#endif
                         // We save the last token span, so that the location span
                         // of production right hand sides that begin or end with a
                         // nullable production will be correct.
                         LastSpan = Scanner.yylloc;
                         NextToken = Scanner.yylex();
-                    }
-
 #if TRACE_ACTIONS
-                        Console.Error.WriteLine("Next token is {0}", TerminalToString(NextToken));
+                       Console.Error.WriteLine( "Reading: Next token is {0}", TerminalToString( NextToken ) );
+#endif
+                    }
+#if TRACE_ACTIONS
+                    else 
+                        Console.Error.WriteLine( "Next token is still {0}", TerminalToString( NextToken ) );
 #endif
                     if (FsaState.ParserTable.ContainsKey(NextToken))
                         action = FsaState.ParserTable[NextToken];
@@ -306,17 +304,16 @@ namespace QUT.Gppg
 				DisplayRule(ruleNumber);
 #endif
             Rule rule = rules[ruleNumber];
+            int rhLen = rule.RightHandSide.Length;
             //
             //  Default actions for unit productions.
             //
-            if (rule.RightHandSide.Length == 1)
+            if (rhLen == 1)
             {
-                CurrentSemanticValue = valueStack.TopElement();    // Default action: $$ = $1;
+                CurrentSemanticValue = valueStack.TopElement();   // Default action: $$ = $1;
                 CurrentLocationSpan = LocationStack.TopElement(); // Default action "@$ = @1;
             }
-            else
-            {
-                if (rule.RightHandSide.Length == 0)
+            else if (rhLen == 0)
                 {
                     // Create a new blank value.
                     // Explicit semantic action may mutate this value
@@ -326,20 +323,19 @@ namespace QUT.Gppg
                     // previous lexeme.  This gives the correct behaviour when this
                     // nonsense value is used in later Merge operations.
                     CurrentLocationSpan = (Scanner.yylloc != null && LastSpan != null ?
-                        Scanner.yylloc.Merge(LastSpan) :
+                    Scanner.yylloc.Merge(LastSpan) :
                         default(TSpan));
                 }
                 else
                 {
                     // Default action: $$ = $1;
-                    CurrentSemanticValue = valueStack.TopElement();
+                    CurrentSemanticValue = valueStack[LocationStack.Depth - rhLen];
                     //  Default action "@$ = @1.Merge(@N)" for location info.
-                    TSpan at1 = LocationStack[LocationStack.Depth - rule.RightHandSide.Length];
+                    TSpan at1 = LocationStack[LocationStack.Depth - rhLen];
                     TSpan atN = LocationStack[LocationStack.Depth - 1];
                     CurrentLocationSpan = 
                         ((at1 != null && atN != null) ? at1.Merge(atN) : default(TSpan));
                 }
-            }
 
             DoAction(ruleNumber);
 
@@ -448,7 +444,7 @@ namespace QUT.Gppg
                 if (StateStack.IsEmpty())
                 {
 #if TRACE_ACTIONS
-                        Console.Error.Write("Aborting: didn't find a state that accepts error token");
+                    Console.Error.WriteLine("Aborting: didn't find a state that accepts error token");
 #endif
                     return false;
                 }
@@ -474,7 +470,6 @@ namespace QUT.Gppg
 #endif                       
                         NextToken = Scanner.yylex();
                     }
-
 #if TRACE_ACTIONS
                         Console.Error.WriteLine("Next token is {0}", TerminalToString(NextToken));
 #endif
@@ -521,7 +516,6 @@ namespace QUT.Gppg
             }
             else
                 return true;
-
         }
 
         /// <summary>
@@ -595,7 +589,7 @@ namespace QUT.Gppg
         private string SymbolToString(int symbol)
         {
             if (symbol < 0)
-                return nonTerminals[-symbol-1];
+                return nonTerminals[-symbol - 1];
             else
                 return TerminalToString(symbol);
         }
@@ -631,11 +625,7 @@ namespace QUT.Gppg
     /// is the right-hand-side length of the production.
     /// </summary>
     /// <typeparam name="TSpan">The Location type</typeparam>
-#if EXPORT_GPPG
     public interface IMerge<TSpan>
-#else
-    internal interface IMerge<TSpan>
-#endif
     {
         /// <summary>
         /// Interface method that creates a location object from
@@ -654,12 +644,7 @@ namespace QUT.Gppg
     /// If you don't declare "%YYLTYPE Foo" the parser
     /// will expect to deal with this type.
     /// </summary>
-#if EXPORT_GPPG
     public class LexLocation : IMerge<LexLocation>
-#else
-    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal class LexLocation : IMerge<LexLocation>
-#endif
     {
         private int startLine;   // start line
         private int startColumn; // start column
@@ -719,11 +704,7 @@ namespace QUT.Gppg
     /// </summary>
     /// <typeparam name="TValue">Semantic value type YYSTYPE</typeparam>
     /// <typeparam name="TSpan">Source location type YYLTYPE</typeparam>
-#if EXPORT_GPPG
     public abstract class AbstractScanner<TValue, TSpan>
-#else
-    internal abstract class AbstractScanner<TValue, TSpan>
-#endif
         where TSpan : IMerge<TSpan>
     {
         /// <summary>
@@ -739,7 +720,9 @@ namespace QUT.Gppg
         // since it may be instantiated by a value struct.  If it were 
         // implemented as a property, machine generated code in derived
         // types would not be able to select on the returned value.
+#pragma warning disable 649
         public TValue yylval;                     // Lexical value: set by scanner
+#pragma warning restore 649
 
         /// <summary>
         /// Current scanner location property. The value is of the
@@ -783,18 +766,12 @@ namespace QUT.Gppg
     /// Encapsulated state for the parser.
     /// Opaque to users, visible to the tool-generated code.
     /// </summary>
-#if EXPORT_GPPG
     public class State
     {
+        /// <summary>
+        /// The number of states in the automaton.
+        /// </summary>
         public int number;
-#else
-    internal class State
-    {
-      /// <summary>
-      /// The number of states in the automaton.
-      /// </summary>
-        internal int number;
-#endif
         internal Dictionary<int, int> ParserTable;   // Terminal -> ParseAction
         internal Dictionary<int, int> Goto;          // NonTerminal -> State;
         internal int defaultAction; // = 0;		     // ParseAction
@@ -853,11 +830,7 @@ namespace QUT.Gppg
     /// <summary>
     /// Rule representation at runtime.
     /// </summary>
-#if EXPORT_GPPG
     public class Rule
-#else
-    internal class Rule
-#endif
     {
         internal int LeftHandSide; // symbol
         internal int[] RightHandSide; // symbols
@@ -884,11 +857,7 @@ namespace QUT.Gppg
     /// (3) The location stack, T = TSpan.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-#if EXPORT_GPPG
     public class PushdownPrefixState<T>
-#else
-    internal class PushdownPrefixState<T>
-#endif
     {
         //  Note that we cannot use the BCL Stack<T> class
         //  here as derived types need to index into stacks.
