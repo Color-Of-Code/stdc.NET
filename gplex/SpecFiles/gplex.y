@@ -3,7 +3,6 @@
  *  Process with > GPPG /gplex /no-lines gplex.y
  */
  
-%using System.Collections
 %namespace QUT.Gplex.Parser
 
 %YYLTYPE LexSpan
