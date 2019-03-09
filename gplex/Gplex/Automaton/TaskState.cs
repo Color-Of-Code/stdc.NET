@@ -132,7 +132,7 @@ namespace QUT.Gplex.Automaton
 
         internal bool ParseOnly { get { return parseOnly; } }
         internal bool Persist { get { return persistBuff; } }
-        internal bool Errors { get { return handler.Errors; } }
+        internal bool HasErrors { get { return handler.HasErrors; } }
         internal bool CompressMap
         {
             // If useUnicode, we obey the compressMap Boolean.
@@ -153,7 +153,7 @@ namespace QUT.Gplex.Automaton
         internal bool Squeeze { get { return squeeze; } }
         internal bool CompressNext { get { return compressNext; } }
         internal bool Minimize { get { return minimize; } }
-        internal bool Warnings { get { return handler.Warnings; } }
+        internal bool HasWarnings { get { return handler.HasWarnings; } }
         internal bool Unicode { get { return useUnicode; } }
         internal bool ErrorsToConsole { get { return errorsToConsole; } }
 
@@ -533,8 +533,8 @@ namespace QUT.Gplex.Automaton
         void Status(DateTime start)
         {
             msgWrtr.Write("GPLEX: input parsed, AST built");
-            msgWrtr.Write((Errors ? ", errors detected" : " without error"));
-            msgWrtr.Write((Warnings ? "; warnings issued. " : ". "));
+            msgWrtr.Write((HasErrors ? ", errors detected" : " without error"));
+            msgWrtr.Write((HasWarnings ? "; warnings issued. " : ". "));
             msgWrtr.WriteLine(ElapsedTime(start));
         }
 
@@ -572,7 +572,7 @@ namespace QUT.Gplex.Automaton
                     if (verbose)
                         Status(start);
                     CheckOptions();
-                    if (!Errors && !ParseOnly)
+                    if (!HasErrors && !ParseOnly)
                     {	// build NFSA
                         if (ChrClasses)
                         {
@@ -587,15 +587,15 @@ namespace QUT.Gplex.Automaton
                             CharRange.Init(TargetSymCardinality);
                         nfsa = new NFSA(this);
                         nfsa.Build(aast);
-                        if (!Errors)
+                        if (!HasErrors)
                         {	// convert to DFSA
                             dfsa = new DFSA(this);
                             dfsa.Convert(nfsa);
-                            if (!Errors)
+                            if (!HasErrors)
                             {	// minimize automaton
                                 if (minimize)
                                     dfsa.Minimize();
-                                if (!Errors && !checkOnly)
+                                if (!HasErrors && !checkOnly)
                                 {   // emit the scanner to output file
                                     TextReader frameRdr = FrameReader();
                                     TextWriter outputWrtr = OutputWriter();

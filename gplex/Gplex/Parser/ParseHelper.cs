@@ -61,8 +61,8 @@ namespace QUT.Gplex.Parser
             }
         }
 
-        List<LexSpan> nameLocs = new List<LexSpan>();
-        List<string> nameList = new List<string>();
+        IList<LexSpan> nameLocs = new List<LexSpan>();
+        IList<string> nameList = new List<string>();
 
         internal void AddName(LexSpan l)
         {

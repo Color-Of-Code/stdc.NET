@@ -443,8 +443,8 @@ namespace QUT.Gplex.Automaton
             if (myTask.Verbose)
             {
                 myTask.Msg.Write("GPLEX: DFSA built");
-                myTask.Msg.Write((myTask.Errors ? ", errors detected" : " without error"));
-                myTask.Msg.Write((myTask.Warnings ? "; warning(s) issued. " : ". "));
+                myTask.Msg.Write((myTask.HasErrors ? ", errors detected" : " without error"));
+                myTask.Msg.Write((myTask.HasWarnings ? "; warning(s) issued. " : ". "));
                 myTask.Msg.WriteLine(TaskState.ElapsedTime(start));
             }
             if (myTask.Summary)
