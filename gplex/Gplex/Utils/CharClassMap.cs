@@ -2,7 +2,7 @@
 // Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
-
+using QUT.Gplex.Parser;
 
 namespace QUT.Gplex
 {
@@ -109,12 +109,12 @@ namespace QUT.Gplex
         /// map from a GPLEX.Parser.Partition.
         /// </summary>
         /// <param name="part">The Partition to use</param>
-        internal CharClassMap(Parser.Partition part)
+        internal CharClassMap(Partition part)
         {
 
-            foreach (Parser.PartitionElement pElem in part.elements)
+            foreach (PartitionElement pElem in part.elements)
             {
-                foreach (Parser.CharRange range in pElem.list.Ranges)
+                foreach (CharRange range in pElem.list.Ranges)
                 {
                     count++;
                     TreeNode node = new TreeNode(range.minChr, range.maxChr, pElem.ord);
@@ -122,8 +122,5 @@ namespace QUT.Gplex
                 }
             }
         }
-
-        //internal int Depth { get { return root.Depth; } }
-        //internal int Count { get { return this.count; } }
     }
 }

@@ -5,13 +5,10 @@
 
 namespace QUT.Gplex.Parser
 {
-    internal sealed partial class AAST
+    internal enum Destination
     {
-        internal enum Destination
-        {
-            scanProlog,
-            scanEpilog,
-            codeIncl
-        }
-    } 
+        scanProlog,
+        scanEpilog,
+        codeIncl
+    }
 }

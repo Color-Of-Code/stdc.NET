@@ -51,11 +51,11 @@ namespace QUT.Gplex.Parser
             this.processOption2 = dlgt;
         }
 
-        internal static AAST.Destination Dest
+        internal static Destination Dest
         {
             get
             { // only the first declaration can go in the usingDcl group
-                return AAST.Destination.codeIncl;
+                return Destination.codeIncl;
             }
         }
 

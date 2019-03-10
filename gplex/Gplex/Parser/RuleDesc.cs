@@ -12,14 +12,12 @@ namespace QUT.Gplex.Parser
     internal sealed class RuleDesc
     {
         static int next = 1;
-        string pattern;       // Span of pattern reg-exp
         int minPatternLength;
-        internal LexSpan pSpan;
-        internal int ord;
+        internal LexSpan pSpan { get; private set; }
+        internal int ord { get; private set; }
         RegExTree reAST;
-        internal LexSpan aSpan; // Span of lexical action
+        internal LexSpan aSpan { get; set; } // Span of lexical action
         internal bool isBarAction;
-        //internal bool isRightAnchored;
         internal bool isPredDummyRule;
         internal IList<StartState> list;
 
@@ -35,7 +33,8 @@ namespace QUT.Gplex.Parser
         /// </summary>
         internal RuleDesc replacedBy;
 
-        internal string Pattern { get { return pattern; } }
+        // Span of pattern reg-exp
+        internal string Pattern { get; private set; }
 
         /// <summary>
         /// A pattern is a loop risk iff:
@@ -62,7 +61,7 @@ namespace QUT.Gplex.Parser
         {
             pSpan = loc;
             aSpan = act;
-            pattern = pSpan.buffer.GetString(pSpan.startIndex, pSpan.endIndex);
+            Pattern = pSpan.buffer.GetString(pSpan.startIndex, pSpan.endIndex);
             isBarAction = bar;
             list = aList;
             ord = next++;
@@ -75,7 +74,7 @@ namespace QUT.Gplex.Parser
             result.aSpan = aast.AtStart;
             result.isBarAction = false;
             result.isPredDummyRule = true;
-            result.pattern = String.Format(CultureInfo.InvariantCulture, "{{{0}}}", cat.Name);
+            result.Pattern = String.Format(CultureInfo.InvariantCulture, "{{{0}}}", cat.Name);
             result.list = new List<StartState>();
             result.ParseRE(aast);
             result.list.Add(aast.StartStateValue(cat.PredDummyName));
@@ -83,12 +82,11 @@ namespace QUT.Gplex.Parser
         }
 
         internal RegExTree Tree { get { return reAST; } }
-        internal bool hasAction { get { return aSpan.IsInitialized; } }
-        // internal void Dump() { Console.WriteLine(pattern); }
+        internal bool HasAction { get { return aSpan.IsInitialized; } }
 
         internal void ParseRE(AAST aast)
         {
-            reAST = new AAST.RegularExpressionParser(pattern, pSpan, aast).Parse();
+            reAST = new AAST.RegularExpressionParser(Pattern, pSpan, aast).Parse();
             SemanticCheck(aast);
         }
 
@@ -154,5 +152,4 @@ namespace QUT.Gplex.Parser
             }
         }
     }
-
 }

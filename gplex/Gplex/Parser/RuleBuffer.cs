@@ -9,11 +9,12 @@ namespace QUT.Gplex.Parser
 {
     internal sealed class RuleBuffer
     {
-        List<LexSpan> locs = new List<LexSpan>();
-        int fRuleLine, lRuleLine;  // First line of rules, last line of rules.
+        IList<LexSpan> locs = new List<LexSpan>();
 
-        internal int FLine { get { return fRuleLine; } set { fRuleLine = value; } }
-        internal int LLine { get { return lRuleLine; } set { lRuleLine = value; } }
+        // First line of rules
+        internal int FLine { get; set; }
+        // Last line of rules.
+        internal int LLine { get; set; }
 
         internal void AddSpan(LexSpan l) { locs.Add(l); }
 
@@ -24,14 +25,12 @@ namespace QUT.Gplex.Parser
         /// <param name="aast"></param>
         internal void FinalizeCode(AAST aast)
         {
-            for (int i = 0; i < locs.Count; i++)
+            foreach (LexSpan loc in locs)
             {
-                LexSpan loc = locs[i];
-
                 if (loc.startLine < FLine)
-                    aast.AddCodeSpan(AAST.Destination.scanProlog, loc);
+                    aast.AddCodeSpan(Destination.scanProlog, loc);
                 else if (loc.startLine > LLine)
-                    aast.AddCodeSpan(AAST.Destination.scanEpilog, loc);
+                    aast.AddCodeSpan(Destination.scanEpilog, loc);
                 else // code is between rules
                     aast.hdlr.ListError(loc, 110);
             }

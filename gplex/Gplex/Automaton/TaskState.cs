@@ -46,7 +46,6 @@ namespace QUT.Gplex.Automaton
 
         bool stack;
         bool babel;
-        bool verbose;
         bool caseAgnostic;
         bool emitInfo = true;
         bool checkOnly;
@@ -90,8 +89,8 @@ namespace QUT.Gplex.Automaton
 
         internal AAST aast;
         internal ErrorHandler handler;
-        internal QUT.Gplex.Parser.Parser parser;
-        internal QUT.Gplex.Lexer.Scanner scanner;
+        internal Parser.Parser parser;
+        internal Lexer.Scanner scanner;
 
         internal TaskState()
         {
@@ -118,7 +117,7 @@ namespace QUT.Gplex.Automaton
         internal bool Files { get; private set; }
         internal bool Stack { get { return stack; } }
         internal bool Babel { get { return babel; } }
-        internal bool Verbose { get { return verbose; } }
+        internal bool Verbose { get; private set; }
         internal bool HasParser { get { return hasParser; } }
         internal bool ChrClasses { get { return charClasses; } }
         internal bool EmbedBuffers { get { return embedBuffers; } }
@@ -282,8 +281,8 @@ namespace QUT.Gplex.Automaton
                 }
                 else if (arg.Equals("VERBOSE", StringComparison.Ordinal))
                 {
-                    verbose = !negate;
-                    if (verbose) emitVer = true;
+                    Verbose = !negate;
+                    if (Verbose) emitVer = true;
                 }
                 else if (arg.Equals("CLASSES", StringComparison.Ordinal))
                 {
@@ -376,7 +375,7 @@ namespace QUT.Gplex.Automaton
             try
             {
                 inputFile = new FileStream(this.pathName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                if (verbose) msgWrtr.WriteLine("GPLEX: opened input file <{0}>", pathName);
+                if (Verbose) msgWrtr.WriteLine("GPLEX: opened input file <{0}>", pathName);
                 inputInfo = this.pathName + " - " + File.GetLastWriteTime(this.pathName).ToString();
             }
             catch (IOException)
@@ -398,7 +397,7 @@ namespace QUT.Gplex.Automaton
             {
                 // Try the user-specified path if there is one given.
                 frameFile = new FileStream(path1, FileMode.Open, FileAccess.Read, FileShare.Read);
-                if (verbose) msgWrtr.WriteLine("GPLEX: opened frame file <{0}>", path1);
+                if (Verbose) msgWrtr.WriteLine("GPLEX: opened frame file <{0}>", path1);
                 this.frameName = path1;
                 return frameFile;
             }
@@ -420,7 +419,7 @@ namespace QUT.Gplex.Automaton
             else // Use the embedded resource
             {
                 string gplexxFrame = QUT.Gplex.IncludeResources.Content.GplexxFrame;
-                if (verbose) msgWrtr.WriteLine("GPLEX: using frame from embedded resource");
+                if (Verbose) msgWrtr.WriteLine("GPLEX: using frame from embedded resource");
                 this.frameName = "embedded resource";
                 return new StringReader(gplexxFrame);
             }
@@ -432,7 +431,7 @@ namespace QUT.Gplex.Automaton
             try
             {
                 rslt = new FileStream(this.outName, FileMode.Create);
-                if (verbose) msgWrtr.WriteLine("GPLEX: opened output file <{0}>", this.outName);
+                if (Verbose) msgWrtr.WriteLine("GPLEX: opened output file <{0}>", this.outName);
             }
             catch (IOException)
             {
@@ -447,7 +446,7 @@ namespace QUT.Gplex.Automaton
             if (this.outName.Equals("-"))
             {
                 rslt = Console.Out;
-                if (verbose) msgWrtr.WriteLine("GPLEX: output sent to StdOut");
+                if (Verbose) msgWrtr.WriteLine("GPLEX: output sent to StdOut");
             }
             else
             {
@@ -462,7 +461,7 @@ namespace QUT.Gplex.Automaton
             try
             {
                 listFile = new FileStream(outName, FileMode.Create);
-                if (verbose) msgWrtr.WriteLine("GPLEX: opened listing file <{0}>", outName);
+                if (Verbose) msgWrtr.WriteLine("GPLEX: opened listing file <{0}>", outName);
                 return new StreamWriter(listFile);
             }
             catch (IOException)
@@ -475,7 +474,7 @@ namespace QUT.Gplex.Automaton
         private FileStream BufferCodeFile()
         {
             FileStream codeFile = new FileStream(bufferCodeName, FileMode.Create);
-            if (verbose) msgWrtr.WriteLine("GPLEX: created file <{0}>", bufferCodeName);
+            if (Verbose) msgWrtr.WriteLine("GPLEX: created file <{0}>", bufferCodeName);
             return codeFile;
         }
 
@@ -560,6 +559,7 @@ namespace QUT.Gplex.Automaton
                 DateTime start = DateTime.Now;
                 try
                 {
+                    // 1) Initialize
                     handler = new ErrorHandler();
                     scanner = new QUT.Gplex.Lexer.Scanner(inputFile);
                     parser = new QUT.Gplex.Parser.Parser(scanner);
@@ -568,47 +568,51 @@ namespace QUT.Gplex.Automaton
                     aast = parser.Aast;
                     parser.Parse();
                     // aast.DiagnosticDump();
-                    if (verbose)
+                    if (Verbose)
                         Status(start);
                     CheckOptions();
-                    if (!HasErrors && !ParseOnly)
-                    {	// build NFSA
-                        if (ChrClasses)
-                        {
-                            DateTime t0 = DateTime.Now;
-                            partition = new Partition(TargetSymCardinality, this);
-                            partition.FindClasses(aast);
-                            partition.FixMap();
-                            if (verbose)
-                                ClassStatus(t0, partition.Length);
-                        }
-                        else
-                            CharRange.Init(TargetSymCardinality);
-                        nfsa = new NFSA(this);
-                        nfsa.Build(aast);
-                        if (!HasErrors)
-                        {	// convert to DFSA
-                            dfsa = new DFSA(this);
-                            dfsa.Convert(nfsa);
-                            if (!HasErrors)
-                            {	// minimize automaton
-                                if (minimize)
-                                    dfsa.Minimize();
-                                if (!HasErrors && !checkOnly)
-                                {   // emit the scanner to output file
-                                    TextReader frameRdr = FrameReader();
-                                    TextWriter outputWrtr = OutputWriter();
-                                    dfsa.EmitScanner(frameRdr, outputWrtr);
+                    // guard
+                    if (HasErrors || ParseOnly)
+                        return;
 
-                                    if (!embedBuffers)
-                                        CopyBufferCode();
-                                    // Clean up!
-                                    if (frameRdr != null)
-                                        frameRdr.Close();
-                                    if (outputWrtr != null)
-                                        outputWrtr.Close();
-                                }
-                            }
+                    // 2) build NFSA
+                    if (ChrClasses)
+                    {
+                        DateTime t0 = DateTime.Now;
+                        partition = new Partition(TargetSymCardinality, this);
+                        partition.FindClasses(aast);
+                        partition.FixMap();
+                        if (Verbose)
+                            ClassStatus(t0, partition.Length);
+                    }
+                    else
+                        CharRange.Init(TargetSymCardinality);
+                    nfsa = new NFSA(this);
+                    nfsa.Build(aast);
+                    if (HasErrors)
+                        return;
+
+                    // 3) convert to DFSA
+                    dfsa = new DFSA(this);
+                    dfsa.Convert(nfsa);
+                    if (HasErrors)
+                        return;
+
+                    // 4) minimize automaton
+                    if (minimize)
+                        dfsa.Minimize();
+                    if (HasErrors || checkOnly)
+                        return;
+
+                    // 5) emit the scanner to output file
+                    using (TextReader frameRdr = FrameReader())
+                    {
+                        using (TextWriter outputWrtr = OutputWriter())
+                        {
+                            dfsa.EmitScanner(frameRdr, outputWrtr);
+
+                            if (!embedBuffers)
+                                CopyBufferCode();
                         }
                     }
                 }

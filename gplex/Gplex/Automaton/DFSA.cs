@@ -1102,7 +1102,7 @@ namespace QUT.Gplex.Automaton
                     }
                     if (lLen > 0) sWrtr.WriteLine("yyless({0}); ", lLen);
                     else if (rLen > 0) sWrtr.WriteLine("_yytrunc({0}); ", rLen);
-                    if (dSt.accept.hasAction)
+                    if (dSt.accept.HasAction)
                         dSt.accept.aSpan.StreamDump(sWrtr);
                     sWrtr.WriteLine("            break;");
                 }

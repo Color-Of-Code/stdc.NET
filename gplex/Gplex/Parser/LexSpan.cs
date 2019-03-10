@@ -23,7 +23,15 @@ namespace QUT.Gplex.Parser
 
         public LexSpan() { }
         public LexSpan(int sl, int sc, int el, int ec, int sp, int ep, ScanBuff bf)
-        { startLine = sl; startColumn = sc; endLine = el; endColumn = ec; startIndex = sp; endIndex = ep; buffer = bf; }
+        { 
+            startLine = sl;
+            startColumn = sc;
+            endLine = el;
+            endColumn = ec;
+            startIndex = sp;
+            endIndex = ep;
+            buffer = bf;
+        }
 
         /// <summary>
         /// This method implements the IMerge interface
@@ -43,9 +51,6 @@ namespace QUT.Gplex.Parser
         /// <returns></returns>
         internal LexSpan FirstLineSubSpan(int idx, int len)
         {
-            //if (this.endLine != this.startLine) 
-            //    throw new Exception("Cannot index into multiline span");
-
             return new LexSpan(
                 this.startLine, this.startColumn + idx, this.startLine, this.startColumn + idx + len,
                 this.startIndex, this.endIndex, this.buffer);
@@ -55,28 +60,17 @@ namespace QUT.Gplex.Parser
 
         internal void StreamDump(TextWriter sWtr)
         {
-            // int indent = sCol;
             int savePos = buffer.Pos;
             string str = buffer.GetString(startIndex, endIndex);
-            //for (int i = 0; i < indent; i++)
-            //    sWtr.Write(' ');
             sWtr.WriteLine(str);
             buffer.Pos = savePos;
             sWtr.Flush();
         }
-
-        //internal void ConsoleDump()
-        //{
-        //    int savePos = buffer.Pos;
-        //    string str = buffer.GetString(startIndex, endIndex);
-        //    Console.WriteLine(str);
-        //    buffer.Pos = savePos; 
-        //}
 
         public override string ToString()
         {
             return buffer.GetString(startIndex, endIndex);
         }
     }
+}
 
-} // end of namespace

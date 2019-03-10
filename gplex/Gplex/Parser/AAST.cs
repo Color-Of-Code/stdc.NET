@@ -179,9 +179,8 @@ namespace QUT.Gplex.Parser
                 ruleList.Add(RuleDesc.MkDummyRuleDesc(cat, this));
 
             LexSpan lastSpan = Parser.BlankSpan;
-            for (int i = ruleList.Count - 1; i >= 0; i--)
+            foreach (var rule in ruleList.Reverse())
             {
-                RuleDesc rule = ruleList[i];
                 if (!rule.isBarAction) lastSpan = rule.aSpan;
                 else if (!lastSpan.IsInitialized)
                     hdlr.ListError(rule.pSpan, 59);
@@ -199,7 +198,7 @@ namespace QUT.Gplex.Parser
         /// character predicates.  Beware however, that this just
         /// maps the first "crd" characters of the unicode value set.
         /// </summary>
-        private void InitCharCats()
+        private void InitCharacterPredicates()
         {
             cats = new Dictionary<string, PredicateLeaf>();
             cats.Add("IsControl", new PredicateLeaf(PredicateLeaf.MkCharTest(Char.IsControl, Char.IsControl)));
@@ -226,7 +225,7 @@ namespace QUT.Gplex.Parser
         private void AddUserPredicate(string name, CharTest test)
         {
             if (this.cats == null)
-                InitCharCats();
+                InitCharacterPredicates();
             cats.Add(name, new PredicateLeaf(test));
         }
 
@@ -864,7 +863,7 @@ namespace QUT.Gplex.Parser
             {
                 // lazy allocation of dictionary
                 if (parent.cats == null)
-                    parent.InitCharCats();
+                    parent.InitCharacterPredicates();
                 //
                 // Try to find name in "cats" list
                 //
