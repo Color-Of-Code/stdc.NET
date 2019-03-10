@@ -170,7 +170,7 @@ namespace QUT.GPGen
             {
                 changed = false;
                 nonTerminatingCount = 0;
-                foreach (KeyValuePair<string, NonTerminal> kvp in this.nonTerminals)
+                foreach (var kvp in this.nonTerminals)
                 {
                     NonTerminal nonTerm = kvp.Value;
                     if (!nonTerm.IsTerminating)
@@ -297,7 +297,7 @@ namespace QUT.GPGen
         private IList<NonTerminal> BuildDependencyGraph()
         {
             var rslt = new List<NonTerminal>();
-            foreach (KeyValuePair<string, NonTerminal> kvp in this.nonTerminals)
+            foreach (var kvp in this.nonTerminals)
             {
                 NonTerminal nonTerm = kvp.Value;
                 NonTerminal dependency = null;
@@ -422,7 +422,7 @@ namespace QUT.GPGen
             this.handler = handler;
             MarkReachable();
             MarkTerminating();
-            foreach (KeyValuePair<string, NonTerminal> pair in nonTerminals)
+            foreach (var pair in nonTerminals)
             {
                 nt = pair.Value;
                 if (!nt.reached)
@@ -546,7 +546,7 @@ namespace QUT.GPGen
 
             if (thisState.parseTable.Count > 0)
                 builder.AppendLine(Header2("Parser Actions"));
-            foreach (KeyValuePair<Terminal, ParserAction> a in thisState.parseTable)
+            foreach (var a in thisState.parseTable)
             {
                 builder.AppendFormat("    {0,-14} {1}", a.Key, ActionToString(a.Value));
                 builder.AppendLine();
@@ -556,7 +556,7 @@ namespace QUT.GPGen
 
             if (thisState.nonTerminalTransitions.Count > 0)
                 builder.AppendLine(Header2("Transitions"));
-            foreach (KeyValuePair<NonTerminal, Transition> n in thisState.nonTerminalTransitions)
+            foreach (var n in thisState.nonTerminalTransitions)
             {
                 builder.AppendFormat("    {0,-14} go to state {1}", n.Key, StateRef(thisState.Goto[n.Key].num));
                 builder.AppendLine();

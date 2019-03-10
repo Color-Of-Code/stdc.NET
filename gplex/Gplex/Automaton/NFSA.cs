@@ -40,7 +40,7 @@ namespace QUT.Gplex.Automaton
             int index = 0;
             DateTime time0 = DateTime.Now;
             nfas = new NfsaInstance[ast.StartStateCount];
-            foreach (KeyValuePair<string, StartState> p in ast.startStates)
+            foreach (var p in ast.startStates)
             {
                 StartState s = p.Value;
                 string name = p.Key;

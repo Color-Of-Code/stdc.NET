@@ -349,7 +349,7 @@ namespace QUT.GPGen
             {
                 Console.Write("new int[]{");
                 bool first = true;
-                foreach (KeyValuePair<Terminal, ParserAction> transition in state.parseTable)
+                foreach (var transition in state.parseTable)
                 {
                     if (!first)
                         Console.Write(",");

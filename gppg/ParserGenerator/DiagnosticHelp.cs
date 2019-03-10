@@ -2,14 +2,10 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-
 using System.Collections.Generic;
-
 
 namespace QUT.GPGen
 {
-    // ===========================================================
-    #region Diagnostics
     /// <summary>
     /// Class for determining input token sequences that
     /// lead to each state by the shortest token sequence.
@@ -70,6 +66,4 @@ namespace QUT.GPGen
             } while (changed);
         }
     }
-    #endregion
-    // ===========================================================
 }
