@@ -379,28 +379,19 @@ namespace QUT.GPGen
 
         private void LeafPropagate(NonTerminal root, IList<NonTerminal> thisTestConfig)
         {
-            int count = 0;
             bool changed = false;
             do
             {
-                count = 0;
                 changed = false;
-                foreach (NonTerminal nt in thisTestConfig)
+                foreach (NonTerminal nt in thisTestConfig.Where(x => !x.IsTerminating))
                 {
-                    if (!nt.IsTerminating)
+                    foreach (Production prod in nt.productions.Where(p => ProductionTerminates(p)))
                     {
-                        foreach (Production prod in nt.productions)
-                            if (ProductionTerminates(prod))
-                            {
-                                nt.IsTerminating = true;
-                                changed = true;
-                            }
-                        if (!nt.IsTerminating)
-                            count++;
+                        nt.IsTerminating = true;
+                        changed = true;
                     }
                 }
-            }
-            while (changed);
+            } while (changed);
 
             var filtered = FilterTerminatingElements(thisTestConfig);
             handler.AddWarning(String.Format(CultureInfo.InvariantCulture,
