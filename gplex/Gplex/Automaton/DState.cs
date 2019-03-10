@@ -111,10 +111,15 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             /// <param name="ord">symbol for transitions from predecessors</param>
             /// <returns>list of states which transition to this on ord</returns>
-            public IList<DState> GetPredecessors(int ord) { return predecessors[ord]; }
-            public void SetPredecessors(int ord, List<DState> lst) { predecessors[ord] = lst; }
+            public IList<DState> GetPredecessors(int ord)
+            {
+                predecessors = predecessors ?? new List<DState>[myDfsa.MaxSym];
+                if (predecessors[ord] == null)
+                    predecessors[ord] = new List<DState>();
+                return predecessors[ord];
+            }
+
             public bool HasPredecessors() { return predecessors != null; }
-            public void InitPredecessors() { predecessors = new List<DState>[myDfsa.MaxSym]; }
 
             public bool isStart { get { return myDfaInst.start == this; } }
 
@@ -162,11 +167,8 @@ namespace QUT.Gplex.Automaton
 
             public void AddPredecessor(DState pred, int smbl)
             {
-                if (!HasPredecessors())
-                    InitPredecessors();
-                if (GetPredecessors(smbl) == null)
-                    SetPredecessors(smbl, new List<DState>());
-                GetPredecessors(smbl).Add(pred);
+                GetPredecessors(smbl)
+                    .Add(pred);
             }
 
             internal void AddTrans(int ch, DState next)
