@@ -107,10 +107,10 @@ namespace QUT.Gplex.Parser
         void SemanticCheck(AAST aast)
         {
             RegExTree tree = reAST;
-            if (tree != null && tree.Operator == RegOp.LeftAnchor) tree = ((Unary)tree).kid;
+            if (tree != null && tree.Operator == RegOp.LeftAnchor) tree = ((Unary)tree).Kid;
             if (tree != null && tree.Operator == RegOp.RightAnchor)
             {
-                tree = ((Unary)tree).kid;
+                tree = ((Unary)tree).Kid;
                 if (tree.Operator == RegOp.Context)
                     aast.hdlr.ListError(pSpan, 100);
             }
@@ -136,16 +136,16 @@ namespace QUT.Gplex.Parser
                 case RegOp.Concatenation:
                 case RegOp.Alternation:
                     bnryTree = (Binary)tree;
-                    Check(aast, bnryTree.lKid);
-                    Check(aast, bnryTree.rKid);
+                    Check(aast, bnryTree.LeftKid);
+                    Check(aast, bnryTree.RightKid);
                     if (tree.Operator == RegOp.Context &&
-                        bnryTree.lKid.ContextLength() == 0 &&
-                        bnryTree.rKid.ContextLength() == 0) aast.hdlr.ListError(pSpan, 75);
+                        bnryTree.LeftKid.ContextLength() == 0 &&
+                        bnryTree.RightKid.ContextLength() == 0) aast.hdlr.ListError(pSpan, 75);
                     break;
                 case RegOp.Closure:
                 case RegOp.FiniteRepetition:
                     unryTree = (Unary)tree;
-                    Check(aast, unryTree.kid);
+                    Check(aast, unryTree.Kid);
                     break;
                 case RegOp.LeftAnchor:
                 case RegOp.RightAnchor:

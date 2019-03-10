@@ -9,7 +9,7 @@ namespace QUT.Gplex.Parser
     // LeftAnchor, RightAnchor, FiniteRepetition, Closure
     internal sealed class Unary : RegExTree
     {
-        internal RegExTree kid;
+        public RegExTree Kid { get; private set; }
         
         // minimum number of repetitions for Closure/FiniteRepetition
         public int MinimumOfRepetitions { get; private set; }
@@ -19,39 +19,39 @@ namespace QUT.Gplex.Parser
         internal Unary(RegOp op, RegExTree l, int min = 0, int max = 0)
             : base(op)
         {
-            kid = l;
+            Kid = l;
             MinimumOfRepetitions = min;
             MaximumOfRepetitions = max;
         }
 
         internal override int ContextLength()
         {
-            if (this.kid == null) return 0;
+            if (this.Kid == null) return 0;
             switch (Operator)
             {
                 case RegOp.Closure:
                     return 0;
                 case RegOp.FiniteRepetition:
-                    return (MinimumOfRepetitions == MaximumOfRepetitions ? kid.ContextLength() * MinimumOfRepetitions : 0);
+                    return (MinimumOfRepetitions == MaximumOfRepetitions ? Kid.ContextLength() * MinimumOfRepetitions : 0);
                 case RegOp.LeftAnchor:
-                    return kid.ContextLength();
+                    return Kid.ContextLength();
                 case RegOp.RightAnchor:
-                    return kid.ContextLength();
+                    return Kid.ContextLength();
                 default: throw new GplexInternalException("unknown unary RegOp");
             }
         }
 
         internal override int MinimumLength()
         {
-            if (this.kid == null) return 0;
+            if (this.Kid == null) return 0;
             switch (Operator)
             {
                 case RegOp.Closure:
                 case RegOp.FiniteRepetition:
-                    return kid.MinimumLength() * MinimumOfRepetitions;
+                    return Kid.MinimumLength() * MinimumOfRepetitions;
                 case RegOp.LeftAnchor:
                 case RegOp.RightAnchor:
-                    return kid.MinimumLength();
+                    return Kid.MinimumLength();
                 default: throw new GplexInternalException("unknown unary RegOp");
             }
         }
@@ -59,12 +59,12 @@ namespace QUT.Gplex.Parser
         internal override void Visit(RegExDFS visitor)
         {
             visitor.Op(this);
-            kid.Visit(visitor);
+            Kid.Visit(visitor);
         }
 
         internal override bool HasRightContext
         {
-            get { return Operator == RegOp.LeftAnchor && kid.HasRightContext; }
+            get { return Operator == RegOp.LeftAnchor && Kid.HasRightContext; }
         }
     }
 }

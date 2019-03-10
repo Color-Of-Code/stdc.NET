@@ -130,8 +130,8 @@ namespace QUT.Gplex.Automaton
                         switch (tree.Operator)
                         {
                             case RegOp.Context:
-                                rLen = binNode.rKid.ContextLength();
-                                lLen = binNode.lKid.ContextLength();
+                                rLen = binNode.RightKid.ContextLength();
+                                lLen = binNode.LeftKid.ContextLength();
                                 if (rLen <= 0 && lLen <= 0)
                                     throw new StringInterpretException("variable right context '/' not implemented");
                                 else
@@ -139,21 +139,21 @@ namespace QUT.Gplex.Automaton
                                     endState.rhCntx = rLen;
                                     endState.lhCntx = lLen;
                                     tmp1 = MkState();
-                                    MakePath(binNode.lKid, startState, tmp1);
-                                    MakePath(binNode.rKid, tmp1, endState);
+                                    MakePath(binNode.LeftKid, startState, tmp1);
+                                    MakePath(binNode.RightKid, tmp1, endState);
                                 }
                                 break;
                             case RegOp.Concatenation:
                                 tmp1 = MkState();
-                                MakePath(binNode.lKid, startState, tmp1);
-                                MakePath(binNode.rKid, tmp1, endState);
+                                MakePath(binNode.LeftKid, startState, tmp1);
+                                MakePath(binNode.RightKid, tmp1, endState);
                                 break;
                             case RegOp.Alternation:
                                 tmp1 = MkState();
-                                MakePath(binNode.lKid, startState, tmp1);
+                                MakePath(binNode.LeftKid, startState, tmp1);
                                 tmp1.AddEpsTrns(endState);
                                 tmp1 = MkState();
-                                MakePath(binNode.rKid, startState, tmp1);
+                                MakePath(binNode.RightKid, startState, tmp1);
                                 tmp1.AddEpsTrns(endState);
                                 break;
                         }
@@ -178,11 +178,11 @@ namespace QUT.Gplex.Automaton
                                     for (int i = 0; i < unaryNode.MinimumOfRepetitions; i++)
                                     {
                                         tmp1 = MkState();
-                                        MakePath(unaryNode.kid, dummy, tmp1);
+                                        MakePath(unaryNode.Kid, dummy, tmp1);
                                         dummy = tmp1;
                                     }
                                 }
-                                MakePath(unaryNode.kid, tmp1, tmp2);
+                                MakePath(unaryNode.Kid, tmp1, tmp2);
                                 tmp2.AddEpsTrns(tmp1);
                                 tmp1.AddEpsTrns(endState);
                                 break;
@@ -192,14 +192,14 @@ namespace QUT.Gplex.Automaton
                                     for (int i = 0; i < unaryNode.MinimumOfRepetitions; i++)
                                     {
                                         tmp1 = MkState();
-                                        MakePath(unaryNode.kid, dummy, tmp1);
+                                        MakePath(unaryNode.Kid, dummy, tmp1);
                                         dummy = tmp1;
                                     }
                                     tmp1.AddEpsTrns(endState);
                                     for (int i = unaryNode.MinimumOfRepetitions; i < unaryNode.MaximumOfRepetitions; i++)
                                     {
                                         tmp1 = MkState();
-                                        MakePath(unaryNode.kid, dummy, tmp1);
+                                        MakePath(unaryNode.Kid, dummy, tmp1);
                                         dummy = tmp1;
                                         dummy.AddEpsTrns(endState);
                                     }

@@ -9,7 +9,7 @@ namespace QUT.GPGen
 {
     internal abstract class Symbol
     {
-        private string name;
+        private string _name;
         internal string kind;
 
         internal abstract int num
@@ -19,12 +19,12 @@ namespace QUT.GPGen
 
         internal Symbol(string name)
         {
-            this.name = name;
+            _name = name;
         }
 
         public override string ToString()
         {
-            return name;
+            return _name;
         }
 
         internal abstract bool IsNullable();

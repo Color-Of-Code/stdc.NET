@@ -70,7 +70,7 @@ namespace QUT.Gplex.Automaton
                             if (tree.Operator == RegOp.LeftAnchor)     // this is a left anchored pattern
                             {
                                 nInst.AnchorState.AddEpsTrns(start);
-                                tree = ((Unary)tree).kid;
+                                tree = ((Unary)tree).Kid;
                             }
                             else                                // this is not a left anchored pattern
                                 nInst.Entry.AddEpsTrns(start);
@@ -91,7 +91,7 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (tree.Operator == RegOp.RightAnchor)
                             {
-                                tree = ((Unary)tree).kid;
+                                tree = ((Unary)tree).Kid;
                                 nInst.MakePath(tree, start, endSt);
                                 AddAnchorContext(nInst, endSt, rule);
                             }

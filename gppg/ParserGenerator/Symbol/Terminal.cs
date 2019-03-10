@@ -14,16 +14,15 @@ namespace QUT.GPGen
 
         internal Precedence prec;
         private int n;
-        internal bool symbolic;
-        private string alias;
+        internal bool IsSymbolic { get; private set; }
 
-        internal string Alias { get { return alias; } }
+        internal string Alias { get; private set; }
 
         internal override int num
         {
             get
             {
-                if (symbolic)
+                if (IsSymbolic)
                     return max + n;
                 else
                     return n;
@@ -37,10 +36,10 @@ namespace QUT.GPGen
         /// </summary>
         /// <param name="symbolic">Means "is an ident"</param>
         /// <param name="name">string representation of symbol</param>
-		internal Terminal(bool symbolic, string name)
+		internal Terminal(bool symbolic, string name, string alias = null)
             : base(name)
         {
-            this.symbolic = symbolic;
+            IsSymbolic = symbolic;
             if (symbolic)
                 this.n = ++count;
             else
@@ -48,15 +47,8 @@ namespace QUT.GPGen
                 this.n = CharacterUtilities.OrdinalOfCharacterLiteral(name, 1);
                 if (n > max) max = n;
             }
+            Alias = alias;
         }
-
-        internal Terminal(bool symbolic, string name, string alias)
-            : this(symbolic, name)
-        {
-            if (alias != null)
-                this.alias = alias;
-        }
-
 
         internal override bool IsNullable()
         {
@@ -65,7 +57,7 @@ namespace QUT.GPGen
 
         public override string ToString()
         {
-            return this.alias ?? base.ToString();
+            return Alias ?? base.ToString();
         }
 
         internal string EnumName()

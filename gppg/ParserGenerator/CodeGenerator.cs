@@ -187,7 +187,7 @@ namespace QUT.GPGen
             Console.Write("{0} enum {1} {{", grammar.Visibility, grammar.TokenName);
             bool first = true;
             foreach (Terminal terminal in terminals.Values)
-                if (terminal.symbolic)
+                if (terminal.IsSymbolic)
                 {
                     if (!first)
                         Console.Write(",");

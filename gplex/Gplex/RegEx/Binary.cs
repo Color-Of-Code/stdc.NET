@@ -9,17 +9,23 @@ namespace QUT.Gplex.Parser
 {
     internal sealed class Binary : RegExTree
     {
-        internal RegExTree lKid, rKid;
-        internal Binary(RegOp op, RegExTree l, RegExTree r) : base(op) { lKid = l; rKid = r; }
+        public RegExTree LeftKid { get; private set; }
+        public RegExTree RightKid { get; private set; }
+        internal Binary(RegOp op, RegExTree l, RegExTree r)
+            : base(op)
+        {
+            LeftKid = l;
+            RightKid = r;
+        }
 
         internal override int ContextLength()
         {
-            if (this.rKid == null || this.lKid == null) return 0;
+            if (this.RightKid == null || this.LeftKid == null) return 0;
             if (Operator == RegOp.Context) throw new StringInterpretException("multiple context operators");
             else
             {
-                int lLen = lKid.ContextLength();
-                int rLen = rKid.ContextLength();
+                int lLen = LeftKid.ContextLength();
+                int rLen = RightKid.ContextLength();
                 if (lLen <= 0 || rLen <= 0) return 0;
                 else if (Operator == RegOp.Concatenation) return lLen + rLen;
                 else if (lLen == rLen) return lLen;
@@ -29,15 +35,15 @@ namespace QUT.Gplex.Parser
 
         internal override int MinimumLength()
         {
-            if (this.rKid == null || this.lKid == null) return 0;
+            if (this.RightKid == null || this.LeftKid == null) return 0;
             switch (Operator)
             {
-                case RegOp.Concatenation: return lKid.MinimumLength() + rKid.MinimumLength();
-                case RegOp.Context: return lKid.MinimumLength();
+                case RegOp.Concatenation: return LeftKid.MinimumLength() + RightKid.MinimumLength();
+                case RegOp.Context: return LeftKid.MinimumLength();
                 case RegOp.Alternation:
                     {
-                        int lLen = lKid.MinimumLength();
-                        int rLen = rKid.MinimumLength();
+                        int lLen = LeftKid.MinimumLength();
+                        int rLen = RightKid.MinimumLength();
                         return (lLen <= rLen ? lLen : rLen);
                     }
                 default: throw new GplexInternalException("Bad binary RegOp");
@@ -52,8 +58,8 @@ namespace QUT.Gplex.Parser
         internal override void Visit(RegExDFS visitor)
         {
             visitor.Op(this);
-            lKid.Visit(visitor);
-            rKid.Visit(visitor);
+            LeftKid.Visit(visitor);
+            RightKid.Visit(visitor);
         }
     }
 }
