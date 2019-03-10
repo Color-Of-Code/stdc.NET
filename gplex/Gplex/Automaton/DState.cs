@@ -20,7 +20,6 @@ namespace QUT.Gplex.Automaton
             static uint nextSN = 1;                // Counter for serial number allocation
 
 
-            int globOrd = unset;                  // ordinal of this state within whole DFSA-set
             internal int rhCntx;                            // the right context fixed length
             internal int lhCntx;                            // the left context fixed length
             internal DfsaInstance myDfaInst;                // instance to which this DState belongs
@@ -42,12 +41,14 @@ namespace QUT.Gplex.Automaton
 
             internal DState(DFSA dfsa)
             {
+                Num = unset;
                 serialNumber = nextSN++;
                 myDfsa = dfsa;
             }
 
             internal DState(DfsaInstance inst)
             {
+                Num = unset;
                 serialNumber = nextSN++;
                 myDfaInst = inst;
                 myDfsa = inst.parent;
@@ -56,13 +57,13 @@ namespace QUT.Gplex.Automaton
             public bool HasRightContext { get { return rhCntx > 0 || lhCntx > 0; } }
 
             /// <summary>
-            /// Final global number of this DState. Not valid until
+            /// Final global number of this DState within whole DFSA-set. Not valid until
             /// allocation, after separation into accept and non-accept states
             /// </summary>
             public int Num
             {
-                get { return globOrd; }
-                set { globOrd = value; }
+                get;
+                set;
             }
 
             /// <summary>
@@ -144,7 +145,7 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             /// <param name="j"></param>
             /// <returns></returns>
-            public int NextOn(int j) { return (GetNext(j) == null ? DefaultNext : GetNext(j).globOrd); }
+            public int NextOn(int j) { return (GetNext(j) == null ? DefaultNext : GetNext(j).Num); }
             public int DefaultNext { get { return (myDfaInst == null ? DFSA.eofNum : DFSA.gotoStart); } }
 
             /// <summary>
@@ -154,8 +155,8 @@ namespace QUT.Gplex.Automaton
             /// <returns></returns>
             public int CompareTo(DState r)
             {
-                if (this.globOrd < r.globOrd) return -1;
-                else if (this.globOrd > r.globOrd) return 1;
+                if (this.Num < r.Num) return -1;
+                else if (this.Num > r.Num) return 1;
                 else return 0;
             }
 
