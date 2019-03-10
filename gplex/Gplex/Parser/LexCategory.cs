@@ -8,30 +8,27 @@ namespace QUT.Gplex.Parser
 {
     internal sealed class LexCategory
     {
-        string name;
-        string verb;
-        LexSpan vrbSpan;
-        bool hasPred;
-        internal RegExTree regX;
+        private string _verb;
+        private LexSpan _verbSpan;
+        public RegExTree RegularExpressionTree {get; private set;}
 
-        internal LexCategory(string nam, string vrb, LexSpan spn)
+        internal LexCategory(string name, string vrb, LexSpan spn)
         {
-            vrbSpan = spn;
-            verb = vrb;
-            name = nam;
+            _verbSpan = spn;
+            _verb = vrb;
+            Name = name;
         }
 
-        internal bool HasPredicate
+        internal bool HasPredicate { get; set; }
+
+        internal string Name { get; private set; }
+
+        internal string PredDummyName { get { return "PRED_" + Name + "_DUMMY"; } }
+
+        internal void ParseRegularExpression(AAST aast)
         {
-            get { return hasPred; }
-            set { hasPred = value; }
+            RegularExpressionTree = new AAST.RegularExpressionParser(_verb, _verbSpan, aast).Parse();
         }
-
-        internal string Name { get { return name; } }
-
-        internal string PredDummyName { get { return "PRED_" + name + "_DUMMY"; } }
-
-        internal void ParseRE(AAST aast) { regX = new AAST.ReParser(verb, vrbSpan, aast).Parse(); }
     }
 
 }

@@ -33,8 +33,8 @@ namespace QUT.Gplex.Parser
         internal IList<RuleDesc> ruleList = new List<RuleDesc>();
         internal IList<LexCategory> lexCatsWithPredicates = new List<LexCategory>();
         internal IDictionary<string, LexCategory> lexCategories = new Dictionary<string, LexCategory>();
-        internal Dictionary<string, PredicateLeaf> cats; // Allocated on demand
-        internal Dictionary<string, StartState> startStates = new Dictionary<string, StartState>();
+        internal IDictionary<string, PredicateLeaf> cats; // Allocated on demand
+        internal IDictionary<string, StartState> startStates = new Dictionary<string, StartState>();
         private List<StartState> inclStates = new List<StartState>();
 
         internal Automaton.TaskState Task { get; private set; }
@@ -104,13 +104,11 @@ namespace QUT.Gplex.Parser
         {
             if (lexCategories.ContainsKey(name))
                 return false;
-            else
-            {
-                var cls = new LexCategory(name, verb, spn);
-                lexCategories.Add(name, cls);
-                cls.ParseRE(this);
-                return true;
-            }
+
+            var cls = new LexCategory(name, verb, spn);
+            lexCategories.Add(name, cls);
+            cls.ParseRegularExpression(this);
+            return true;
         }
 
         internal void AddLexCatPredicate(string name, LexSpan span)
@@ -118,7 +116,7 @@ namespace QUT.Gplex.Parser
             LexCategory cat;
             if (!lexCategories.TryGetValue(name, out cat))
                 hdlr.ListError(span, 55, name);
-            else if (cat.regX.Operator != RegOp.CharacterClass)
+            else if (cat.RegularExpressionTree.Operator != RegOp.CharacterClass)
                 hdlr.ListError(span, 71, name);
             else if (!cat.HasPredicate)
             {
@@ -322,7 +320,7 @@ namespace QUT.Gplex.Parser
         /// the parse abandoned. The exception catch handler transforms the 
         /// exception into a regular error diagnostic.
         /// </summary>
-        internal sealed class ReParser
+        internal sealed class RegularExpressionParser
         {
 
             // ============================================================
@@ -367,7 +365,7 @@ namespace QUT.Gplex.Parser
             /// and the valid characters to start syntatic category "Primary"
             /// </summary>
             /// <param name="crd">host alphabet cardinality</param>
-            void InitReParser()
+            void InitRegularExpressionParser()
             {
                 prStart = new BitArray(symCard, true);
                 prStart[(int)')'] = false;
@@ -383,7 +381,7 @@ namespace QUT.Gplex.Parser
                 prStart[(int)'\0'] = false;
             }
 
-            internal ReParser(string str, LexSpan spn, AAST parent)
+            internal RegularExpressionParser(string str, LexSpan spn, AAST parent)
             {
                 var parentTask = parent.Task;
                 if (parentTask.UseUnicode)
@@ -391,7 +389,7 @@ namespace QUT.Gplex.Parser
                 symCard = parentTask.HostSymCardinality;
                 pat = str;
                 span = spn;
-                InitReParser();
+                InitRegularExpressionParser();
                 this.parent = parent;
                 //
                 //  This is ugly, but we cannot manipulate
@@ -714,10 +712,10 @@ namespace QUT.Gplex.Parser
                 checkAndScan('}');
                 if (parent.lexCategories.TryGetValue(name, out cat))
                 {
-                    Leaf leaf = cat.regX as Leaf;
+                    Leaf leaf = cat.RegularExpressionTree as Leaf;
                     if (leaf != null && leaf.Operator == RegOp.CharacterClass)
                         leaf.rangeLit.name = name;
-                    return cat.regX;
+                    return cat.RegularExpressionTree;
                 }
                 else
                     Error(55, start, name.Length, name);
@@ -886,9 +884,9 @@ namespace QUT.Gplex.Parser
                 found = parent.lexCategories.TryGetValue(name, out namedRE);
                 if (found)
                 {
-                    if (namedRE.regX.Operator != RegOp.CharacterClass)
+                    if (namedRE.RegularExpressionTree.Operator != RegOp.CharacterClass)
                         Error(71, start, name.Length, name);
-                    return namedRE.regX as Leaf;
+                    return namedRE.RegularExpressionTree as Leaf;
                 }
                 //
                 // else name not known
