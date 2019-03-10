@@ -385,7 +385,7 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
 {
                        isBar = false; 
                        typedeclOK = false;
-                       if (aast.nameString == null) 
+                       if (Aast.nameString == null) 
                            handler.ListError(LocationStack[LocationStack.Depth-1], 73); 
                      }
         break;
@@ -399,7 +399,7 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
 { typedeclOK = true; }
         break;
       case 8: // UserCodeSection -> CSharp
-{ aast.UserCode = LocationStack[LocationStack.Depth-1]; }
+{ Aast.UserCode = LocationStack[LocationStack.Depth-1]; }
         break;
       case 9: // UserCodeSection -> /* empty */
 {  /* empty */  }
@@ -420,41 +420,41 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
 { AddNames(false); }
         break;
       case 17: // Definition -> "%using", DottedName, ";"
-{ aast.usingStrs.Add(LocationStack[LocationStack.Depth-2].Merge(LocationStack[LocationStack.Depth-1])); }
+{ Aast.usingStrs.Add(LocationStack[LocationStack.Depth-2].Merge(LocationStack[LocationStack.Depth-1])); }
         break;
       case 18: // Definition -> "%namespace", DottedName
-{ aast.nameString = LocationStack[LocationStack.Depth-1]; }
+{ Aast.nameString = LocationStack[LocationStack.Depth-1]; }
         break;
       case 19: // Definition -> "%visibility", csKeyword
-{ aast.AddVisibility(LocationStack[LocationStack.Depth-1]); }
+{ Aast.AddVisibility(LocationStack[LocationStack.Depth-1]); }
         break;
       case 20: // Definition -> "%option", verbatim
 { ParseOption(LocationStack[LocationStack.Depth-1]); }
         break;
       case 21: // Definition -> PcBraceSection
-{ aast.AddCodeSpan(Dest,LocationStack[LocationStack.Depth-1]); }
+{ Aast.AddCodeSpan(Dest,LocationStack[LocationStack.Depth-1]); }
         break;
       case 22: // Definition -> DefComment
-{ aast.AddCodeSpan(Dest,LocationStack[LocationStack.Depth-1]); }
+{ Aast.AddCodeSpan(Dest,LocationStack[LocationStack.Depth-1]); }
         break;
       case 23: // Definition -> IndentedCode
-{ aast.AddCodeSpan(Dest,LocationStack[LocationStack.Depth-1]); }
+{ Aast.AddCodeSpan(Dest,LocationStack[LocationStack.Depth-1]); }
         break;
       case 24: // Definition -> "%charClassPredicate", NameList
 { AddCharSetPredicates(); }
         break;
       case 25: // Definition -> "%scanbasetype", csIdent
-{ aast.SetScanBaseName(LocationStack[LocationStack.Depth-1].ToString()); }
+{ Aast.SetScanBaseName(LocationStack[LocationStack.Depth-1].ToString()); }
         break;
       case 26: // Definition -> "%tokentype", csIdent
-{ aast.SetTokenTypeName(LocationStack[LocationStack.Depth-1].ToString()); }
+{ Aast.SetTokenTypeName(LocationStack[LocationStack.Depth-1].ToString()); }
         break;
       case 27: // Definition -> "scannertype", csIdent
-{ aast.SetScannerTypeName(LocationStack[LocationStack.Depth-1].ToString()); }
+{ Aast.SetScannerTypeName(LocationStack[LocationStack.Depth-1].ToString()); }
         break;
       case 28: // Definition -> "userCharPredicate", csIdent, "[", DottedName, "]", DottedName
 {
-                                 aast.AddUserPredicate(LocationStack[LocationStack.Depth-5].ToString(), LocationStack[LocationStack.Depth-3], LocationStack[LocationStack.Depth-1]);
+                                 Aast.AddUserPredicate(LocationStack[LocationStack.Depth-5].ToString(), LocationStack[LocationStack.Depth-3], LocationStack[LocationStack.Depth-1]);
                                }
         break;
       case 29: // IndentedCode -> lxIndent, CSharp, lxEndIndent
@@ -494,8 +494,8 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
         break;
       case 52: // Rules -> RuleList
 { 
-                                rb.FinalizeCode(aast); 
-                                aast.FixupBarActions(); 
+                                rb.FinalizeCode(Aast); 
+                                Aast.FixupBarActions(); 
                               }
         break;
       case 57: // Rule -> ProductionGroup
@@ -536,8 +536,8 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
       case 67: // ARule -> StartCondition, pattern, Action
 {
 			                    RuleDesc rule = new RuleDesc(LocationStack[LocationStack.Depth-2], LocationStack[LocationStack.Depth-1], scope.Current, isBar);
-			                    aast.ruleList.Add(rule);
-			                    rule.ParseRE(aast);
+			                    Aast.ruleList.Add(rule);
+			                    rule.ParseRE(Aast);
 			                    isBar = false; // Reset the flag ...
 			                    scope.ExitScope();
 		                      }
@@ -545,8 +545,8 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
       case 68: // ARule -> pattern, Action
 {
 			                    RuleDesc rule = new RuleDesc(LocationStack[LocationStack.Depth-2], LocationStack[LocationStack.Depth-1], scope.Current, isBar); 
-			                    aast.ruleList.Add(rule);
-			                    rule.ParseRE(aast); 
+			                    Aast.ruleList.Add(rule);
+			                    rule.ParseRE(Aast); 
 			                    isBar = false; // Reset the flag ...
 		                      }
         break;
@@ -587,7 +587,7 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
         break;
       case 93: // NonPairedToken -> csKeyword
 { 
-                                 string text = aast.scanner.yytext;
+                                 string text = Aast.scanner.yytext;
                                  if (text.Equals("using")) {
                                      handler.ListError(LocationStack[LocationStack.Depth-1], 56);
                                  } else if (text.Equals("namespace")) {

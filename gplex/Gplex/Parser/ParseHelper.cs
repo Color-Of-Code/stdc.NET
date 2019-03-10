@@ -24,8 +24,7 @@ namespace QUT.Gplex.Parser
         ErrorHandler handler;
         StartStateScope scope = new StartStateScope();
 
-        AAST aast;
-        internal AAST Aast { get { return aast; } }
+        internal AAST Aast { get; private set; }
 
         OptionParser2 processOption2;
 
@@ -44,10 +43,10 @@ namespace QUT.Gplex.Parser
         internal void Initialize(QUT.Gplex.Automaton.TaskState t, Scanner scnr, ErrorHandler hdlr, OptionParser2 dlgt)
         {
             this.handler = hdlr;
-            this.aast = new AAST(t);
-            this.aast.hdlr = hdlr;
+            this.Aast = new AAST(t);
+            this.Aast.hdlr = hdlr;
             //this.aast.parser = this;
-            this.aast.scanner = scnr;
+            this.Aast.scanner = scnr;
             this.processOption2 = dlgt;
         }
 
@@ -65,7 +64,7 @@ namespace QUT.Gplex.Parser
         internal void AddName(LexSpan l)
         {
             nameLocs.Add(l);
-            nameList.Add(aast.scanner.Buffer.GetString(l.startIndex, l.endIndex));
+            nameList.Add(Aast.scanner.Buffer.GetString(l.startIndex, l.endIndex));
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace QUT.Gplex.Parser
                 string s = nameList[i];
                 LexSpan l = nameLocs[i];
                 if (Char.IsDigit(s[0])) handler.ListError(l, 72, s);
-                else if (!aast.AddStartState(isExcl, s)) handler.ListError(l, 50, s);
+                else if (!Aast.AddStartState(isExcl, s)) handler.ListError(l, 50, s);
             }
             // And now clear the nameList
             nameList.Clear();
@@ -93,7 +92,7 @@ namespace QUT.Gplex.Parser
             {
                 string s = nameList[i];
                 LexSpan l = nameLocs[i];
-                aast.AddLexCatPredicate(s, l);
+                Aast.AddLexCatPredicate(s, l);
             }
             // And now clear the nameList
             nameList.Clear();
@@ -108,7 +107,7 @@ namespace QUT.Gplex.Parser
         internal void ParseOption(LexSpan l)
         {
             char[] charSeparators = new char[] { ',', ' ', '\t' };
-            string strn = aast.scanner.Buffer.GetString(l.startIndex, l.endIndex);
+            string strn = Aast.scanner.Buffer.GetString(l.startIndex, l.endIndex);
             string[] cmds = strn.Split(charSeparators, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in cmds)
             {
@@ -148,7 +147,7 @@ namespace QUT.Gplex.Parser
                 if (Char.IsDigit(s[0])) handler.ListError(l, 72, s); // Illegal name
                 else
                 {
-                    StartState obj = aast.StartStateValue(s);
+                    StartState obj = Aast.StartStateValue(s);
                     if (obj == null) handler.ListError(l, 51, s);
                     else lst.Add(obj);
                 }
@@ -160,9 +159,9 @@ namespace QUT.Gplex.Parser
         internal void AddLexCategory(LexSpan nLoc, LexSpan vLoc)
         {
             // string name = aast.scanner.buffer.GetString(nVal.startIndex, nVal.endIndex + 1);
-            string name = aast.scanner.Buffer.GetString(nLoc.startIndex, nLoc.endIndex);
-            string verb = aast.scanner.Buffer.GetString(vLoc.startIndex, vLoc.endIndex);
-            if (!aast.AddLexCategory(name, verb, vLoc))
+            string name = Aast.scanner.Buffer.GetString(nLoc.startIndex, nLoc.endIndex);
+            string verb = Aast.scanner.Buffer.GetString(vLoc.startIndex, vLoc.endIndex);
+            if (!Aast.AddLexCategory(name, verb, vLoc))
                 handler.ListError(nLoc, 52, name);
             // handler.AddError("Error: name " + name + " already defined", nLoc);
         }

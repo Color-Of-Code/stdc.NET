@@ -3,14 +3,15 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using System;
+using System.Linq;
 
 namespace QUT.GPGen
 {
 
     internal class Precedence
     {
-        internal PrecedenceType type;
-        internal int prec;
+        internal PrecedenceType type { get; private set; }
+        internal int prec { get; private set; }
 
         internal Precedence(PrecedenceType type, int prec)
         {
@@ -23,13 +24,17 @@ namespace QUT.GPGen
             // Precedence of a production is that of its rightmost terminal
             // unless explicitly labelled with %prec
 
-            if (p.prec == null)
-                for (int i = p.rhs.Count - 1; i >= 0; i--)
-                    if (p.rhs[i] is Terminal)
-                    {
-                        p.prec = ((Terminal)p.rhs[i]).prec;
-                        break;
-                    }
+            if (p.prec != null)
+                return;
+
+            var rightMostTerminal = p.rhs
+                .Reverse()
+                .FirstOrDefault(x => x is Terminal);
+            
+            if (rightMostTerminal != null)
+            {
+                p.prec = ((Terminal)rightMostTerminal).prec;
+            }
         }
     }
 }

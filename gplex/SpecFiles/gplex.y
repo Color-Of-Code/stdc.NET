@@ -38,7 +38,7 @@ DefinitionSection
     : DefinitionSeq  PCPC    {
                        isBar = false; 
                        typedeclOK = false;
-                       if (aast.nameString == null) 
+                       if (Aast.nameString == null) 
                            handler.ListError(@2, 73); 
                      }
     | PCPC           { isBar = false; }
@@ -50,7 +50,7 @@ RulesSection
     ;
     
 UserCodeSection
-    : CSharp         { aast.UserCode = @1; }
+    : CSharp         { Aast.UserCode = @1; }
     | /* empty */    {  /* empty */  }
     | error          { handler.ListError(@1, 62, "EOF"); }
     ;
@@ -65,19 +65,19 @@ Definition
     | name pattern             { AddLexCategory(@1, @2); }
     | exclTag NameList         { AddNames(true); }
     | inclTag NameList         { AddNames(false); }
-    | usingTag DottedName semi { aast.usingStrs.Add(@2.Merge(@3)); }
-    | namespaceTag DottedName  { aast.nameString = @2; }
-    | visibilityTag csKeyword  { aast.AddVisibility(@2); }
+    | usingTag DottedName semi { Aast.usingStrs.Add(@2.Merge(@3)); }
+    | namespaceTag DottedName  { Aast.nameString = @2; }
+    | visibilityTag csKeyword  { Aast.AddVisibility(@2); }
     | optionTag verbatim       { ParseOption(@2); }
-    | PcBraceSection           { aast.AddCodeSpan(Dest,@1); }
-    | DefComment               { aast.AddCodeSpan(Dest,@1); }
-    | IndentedCode             { aast.AddCodeSpan(Dest,@1); }
+    | PcBraceSection           { Aast.AddCodeSpan(Dest,@1); }
+    | DefComment               { Aast.AddCodeSpan(Dest,@1); }
+    | IndentedCode             { Aast.AddCodeSpan(Dest,@1); }
     | charSetPredTag NameList  { AddCharSetPredicates(); }
-    | scanbaseTag csIdent      { aast.SetScanBaseName(@2.ToString()); }
-    | tokentypeTag csIdent     { aast.SetTokenTypeName(@2.ToString()); }
-    | scannertypeTag csIdent   { aast.SetScannerTypeName(@2.ToString()); }
+    | scanbaseTag csIdent      { Aast.SetScanBaseName(@2.ToString()); }
+    | tokentypeTag csIdent     { Aast.SetTokenTypeName(@2.ToString()); }
+    | scannertypeTag csIdent   { Aast.SetScannerTypeName(@2.ToString()); }
     | userCharPredTag csIdent csLBrac DottedName csRBrac DottedName {
-                                 aast.AddUserPredicate(@2.ToString(), @4, @6);
+                                 Aast.AddUserPredicate(@2.ToString(), @4, @6);
                                }  
     ;
     
@@ -137,8 +137,8 @@ CsComStart
     
 Rules
     : RuleList                { 
-                                rb.FinalizeCode(aast); 
-                                aast.FixupBarActions(); 
+                                rb.FinalizeCode(Aast); 
+                                Aast.FixupBarActions(); 
                               }
     | /* empty */ 
     ;
@@ -185,16 +185,16 @@ PatActionList
 ARule                                          
     : StartCondition pattern Action  {
 			                    RuleDesc rule = new RuleDesc(@2, @3, scope.Current, isBar);
-			                    aast.ruleList.Add(rule);
-			                    rule.ParseRE(aast);
+			                    Aast.ruleList.Add(rule);
+			                    rule.ParseRE(Aast);
 			                    isBar = false; // Reset the flag ...
 			                    scope.ExitScope();
 		                      }
 		                      
     | pattern Action          {
 			                    RuleDesc rule = new RuleDesc(@1, @2, scope.Current, isBar); 
-			                    aast.ruleList.Add(rule);
-			                    rule.ParseRE(aast); 
+			                    Aast.ruleList.Add(rule);
+			                    rule.ParseRE(Aast); 
 			                    isBar = false; // Reset the flag ...
 		                      }
 		                      
@@ -250,7 +250,7 @@ NonPairedToken
     | csCommentE                       
     | csCommentL                       
     | csKeyword                { 
-                                 string text = aast.scanner.yytext;
+                                 string text = Aast.scanner.yytext;
                                  if (text.Equals("using")) {
                                      handler.ListError(@1, 56);
                                  } else if (text.Equals("namespace")) {
