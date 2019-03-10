@@ -25,7 +25,7 @@ namespace QUT.Gplex.Automaton
             internal int lhCntx;                            // the left context fixed length
             internal DfsaInstance myDfaInst;                // instance to which this DState belongs
             internal DFSA myDfsa;                           // a reference to the parent DFSA
-            internal NSetFactory.NSet nfaSet;               // set of nfsa state that this state represents
+            internal NSet nfaSet;               // set of nfsa state that this state represents
             internal IList<int> trList = new List<int>();    // list of transitions on this state
             internal RuleDesc accept;                       // if this is an accept state, the rule recognized
             internal string shortestStr;

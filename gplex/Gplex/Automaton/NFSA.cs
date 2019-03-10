@@ -23,7 +23,7 @@ namespace QUT.Gplex.Automaton
         /// bits of each, and were erroneous for automata with more
         /// than 64k of NFSA states.
         /// </summary>
-        public Dictionary<ulong, NState> next = new Dictionary<ulong, NState>();
+        public IDictionary<ulong, NState> next = new Dictionary<ulong, NState>();
 
         public NFSA(TaskState t) { task = t; }
 

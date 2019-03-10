@@ -230,7 +230,7 @@ namespace QUT.Gplex.Automaton
             internal NFSA.NfsaInstance myNfaInst;      // Corresponding NFSA instance
             NSetFactory factory;                       // Factory for creating NSet objects
 
-            Dictionary<NSetFactory.NSet, DState> dfaTable = new Dictionary<NSetFactory.NSet, DState>();
+            private IDictionary<NSet, DState> dfaTable = new Dictionary<NSet, DState>();
 
             public DfsaInstance(NFSA.NfsaInstance nfa, DFSA dfa)
             {
@@ -249,8 +249,8 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             internal void Convert()
             {
-                Stack<DState> stack = new Stack<DState>();
-                NSetFactory.NSet sSet = factory.MkNewSet();
+                var stack = new Stack<DState>();
+                NSet sSet = factory.MkNewSet();
                 int symCardinality = parent.MaxSym;
                 sSet.Insert(myNfaInst.Entry.ord);
                 MkClosure(sSet);
@@ -277,7 +277,7 @@ namespace QUT.Gplex.Automaton
                 while (stack.Count > 0)
                 {
                     DState last = stack.Pop();
-                    NSetFactory.NSet pSet = last.nfaSet;
+                    NSet pSet = last.nfaSet;
                     //
                     // For this state we are going to consider every
                     // possible transition, each input symbol at a time.
@@ -287,9 +287,9 @@ namespace QUT.Gplex.Automaton
                         // For each transition out of "last" we
                         // will form a set of NFSA states and find
                         // or create a corresponding DFSA state.
-                        NSetFactory.NSet nxSet = null;
+                        NSet nxSet = null;
                         DState nxState = null;
-                        NSetFactory.NEnum inum = pSet.GetEnumerator();
+                        NEnum inum = pSet.GetEnumerator();
                         while (inum.MoveNext())    // foreach NFSA state contained in "last" 
                         {
                             int i = inum.Current;
@@ -336,7 +336,7 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             /// <param name="stateSet">The set of NFSA states</param>
             /// <returns>The new state</returns>
-            internal DState MkNewState(NSetFactory.NSet stateSet)
+            internal DState MkNewState(NSet stateSet)
             {
                 DState dSt = new DState(this);
                 dSt.nfaSet = stateSet;
@@ -387,10 +387,10 @@ namespace QUT.Gplex.Automaton
             /// </summary>
             /// <param name="states">initial set of NFSA states</param>
             /// <returns>updated set of NFSA states</returns>
-            internal void MkClosure(NSetFactory.NSet set)
+            internal void MkClosure(NSet set)
             {
-                Stack<int> stack = new Stack<int>();
-                NSetFactory.NEnum inum = set.GetEnumerator();
+                var stack = new Stack<int>();
+                NEnum inum = set.GetEnumerator();
                 while (inum.MoveNext()) stack.Push(inum.Current);
                 while (stack.Count > 0)
                 {
