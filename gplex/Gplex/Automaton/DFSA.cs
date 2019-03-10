@@ -289,7 +289,7 @@ namespace QUT.Gplex.Automaton
                         // or create a corresponding DFSA state.
                         NSet nxSet = null;
                         DState nxState = null;
-                        NEnum inum = pSet.GetEnumerator();
+                        NEnumerator inum = pSet.GetEnumerator();
                         while (inum.MoveNext())    // foreach NFSA state contained in "last" 
                         {
                             int i = inum.Current;
@@ -390,7 +390,7 @@ namespace QUT.Gplex.Automaton
             internal void MkClosure(NSet set)
             {
                 var stack = new Stack<int>();
-                NEnum inum = set.GetEnumerator();
+                NEnumerator inum = set.GetEnumerator();
                 while (inum.MoveNext()) stack.Push(inum.Current);
                 while (stack.Count > 0)
                 {

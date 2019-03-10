@@ -33,7 +33,10 @@ namespace QUT.Gplex.Automaton
 
         public void Insert(int ord) { arr[ord / 32] |= (uint)(1 << ord % 32); }
         public bool Contains(int ord) { return (arr[ord / 32] & (uint)(1 << (ord % 32))) != 0; }
-        public NEnum GetEnumerator() { return new NEnum(this.arr); }
+        public NEnumerator GetEnumerator()
+        {
+            return new NEnumerator(this.arr);
+        }
 
         //public string Diag()
         //{

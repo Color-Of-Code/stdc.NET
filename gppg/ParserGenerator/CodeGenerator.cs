@@ -377,18 +377,16 @@ namespace QUT.GPGen
 
         private static int GetDefaultAction(AutomatonState state)
         {
-            // TODO: cleanup
-            IEnumerator<ParserAction> enumerator = state.parseTable.Values.GetEnumerator();
-            enumerator.MoveNext();
-            int defaultAction = enumerator.Current.ToNum();
+            var actions = state.parseTable.Values.Select(x => x.ToNum());
+            int defaultAction = actions.First();
 
             if (defaultAction > 0)
                 return 0; // can't have default shift action
 
-            if (state.parseTable.Any(transition => transition.Value.ToNum() != defaultAction))
-                return 0;
+            if (actions.All(a => a == defaultAction))
+                return defaultAction;
 
-            return defaultAction;
+            return 0;
         }
 
 

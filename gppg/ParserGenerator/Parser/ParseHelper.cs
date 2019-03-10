@@ -5,9 +5,7 @@
 using System;
 using System.Globalization;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using QUT.GPGen.Lexers;
-using QUT.GplexBuffers;
 using QUT.Gplib;
 
 namespace QUT.GPGen.Parser
@@ -271,64 +269,6 @@ namespace QUT.GPGen.Parser
         private static bool IsLitChar(string text)
         {
             return text[0] == '\'' && text[text.Length - 1] == '\'';
-        }
-    }
-
-    // ===================================================================
-    // ===================================================================
-
-    [Serializable]
-    public class GppgInternalException : Exception {
-        public GppgInternalException() { }
-        public GppgInternalException(string message) : base(message) { }
-        public GppgInternalException(string message, Exception innerException)
-            : base(message, innerException) { }
-        protected GppgInternalException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
-    }
-
-    [Serializable]
-    public class TooManyErrorsException : Exception {
-        public TooManyErrorsException() { }
-        public TooManyErrorsException(string message) : base(message) { }
-        public TooManyErrorsException(string message, Exception innerException)
-            : base(message, innerException) { }
-        protected TooManyErrorsException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
-    }
-
-    // ===================================================================
-    // ===================================================================
-
-    internal class ActionProxy
-    {
-        internal LexSpan codeBlock;
-        internal LexSpan precedenceToken;
-        internal LexSpan precedenceSpan;
-
-        internal ActionProxy(LexSpan precedence, LexSpan identifier, LexSpan code)
-        {
-            codeBlock = code;
-            precedenceToken = identifier;
-            precedenceSpan = precedence;
-        }
-    }
-
-    // ===================================================================
-    // ===================================================================
-
-    internal class TokenInfo
-    {
-        internal string name;
-        internal string alias;
-
-        // This constructor ignores explicit numeric value declarations
-        // This might change later ...
-        internal TokenInfo(LexSpan name, LexSpan alias)
-        {
-            this.name = name.ToString();
-            if (alias != null)
-                this.alias = alias.ToString();
         }
     }
 

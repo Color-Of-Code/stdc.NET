@@ -2,8 +2,6 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -11,7 +9,6 @@ using System.Globalization;
 using System.Linq;
 using QUT.GPGen.Parser;
 using QUT.Gplib;
-
 
 namespace QUT.GPGen
 {
@@ -478,7 +475,7 @@ namespace QUT.GPGen
 
             WriteProductions(writer);
             DiagnosticHelp.PopulatePrefixes(statelist);
-            Mapper<string, AutomatonState> map = delegate (AutomatonState elemState) { return StateRef(elemState.num); };
+            Mapper<string, AutomatonState> map = state => StateRef(state.num);
 
             foreach (AutomatonState state in statelist)
             {
@@ -490,8 +487,7 @@ namespace QUT.GPGen
 
         static void DiagnoseState<T>(StreamWriter writer, AutomatonState state, Mapper<T, AutomatonState> map, bool doKernel)
         {
-            // List<T> statePath = ListUtilities.Map<T, AutomatonState>(state.statePath, map);
-            IEnumerable<T> statePath = ListUtilities.MapC<T, AutomatonState>(state.statePath, map);
+            IEnumerable<T> statePath = state.statePath.Select(x => map(x));
 
             writer.WriteLine("    Shortest prefix: {0}", ListUtilities.GetStringFromList(state.shortestPrefix, " ", 8));
             writer.WriteLine("    State path: {0}", ListUtilities.GetStringFromList(statePath, "->", 8, false));

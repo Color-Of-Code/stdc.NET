@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace QUT.GPGen
 {
@@ -15,17 +14,10 @@ namespace QUT.GPGen
     {
         public const int LineLength = 80;
 
-        public static string GetStringFromList<T>(IEnumerable<T> list)
-        {
-            return GetStringFromList<T>(list, ", ", 4, true);
-        }
-
-        public static string GetStringFromList<T>(IEnumerable<T> list, string separator, int indent)
-        {
-            return GetStringFromList<T>(list, separator, indent, true);
-        }
-
-        public static string GetStringFromList<T>(IEnumerable<T> list, string separator, int indent, bool lineBreak)
+        public static string GetStringFromList<T>(IEnumerable<T> list,
+            string separator = ", ",
+            int indent = 4,
+            bool lineBreak = true)
         {
             int lastBreak = -indent;
             bool more = false;
@@ -50,15 +42,5 @@ namespace QUT.GPGen
 
             return builder.ToString();
         }
-
-        public static Collection<TOut> MapC<TOut, TIn>(IEnumerable<TIn> input, Mapper<TOut, TIn> map)
-        {
-            Collection<TOut> rslt = new Collection<TOut>();
-            foreach (TIn elem in input)
-                rslt.Add(map(elem));
-            return rslt;
-        }
-
-
     }
 }

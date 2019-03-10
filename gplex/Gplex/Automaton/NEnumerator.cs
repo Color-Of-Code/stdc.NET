@@ -10,16 +10,27 @@ namespace QUT.Gplex.Automaton
     /// This is a custom enumerator.  It does not implement 
     /// IEnumerator, and so cannot be used in foreach statements.
     /// </summary>
-    public class NEnum
+    public class NEnumerator
     {
         uint[] arr;
         uint elem;      // having elem zero is essential both initially and after Reset.
         int current, idx, ord;
-        internal NEnum(uint[] dat) { arr = dat; current = -1; idx = -1; }
+        internal NEnumerator(uint[] dat)
+        {
+            arr = dat;
+            current = -1;
+            idx = -1;
+        }
         // public void Reset() { current = -1; idx = -1; elem = 0; }
 
         public int Current
-        { get { if (current < 0) throw new InvalidOperationException(); else return current; } }
+        {
+            get
+            {
+                if (current < 0)
+                    throw new InvalidOperationException(); else return current;
+            }
+        }
 
         public bool MoveNext()
         {
