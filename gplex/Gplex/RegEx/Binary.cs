@@ -15,13 +15,13 @@ namespace QUT.Gplex.Parser
         internal override int ContextLength()
         {
             if (this.rKid == null || this.lKid == null) return 0;
-            if (op == RegOp.context) throw new StringInterpretException("multiple context operators");
+            if (op == RegOp.Context) throw new StringInterpretException("multiple context operators");
             else
             {
                 int lLen = lKid.ContextLength();
                 int rLen = rKid.ContextLength();
                 if (lLen <= 0 || rLen <= 0) return 0;
-                else if (op == RegOp.concat) return lLen + rLen;
+                else if (op == RegOp.Concatenation) return lLen + rLen;
                 else if (lLen == rLen) return lLen;
                 else return 0;
             }
@@ -32,9 +32,9 @@ namespace QUT.Gplex.Parser
             if (this.rKid == null || this.lKid == null) return 0;
             switch (op)
             {
-                case RegOp.concat: return lKid.MinimumLength() + rKid.MinimumLength();
-                case RegOp.context: return lKid.MinimumLength();
-                case RegOp.alt:
+                case RegOp.Concatenation: return lKid.MinimumLength() + rKid.MinimumLength();
+                case RegOp.Context: return lKid.MinimumLength();
+                case RegOp.Alternation:
                     {
                         int lLen = lKid.MinimumLength();
                         int rLen = rKid.MinimumLength();
@@ -46,7 +46,7 @@ namespace QUT.Gplex.Parser
 
         internal override bool HasRightContext
         {
-            get { return op == RegOp.context; }
+            get { return op == RegOp.Context; }
         }
 
         internal override void Visit(RegExDFS visitor)

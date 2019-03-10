@@ -18,10 +18,10 @@ namespace QUT.Gplex.Parser
             if (this.kid == null) return 0;
             switch (op)
             {
-                case RegOp.closure: return 0;
-                case RegOp.finiteRep: return (minRep == maxRep ? kid.ContextLength() * minRep : 0);
-                case RegOp.leftAnchor: return kid.ContextLength();
-                case RegOp.rightAnchor: return kid.ContextLength();
+                case RegOp.Closure: return 0;
+                case RegOp.FiniteRepetition: return (minRep == maxRep ? kid.ContextLength() * minRep : 0);
+                case RegOp.LeftAnchor: return kid.ContextLength();
+                case RegOp.RightAnchor: return kid.ContextLength();
                 default: throw new GplexInternalException("unknown unary RegOp");
             }
         }
@@ -31,10 +31,10 @@ namespace QUT.Gplex.Parser
             if (this.kid == null) return 0;
             switch (op)
             {
-                case RegOp.closure:
-                case RegOp.finiteRep: return kid.MinimumLength() * minRep;
-                case RegOp.leftAnchor:
-                case RegOp.rightAnchor: return kid.MinimumLength();
+                case RegOp.Closure:
+                case RegOp.FiniteRepetition: return kid.MinimumLength() * minRep;
+                case RegOp.LeftAnchor:
+                case RegOp.RightAnchor: return kid.MinimumLength();
                 default: throw new GplexInternalException("unknown unary RegOp");
             }
         }
@@ -47,7 +47,7 @@ namespace QUT.Gplex.Parser
 
         internal override bool HasRightContext
         {
-            get { return op == RegOp.leftAnchor && kid.HasRightContext; }
+            get { return op == RegOp.LeftAnchor && kid.HasRightContext; }
         }
     }
 }

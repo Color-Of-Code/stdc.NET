@@ -122,14 +122,14 @@ namespace QUT.Gplex.Automaton
                     case RegOp.eof:
                         break;
                     // Binary nodes ===================================
-                    case RegOp.context:
-                    case RegOp.concat:
-                    case RegOp.alt:
+                    case RegOp.Context:
+                    case RegOp.Concatenation:
+                    case RegOp.Alternation:
                         // Binary nodes ===================================
                         Binary binNode = tree as Binary;
                         switch (tree.op)
                         {
-                            case RegOp.context:
+                            case RegOp.Context:
                                 rLen = binNode.rKid.ContextLength();
                                 lLen = binNode.lKid.ContextLength();
                                 if (rLen <= 0 && lLen <= 0)
@@ -143,12 +143,12 @@ namespace QUT.Gplex.Automaton
                                     MakePath(binNode.rKid, tmp1, endState);
                                 }
                                 break;
-                            case RegOp.concat:
+                            case RegOp.Concatenation:
                                 tmp1 = MkState();
                                 MakePath(binNode.lKid, startState, tmp1);
                                 MakePath(binNode.rKid, tmp1, endState);
                                 break;
-                            case RegOp.alt:
+                            case RegOp.Alternation:
                                 tmp1 = MkState();
                                 MakePath(binNode.lKid, startState, tmp1);
                                 tmp1.AddEpsTrns(endState);
@@ -159,13 +159,13 @@ namespace QUT.Gplex.Automaton
                         }
                         break;
                     // Unary nodes ===================================
-                    case RegOp.closure:
-                    case RegOp.finiteRep:
+                    case RegOp.Closure:
+                    case RegOp.FiniteRepetition:
                         // Unary nodes ===================================
                         Unary unaryNode = tree as Unary;
                         switch (tree.op)
                         {
-                            case RegOp.closure:
+                            case RegOp.Closure:
                                 tmp2 = MkState();
                                 if (unaryNode.minRep == 0)
                                 {
@@ -186,7 +186,7 @@ namespace QUT.Gplex.Automaton
                                 tmp2.AddEpsTrns(tmp1);
                                 tmp1.AddEpsTrns(endState);
                                 break;
-                            case RegOp.finiteRep:
+                            case RegOp.FiniteRepetition:
                                 {
                                     NState dummy = tmp1 = startState;
                                     for (int i = 0; i < unaryNode.minRep; i++)
@@ -208,14 +208,14 @@ namespace QUT.Gplex.Automaton
                         }
                         break;
                     // Leaf nodes ===================================
-                    case RegOp.litStr:
-                    case RegOp.primitive:
-                    case RegOp.charClass:
+                    case RegOp.StringLiteral:
+                    case RegOp.Primitive:
+                    case RegOp.CharacterClass:
                         // Leaf nodes ===================================
                         Leaf leafNode = tree as Leaf;
                         switch (tree.op)
                         {
-                            case RegOp.litStr:
+                            case RegOp.StringLiteral:
                                 {
                                     // Make a linear sequence of states with successive
                                     // transitions on successive string characters.
@@ -249,11 +249,11 @@ namespace QUT.Gplex.Automaton
                                     }
                                 }
                                 break;
-                            case RegOp.primitive:
+                            case RegOp.Primitive:
                                 startState.AddChrTrns(leafNode.chVal, endState);
                                 break;
 
-                            case RegOp.charClass:
+                            case RegOp.CharacterClass:
                                 startState.AddClsTrans(leafNode, endState);
                                 break;
                         }

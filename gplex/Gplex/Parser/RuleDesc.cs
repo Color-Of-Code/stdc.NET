@@ -107,11 +107,11 @@ namespace QUT.Gplex.Parser
         void SemanticCheck(AAST aast)
         {
             RegExTree tree = reAST;
-            if (tree != null && tree.op == RegOp.leftAnchor) tree = ((Unary)tree).kid;
-            if (tree != null && tree.op == RegOp.rightAnchor)
+            if (tree != null && tree.op == RegOp.LeftAnchor) tree = ((Unary)tree).kid;
+            if (tree != null && tree.op == RegOp.RightAnchor)
             {
                 tree = ((Unary)tree).kid;
-                if (tree.op == RegOp.context)
+                if (tree.op == RegOp.Context)
                     aast.hdlr.ListError(pSpan, 100);
             }
             Check(aast, tree);
@@ -127,28 +127,28 @@ namespace QUT.Gplex.Parser
             if (tree == null) return;
             switch (tree.op)
             {
-                case RegOp.charClass:
-                case RegOp.primitive:
-                case RegOp.litStr:
+                case RegOp.CharacterClass:
+                case RegOp.Primitive:
+                case RegOp.StringLiteral:
                 case RegOp.eof:
                     break;
-                case RegOp.context:
-                case RegOp.concat:
-                case RegOp.alt:
+                case RegOp.Context:
+                case RegOp.Concatenation:
+                case RegOp.Alternation:
                     bnryTree = (Binary)tree;
                     Check(aast, bnryTree.lKid);
                     Check(aast, bnryTree.rKid);
-                    if (tree.op == RegOp.context &&
+                    if (tree.op == RegOp.Context &&
                         bnryTree.lKid.ContextLength() == 0 &&
                         bnryTree.rKid.ContextLength() == 0) aast.hdlr.ListError(pSpan, 75);
                     break;
-                case RegOp.closure:
-                case RegOp.finiteRep:
+                case RegOp.Closure:
+                case RegOp.FiniteRepetition:
                     unryTree = (Unary)tree;
                     Check(aast, unryTree.kid);
                     break;
-                case RegOp.leftAnchor:
-                case RegOp.rightAnchor:
+                case RegOp.LeftAnchor:
+                case RegOp.RightAnchor:
                     aast.hdlr.ListError(pSpan, 69);
                     break;
             }

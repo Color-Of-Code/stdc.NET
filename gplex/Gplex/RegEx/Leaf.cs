@@ -13,14 +13,14 @@ namespace QUT.Gplex.Parser
         internal string str;
         internal RangeLiteral rangeLit;
 
-        internal Leaf(string s) : base(RegOp.litStr) { str = s; } // Don't reinterpret escapes.
-        internal Leaf(int code) : base(RegOp.primitive) { chVal = code; }
+        internal Leaf(string s) : base(RegOp.StringLiteral) { str = s; } // Don't reinterpret escapes.
+        internal Leaf(int code) : base(RegOp.Primitive) { chVal = code; }
         internal Leaf(RegOp op) : base(op) { }
 
 
         internal override int ContextLength()
         {
-            return (op == RegOp.litStr ? this.str.Length : 1);
+            return (op == RegOp.StringLiteral ? this.str.Length : 1);
         }
 
         internal override int MinimumLength() { return ContextLength(); }

@@ -67,7 +67,7 @@ namespace QUT.Gplex.Automaton
                             NState start = nInst.MkState();
                             NState endSt = nInst.MkState();
 
-                            if (tree.op == RegOp.leftAnchor)     // this is a left anchored pattern
+                            if (tree.op == RegOp.LeftAnchor)     // this is a left anchored pattern
                             {
                                 nInst.AnchorState.AddEpsTrns(start);
                                 tree = ((Unary)tree).kid;
@@ -89,7 +89,7 @@ namespace QUT.Gplex.Automaton
                                 nInst.MakePath(tree, start, endSt);
                                 nInst.MarkAccept(endSt, rule);
                             }
-                            else if (tree.op == RegOp.rightAnchor)
+                            else if (tree.op == RegOp.RightAnchor)
                             {
                                 tree = ((Unary)tree).kid;
                                 nInst.MakePath(tree, start, endSt);
@@ -121,7 +121,7 @@ namespace QUT.Gplex.Automaton
         static void AddAnchorContext(NfsaInstance nInst, NState endS, RuleDesc rule)
         {
             NState nEnd = nInst.MkState();
-            Leaf temp = new Leaf(RegOp.charClass);
+            Leaf temp = new Leaf(RegOp.CharacterClass);
             temp.rangeLit = RangeLiteral.RightAnchors;
             nInst.MakePath(temp, endS, nEnd);
             nInst.MarkAccept(nEnd, rule);

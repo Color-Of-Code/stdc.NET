@@ -118,7 +118,7 @@ namespace QUT.Gplex.Parser
             LexCategory cat;
             if (!lexCategories.TryGetValue(name, out cat))
                 hdlr.ListError(span, 55, name);
-            else if (cat.regX.op != RegOp.charClass)
+            else if (cat.regX.op != RegOp.CharacterClass)
                 hdlr.ListError(span, 71, name);
             else if (!cat.HasPredicate)
             {
@@ -516,14 +516,14 @@ namespace QUT.Gplex.Parser
                 if (!esc && chr == '^')
                 {
                     scan();
-                    tmp = new Unary(RegOp.leftAnchor, Simple());
+                    tmp = new Unary(RegOp.LeftAnchor, Simple());
                 }
                 else
                     tmp = Simple();
                 if (!esc && chr == '$')
                 {
                     scan();
-                    tmp = new Unary(RegOp.rightAnchor, tmp);
+                    tmp = new Unary(RegOp.RightAnchor, tmp);
                 }
                 return tmp;
             }
@@ -535,7 +535,7 @@ namespace QUT.Gplex.Parser
                 if (!esc && chr == '/')
                 {
                     scan();
-                    return new Binary(RegOp.context, tmp, Term());
+                    return new Binary(RegOp.Context, tmp, Term());
                 }
                 return tmp;
             }
@@ -547,7 +547,7 @@ namespace QUT.Gplex.Parser
                 while (!esc && chr == '|')
                 {
                     scan();
-                    tmp = new Binary(RegOp.alt, tmp, Factor());
+                    tmp = new Binary(RegOp.Alternation, tmp, Factor());
                 }
                 return tmp;
             }
@@ -557,7 +557,7 @@ namespace QUT.Gplex.Parser
             {
                 RegExTree tmp = Primary();
                 while (prStart[(int)chr] || esc)
-                    tmp = new Binary(RegOp.concat, tmp, Primary());
+                    tmp = new Binary(RegOp.Concatenation, tmp, Primary());
                 return tmp;
             }
 
@@ -609,18 +609,18 @@ namespace QUT.Gplex.Parser
                 if (!esc && chr == '*')
                 {
                     scan();
-                    tmp = new Unary(RegOp.closure, tmp);
+                    tmp = new Unary(RegOp.Closure, tmp);
                 }
                 else if (!esc && chr == '+')
                 {
-                    pls = new Unary(RegOp.closure, tmp);
+                    pls = new Unary(RegOp.Closure, tmp);
                     pls.minRep = 1;
                     scan();
                     tmp = pls;
                 }
                 else if (!esc && chr == '?')
                 {
-                    pls = new Unary(RegOp.finiteRep, tmp);
+                    pls = new Unary(RegOp.FiniteRepetition, tmp);
                     pls.minRep = 0;
                     pls.maxRep = 1;
                     scan();
@@ -628,7 +628,7 @@ namespace QUT.Gplex.Parser
                 }
                 else if (!esc && chr == '{' && Char.IsDigit(peek()))
                 {
-                    pls = new Unary(RegOp.finiteRep, tmp);
+                    pls = new Unary(RegOp.FiniteRepetition, tmp);
                     GetRepetitions(pls);
                     tmp = pls;
                 }
@@ -646,7 +646,7 @@ namespace QUT.Gplex.Parser
                     if (Char.IsDigit(chr))
                         tree.maxRep = GetInt();
                     else
-                        tree.op = RegOp.closure;
+                        tree.op = RegOp.Closure;
                 }
                 else
                     tree.maxRep = tree.minRep;
@@ -677,7 +677,7 @@ namespace QUT.Gplex.Parser
                     tmp = UseRegexRef();
                 else if (!esc && chr == '.')
                 {
-                    var leaf = new Leaf(RegOp.charClass);
+                    var leaf = new Leaf(RegOp.CharacterClass);
                     leaf.rangeLit = new RangeLiteral(true);
                     scan();
                     leaf.rangeLit.list.Add(new CharRange('\n'));
@@ -721,7 +721,7 @@ namespace QUT.Gplex.Parser
                 if (parent.lexCategories.TryGetValue(name, out cat))
                 {
                     Leaf leaf = cat.regX as Leaf;
-                    if (leaf != null && leaf.op == RegOp.charClass)
+                    if (leaf != null && leaf.op == RegOp.CharacterClass)
                         leaf.rangeLit.name = name;
                     return cat.regX;
                 }
@@ -765,7 +765,7 @@ namespace QUT.Gplex.Parser
             {
                 // Assert chr == '['
                 // Need to build a new string taking into account char escapes
-                var leaf = new Leaf(RegOp.charClass);
+                var leaf = new Leaf(RegOp.CharacterClass);
                 bool invert = false;
                 scan();                           // read past '['
                 if (!esc && chr == '^')
@@ -892,7 +892,7 @@ namespace QUT.Gplex.Parser
                 found = parent.lexCategories.TryGetValue(name, out namedRE);
                 if (found)
                 {
-                    if (namedRE.regX.op != RegOp.charClass)
+                    if (namedRE.regX.op != RegOp.CharacterClass)
                         Error(71, start, name.Length, name);
                     return namedRE.regX as Leaf;
                 }

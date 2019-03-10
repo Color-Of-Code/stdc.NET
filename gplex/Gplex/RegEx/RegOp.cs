@@ -9,15 +9,15 @@ namespace QUT.Gplex.Parser
     internal enum RegOp
     {
         eof,
-        context,
-        litStr,
-        primitive,
-        concat,
-        alt,
-        closure,
-        finiteRep,
-        charClass,
-        leftAnchor,
-        rightAnchor
+        Context,
+        StringLiteral,
+        Primitive,
+        Concatenation, // ab
+        Alternation, // a|b
+        Closure, // + *
+        FiniteRepetition, // {a,b}
+        CharacterClass,
+        LeftAnchor, // ^
+        RightAnchor // $
     }
 }

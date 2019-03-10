@@ -12,10 +12,10 @@ namespace QUT.Gplex.Parser
     {
         CharTest Test;
 
-        internal PredicateLeaf() : base(RegOp.charClass) { }
+        internal PredicateLeaf() : base(RegOp.CharacterClass) { }
 
         internal PredicateLeaf(CharTest test)
-            : base(RegOp.charClass) { this.Test = test; }
+            : base(RegOp.CharacterClass) { this.Test = test; }
 
         internal static CharTest MkCharTest(CharPredicate cPred, CodePointPredicate cpPred)
         {

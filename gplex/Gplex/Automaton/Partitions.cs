@@ -319,10 +319,10 @@ namespace QUT.Gplex.Parser
             {
                 switch (leaf.op)
                 {
-                    case RegOp.primitive:
+                    case RegOp.Primitive:
                         DoSingleton(leaf.chVal);
                         break;
-                    case RegOp.litStr:
+                    case RegOp.StringLiteral:
                         for (int index = 0; ;)
                         {
                             // Use CodePoint in case string has surrogate pairs.
@@ -333,7 +333,7 @@ namespace QUT.Gplex.Parser
                                 DoSingleton(code);
                         }
                         break;
-                    case RegOp.charClass:
+                    case RegOp.CharacterClass:
                         DoLiteral(leaf.rangeLit);
                         break;
                     case RegOp.eof: // no action required
@@ -342,7 +342,7 @@ namespace QUT.Gplex.Parser
                         throw new GplexInternalException("Unknown RegOp");
                 }
             }
-            else if (tree.op == RegOp.rightAnchor)
+            else if (tree.op == RegOp.RightAnchor)
                 DoLiteral(RangeLiteral.RightAnchors);
         }
     }
