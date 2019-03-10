@@ -6,8 +6,6 @@
 
 namespace QUT.Gplex.Parser
 {
-    #region AST for Regular Expressions
-
     /// <summary>
     /// Abstract base class for depth first
     /// search visitor on regular expressions.
@@ -16,5 +14,4 @@ namespace QUT.Gplex.Parser
     {
         internal abstract void Op(RegExTree tree);
     }
-    #endregion
 }

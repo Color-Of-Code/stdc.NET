@@ -116,7 +116,7 @@ namespace QUT.Gplex.Parser
             }
             Check(aast, tree);
             if (tree != null)
-                minPatternLength = tree.minimumLength();
+                minPatternLength = tree.MinimumLength();
         }
 
         void Check(AAST aast, RegExTree tree)
@@ -139,8 +139,8 @@ namespace QUT.Gplex.Parser
                     Check(aast, bnryTree.lKid);
                     Check(aast, bnryTree.rKid);
                     if (tree.op == RegOp.context &&
-                        bnryTree.lKid.contextLength() == 0 &&
-                        bnryTree.rKid.contextLength() == 0) aast.hdlr.ListError(pSpan, 75);
+                        bnryTree.lKid.ContextLength() == 0 &&
+                        bnryTree.rKid.ContextLength() == 0) aast.hdlr.ListError(pSpan, 75);
                     break;
                 case RegOp.closure:
                 case RegOp.finiteRep:

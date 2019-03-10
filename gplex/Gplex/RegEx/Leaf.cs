@@ -6,8 +6,6 @@
 
 namespace QUT.Gplex.Parser
 {
-    #region AST for Regular Expressions
-
     internal class Leaf : RegExTree
     {   // charClass, EOF, litStr, primitive
 
@@ -20,12 +18,12 @@ namespace QUT.Gplex.Parser
         internal Leaf(RegOp op) : base(op) { }
 
 
-        internal override int contextLength()
+        internal override int ContextLength()
         {
             return (op == RegOp.litStr ? this.str.Length : 1);
         }
 
-        internal override int minimumLength() { return contextLength(); }
+        internal override int MinimumLength() { return ContextLength(); }
 
         internal override void Visit(RegExDFS visitor) { visitor.Op(this); }
 
@@ -45,5 +43,4 @@ namespace QUT.Gplex.Parser
             this.rangeLit.list = this.rangeLit.list.AND(rhOperand.rangeLit.list);
         }
     }
-    #endregion
 }

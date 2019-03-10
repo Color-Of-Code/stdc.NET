@@ -6,8 +6,6 @@
 
 namespace QUT.Gplex.Parser
 {
-    #region AST for Regular Expressions
-
     internal sealed class Unary : RegExTree
     { // leftAnchor, rightAnchor, finiteRep, closure
         internal RegExTree kid;
@@ -15,28 +13,28 @@ namespace QUT.Gplex.Parser
         internal int maxRep;         // max repetitions for finiteRep.
         internal Unary(RegOp op, RegExTree l) : base(op) { kid = l; }
 
-        internal override int contextLength()
+        internal override int ContextLength()
         {
             if (this.kid == null) return 0;
             switch (op)
             {
                 case RegOp.closure: return 0;
-                case RegOp.finiteRep: return (minRep == maxRep ? kid.contextLength() * minRep : 0);
-                case RegOp.leftAnchor: return kid.contextLength();
-                case RegOp.rightAnchor: return kid.contextLength();
+                case RegOp.finiteRep: return (minRep == maxRep ? kid.ContextLength() * minRep : 0);
+                case RegOp.leftAnchor: return kid.ContextLength();
+                case RegOp.rightAnchor: return kid.ContextLength();
                 default: throw new GplexInternalException("unknown unary RegOp");
             }
         }
 
-        internal override int minimumLength()
+        internal override int MinimumLength()
         {
             if (this.kid == null) return 0;
             switch (op)
             {
                 case RegOp.closure:
-                case RegOp.finiteRep: return kid.minimumLength() * minRep;
+                case RegOp.finiteRep: return kid.MinimumLength() * minRep;
                 case RegOp.leftAnchor:
-                case RegOp.rightAnchor: return kid.minimumLength();
+                case RegOp.rightAnchor: return kid.MinimumLength();
                 default: throw new GplexInternalException("unknown unary RegOp");
             }
         }
@@ -52,5 +50,4 @@ namespace QUT.Gplex.Parser
             get { return op == RegOp.leftAnchor && kid.HasRightContext; }
         }
     }
-    #endregion
 }

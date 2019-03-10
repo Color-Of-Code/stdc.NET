@@ -6,8 +6,6 @@
 
 namespace QUT.Gplex.Parser
 {
-    #region AST for Regular Expressions
-
     internal enum RegOp
     {
         eof,
@@ -22,5 +20,4 @@ namespace QUT.Gplex.Parser
         leftAnchor,
         rightAnchor
     }
-    #endregion
 }

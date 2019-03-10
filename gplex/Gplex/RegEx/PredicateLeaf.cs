@@ -8,8 +8,6 @@ using System.Text;
 
 namespace QUT.Gplex.Parser
 {
-    #region AST for Regular Expressions
-
     internal sealed class PredicateLeaf : Leaf
     {
         CharTest Test;
@@ -128,5 +126,4 @@ namespace QUT.Gplex.Parser
             }
         }
     }
-    #endregion
 }

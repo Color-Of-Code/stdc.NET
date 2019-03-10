@@ -6,8 +6,6 @@
 
 namespace QUT.Gplex.Parser
 {
-    #region AST for Regular Expressions
-
     /// <summary>
     /// Abstract class for AST representing regular expressions.
     /// Concrete subclasses correspond to --- 
@@ -27,7 +25,7 @@ namespace QUT.Gplex.Parser
         /// implemented if either R1 or R2 produce fixed length strings.
         /// </summary>
         /// <returns>0 if length is variable, otherwise length</returns>
-        internal abstract int contextLength();
+        internal abstract int ContextLength();
 
         /// <summary>
         /// This is a helper to compute the minimum length of
@@ -35,7 +33,7 @@ namespace QUT.Gplex.Parser
         /// minimum consumption of input by a pattern.
         /// </summary>
         /// <returns>Minimum length of pattern</returns>
-        internal abstract int minimumLength();
+        internal abstract int MinimumLength();
 
         /// <summary>
         /// This is the navigation method for running the visitor
@@ -46,5 +44,4 @@ namespace QUT.Gplex.Parser
 
         internal virtual bool HasRightContext { get { return false; } }
     }
-    #endregion
 }

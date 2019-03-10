@@ -130,8 +130,8 @@ namespace QUT.Gplex.Automaton
                         switch (tree.op)
                         {
                             case RegOp.context:
-                                rLen = binNode.rKid.contextLength();
-                                lLen = binNode.lKid.contextLength();
+                                rLen = binNode.rKid.ContextLength();
+                                lLen = binNode.lKid.ContextLength();
                                 if (rLen <= 0 && lLen <= 0)
                                     throw new StringInterpretException("variable right context '/' not implemented");
                                 else
