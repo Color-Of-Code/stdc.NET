@@ -95,7 +95,7 @@ namespace QUT.GPGen
             grammar.ReportConflicts(cWrtr);
 
             GenerateClassHeader(grammar.ParserName);
-            if (grammar.prologCode.Count > 0)
+            if (grammar.prologCode.Any())
             {
                 Console.WriteLine("  // Verbatim content from {0}", grammar.InputFileIdent);
                 foreach (LexSpan span in grammar.prologCode)
@@ -314,7 +314,7 @@ namespace QUT.GPGen
                 if (term.Alias != null)
                     aliasList.Add(term);
             }
-            if (aliasList.Count > 0)
+            if (aliasList.Any())
             {
                 Console.WriteLine();
                 Console.WriteLine("    aliasses = new Dictionary<int, string>();");
@@ -359,7 +359,7 @@ namespace QUT.GPGen
                 Console.Write('}');
             }
 
-            if (state.nonTerminalTransitions.Count > 0)
+            if (state.nonTerminalTransitions.Any())
             {
                 Console.Write(",new int[]{");
                 bool first = true;

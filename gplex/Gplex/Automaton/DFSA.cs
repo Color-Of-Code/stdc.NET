@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using QUT.Gplex.Parser;
 using QUT.Gplib;
 
@@ -122,7 +123,7 @@ namespace QUT.Gplex.Automaton
                 }
             }
             // Process every state reachable from the popped state
-            while (worklist.Count > 0)
+            while (worklist.Any())
             {
                 elem = worklist.Dequeue();
                 elem.listed = false;
@@ -177,7 +178,7 @@ namespace QUT.Gplex.Automaton
                 }
             }
             // Process every unlisted state reachable from the popped state
-            while (worklist.Count > 0)
+            while (worklist.Any())
             {
                 elem = worklist.Dequeue();
                 for (int i = 1; i < MaxSym; i++)
@@ -274,7 +275,7 @@ namespace QUT.Gplex.Automaton
                 // Next is the worklist algorithm.  Newly created dfsa states
                 // are placed on the stack.  When popped the next states
                 // are computed from the nfsa transition information.
-                while (stack.Count > 0)
+                while (stack.Any())
                 {
                     DState last = stack.Pop();
                     NSet pSet = last.nfaSet;
@@ -392,7 +393,7 @@ namespace QUT.Gplex.Automaton
                 var stack = new Stack<int>();
                 NEnumerator inum = set.GetEnumerator();
                 while (inum.MoveNext()) stack.Push(inum.Current);
-                while (stack.Count > 0)
+                while (stack.Any())
                 {
                     int pos = stack.Pop();
                     foreach (NFSA.NState nxt in myNfaInst.nStates[pos].epsList)
@@ -852,14 +853,14 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector == "prolog")
                             {
-                                if (myTask.aast.Prolog.Count > 0)
+                                if (myTask.aast.Prolog.Any())
                                 {
                                     sWrtr.WriteLine("// User-specified prolog to scan()");
                                     foreach (LexSpan s in myTask.aast.Prolog)
                                         s.StreamDump(sWrtr);
                                     sWrtr.WriteLine("// End, user-specified prolog");
                                 }
-                                if (myTask.aast.Epilog.Count > 0)
+                                if (myTask.aast.Epilog.Any())
                                     sWrtr.WriteLine("            try {");
                             }
                             else if (selector == "consts")
@@ -876,7 +877,7 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector == "actionCases")
                                 EmitActionCases(sWrtr, maxAccept);
-                            else if (selector == "epilog" && myTask.aast.Epilog.Count > 0)
+                            else if (selector == "epilog" && myTask.aast.Epilog.Any())
                             {
                                 sWrtr.WriteLine("            } // end try");
                                 sWrtr.WriteLine("            finally {");
@@ -1721,7 +1722,7 @@ namespace QUT.Gplex.Automaton
             }
             sWrtr.WriteLine("};");
             // Now we must fill in the missing row aliases.
-            if (aliasPairs.Count > 0)
+            if (aliasPairs.Any())
             {
                 sWrtr.WriteLine();
                 sWrtr.WriteLine("  static {0}() {{", myTask.aast.scannerTypeName);

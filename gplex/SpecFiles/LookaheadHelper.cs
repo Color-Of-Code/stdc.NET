@@ -4,9 +4,10 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
-namespace QUT.Gppg {
+namespace QUT.Gppg
+{
     // ===================================================================================================
     // Template code to cut and paste.
     // ===================================================================================================
@@ -168,7 +169,7 @@ namespace QUT.Gppg {
         internal void AddPushbackBufferToQueue() {
             // Stack previous currentSymbolQueue if notEmpty, and
             // make currentSymbolQueue reference the pushback buffer.
-            if (currentSymbolQueue != null && currentSymbolQueue.Count > 0)
+            if (currentSymbolQueue != null && currentSymbolQueue.Any())
                 allQueues.Push( currentSymbolQueue );
             currentSymbolQueue = pushbackBuffer;
             totalQueueLength += pushbackBuffer.Count;

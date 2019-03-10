@@ -98,7 +98,7 @@ namespace QUT.Gplex.Parser
             iMap = new int[elements.Count];
             foreach (PartitionElement pElem in elements)
             {
-                if (pElem.list.Ranges.Count > 0)
+                if (pElem.list.Ranges.Any())
                     iMap[pElem.ord] = pElem.list.Ranges[0].minChr;
             }
 

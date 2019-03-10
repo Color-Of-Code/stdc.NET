@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace QUT.Gplex.Automaton
 {
@@ -150,7 +151,7 @@ namespace QUT.Gplex.Automaton
         internal void RefinePartitions()
         {
             int generation = 0;
-            while (worklist.Count > 0)
+            while (worklist.Any())
             {
                 //
                 // We are going to split all blocks with respect to a
@@ -182,7 +183,7 @@ namespace QUT.Gplex.Automaton
                     if (dSt.HasPredecessors())
                     {
                         var prds = dSt.GetPredecessors(sym);
-                        if (prds != null && prds.Count > 0)
+                        if (prds != null && prds.Any())
                             foreach (DFSA.DState pSt in prds)
                                 // The same predecessor state might appear on the
                                 // list for more than one state of the blk.members.
