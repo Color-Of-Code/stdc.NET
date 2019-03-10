@@ -117,7 +117,7 @@ namespace QUT.Gplex.Automaton
                 NState tmp2 = null;
                 int rLen, lLen;
 
-                switch (tree.op)
+                switch (tree.Operator)
                 {
                     case RegOp.eof:
                         break;
@@ -127,7 +127,7 @@ namespace QUT.Gplex.Automaton
                     case RegOp.Alternation:
                         // Binary nodes ===================================
                         Binary binNode = tree as Binary;
-                        switch (tree.op)
+                        switch (tree.Operator)
                         {
                             case RegOp.Context:
                                 rLen = binNode.rKid.ContextLength();
@@ -163,11 +163,11 @@ namespace QUT.Gplex.Automaton
                     case RegOp.FiniteRepetition:
                         // Unary nodes ===================================
                         Unary unaryNode = tree as Unary;
-                        switch (tree.op)
+                        switch (tree.Operator)
                         {
                             case RegOp.Closure:
                                 tmp2 = MkState();
-                                if (unaryNode.minRep == 0)
+                                if (unaryNode.MinimumOfRepetitions == 0)
                                 {
                                     tmp1 = MkState();
                                     startState.AddEpsTrns(tmp1);
@@ -175,7 +175,7 @@ namespace QUT.Gplex.Automaton
                                 else
                                 {
                                     NState dummy = startState;
-                                    for (int i = 0; i < unaryNode.minRep; i++)
+                                    for (int i = 0; i < unaryNode.MinimumOfRepetitions; i++)
                                     {
                                         tmp1 = MkState();
                                         MakePath(unaryNode.kid, dummy, tmp1);
@@ -189,14 +189,14 @@ namespace QUT.Gplex.Automaton
                             case RegOp.FiniteRepetition:
                                 {
                                     NState dummy = tmp1 = startState;
-                                    for (int i = 0; i < unaryNode.minRep; i++)
+                                    for (int i = 0; i < unaryNode.MinimumOfRepetitions; i++)
                                     {
                                         tmp1 = MkState();
                                         MakePath(unaryNode.kid, dummy, tmp1);
                                         dummy = tmp1;
                                     }
                                     tmp1.AddEpsTrns(endState);
-                                    for (int i = unaryNode.minRep; i < unaryNode.maxRep; i++)
+                                    for (int i = unaryNode.MinimumOfRepetitions; i < unaryNode.MaximumOfRepetitions; i++)
                                     {
                                         tmp1 = MkState();
                                         MakePath(unaryNode.kid, dummy, tmp1);
@@ -213,7 +213,7 @@ namespace QUT.Gplex.Automaton
                     case RegOp.CharacterClass:
                         // Leaf nodes ===================================
                         Leaf leafNode = tree as Leaf;
-                        switch (tree.op)
+                        switch (tree.Operator)
                         {
                             case RegOp.StringLiteral:
                                 {

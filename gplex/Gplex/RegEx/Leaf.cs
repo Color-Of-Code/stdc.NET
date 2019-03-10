@@ -6,8 +6,9 @@
 
 namespace QUT.Gplex.Parser
 {
+    // CharacterClass, EOF, StringLiteral, Primitive
     internal class Leaf : RegExTree
-    {   // charClass, EOF, litStr, primitive
+    {
 
         internal int chVal;     // in case of primitive char
         internal string str;
@@ -20,7 +21,7 @@ namespace QUT.Gplex.Parser
 
         internal override int ContextLength()
         {
-            return (op == RegOp.StringLiteral ? this.str.Length : 1);
+            return (Operator == RegOp.StringLiteral ? this.str.Length : 1);
         }
 
         internal override int MinimumLength() { return ContextLength(); }

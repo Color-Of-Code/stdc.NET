@@ -67,7 +67,7 @@ namespace QUT.Gplex.Automaton
                             NState start = nInst.MkState();
                             NState endSt = nInst.MkState();
 
-                            if (tree.op == RegOp.LeftAnchor)     // this is a left anchored pattern
+                            if (tree.Operator == RegOp.LeftAnchor)     // this is a left anchored pattern
                             {
                                 nInst.AnchorState.AddEpsTrns(start);
                                 tree = ((Unary)tree).kid;
@@ -77,7 +77,7 @@ namespace QUT.Gplex.Automaton
                             //
                             // Now check for right anchors, and add states as necessary.
                             //
-                            if (tree.op == RegOp.eof)
+                            if (tree.Operator == RegOp.eof)
                             {
                                 //
                                 // <<EOF>> rules are always emitted outside
@@ -89,7 +89,7 @@ namespace QUT.Gplex.Automaton
                                 nInst.MakePath(tree, start, endSt);
                                 nInst.MarkAccept(endSt, rule);
                             }
-                            else if (tree.op == RegOp.RightAnchor)
+                            else if (tree.Operator == RegOp.RightAnchor)
                             {
                                 tree = ((Unary)tree).kid;
                                 nInst.MakePath(tree, start, endSt);

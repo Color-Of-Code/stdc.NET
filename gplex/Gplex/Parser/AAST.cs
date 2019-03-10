@@ -118,7 +118,7 @@ namespace QUT.Gplex.Parser
             LexCategory cat;
             if (!lexCategories.TryGetValue(name, out cat))
                 hdlr.ListError(span, 55, name);
-            else if (cat.regX.op != RegOp.CharacterClass)
+            else if (cat.regX.Operator != RegOp.CharacterClass)
                 hdlr.ListError(span, 71, name);
             else if (!cat.HasPredicate)
             {
@@ -613,44 +613,38 @@ namespace QUT.Gplex.Parser
                 }
                 else if (!esc && chr == '+')
                 {
-                    pls = new Unary(RegOp.Closure, tmp);
-                    pls.minRep = 1;
+                    pls = new Unary(RegOp.Closure, tmp, 1);
                     scan();
                     tmp = pls;
                 }
                 else if (!esc && chr == '?')
                 {
-                    pls = new Unary(RegOp.FiniteRepetition, tmp);
-                    pls.minRep = 0;
-                    pls.maxRep = 1;
+                    pls = new Unary(RegOp.FiniteRepetition, tmp, 0, 1);
                     scan();
                     tmp = pls;
                 }
                 else if (!esc && chr == '{' && Char.IsDigit(peek()))
                 {
-                    pls = new Unary(RegOp.FiniteRepetition, tmp);
-                    GetRepetitions(pls);
+                    // Repetitions : "{" IntLiteral ["," [IntLiteral] ] "}" ;
+                    scan();          // read past '{'
+                    int minimumOfRepetitions = GetInt();
+                    int maximumOfRepetitions = 0;
+                    RegOp op = RegOp.FiniteRepetition;
+                    if (!esc && chr == ',')
+                    {
+                        scan();
+                        if (Char.IsDigit(chr))
+                            maximumOfRepetitions = GetInt();
+                        else
+                            op = RegOp.Closure;
+                    }
+                    else
+                        maximumOfRepetitions = minimumOfRepetitions;
+                    pls = new Unary(op, tmp, minimumOfRepetitions, maximumOfRepetitions);
+                    checkAndScan('}');
                     tmp = pls;
                 }
                 return tmp;
-            }
-
-            // Repetitions : "{" IntLiteral ["," [IntLiteral] ] "}" ;
-            internal void GetRepetitions(Unary tree)
-            {
-                scan();          // read past '{'
-                tree.minRep = GetInt();
-                if (!esc && chr == ',')
-                {
-                    scan();
-                    if (Char.IsDigit(chr))
-                        tree.maxRep = GetInt();
-                    else
-                        tree.op = RegOp.Closure;
-                }
-                else
-                    tree.maxRep = tree.minRep;
-                checkAndScan('}');
             }
 
             int EscapedChar()
@@ -721,7 +715,7 @@ namespace QUT.Gplex.Parser
                 if (parent.lexCategories.TryGetValue(name, out cat))
                 {
                     Leaf leaf = cat.regX as Leaf;
-                    if (leaf != null && leaf.op == RegOp.CharacterClass)
+                    if (leaf != null && leaf.Operator == RegOp.CharacterClass)
                         leaf.rangeLit.name = name;
                     return cat.regX;
                 }
@@ -892,7 +886,7 @@ namespace QUT.Gplex.Parser
                 found = parent.lexCategories.TryGetValue(name, out namedRE);
                 if (found)
                 {
-                    if (namedRE.regX.op != RegOp.CharacterClass)
+                    if (namedRE.regX.Operator != RegOp.CharacterClass)
                         Error(71, start, name.Length, name);
                     return namedRE.regX as Leaf;
                 }

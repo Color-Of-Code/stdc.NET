@@ -15,8 +15,9 @@ namespace QUT.Gplex.Parser
     /// </summary>
     internal abstract class RegExTree
     {
-        internal RegOp op;
-        internal RegExTree(RegOp op) { this.op = op; }
+        public RegOp Operator { get; private set; }
+
+        internal RegExTree(RegOp op) { this.Operator = op; }
 
         /// <summary>
         /// This is a helper to compute the length of strings

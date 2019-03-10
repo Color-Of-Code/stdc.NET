@@ -317,7 +317,7 @@ namespace QUT.Gplex.Parser
             Leaf leaf = tree as Leaf;
             if (leaf != null)
             {
-                switch (leaf.op)
+                switch (leaf.Operator)
                 {
                     case RegOp.Primitive:
                         DoSingleton(leaf.chVal);
@@ -342,7 +342,7 @@ namespace QUT.Gplex.Parser
                         throw new GplexInternalException("Unknown RegOp");
                 }
             }
-            else if (tree.op == RegOp.RightAnchor)
+            else if (tree.Operator == RegOp.RightAnchor)
                 DoLiteral(RangeLiteral.RightAnchors);
         }
     }

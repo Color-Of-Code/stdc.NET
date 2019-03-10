@@ -107,11 +107,11 @@ namespace QUT.Gplex.Parser
         void SemanticCheck(AAST aast)
         {
             RegExTree tree = reAST;
-            if (tree != null && tree.op == RegOp.LeftAnchor) tree = ((Unary)tree).kid;
-            if (tree != null && tree.op == RegOp.RightAnchor)
+            if (tree != null && tree.Operator == RegOp.LeftAnchor) tree = ((Unary)tree).kid;
+            if (tree != null && tree.Operator == RegOp.RightAnchor)
             {
                 tree = ((Unary)tree).kid;
-                if (tree.op == RegOp.Context)
+                if (tree.Operator == RegOp.Context)
                     aast.hdlr.ListError(pSpan, 100);
             }
             Check(aast, tree);
@@ -125,7 +125,7 @@ namespace QUT.Gplex.Parser
             Unary unryTree;
 
             if (tree == null) return;
-            switch (tree.op)
+            switch (tree.Operator)
             {
                 case RegOp.CharacterClass:
                 case RegOp.Primitive:
@@ -138,7 +138,7 @@ namespace QUT.Gplex.Parser
                     bnryTree = (Binary)tree;
                     Check(aast, bnryTree.lKid);
                     Check(aast, bnryTree.rKid);
-                    if (tree.op == RegOp.Context &&
+                    if (tree.Operator == RegOp.Context &&
                         bnryTree.lKid.ContextLength() == 0 &&
                         bnryTree.rKid.ContextLength() == 0) aast.hdlr.ListError(pSpan, 75);
                     break;
