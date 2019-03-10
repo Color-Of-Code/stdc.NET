@@ -96,7 +96,7 @@ namespace QUT.GPGen
 
                     LALRGenerator generator = new LALRGenerator(grammar);
                     IList<AutomatonState> states = generator.BuildStates();
-                    generator.ComputeLookAhead();
+                    generator.ComputeLookAheadMeta();
                     generator.BuildParseTable();
                     if (!grammar.CheckGrammar(handler))
                         throw new ArgumentException("Non-terminating grammar");
@@ -104,7 +104,7 @@ namespace QUT.GPGen
                     // If the grammar has non-terminating non-terms we cannot
                     // create a diagnostic report as the grammar is incomplete.
                     //
-                    if (!handler.Errors)
+                    if (!handler.HasErrors)
                     {
                         CodeGenerator code = new CodeGenerator();
                         code.Generate(states, grammar);
@@ -155,9 +155,9 @@ namespace QUT.GPGen
             }
             finally
             {
-                if (handler.Errors || handler.Warnings)
+                if (handler.HasErrors || handler.HasWarnings)
                     handler.DumpAll((scanner == null ? null : scanner.Buffer), Console.Error);
-                if ((Listing || handler.Errors || handler.Warnings) && parser != null)
+                if ((Listing || handler.HasErrors || handler.HasWarnings) && parser != null)
                 {
                     string listName = parser.ListfileName;
                     StreamWriter listStream = ListingFile(listName);

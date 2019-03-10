@@ -16,7 +16,7 @@ namespace QUT.GPGen
         // Start experimental features
         internal IList<NonTerminal> dependsOnList;
         internal int depth;
-        internal bool terminating;
+        internal bool IsTerminating;
         // end
 
         static int count;

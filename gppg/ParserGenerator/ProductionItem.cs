@@ -13,10 +13,10 @@ namespace QUT.GPGen
 {
     internal class ProductionItem
     {
-        internal Production production;
-        internal int pos;
+        internal Production production { get; private set; }
+        internal int pos { get; private set; }
         internal bool expanded;
-        internal SetCollection<Terminal> LA;
+        internal SetCollection<Terminal> LookAhead;
 
 
         internal ProductionItem(Production production, int pos)
@@ -34,7 +34,7 @@ namespace QUT.GPGen
 
         public override int GetHashCode()
         {
-            return production.GetHashCode() + pos;
+            return production.GetHashCode() * 7 + pos;
         }
 
 
@@ -47,7 +47,7 @@ namespace QUT.GPGen
         }
 
 
-        internal bool isReduction()
+        internal bool IsReduction()
         {
             return pos == production.rhs.Count;
         }
@@ -70,10 +70,10 @@ namespace QUT.GPGen
             if (pos == production.rhs.Count)
                 builder.Append(".");
 
-            if (LA != null)
+            if (LookAhead != null)
             {
                 builder.AppendLine();
-                builder.AppendFormat("\t-lookahead: {0}", ListUtilities.GetStringFromList(LA, ", ", 16));
+                builder.AppendFormat("\t-lookahead: {0}", ListUtilities.GetStringFromList(LookAhead, ", ", 16));
             }
 
             return builder.ToString();

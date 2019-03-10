@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using QUT.GPGen.Parser;
 using QUT.Gplib;
 
@@ -52,12 +53,12 @@ namespace QUT.GPGen
 
         // Experimental features
         // readonly List<Terminal> emptyTerminalList;
-        ErrorHandler handler;
-        bool hasNonTerminatingNonTerms;
+        private ErrorHandler handler;
 
         internal bool HasNonTerminatingNonTerms
         {
-            get { return hasNonTerminatingNonTerms; }
+            get;
+            private set;
         }
         // end
 
@@ -109,13 +110,11 @@ namespace QUT.GPGen
             return nonTerminals[name];
         }
 
-
         internal void AddProduction(Production production)
         {
             productions.Add(production);
             production.num = productions.Count;
         }
-
 
         internal void CreateSpecialProduction(NonTerminal root)
         {
@@ -127,11 +126,11 @@ namespace QUT.GPGen
 
         void MarkReachable()
         {
-            Stack<NonTerminal> work = new Stack<NonTerminal>();
+            var work = new Stack<NonTerminal>();
             rootProduction.lhs.reached = true; // by definition.
             work.Push(startSymbol);
             startSymbol.reached = true;
-            while (work.Count > 0)
+            while (work.Any())
             {
                 NonTerminal nonT = work.Pop();
                 foreach (Production prod in nonT.productions)
@@ -174,15 +173,15 @@ namespace QUT.GPGen
                 foreach (KeyValuePair<string, NonTerminal> kvp in this.nonTerminals)
                 {
                     NonTerminal nonTerm = kvp.Value;
-                    if (!nonTerm.terminating)
+                    if (!nonTerm.IsTerminating)
                     {
                         foreach (Production prod in nonTerm.productions)
                             if (ProductionTerminates(prod))
                             {
-                                nonTerm.terminating = true;
+                                nonTerm.IsTerminating = true;
                                 changed = true;
                             }
-                        if (!nonTerm.terminating)
+                        if (!nonTerm.IsTerminating)
                             nonTerminatingCount++;
                     }
                 }
@@ -196,7 +195,7 @@ namespace QUT.GPGen
             if (nonTerminatingCount > 0)
             {
                 var ntDependencies = BuildDependencyGraph();
-                hasNonTerminatingNonTerms = true;
+                HasNonTerminatingNonTerms = true;
                 handler.AddError(
                     String.Format(CultureInfo.InvariantCulture, "There are {0} non-terminating NonTerminal Symbols{1} {{{2}}}",
                         nonTerminatingCount,
@@ -207,15 +206,12 @@ namespace QUT.GPGen
             }
         }
 
+        // terminates if all non terminal symbols terminate
         private static bool ProductionTerminates(Production thisProd)
         {
-            foreach (Symbol smbl in thisProd.rhs)
-            {
-                NonTerminal nonTerm = smbl as NonTerminal;
-                if (nonTerm != null && !nonTerm.terminating)
-                    return false;
-            }
-            return true;
+            return thisProd.rhs
+                .Where(x => x is NonTerminal)
+                .All(x => (x as NonTerminal).IsTerminating);
         }
 
         //
@@ -295,7 +291,7 @@ namespace QUT.GPGen
         // Return a new list with only the terminating (fixed) elements of the input.
         private static IEnumerable<NonTerminal> FilterTerminatingElements(IEnumerable<NonTerminal> input)
         {
-            return input.Where(x => x.terminating);
+            return input.Where(x => x.IsTerminating);
         }
 
         private IList<NonTerminal> BuildDependencyGraph()
@@ -305,7 +301,7 @@ namespace QUT.GPGen
             {
                 NonTerminal nonTerm = kvp.Value;
                 NonTerminal dependency = null;
-                if (!nonTerm.terminating)
+                if (!nonTerm.IsTerminating)
                 {
                     rslt.Add(nonTerm);
                     nonTerm.dependsOnList = new List<NonTerminal>();
@@ -315,7 +311,7 @@ namespace QUT.GPGen
                             dependency = symbol as NonTerminal;
                             if (dependency != null &&
                                 dependency != nonTerm &&
-                                !dependency.terminating &&
+                                !dependency.IsTerminating &&
                                 !nonTerm.dependsOnList.Contains(dependency))
                             {
                                 nonTerm.depth = 0;
@@ -333,11 +329,11 @@ namespace QUT.GPGen
             foreach (NonTerminal probe in component)
             {
                 // Test what happens with probe nullable ...
-                probe.terminating = true;
+                probe.IsTerminating = true;
                 SccPropagate(probe, component, fixes);
                 // Then reset the values of all components
                 foreach (NonTerminal element in component)
-                    element.terminating = false;
+                    element.IsTerminating = false;
             }
         }
 
@@ -351,15 +347,15 @@ namespace QUT.GPGen
                 changed = false;
                 foreach (NonTerminal nt in thisTestConfig)
                 {
-                    if (!nt.terminating)
+                    if (!nt.IsTerminating)
                     {
                         foreach (Production prod in nt.productions)
                             if (ProductionTerminates(prod))
                             {
-                                nt.terminating = true;
+                                nt.IsTerminating = true;
                                 changed = true;
                             }
-                        if (!nt.terminating)
+                        if (!nt.IsTerminating)
                             count++;
                     }
                 }
@@ -372,11 +368,11 @@ namespace QUT.GPGen
         private void LeafExperiment(NonTerminal probe, IList<NonTerminal> component)
         {
             // Test what happens with probe terminating ...
-            probe.terminating = true;
+            probe.IsTerminating = true;
             LeafPropagate(probe, component);
             // Then reset the values of all components
             foreach (NonTerminal element in component)
-                element.terminating = false;
+                element.IsTerminating = false;
         }
 
 
@@ -391,15 +387,15 @@ namespace QUT.GPGen
                 changed = false;
                 foreach (NonTerminal nt in thisTestConfig)
                 {
-                    if (!nt.terminating)
+                    if (!nt.IsTerminating)
                     {
                         foreach (Production prod in nt.productions)
                             if (ProductionTerminates(prod))
                             {
-                                nt.terminating = true;
+                                nt.IsTerminating = true;
                                 changed = true;
                             }
-                        if (!nt.terminating)
+                        if (!nt.IsTerminating)
                             count++;
                     }
                 }
@@ -537,7 +533,7 @@ namespace QUT.GPGen
 
         static string StateToString(AutomatonState thisState)
         {
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            var builder = new StringBuilder();
 
             builder.AppendLine(Header2("Kernel Items"));
             foreach (ProductionItem item in thisState.kernelItems)
@@ -586,11 +582,11 @@ namespace QUT.GPGen
             return result;
         }
 
-        static string ItemToString(ProductionItem item, bool doLA)
+        static string ItemToString(ProductionItem item, bool doLookAhead)
         {
             int lhsLength;
             List<string> list = new List<string>();
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            var builder = new StringBuilder();
 
             builder.AppendFormat("{0} {1}: ", item.production.num, item.production.lhs);
             lhsLength = builder.Length;
@@ -607,10 +603,10 @@ namespace QUT.GPGen
 
             builder.Append(ListUtilities.GetStringFromList(list, " ", lhsLength + 6));
 
-            if (item.LA != null && doLA)
+            if (item.LookAhead != null && doLookAhead)
             {
                 builder.AppendLine();
-                builder.AppendFormat("\t-lookahead: {{ {0} }}", ListUtilities.GetStringFromList(item.LA, ", ", 16));
+                builder.AppendFormat("\t-lookahead: {{ {0} }}", ListUtilities.GetStringFromList(item.LookAhead, ", ", 16));
             }
 
             return builder.ToString();

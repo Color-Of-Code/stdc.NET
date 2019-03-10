@@ -21,7 +21,7 @@ namespace QUT.Gplex.Parser
         private int tableOrd = -1;
         private int hash;
 
-        internal MapRun(int min, int max, int val)
+        internal MapRun(int min, int max, int val = 0)
         {
             hash = (max - min + 1) * val;
             range = new CharRange(min, max);
@@ -32,8 +32,6 @@ namespace QUT.Gplex.Parser
             else
                 tag = TagType.shortRun;
         }
-
-        internal MapRun(int min, int max) : this(min, max, 0) { }
 
         internal int Length
         {

@@ -23,36 +23,32 @@ namespace QUT.Gplex.Automaton
             internal StartState myStartCondition;           // from the LEX start state
             internal IList<int> acceptStates = new List<int>();
             internal IList<NState> nStates = new List<NState>();
-            internal NFSA parent;
+            
+            internal NFSA Parent { get; private set; }
 
-            private bool pack;
             private int maxE = defN;                       // number of elements in epsilon BitArray
-            private int maxS;
-
-            NState anchorState;
-            NState entryState;
 
             public NfsaInstance(StartState ss, NFSA parent)
             {
                 myStartCondition = ss;
-                this.parent = parent;
-                this.pack = parent.task.ChrClasses;
-                if (pack)
-                    maxS = parent.task.partition.Length;          // Number of equivalence classes
+                this.Parent = parent;
+                this.Pack = parent.task.ChrClasses;
+                if (Pack)
+                    MaxSym = parent.task.partition.Length;          // Number of equivalence classes
                 else
-                    maxS = parent.task.TargetSymCardinality;      // Size of alphabet
-                entryState = MkState();
+                    MaxSym = parent.task.TargetSymCardinality;      // Size of alphabet
+                EntryState = MkState();
             }
 
             /// <summary>
             /// The target alphabet cardinality
             /// </summary>
-            internal int MaxSym { get { return maxS; } }
+            internal int MaxSym { get; private set; }
 
             /// <summary>
             /// True means this automaton uses character equivalence classes
             /// </summary>
-            internal bool Pack { get { return pack; } }
+            internal bool Pack { get; private set; }
 
             /// <summary>
             /// The current size of the dynamically sized epsilon list
@@ -61,7 +57,7 @@ namespace QUT.Gplex.Automaton
 
             internal bool LeftAnchored { get { return anchorState != null; } }
 
-            internal NState Entry { get { return entryState; } }
+            internal NState EntryState { get; private set; }
 
             internal NState MkState()
             {
@@ -89,10 +85,11 @@ namespace QUT.Gplex.Automaton
             {
                 get
                 {
-                    anchorState = anchorState ?? MkState(entryState);
+                    anchorState = anchorState ?? MkState(EntryState);
                     return anchorState;
                 }
             }
+            private NState anchorState;
 
 
             internal void MarkAccept(NState acpt, RuleDesc rule)

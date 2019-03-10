@@ -4,6 +4,7 @@
 // This file author: John Gough
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace QUT.GPGen
@@ -23,7 +24,7 @@ namespace QUT.GPGen
             bool more = false;
             string indentStr = new String(' ', indent);
             string listBreak = System.Environment.NewLine + indentStr;
-            var builder = new System.Text.StringBuilder();
+            var builder = new StringBuilder();
 
             var e = list.GetEnumerator();
             if (e.MoveNext())

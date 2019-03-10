@@ -50,7 +50,7 @@ namespace QUT.GPGen
         private void ComputeGoto(AutomatonState state)
         {
             foreach (var item in state.allItems)
-                if (!item.expanded && !item.isReduction())
+                if (!item.expanded && !item.IsReduction())
                 {
                     item.expanded = true;
                     Symbol s1 = item.production.rhs[item.pos];
@@ -60,7 +60,7 @@ namespace QUT.GPGen
                     itemSet.Add(new ProductionItem(item.production, item.pos + 1));
 
                     foreach (ProductionItem item2 in state.allItems
-                        .Where(x => !x.expanded && !x.isReduction()))
+                        .Where(x => !x.expanded && !x.IsReduction()))
                     {
                         Symbol s2 = item2.production.rhs[item2.pos];
                         if (s1 == s2)
@@ -101,14 +101,14 @@ namespace QUT.GPGen
 
                 // Add reduce actions ...
                 foreach (var item in state.allItems)
-                    if (item.isReduction())
+                    if (item.IsReduction())
                     {
                         // Accept on everything
                         if (item.production == grammar.rootProduction)
                             foreach (var t in grammar.terminals.Values)
                                 state.parseTable[t] = new Reduce(item);
 
-                        foreach (var t in item.LA)
+                        foreach (var t in item.LookAhead)
                         {
                             // possible conflict with existing action
                             if (state.parseTable.ContainsKey(t))

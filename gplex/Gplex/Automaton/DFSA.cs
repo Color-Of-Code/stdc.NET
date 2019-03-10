@@ -252,7 +252,7 @@ namespace QUT.Gplex.Automaton
                 var stack = new Stack<DState>();
                 NSet sSet = factory.MkNewSet();
                 int symCardinality = parent.MaxSym;
-                sSet.Insert(myNfaInst.Entry.ord);
+                sSet.Insert(myNfaInst.EntryState.ord);
                 MkClosure(sSet);
                 start = MkNewState(sSet);
                 stack.Push(start);

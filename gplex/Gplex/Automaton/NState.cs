@@ -36,7 +36,7 @@ namespace QUT.Gplex.Automaton
             public NState(NfsaInstance elem)
             {
                 myNfaInst = elem;
-                myNfsa = elem.parent;
+                myNfsa = elem.Parent;
                 serialNumber = nextSN++;
                 epsilons = new BitArray(myNfaInst.MaxEps);    // Caller adds to nStates list.
             }
@@ -66,7 +66,7 @@ namespace QUT.Gplex.Automaton
             /// <param name="nxt">The destination state</param>
             public void AddChrTrns(int chr, NState nxt)
             {
-                if (myNfaInst.parent.task.CaseAgnostic && chr < Char.MaxValue)
+                if (myNfaInst.Parent.task.CaseAgnostic && chr < Char.MaxValue)
                 {
                     char c = (char)chr;
                     char lo = Char.ToLower(c);
@@ -84,7 +84,7 @@ namespace QUT.Gplex.Automaton
             private void AddTrns(int chr, NState nxt)
             {
                 if (myNfaInst.Pack)
-                    chr = myNfaInst.parent.task.partition[chr];
+                    chr = myNfaInst.Parent.task.partition[chr];
                 AddRawTransition(chr, nxt);
             }
 
@@ -131,7 +131,7 @@ namespace QUT.Gplex.Automaton
             /// <param name="nxt">The destination state</param>
             public void AddClsTrans(Leaf leaf, NState nxt)
             {
-                if (myNfaInst.parent.task.CaseAgnostic)
+                if (myNfaInst.Parent.task.CaseAgnostic)
                 {
                     leaf.rangeLit.list = leaf.rangeLit.list.MakeCaseAgnosticList();
                     leaf.rangeLit.list.Canonicalize();

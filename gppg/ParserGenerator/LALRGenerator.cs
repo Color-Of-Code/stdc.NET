@@ -13,13 +13,13 @@ namespace QUT.GPGen
         }
 
 
-        internal void ComputeLookAhead()
+        internal void ComputeLookAheadMeta()
         {
             ComputeDRs();
             ComputeReads();
             ComputeIncludes();
             ComputeFollows();
-            ComputeLA();
+            ComputeLookAhead();
         }
 
 
@@ -164,7 +164,7 @@ namespace QUT.GPGen
         }
 
 
-        private void ComputeLA()
+        private void ComputeLookAhead()
         {
             // LA(q, A->w) = Union { Follow(p,A) | p -> w -> q }
 
@@ -172,9 +172,9 @@ namespace QUT.GPGen
             {
                 foreach (ProductionItem item in q.allItems)
                 {
-                    if (item.isReduction())
+                    if (item.IsReduction())
                     {
-                        item.LA = new SetCollection<Terminal>();
+                        item.LookAhead = new SetCollection<Terminal>();
                         foreach (AutomatonState p in states)
                             if (PathTo(p, item.production, item.pos) == q)
                             {
@@ -182,7 +182,7 @@ namespace QUT.GPGen
                                 if (p.nonTerminalTransitions.ContainsKey(A))
                                 {
                                     Transition pA = p.nonTerminalTransitions[A];
-                                    item.LA.AddRange(pA.Follow);
+                                    item.LookAhead.AddRange(pA.Follow);
                                 }
                             }
                     }

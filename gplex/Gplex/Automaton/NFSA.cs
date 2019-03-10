@@ -59,7 +59,7 @@ namespace QUT.Gplex.Automaton
                         // that test code points for predicate evaluation.
                         if (rule.isPredDummyRule)
                         {
-                            NState entry = nInst.Entry;
+                            NState entry = nInst.EntryState;
                             nInst.MakePath(tree, entry, entry);
                         }
                         else
@@ -73,7 +73,7 @@ namespace QUT.Gplex.Automaton
                                 tree = ((Unary)tree).Kid;
                             }
                             else                                // this is not a left anchored pattern
-                                nInst.Entry.AddEpsTrns(start);
+                                nInst.EntryState.AddEpsTrns(start);
                             //
                             // Now check for right anchors, and add states as necessary.
                             //

@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using QUT.GplexBuffers;
 using QUT.Gplib;
 
@@ -16,27 +17,29 @@ namespace QUT.GPGen.Parser
 
     internal class ErrorHandler
     {
-        const int maxErrors = 50; // Will this be enough for all users?
+        const int MaxErrors = 100; // Will this be enough for all users?
 
-        List<Error> errors;
-        int errNum;
-        int wrnNum;
+        // TODO: avoid internal set
+        internal LexSpan DefaultSpan { get; set; }
 
-        LexSpan defaultSpan;
-        internal LexSpan DefaultSpan { set { defaultSpan = value; } }
+        private List<Error> _errors;
 
-        internal bool Errors { get { return errNum > 0; } }
-        internal bool Warnings { get { return wrnNum > 0; } }
+        internal bool HasErrors { get { return _errors.Any(x => !x.isWarn); } }
+        internal bool HasWarnings { get { return _errors.Any(x => x.isWarn); } }
+
+
+        internal int ErrNum { get { return _errors.Count(x => !x.isWarn); } }
+        internal int WrnNum { get { return _errors.Count(x => x.isWarn); } }
 
         internal ErrorHandler()
         {
-            errors = new List<Error>(8);
+            _errors = new List<Error>(8);
         }
 
         private void AddError(Error e) {
-            errors.Add(e);
-            if (errors.Count > maxErrors) {
-                errors.Add(new Error("Too many errors, abandoning", e.span, false));
+            _errors.Add(e);
+            if (_errors.Count > MaxErrors) {
+                _errors.Add(new Error("Too many errors, abandoning", e.span, false));
                 throw new TooManyErrorsException("Too many errors");
             }
         }
@@ -47,22 +50,22 @@ namespace QUT.GPGen.Parser
 
         internal List<Error> SortedErrorList()
         {
-            if (errors.Count > 1) errors.Sort();
-            return errors;
+            if (_errors.Count > 1) _errors.Sort();
+            return _errors;
         }
 
         internal void AddError(string msg, LexSpan spn)
         {
             if (spn == null)
-                spn = defaultSpan;
-            this.AddError(new Error(msg, spn, false)); errNum++;
+                spn = DefaultSpan;
+            this.AddError(new Error(msg, spn, false));
         }
 
         internal void AddWarning(string msg, LexSpan spn)
         {
             if (spn == null)
-                spn = defaultSpan;
-            this.AddError(new Error(msg, spn, true)); wrnNum++;
+                spn = DefaultSpan;
+            this.AddError(new Error(msg, spn, true));
         }
 
         /// <summary>
@@ -78,7 +81,7 @@ namespace QUT.GPGen.Parser
         {
             string prefix, suffix, message;
             if (spn == null)
-                spn = defaultSpan;
+                spn = DefaultSpan;
             switch (num)
             {
                 // Syntactic Errors Detected by the Parser ...
@@ -90,7 +93,6 @@ namespace QUT.GPGen.Parser
             }
             message = String.Format(CultureInfo.InvariantCulture, "{0} {1}{2}{3} {4}", prefix, lh, key, rh, suffix);
             this.AddError(new Error(message, spn, num >= Error.minWrn));
-            if (num < Error.minWrn) errNum++; else wrnNum++;
         }
 
 
@@ -130,7 +132,6 @@ namespace QUT.GPGen.Parser
                 default: message = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); break;
             }
             this.AddError(new Error(message, spn, num >= Error.minWrn));
-            if (num < Error.minWrn) errNum++; else wrnNum++;
         }
  
         
@@ -152,7 +153,7 @@ namespace QUT.GPGen.Parser
             //
             //  Errors are sorted by line number
             //
-            errors = SortedErrorList();
+            _errors = SortedErrorList();
             //
             //  Reset the source file buffer to the start
             //
@@ -176,9 +177,9 @@ namespace QUT.GPGen.Parser
             //
             //  Now, for each error do
             //
-            for (eNum = 0; eNum < errors.Count; eNum++)
+            for (eNum = 0; eNum < _errors.Count; eNum++)
             {
-                Error errN = errors[eNum];
+                Error errN = _errors[eNum];
                 eLin = errN.span.startLine;
                 if (eLin > currentLine)
                 {
@@ -193,7 +194,7 @@ namespace QUT.GPGen.Parser
                     }
                     for (int i = groupFirst; i < eNum; i++)
                     {
-                        Error err = errors[i];
+                        Error err = _errors[i];
                         string prefix = (err.isWarn ? "// Warning: " : "// Error: ");
                         string msg = StringUtilities.MakeComment(3, prefix + err.message);
                         if (StringUtilities.MaxWidth(msg) > maxGroupWidth)
@@ -250,9 +251,9 @@ namespace QUT.GPGen.Parser
             {
                 sWrtr.WriteLine();
             }
-            for (int i = groupFirst; i < errors.Count; i++)
+            for (int i = groupFirst; i < _errors.Count; i++)
             {
-                Error err = errors[i];
+                Error err = _errors[i];
                 string prefix = (err.isWarn ? "// Warning: " : "// Error: ");
                 string msg = StringUtilities.MakeComment(3, prefix + err.message);
                 if (StringUtilities.MaxWidth(msg) > maxEpilogWidth)
@@ -260,7 +261,7 @@ namespace QUT.GPGen.Parser
                 sWrtr.Write(msg);
                 sWrtr.WriteLine();
             }
-            if (groupFirst < errors.Count)
+            if (groupFirst < _errors.Count)
             {
                 sWrtr.Write("// ");
                 Spaces(sWrtr, maxEpilogWidth - 3);
@@ -304,7 +305,7 @@ namespace QUT.GPGen.Parser
             //
             //  Errors are sorted by line number
             //
-            errors = SortedErrorList();
+            _errors = SortedErrorList();
             //
             int  line = 1;
             int  eNum = 0;
@@ -330,8 +331,8 @@ namespace QUT.GPGen.Parser
             //
             //  Now, for each error do
             //
-            for (eNum = 0; eNum < errors.Count; eNum++) {
-                eLin = errors[eNum].span.startLine;
+            for (eNum = 0; eNum < _errors.Count; eNum++) {
+                eLin = _errors[eNum].span.startLine;
                 if (eLin > currentLine) {
                     //
                     // Spill all the waiting messages
@@ -341,7 +342,7 @@ namespace QUT.GPGen.Parser
                         currentCol = 0;
                     }
                     for (int i = groupFirst; i < eNum; i++) {
-                        Error err = errors[i];
+                        Error err = _errors[i];
                         wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
                         wrtr.Write(err.message);    
                         wrtr.WriteLine();    
@@ -376,14 +377,14 @@ namespace QUT.GPGen.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (errors[eNum].span.startColumn >= 0 && errors[eNum].span.startColumn < 75) {
+                if (_errors[eNum].span.startColumn >= 0 && _errors[eNum].span.startColumn < 75) {
                     if (currentCol == 0) {
                         wrtr.Write("-----");
                     }
-                    for (int i = currentCol; i < errors[eNum].span.startColumn - 1; i++, currentCol++) {
+                    for (int i = currentCol; i < _errors[eNum].span.startColumn - 1; i++, currentCol++) {
                         wrtr.Write('-');
                     } 
-                    for ( ; currentCol < errors[eNum].span.endColumn && currentCol < 75; currentCol++)
+                    for ( ; currentCol < _errors[eNum].span.endColumn && currentCol < 75; currentCol++)
                         wrtr.Write('^');
                 }
             }
@@ -394,8 +395,8 @@ namespace QUT.GPGen.Parser
             if (currentCol > 0) {
                 wrtr.WriteLine();
             }
-            for (int i = groupFirst; i < errors.Count; i++) {
-                Error err = errors[i];
+            for (int i = groupFirst; i < _errors.Count; i++) {
+                Error err = _errors[i];
                 wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
                 wrtr.Write(err.message);    
                 wrtr.WriteLine();    
@@ -403,7 +404,7 @@ namespace QUT.GPGen.Parser
         }
 
         private void PanicDump(TextWriter wrtr) {
-            foreach (Error err in errors) {
+            foreach (Error err in _errors) {
                 wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
                 wrtr.Write(err.message);
                 wrtr.WriteLine();
