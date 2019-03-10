@@ -691,7 +691,7 @@ namespace QUT.Gplex.Automaton
                 sWrtr.WriteLine("//  GPLEX frame file <" + myTask.FrameName + ">");
                 sWrtr.WriteLine("//");
                 sWrtr.WriteLine("//  Option settings:{0}{1}{2}{3}{4}{5}",
-                    (myTask.Unicode ? " unicode," : ""),
+                    (myTask.UseUnicode ? " unicode," : ""),
                     (myTask.Verbose ? " verbose," : ""),
                     (myTask.HasParser ? " parser," : " noParser,"),
                     (myTask.Files ? "" : " noFiles,"),
@@ -704,7 +704,7 @@ namespace QUT.Gplex.Automaton
                     (myTask.Files ? (myTask.Persist ? " persistBuffer," : " noPersistBuffer,") : ""),
                     (myTask.EmbedBuffers ? " embedbuffers" : " noEmbedBuffers"));
 
-                if (myTask.Unicode && myTask.Files)
+                if (myTask.UseUnicode && myTask.Files)
                 {
                     string page = null;
                     switch (myTask.CodePage)
@@ -792,7 +792,7 @@ namespace QUT.Gplex.Automaton
                                     sWrtr.WriteLine("#define NOFILES");
                                 if (myTask.Persist)
                                     sWrtr.WriteLine("#define PERSIST");
-                                if (!myTask.Unicode)
+                                if (!myTask.UseUnicode)
                                     sWrtr.WriteLine("#define BYTEMODE");
                                 for (int i = 0; i < dfas.Length; i++)
                                     if (dfas[i] != null)
@@ -903,7 +903,7 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector == "bufferCtor")
                             {
-                                if (myTask.Unicode)
+                                if (myTask.UseUnicode)
                                 {
                                     sWrtr.WriteLine("            SetSource(file, {0}); // unicode option", myTask.CodePage);
                                     sWrtr.WriteLine("        }");

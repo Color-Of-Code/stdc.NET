@@ -66,7 +66,6 @@ namespace QUT.Gplex.Automaton
         bool minimize = true;
         bool hasParser = true;
         bool charClasses;
-        bool useUnicode;
         string fileName;                   // Filename of the input file.
         string inputInfo;                  // Pathname plus last write DateTime.
         string pathName;                   // Input file path string from user.
@@ -144,7 +143,7 @@ namespace QUT.Gplex.Automaton
             // for 8-bit scanners we compress next-state but not map.
             get
             {
-                if (useUnicode || compressMapExplicit)
+                if (UseUnicode || compressMapExplicit)
                     return compressMap;
                 else
                     return false;
@@ -154,7 +153,7 @@ namespace QUT.Gplex.Automaton
         internal bool CompressNext { get { return compressNext; } }
         internal bool Minimize { get { return minimize; } }
         internal bool HasWarnings { get { return handler.HasWarnings; } }
-        internal bool Unicode { get { return useUnicode; } }
+        internal bool UseUnicode { get; private set; }
         internal bool ErrorsToConsole { get { return errorsToConsole; } }
 
         internal int CodePage { get { return fallbackCodepage; } }
@@ -269,12 +268,12 @@ namespace QUT.Gplex.Automaton
                     // set (no)unicode after the alphabet size has been set
                     // it is a command line or inline option error.
                     int cardinality = (negate ? asciiCardinality : unicodeCardinality);
-                    useUnicode = !negate;
+                    UseUnicode = !negate;
                     if (targetSymCardinality == notSet || targetSymCardinality == cardinality)
                         targetSymCardinality = cardinality;
                     else
                         return OptionState.alphabetLocked;
-                    if (useUnicode)
+                    if (UseUnicode)
                     {
                         charClasses = true;
                         if (!compressMapExplicit)
@@ -288,7 +287,7 @@ namespace QUT.Gplex.Automaton
                 }
                 else if (arg.Equals("CLASSES", StringComparison.Ordinal))
                 {
-                    if (negate && useUnicode)
+                    if (negate && UseUnicode)
                         return OptionState.inconsistent;
                     charClasses = !negate;
                 }
@@ -546,7 +545,7 @@ namespace QUT.Gplex.Automaton
 
         void CheckOptions()
         {
-            if (Babel && !Unicode)
+            if (Babel && !UseUnicode)
                 handler.ListError(aast.AtStart, 112);
         }
 

@@ -6,7 +6,6 @@ using System;
 using QUT.Gplex.Automaton;
 using QUT.Gplex.Parser;
 
-[assembly: CLSCompliant(true)]
 namespace QUT.Gplex
 {
     static class Program
@@ -16,7 +15,7 @@ namespace QUT.Gplex
         static void Main(string[] args)
         {
             bool fileArg = false;
-            TaskState task = new TaskState();
+            var task = new TaskState();
             OptionState opResult = OptionState.clear;
             if (args.Length == 0)
                 Usage("No arguments");

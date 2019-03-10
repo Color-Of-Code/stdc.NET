@@ -386,7 +386,7 @@ namespace QUT.Gplex.Parser
             internal ReParser(string str, LexSpan spn, AAST parent)
             {
                 var parentTask = parent.Task;
-                if (parentTask.Unicode)
+                if (parentTask.UseUnicode)
                     CharacterUtilities.SetUnicode();
                 symCard = parentTask.HostSymCardinality;
                 pat = str;
