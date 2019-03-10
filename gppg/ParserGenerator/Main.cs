@@ -91,8 +91,8 @@ namespace QUT.GPGen
                 {
                     grammar = parser.Grammar;
 
-                    if (Terminal.Max > 255)
-                        handler.ListError(null, 103, CharacterUtilities.Map(Terminal.Max), '\'');
+                    if (Terminal.MaxOrdinalOfCharacterLiteral > 255)
+                        handler.ListError(null, 103, CharacterUtilities.Map(Terminal.MaxOrdinalOfCharacterLiteral), '\'');
 
                     LALRGenerator generator = new LALRGenerator(grammar);
                     IList<AutomatonState> states = generator.BuildStates();

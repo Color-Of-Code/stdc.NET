@@ -29,7 +29,7 @@ namespace QUT.GPGen
             n = ++count;
         }
 
-        internal override int num
+        internal override int Number
         {
             get
             {

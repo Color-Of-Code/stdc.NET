@@ -2,30 +2,31 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
+using System;
 using QUT.Gplib;
 
 namespace QUT.GPGen
 {
     internal class Terminal : Symbol
     {
-        static int count;
-        static int max;
-        internal static int Max { get { return max; } }
+        // TODO: these globals hinder running parsers in parallel
+        private static int _count;
+        internal static int MaxOrdinalOfCharacterLiteral { get; private set; }
 
         internal Precedence prec;
-        private int n;
+        private int _number;
         internal bool IsSymbolic { get; private set; }
 
         internal string Alias { get; private set; }
 
-        internal override int num
+        internal override int Number
         {
             get
             {
                 if (IsSymbolic)
-                    return max + n;
+                    return MaxOrdinalOfCharacterLiteral + _number;
                 else
-                    return n;
+                    return _number;
             }
         }
 
@@ -36,16 +37,16 @@ namespace QUT.GPGen
         /// </summary>
         /// <param name="symbolic">Means "is an ident"</param>
         /// <param name="name">string representation of symbol</param>
-		internal Terminal(bool symbolic, string name, string alias = null)
+        internal Terminal(bool symbolic, string name, string alias = null)
             : base(name)
         {
             IsSymbolic = symbolic;
             if (symbolic)
-                this.n = ++count;
+                this._number = ++_count;
             else
             {
-                this.n = CharacterUtilities.OrdinalOfCharacterLiteral(name, 1);
-                if (n > max) max = n;
+                this._number = CharacterUtilities.OrdinalOfCharacterLiteral(name, 1);
+                MaxOrdinalOfCharacterLiteral = Math.Max(_number, MaxOrdinalOfCharacterLiteral);
             }
             Alias = alias;
         }

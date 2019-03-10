@@ -191,16 +191,16 @@ namespace QUT.GPGen
                 {
                     if (!first)
                         Console.Write(",");
-                    if (terminal.num % 6 == 1)
+                    if (terminal.Number % 6 == 1)
                     {
                         Console.WriteLine();
                         Console.Write("    ");
                     }
-                    Console.Write("{0}={1}", terminal.EnumName(), terminal.num);
+                    Console.Write("{0}={1}", terminal.EnumName(), terminal.Number);
                     first = false;
                     if (writer != null)
                         writer.WriteLine("\t{0}.{1} /* {2} */",
-                            grammar.TokenName, terminal.EnumName(), terminal.num);
+                            grammar.TokenName, terminal.EnumName(), terminal.Number);
                 }
 
             Console.WriteLine("};");
@@ -321,7 +321,7 @@ namespace QUT.GPGen
                 foreach (Terminal termWithAlias in aliasList)
                 {
                     Console.WriteLine("    aliasses.Add({0}, {1});",
-                        termWithAlias.num,
+                        termWithAlias.Number,
                         CharacterUtilities.QuoteMap(termWithAlias.Alias));
                 }
             }
@@ -353,7 +353,7 @@ namespace QUT.GPGen
                 {
                     if (!first)
                         Console.Write(",");
-                    Console.Write("{0},{1}", transition.Key.num, transition.Value.ToNum());
+                    Console.Write("{0},{1}", transition.Key.Number, transition.Value.ToNum());
                     first = false;
                 }
                 Console.Write('}');
@@ -367,7 +367,7 @@ namespace QUT.GPGen
                 {
                     if (!first)
                         Console.Write(",");
-                    Console.Write("{0},{1}", transition.A.num, transition.next.num);
+                    Console.Write("{0},{1}", transition.A.Number, transition.next.num);
                     first = false;
                 }
                 Console.Write('}');
@@ -377,6 +377,7 @@ namespace QUT.GPGen
 
         private static int GetDefaultAction(AutomatonState state)
         {
+            // TODO: cleanup
             IEnumerator<ParserAction> enumerator = state.parseTable.Values.GetEnumerator();
             enumerator.MoveNext();
             int defaultAction = enumerator.Current.ToNum();
@@ -384,9 +385,8 @@ namespace QUT.GPGen
             if (defaultAction > 0)
                 return 0; // can't have default shift action
 
-            foreach (KeyValuePair<Terminal, ParserAction> transition in state.parseTable)
-                if (transition.Value.ToNum() != defaultAction)
-                    return 0;
+            if (state.parseTable.Any(transition => transition.Value.ToNum() != defaultAction))
+                return 0;
 
             return defaultAction;
         }
@@ -394,7 +394,7 @@ namespace QUT.GPGen
 
         private static void GenerateRule(Production production)
         {
-            Console.Write("    rules[{0}] = new Rule({1}, new int[]{{", production.num, production.lhs.num);
+            Console.Write("    rules[{0}] = new Rule({1}, new int[]{{", production.num, production.lhs.Number);
             bool first = true;
             foreach (Symbol sym in production.rhs)
             {
@@ -402,7 +402,7 @@ namespace QUT.GPGen
                     Console.Write(",");
                 else
                     first = false;
-                Console.Write("{0}", sym.num);
+                Console.Write("{0}", sym.Number);
             }
             Console.WriteLine("});");
         }

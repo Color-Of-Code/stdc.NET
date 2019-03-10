@@ -2,9 +2,6 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-
-
-
 namespace QUT.GPGen
 {
     internal abstract class Symbol
@@ -12,7 +9,8 @@ namespace QUT.GPGen
         private string _name;
         internal string kind;
 
-        internal abstract int num
+        // number, ordinal coding this symbol
+        internal abstract int Number
         {
             get;
         }
