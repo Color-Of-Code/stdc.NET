@@ -9,7 +9,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace QUT.Gplex.Parser
+namespace QUT.Gplib
 {
 
     [Serializable]

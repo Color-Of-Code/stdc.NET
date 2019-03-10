@@ -4,7 +4,7 @@
 
 using System;
 using QUT.Gplex.Automaton;
-using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex
 {

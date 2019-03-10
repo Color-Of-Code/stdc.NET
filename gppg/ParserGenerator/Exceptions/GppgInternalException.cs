@@ -8,7 +8,8 @@ using System.Runtime.Serialization;
 namespace QUT.GPGen.Parser
 {
     [Serializable]
-    public class GppgInternalException : Exception {
+    public class GppgInternalException : Exception
+    {
         public GppgInternalException() { }
         public GppgInternalException(string message) : base(message) { }
         public GppgInternalException(string message, Exception innerException)
