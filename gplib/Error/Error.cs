@@ -14,20 +14,20 @@ namespace QUT.Gplib
         public ISpan Span { get; private set; }
 
 
-        public Error(int code, string msg, ISpan spn, bool wrn)
+        public Error(int code, string message, ISpan span, bool warning)
         {
-            this.Code = code;
-            IsWarning = wrn;
-            Message = msg;
-            Span = spn;
+            Code = code;
+            IsWarning = warning;
+            Message = message;
+            Span = span;
         }
         
-        public Error(string msg, ISpan spn, bool wrn)
+        public Error(string message, ISpan span, bool warning)
         {
-            this.Code = -1;
-            IsWarning = wrn;
-            Message = msg;
-            Span = spn;
+            Code = -1;
+            IsWarning = warning;
+            Message = message;
+            Span = span;
         }
 
         public int CompareTo(Error r)
