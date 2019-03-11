@@ -162,7 +162,7 @@ namespace QUT.Gplex.Parser
             }
             // message = prefix + " <" + key + "> " + suffix;
             message = String.Format(CultureInfo.InvariantCulture, "{0} {1}{2}{3} {4}", prefix, lh, key, rh, suffix);
-            this.AddError(new Error(num, message, spn, num >= Error.minWrn));
+            this.AddError(new Error(num, message, spn, num >= 110));
         }
 
         internal void ListError(LexSpan spn, int num)
@@ -217,7 +217,7 @@ namespace QUT.Gplex.Parser
 
                 default: message = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); break;
             }
-            this.AddError(new Error(num, message, spn, num >= Error.minWrn));
+            this.AddError(new Error(num, message, spn, num >= 110));
         }
 
 

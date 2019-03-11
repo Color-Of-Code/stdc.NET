@@ -92,7 +92,7 @@ namespace QUT.GPGen.Parser
                     break;
             }
             message = String.Format(CultureInfo.InvariantCulture, "{0} {1}{2}{3} {4}", prefix, lh, key, rh, suffix);
-            this.AddError(new Error(message, spn, num >= Error.minWrn));
+            this.AddError(new Error(message, spn, num >= 100));
         }
 
 
@@ -131,7 +131,7 @@ namespace QUT.GPGen.Parser
 
                 default: message = "Error " + Convert.ToString(num, CultureInfo.InvariantCulture); break;
             }
-            this.AddError(new Error(message, spn, num >= Error.minWrn));
+            this.AddError(new Error(message, spn, num >= 100));
         }
  
         

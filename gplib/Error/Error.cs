@@ -8,8 +8,6 @@ namespace QUT.Gplib
 {
     public class Error : IComparable<Error>
     {
-        public const int minWrn = 110;
-
         public int Code { get; private set; }
         public bool IsWarning  { get; private set; }
         public string Message { get; private set; }
