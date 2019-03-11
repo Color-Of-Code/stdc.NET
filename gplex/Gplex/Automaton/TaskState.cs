@@ -156,8 +156,8 @@ namespace QUT.Gplex.Automaton
         internal bool ErrorsToConsole { get { return errorsToConsole; } }
 
         internal int CodePage { get { return fallbackCodepage; } }
-        internal int ErrNum { get { return handler.ErrNum; } }
-        internal int WrnNum { get { return handler.WrnNum; } }
+        internal int ErrorCount { get { return handler.ErrorCount; } }
+        internal int WarningCount { get { return handler.WarningCount; } }
         internal string VerString { get { return version; } }
         internal string FileName { get { return fileName; } }
         internal string InputInfo { get { return inputInfo; } }

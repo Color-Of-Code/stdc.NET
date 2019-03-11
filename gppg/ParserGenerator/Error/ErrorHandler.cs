@@ -20,7 +20,7 @@ namespace QUT.GPGen.Parser
         const int MaxErrors = 100; // Will this be enough for all users?
 
         // TODO: avoid internal set
-        internal LexSpan DefaultSpan { get; set; }
+        internal ISpan DefaultSpan { get; set; }
 
         private List<Error> _errors;
 
@@ -28,8 +28,8 @@ namespace QUT.GPGen.Parser
         internal bool HasWarnings { get { return _errors.Any(x => x.IsWarning); } }
 
 
-        internal int ErrNum { get { return _errors.Count(x => !x.IsWarning); } }
-        internal int WrnNum { get { return _errors.Count(x => x.IsWarning); } }
+        internal int ErrorCount { get { return _errors.Count(x => !x.IsWarning); } }
+        internal int WarningCount { get { return _errors.Count(x => x.IsWarning); } }
 
         internal ErrorHandler()
         {
@@ -54,14 +54,14 @@ namespace QUT.GPGen.Parser
             return _errors;
         }
 
-        internal void AddError(string msg, LexSpan spn)
+        internal void AddError(string msg, ISpan spn)
         {
             if (spn == null)
                 spn = DefaultSpan;
             this.AddError(new Error(msg, spn, false));
         }
 
-        internal void AddWarning(string msg, LexSpan spn)
+        internal void AddWarning(string msg, ISpan spn)
         {
             if (spn == null)
                 spn = DefaultSpan;
@@ -74,10 +74,10 @@ namespace QUT.GPGen.Parser
         /// <param name="spn">The span to which the error is attached</param>
         /// <param name="num">The error number</param>
         /// <param name="key">The featured string</param>
-        internal void ListError(LexSpan spn, int num, string key, char quote)
+        internal void ListError(ISpan spn, int num, string key, char quote)
         { ListError(spn, num, key, quote, quote); }
 
-        void ListError(LexSpan spn, int num, string key, char lh, char rh)
+        void ListError(ISpan spn, int num, string key, char lh, char rh)
         {
             string prefix, suffix, message;
             if (spn == null)
@@ -96,7 +96,7 @@ namespace QUT.GPGen.Parser
         }
 
 
-        internal void ListError(LexSpan spn, int num)
+        internal void ListError(ISpan spn, int num)
         {
             string message;
             switch (num)

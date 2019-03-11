@@ -23,8 +23,8 @@ namespace QUT.Gplex.Parser
         internal bool HasWarnings { get { return _errors.Any(x => x.IsWarning); } }
 
 
-        internal int ErrNum { get { return _errors.Count(x => !x.IsWarning); } }
-        internal int WrnNum { get { return _errors.Count(x => x.IsWarning); } }
+        internal int ErrorCount { get { return _errors.Count(x => !x.IsWarning); } }
+        internal int WarningCount { get { return _errors.Count(x => x.IsWarning); } }
 
         internal ErrorHandler()
         {
@@ -40,7 +40,7 @@ namespace QUT.Gplex.Parser
             return _errors;
         }
 
-        internal void AddError(string msg, LexSpan spn)
+        internal void AddError(string msg, ISpan spn)
         {
             this.AddError(new Error(3, msg, spn, false));
         }
@@ -61,12 +61,12 @@ namespace QUT.Gplex.Parser
         /// <param name="spn">The span to which the error is attached</param>
         /// <param name="num">The error number</param>
         /// <param name="key">The featured string</param>
-        internal void ListError(LexSpan spn, int num, string key, char quote)
+        internal void ListError(ISpan spn, int num, string key, char quote)
         { ListError(spn, num, key, quote, quote); }
-        internal void ListError(LexSpan spn, int num, string key)
+        internal void ListError(ISpan spn, int num, string key)
         { ListError(spn, num, key, '<', '>'); }
 
-        void ListError(LexSpan spn, int num, string key, char lh, char rh)
+        void ListError(ISpan spn, int num, string key, char lh, char rh)
         {
             string prefix, suffix, message;
             switch (num)
@@ -165,7 +165,7 @@ namespace QUT.Gplex.Parser
             this.AddError(new Error(num, message, spn, num >= 110));
         }
 
-        internal void ListError(LexSpan spn, int num)
+        internal void ListError(ISpan spn, int num)
         {
             string message;
             switch (num)
@@ -225,7 +225,7 @@ namespace QUT.Gplex.Parser
         //   Error Listfile Reporting Method
         // -----------------------------------------------------
 
-        internal void MakeListing(ScanBuff buff, StreamWriter sWrtr, string name, string version)
+        internal void MakeListing(ScanBuff buff, StreamWriter streamWriter, string name, string version)
         {
             int line = 1;
             int eNum = 0;
@@ -244,16 +244,16 @@ namespace QUT.Gplex.Parser
             //  Reset the source file buffer to the start
             //
             buff.Pos = 0;
-            sWrtr.WriteLine();
-            ListDivider(sWrtr);
-            sWrtr.WriteLine("//  GPLEX error listing for lex source file <"
+            streamWriter.WriteLine();
+            ListDivider(streamWriter);
+            streamWriter.WriteLine("//  GPLEX error listing for lex source file <"
                                                            + name + ">");
-            ListDivider(sWrtr);
-            sWrtr.WriteLine("//  Version:  " + version);
-            sWrtr.WriteLine("//  Machine:  " + Environment.MachineName);
-            sWrtr.WriteLine("//  DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
-            sWrtr.WriteLine("//  UserName: " + Environment.UserName);
-            ListDivider(sWrtr); sWrtr.WriteLine(); sWrtr.WriteLine();
+            ListDivider(streamWriter);
+            streamWriter.WriteLine("//  Version:  " + version);
+            streamWriter.WriteLine("//  Machine:  " + Environment.MachineName);
+            streamWriter.WriteLine("//  DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+            streamWriter.WriteLine("//  UserName: " + Environment.UserName);
+            ListDivider(streamWriter); streamWriter.WriteLine(); streamWriter.WriteLine();
             //
             //  Initialize the error group
             //
@@ -275,7 +275,7 @@ namespace QUT.Gplex.Parser
                     int maxGroupWidth = 0;
                     if (currentCol > 0)
                     {
-                        sWrtr.WriteLine();
+                        streamWriter.WriteLine();
                         currentCol = 0;
                     }
                     for (int i = groupFirst; i < eNum; i++)
@@ -285,14 +285,14 @@ namespace QUT.Gplex.Parser
                         string msg = StringUtilities.MakeComment(3, prefix + err.Message);
                         if (StringUtilities.MaxWidth(msg) > maxGroupWidth)
                             maxGroupWidth = StringUtilities.MaxWidth(msg);
-                        sWrtr.Write(msg);
-                        sWrtr.WriteLine();
+                        streamWriter.Write(msg);
+                        streamWriter.WriteLine();
                     }
                     if (groupFirst < eNum)
                     {
-                        sWrtr.Write("// ");
-                        Spaces(sWrtr, maxGroupWidth - 3);
-                        sWrtr.WriteLine();
+                        streamWriter.Write("// ");
+                        Spaces(streamWriter, maxGroupWidth - 3);
+                        streamWriter.WriteLine();
                     }
                     currentLine = eLin;
                     groupFirst = eNum;
@@ -307,7 +307,7 @@ namespace QUT.Gplex.Parser
                         line++;
                     else if (nxtC == ScanBuff.EndOfFile)
                         break;
-                    sWrtr.Write((char)nxtC);
+                    streamWriter.Write((char)nxtC);
                 }
                 //
                 //  Now emit the error message(s)
@@ -316,16 +316,16 @@ namespace QUT.Gplex.Parser
                 {
                     if (currentCol == 0)
                     {
-                        sWrtr.Write("//");
+                        streamWriter.Write("//");
                         currentCol = 2;
                     }
                     if (errN.Span.startColumn > currentCol)
                     {
-                        Spaces(sWrtr, errN.Span.startColumn - currentCol);
+                        Spaces(streamWriter, errN.Span.startColumn - currentCol);
                         currentCol = errN.Span.startColumn;
                     }
                     for (; currentCol < errN.Span.endColumn && currentCol < 80; currentCol++)
-                        sWrtr.Write('^');
+                        streamWriter.Write('^');
                 }
             }
             //
@@ -335,7 +335,7 @@ namespace QUT.Gplex.Parser
             int maxEpilogWidth = 0;
             if (currentCol > 0)
             {
-                sWrtr.WriteLine();
+                streamWriter.WriteLine();
             }
             for (int i = groupFirst; i < _errors.Count; i++)
             {
@@ -344,14 +344,14 @@ namespace QUT.Gplex.Parser
                 string msg = StringUtilities.MakeComment(3, prefix + err.Message);
                 if (StringUtilities.MaxWidth(msg) > maxEpilogWidth)
                     maxEpilogWidth = StringUtilities.MaxWidth(msg);
-                sWrtr.Write(msg);
-                sWrtr.WriteLine();
+                streamWriter.Write(msg);
+                streamWriter.WriteLine();
             }
             if (groupFirst < _errors.Count)
             {
-                sWrtr.Write("// ");
-                Spaces(sWrtr, maxEpilogWidth - 3);
-                sWrtr.WriteLine();
+                streamWriter.Write("// ");
+                Spaces(streamWriter, maxEpilogWidth - 3);
+                streamWriter.WriteLine();
             }
             //
             //  And dump the tail of the file
@@ -359,11 +359,11 @@ namespace QUT.Gplex.Parser
             nxtC = buff.Read();
             while (nxtC != ScanBuff.EndOfFile)
             {
-                sWrtr.Write((char)nxtC);
+                streamWriter.Write((char)nxtC);
                 nxtC = buff.Read();
             }
-            ListDivider(sWrtr); sWrtr.WriteLine();
-            sWrtr.Flush();
+            ListDivider(streamWriter); streamWriter.WriteLine();
+            streamWriter.Flush();
             // sWrtr.Close();
         }
 

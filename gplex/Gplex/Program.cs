@@ -58,15 +58,15 @@ namespace QUT.Gplex
             }
             finally
             {
-                if (task.ErrNum + task.WrnNum > 0 || task.Listing)
+                if (task.ErrorCount + task.WarningCount > 0 || task.Listing)
                     task.MakeListing();
-                if (task.ErrNum + task.WrnNum > 0)
+                if (task.ErrorCount + task.WarningCount > 0)
                     task.ErrorReport();
                 else if (task.Verbose)
                     task.Msg.WriteLine("GPLEX <" + task.FileName + "> Completed successfully");
                 task.Dispose();
             }
-            Environment.Exit(task.ErrNum > 0 ? 1 : 0);
+            Environment.Exit(task.ErrorCount > 0 ? 1 : 0);
         }
 
         static void BadOption(string arg, OptionState rslt)
