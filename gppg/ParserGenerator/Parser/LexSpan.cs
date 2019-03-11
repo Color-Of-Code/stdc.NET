@@ -3,6 +3,7 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using QUT.GplexBuffers;
+using QUT.Gplib;
 
 namespace QUT.GPGen.Parser
 {
@@ -14,12 +15,12 @@ namespace QUT.GPGen.Parser
     /// The fields record both line:column information and also 
     /// file position data and buffer object identity.
     /// </summary>
-    internal class LexSpan : QUT.Gplib.IMerge<LexSpan>
+    internal class LexSpan : IMerge<LexSpan>, ISpan
     {
-        internal int startLine;     // start line of span
-        internal int startColumn;   // start column of span
-        internal int endLine;       // end line of span
-        internal int endColumn;     // end column of span
+        public int startLine { get; private set; }       // start line of span
+        public int startColumn { get; private set; }     // start column of span
+        public int endLine { get; private set; }         // end line of span
+        public int endColumn { get; private set; }       // end column of span
         internal int startIndex;    // start position in the buffer
         internal int endIndex;      // end position in the buffer
         internal ScanBuff buffer;   // reference to the buffer

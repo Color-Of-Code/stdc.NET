@@ -19,12 +19,12 @@ namespace QUT.Gplex.Parser
 
         private List<Error> _errors;
 
-        internal bool HasErrors { get { return _errors.Any(x => !x.isWarn); } }
-        internal bool HasWarnings { get { return _errors.Any(x => x.isWarn); } }
+        internal bool HasErrors { get { return _errors.Any(x => !x.IsWarning); } }
+        internal bool HasWarnings { get { return _errors.Any(x => x.IsWarning); } }
 
 
-        internal int ErrNum { get { return _errors.Count(x => !x.isWarn); } }
-        internal int WrnNum { get { return _errors.Count(x => x.isWarn); } }
+        internal int ErrNum { get { return _errors.Count(x => !x.IsWarning); } }
+        internal int WrnNum { get { return _errors.Count(x => x.IsWarning); } }
 
         internal ErrorHandler()
         {
@@ -50,7 +50,7 @@ namespace QUT.Gplex.Parser
             _errors.Add(e);
             if (_errors.Count > maxErrors)
             {
-                _errors.Add(new Error(2, "Too many errors, abandoning", e.span, false));
+                _errors.Add(new Error(2, "Too many errors, abandoning", e.Span, false));
                 throw new TooManyErrorsException("Too many errors");
             }
         }
@@ -266,7 +266,7 @@ namespace QUT.Gplex.Parser
             for (eNum = 0; eNum < _errors.Count; eNum++)
             {
                 Error errN = _errors[eNum];
-                eLin = errN.span.startLine;
+                eLin = errN.Span.startLine;
                 if (eLin > currentLine)
                 {
                     //
@@ -281,8 +281,8 @@ namespace QUT.Gplex.Parser
                     for (int i = groupFirst; i < eNum; i++)
                     {
                         Error err = _errors[i];
-                        string prefix = (err.isWarn ? "// Warning: " : "// Error: ");
-                        string msg = StringUtilities.MakeComment(3, prefix + err.message);
+                        string prefix = (err.IsWarning ? "// Warning: " : "// Error: ");
+                        string msg = StringUtilities.MakeComment(3, prefix + err.Message);
                         if (StringUtilities.MaxWidth(msg) > maxGroupWidth)
                             maxGroupWidth = StringUtilities.MaxWidth(msg);
                         sWrtr.Write(msg);
@@ -312,19 +312,19 @@ namespace QUT.Gplex.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (errN.span.endColumn > 3 && errN.span.startColumn < 80)
+                if (errN.Span.endColumn > 3 && errN.Span.startColumn < 80)
                 {
                     if (currentCol == 0)
                     {
                         sWrtr.Write("//");
                         currentCol = 2;
                     }
-                    if (errN.span.startColumn > currentCol)
+                    if (errN.Span.startColumn > currentCol)
                     {
-                        Spaces(sWrtr, errN.span.startColumn - currentCol);
-                        currentCol = errN.span.startColumn;
+                        Spaces(sWrtr, errN.Span.startColumn - currentCol);
+                        currentCol = errN.Span.startColumn;
                     }
-                    for (; currentCol < errN.span.endColumn && currentCol < 80; currentCol++)
+                    for (; currentCol < errN.Span.endColumn && currentCol < 80; currentCol++)
                         sWrtr.Write('^');
                 }
             }
@@ -340,8 +340,8 @@ namespace QUT.Gplex.Parser
             for (int i = groupFirst; i < _errors.Count; i++)
             {
                 Error err = _errors[i];
-                string prefix = (err.isWarn ? "// Warning: " : "// Error: ");
-                string msg = StringUtilities.MakeComment(3, prefix + err.message);
+                string prefix = (err.IsWarning ? "// Warning: " : "// Error: ");
+                string msg = StringUtilities.MakeComment(3, prefix + err.Message);
                 if (StringUtilities.MaxWidth(msg) > maxEpilogWidth)
                     maxEpilogWidth = StringUtilities.MaxWidth(msg);
                 sWrtr.Write(msg);
@@ -401,22 +401,22 @@ namespace QUT.Gplex.Parser
                 if (buff != null)
                 {
                     builder.Append('(');
-                    builder.Append(err.span.startLine);
+                    builder.Append(err.Span.startLine);
                     builder.Append(',');
-                    builder.Append(err.span.startColumn);
+                    builder.Append(err.Span.startColumn);
                     builder.Append(')');
                 }
                 builder.Append(':');
                 //
                 // Category                builder.Append( ':' );
                 //
-                builder.Append(err.isWarn ? "warning " : "error ");
-                builder.Append(err.code);
+                builder.Append(err.IsWarning ? "warning " : "error ");
+                builder.Append(err.Code);
                 builder.Append(':');
                 //
                 // Message
                 //
-                builder.Append(err.message);
+                builder.Append(err.Message);
                 Console.Error.WriteLine(builder.ToString());
             }
         }
@@ -451,7 +451,7 @@ namespace QUT.Gplex.Parser
             //
             for (eNum = 0; eNum < _errors.Count; eNum++)
             {
-                eLin = _errors[eNum].span.startLine;
+                eLin = _errors[eNum].Span.startLine;
                 if (eLin > currentLine)
                 {
                     //
@@ -465,8 +465,8 @@ namespace QUT.Gplex.Parser
                     for (int i = groupFirst; i < eNum; i++)
                     {
                         Error err = _errors[i];
-                        wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
-                        wrtr.Write(err.message);
+                        wrtr.Write((err.IsWarning ? "Warning: " : "Error: "));
+                        wrtr.Write(err.Message);
                         wrtr.WriteLine();
                     }
                     currentLine = eLin;
@@ -502,17 +502,17 @@ namespace QUT.Gplex.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (_errors[eNum].span.startColumn >= 0 && _errors[eNum].span.startColumn < 75)
+                if (_errors[eNum].Span.startColumn >= 0 && _errors[eNum].Span.startColumn < 75)
                 {
                     if (currentCol == 0)
                     {
                         wrtr.Write("-----");
                     }
-                    for (int i = currentCol; i < _errors[eNum].span.startColumn; i++, currentCol++)
+                    for (int i = currentCol; i < _errors[eNum].Span.startColumn; i++, currentCol++)
                     {
                         wrtr.Write('-');
                     }
-                    for (; currentCol < _errors[eNum].span.endColumn && currentCol < 75; currentCol++)
+                    for (; currentCol < _errors[eNum].Span.endColumn && currentCol < 75; currentCol++)
                         wrtr.Write('^');
                 }
             }
@@ -527,8 +527,8 @@ namespace QUT.Gplex.Parser
             for (int i = groupFirst; i < _errors.Count; i++)
             {
                 Error err = _errors[i];
-                wrtr.Write((err.isWarn ? "Warning: " : "Error: "));
-                wrtr.Write(_errors[i].message);
+                wrtr.Write((err.IsWarning ? "Warning: " : "Error: "));
+                wrtr.Write(_errors[i].Message);
                 wrtr.WriteLine();
             }
         }
