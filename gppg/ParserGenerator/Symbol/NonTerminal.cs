@@ -9,7 +9,7 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class NonTerminal : Symbol, INonTerminalSymbol
+    public class NonTerminal : Symbol, INonTerminalSymbol
     {
         internal bool reached;
 

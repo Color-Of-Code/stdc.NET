@@ -9,18 +9,20 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class Production : IProduction
+    public class Production : IProduction
     {
         internal int num;
-        internal NonTerminal lhs;
-        internal IList<ISymbol> rhs = new List<ISymbol>();
+        public NonTerminal lhs { get; private set; }
+        public IList<ISymbol> rhs { get; private set; }
         internal SemanticAction semanticAction;
         internal Precedence prec;
-        internal Parser.LexSpan precSpan;
+        internal ISpan precSpan;
 
         internal Production(NonTerminal lhs)
         {
             this.lhs = lhs;
+            this.rhs = new List<ISymbol>();
+        
             lhs.productions.Add(this);
         }
 

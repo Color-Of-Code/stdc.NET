@@ -6,7 +6,7 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal abstract class Symbol : ISymbol
+    public abstract class Symbol : ISymbol
     {
         private string _name;
         public string Kind { get; internal set; }

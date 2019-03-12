@@ -12,7 +12,7 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class CodeGenerator
+    internal class CodeGenerator : ICodeGenerator
     {
         internal Grammar grammar;
 
