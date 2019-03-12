@@ -37,18 +37,5 @@ namespace QUT.Gplex.Automaton
         {
             return new NEnumerator(this.arr);
         }
-
-        //public string Diag()
-        //{
-        //    string rslt = "";
-        //    NEnum iter = this.GetEnumerator();
-        //    while (iter.MoveNext())
-        //    {
-        //        int i = iter.Current;
-        //        rslt += i.ToString();
-        //        rslt += ",";
-        //    }
-        //    return rslt;
-        //}
     }
 }

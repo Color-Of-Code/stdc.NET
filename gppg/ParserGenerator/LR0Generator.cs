@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
@@ -15,7 +15,7 @@ namespace QUT.GPGen
     {
         protected IList<AutomatonState> states = new List<AutomatonState>();
         protected Grammar grammar;
-        private IDictionary<Symbol, IList<AutomatonState>> accessedBy = new Dictionary<Symbol, IList<AutomatonState>>();
+        private IDictionary<ISymbol, IList<AutomatonState>> accessedBy = new Dictionary<ISymbol, IList<AutomatonState>>();
 
 
         internal LR0Generator(Grammar grammar)
@@ -33,7 +33,7 @@ namespace QUT.GPGen
         }
 
 
-        private void ExpandState(Symbol sym, AutomatonState newState)
+        private void ExpandState(ISymbol sym, AutomatonState newState)
         {
             //newState.accessedBy = sym;
             states.Add(newState);
@@ -53,7 +53,7 @@ namespace QUT.GPGen
                 if (!item.expanded && !item.IsReduction())
                 {
                     item.expanded = true;
-                    Symbol s1 = item.production.rhs[item.pos];
+                    ISymbol s1 = item.production.rhs[item.pos];
 
                     // Create itemset for new state ...
                     var itemSet = new List<ProductionItem>();
@@ -62,7 +62,7 @@ namespace QUT.GPGen
                     foreach (ProductionItem item2 in state.allItems
                         .Where(x => !x.expanded && !x.IsReduction()))
                     {
-                        Symbol s2 = item2.production.rhs[item2.pos];
+                        ISymbol s2 = item2.production.rhs[item2.pos];
                         if (s1 == s2)
                         {
                             item2.expanded = true;
@@ -83,7 +83,7 @@ namespace QUT.GPGen
                 }
         }
 
-        private AutomatonState FindExistingState(Symbol sym, List<ProductionItem> itemSet)
+        private AutomatonState FindExistingState(ISymbol sym, List<ProductionItem> itemSet)
         {
             if (accessedBy.ContainsKey(sym))
                 return accessedBy[sym]

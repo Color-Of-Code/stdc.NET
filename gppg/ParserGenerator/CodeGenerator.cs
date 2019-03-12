@@ -394,7 +394,7 @@ namespace QUT.GPGen
         {
             Console.Write("    rules[{0}] = new Rule({1}, new int[]{{", production.num, production.lhs.Number);
             bool first = true;
-            foreach (Symbol sym in production.rhs)
+            foreach (ISymbol sym in production.rhs)
             {
                 if (!first)
                     Console.Write(",");

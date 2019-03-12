@@ -11,7 +11,7 @@ namespace QUT.Gplib
     /// If you don't declare "%YYLTYPE Foo" the parser
     /// will expect to deal with this type.
     /// </summary>
-    public class LexLocation : IMerge<LexLocation>
+    public class LexLocation : IMerge<LexLocation>, ISpan
     {
         /// <summary>
         /// The line at which the text span starts.

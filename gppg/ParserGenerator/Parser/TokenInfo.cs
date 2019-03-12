@@ -2,10 +2,11 @@
 // Copyright (c) Wayne Kelly, John Gough QUT 2010
 // (see accompanying GPPGcopyright.rtf)
 
+using QUT.Gplib;
 
 namespace QUT.GPGen.Parser
 {
-    internal class TokenInfo
+    internal class TokenInfo : IToken
     {
         public string name { get; private set; }
         public string alias { get; private set; }

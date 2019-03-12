@@ -3,6 +3,7 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using System.Collections.Generic;
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
@@ -26,7 +27,7 @@ namespace QUT.GPGen
         internal static void PopulatePrefixes(IList<AutomatonState> states)
         {
             AutomatonState start = states[0];
-            start.shortestPrefix = new List<Symbol>(); // The empty list.
+            start.shortestPrefix = new List<ISymbol>(); // The empty list.
             start.statePath = new List<AutomatonState>();
             start.statePath.Add(start);
 
@@ -36,8 +37,8 @@ namespace QUT.GPGen
                 changed = false;
                 foreach (var state in states)
                 {
-                    IList<Symbol> newfix;
-                    IList<Symbol> prefix = state.shortestPrefix;
+                    IList<ISymbol> newfix;
+                    IList<ISymbol> prefix = state.shortestPrefix;
                     IList<AutomatonState> newPath;
                     IList<AutomatonState> oldPath = state.statePath;
 
@@ -45,9 +46,9 @@ namespace QUT.GPGen
                     {
                         foreach (var a in state.Goto)
                         {
-                            Symbol smbl = a.Key;
+                            ISymbol smbl = a.Key;
                             AutomatonState nextState = a.Value;
-                            newfix = ListClone<Symbol>(prefix);
+                            newfix = ListClone<ISymbol>(prefix);
                             newPath = ListClone<AutomatonState>(oldPath);
 
                             newPath.Add(nextState);

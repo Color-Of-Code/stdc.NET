@@ -19,7 +19,7 @@ namespace QUT.GPGen
 
         internal string Alias { get; private set; }
 
-        internal override int Number
+        public override int Number
         {
             get
             {
@@ -51,7 +51,7 @@ namespace QUT.GPGen
             Alias = alias;
         }
 
-        internal override bool IsNullable()
+        public override bool IsNullable()
         {
             return false;
         }

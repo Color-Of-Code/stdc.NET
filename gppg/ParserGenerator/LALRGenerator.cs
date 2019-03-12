@@ -3,6 +3,7 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using System.Collections.Generic;
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
@@ -89,7 +90,7 @@ namespace QUT.GPGen
                     {
                         for (int i = prod.rhs.Count - 1; i >= 0; i--)
                         {
-                            Symbol A = prod.rhs[i];
+                            ISymbol A = prod.rhs[i];
                             NonTerminal NT = A as NonTerminal;
                             if (NT != null)
                             {
@@ -110,7 +111,7 @@ namespace QUT.GPGen
 
             for (int i = 0; i < prefix; i++)
             {
-                Symbol s = prod.rhs[i];
+                ISymbol s = prod.rhs[i];
                 if (q.Goto.ContainsKey(s))
                     q = q.Goto[s];
                 else

@@ -8,7 +8,7 @@ namespace QUT.Gplib
     /// <summary>
     /// Rule representation at runtime.
     /// </summary>
-    public class Rule
+    public class Rule : IProductionRule
     {
         internal int LeftHandSide; // symbol
         internal int[] RightHandSide; // symbols

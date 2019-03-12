@@ -29,7 +29,7 @@ namespace QUT.GPGen
             n = ++count;
         }
 
-        internal override int Number
+        public override int Number
         {
             get
             {
@@ -37,8 +37,9 @@ namespace QUT.GPGen
             }
         }
 
+        // TODO: implement as isNullable?
         private object isNullable;
-        internal override bool IsNullable()
+        public override bool IsNullable()
         {
             if (isNullable == null)
             {
@@ -46,7 +47,7 @@ namespace QUT.GPGen
                 foreach (var p in productions)
                 {
                     bool nullable = true;
-                    foreach (Symbol rhs in p.rhs)
+                    foreach (ISymbol rhs in p.rhs)
                         if (!rhs.IsNullable())
                         {
                             nullable = false;

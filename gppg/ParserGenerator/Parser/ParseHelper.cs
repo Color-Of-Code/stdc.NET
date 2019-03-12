@@ -69,7 +69,7 @@ namespace QUT.GPGen.Parser
                 if (prop != PrecedenceType.token)
                     t.prec = new Precedence(prop, grammar.Prec);
                 if (!String.IsNullOrEmpty(kind))
-                    t.kind = kind;
+                    t.Kind = kind;
             }
         }
 
@@ -104,7 +104,7 @@ namespace QUT.GPGen.Parser
             foreach (string name in list)
             {
                 NonTerminal nt = grammar.LookupNonTerminal(name);
-                nt.kind = kind;
+                nt.Kind = kind;
             }
         }
 
@@ -175,7 +175,7 @@ namespace QUT.GPGen.Parser
                     FixInternalReduction(prod);
                 foreach (string str in list)
                 {
-                    Symbol symbol = null;
+                    ISymbol symbol = null;
                     switch (TokenOf(str))
                     {
                         case Token.litchar:

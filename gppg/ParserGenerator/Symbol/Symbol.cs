@@ -9,10 +9,10 @@ namespace QUT.GPGen
     internal abstract class Symbol : ISymbol
     {
         private string _name;
-        internal string kind;
+        public string Kind { get; internal set; }
 
         // number, ordinal coding this symbol
-        internal abstract int Number
+        public abstract int Number
         {
             get;
         }
@@ -27,6 +27,6 @@ namespace QUT.GPGen
             return _name;
         }
 
-        internal abstract bool IsNullable();
+        public abstract bool IsNullable();
     }
 }

@@ -9,11 +9,11 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class Production : IProductionRule
+    internal class Production : IProduction
     {
         internal int num;
         internal NonTerminal lhs;
-        internal IList<Symbol> rhs = new List<Symbol>();
+        internal IList<ISymbol> rhs = new List<ISymbol>();
         internal SemanticAction semanticAction;
         internal Precedence prec;
         internal Parser.LexSpan precSpan;

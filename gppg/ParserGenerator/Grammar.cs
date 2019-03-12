@@ -135,7 +135,7 @@ namespace QUT.GPGen
                 NonTerminal nonT = work.Pop();
                 foreach (Production prod in nonT.productions)
                 {
-                    foreach (Symbol smbl in prod.rhs)
+                    foreach (ISymbol smbl in prod.rhs)
                     {
                         NonTerminal rhNt = smbl as NonTerminal;
                         if (rhNt != null && !rhNt.reached)
@@ -306,7 +306,7 @@ namespace QUT.GPGen
                     rslt.Add(nonTerm);
                     nonTerm.dependsOnList = new List<NonTerminal>();
                     foreach (Production prod in nonTerm.productions)
-                        foreach (Symbol symbol in prod.rhs)
+                        foreach (ISymbol symbol in prod.rhs)
                         {
                             dependency = symbol as NonTerminal;
                             if (dependency != null &&

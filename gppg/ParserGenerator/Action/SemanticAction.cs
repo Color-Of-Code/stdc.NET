@@ -186,7 +186,7 @@ namespace QUT.GPGen
                             {
                                 i++;
                                 if (kind == null)
-                                    kind = production.lhs.kind;
+                                    kind = production.lhs.Kind;
 
                                 Console.Write("CurrentSemanticValue");
 
@@ -203,7 +203,7 @@ namespace QUT.GPGen
                                 //    ErrReport(lineTag, String.Format("Index ${0} is out of bounds", num));
                                 
                                 if (kind == null)
-                                    kind = production.rhs[num - 1].kind;
+                                    kind = production.rhs[num - 1].Kind;
 
                                 Console.Write("ValueStack[ValueStack.Depth-{0}]", pos - num + 1);
 

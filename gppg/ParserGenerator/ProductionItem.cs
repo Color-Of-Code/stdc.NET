@@ -7,11 +7,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class ProductionItem
+    internal class ProductionItem : IProductionRule
     {
         internal Production production { get; private set; }
         internal int pos { get; private set; }

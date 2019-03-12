@@ -9,7 +9,7 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class AutomatonState
+    internal class AutomatonState: IState
     {
         private static int TotalStates;
 
@@ -17,12 +17,12 @@ namespace QUT.GPGen
 
         internal List<ProductionItem> kernelItems = new List<ProductionItem>();
         internal List<ProductionItem> allItems = new List<ProductionItem>();
-        internal IDictionary<Symbol, AutomatonState> Goto = new Dictionary<Symbol, AutomatonState>();
+        internal IDictionary<ISymbol, AutomatonState> Goto = new Dictionary<ISymbol, AutomatonState>();
         internal SetCollection<Terminal> terminalTransitions = new SetCollection<Terminal>();
         internal IDictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
         internal IDictionary<Terminal, IParserAction> parseTable = new Dictionary<Terminal, IParserAction>();
 
-        internal IList<Symbol> shortestPrefix;
+        internal IList<ISymbol> shortestPrefix;
         internal IList<AutomatonState> statePath;
         internal IList<Conflict> conflicts;
 
@@ -52,7 +52,7 @@ namespace QUT.GPGen
         {
             if (item.pos < item.production.rhs.Count)
             {
-                Symbol rhs = item.production.rhs[item.pos];
+                ISymbol rhs = item.production.rhs[item.pos];
                 NonTerminal nonTerm = rhs as NonTerminal;
                 if (nonTerm != null)
                 {
@@ -83,7 +83,7 @@ namespace QUT.GPGen
         }
 
 
-        internal void AddGoto(Symbol s, AutomatonState next)
+        internal void AddGoto(ISymbol s, AutomatonState next)
         {
             this.Goto[s] = next;
             Terminal term = s as Terminal;

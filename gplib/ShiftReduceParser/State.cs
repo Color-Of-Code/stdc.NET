@@ -10,7 +10,7 @@ namespace QUT.Gplib
     /// Encapsulated state for the parser.
     /// Opaque to users, visible to the tool-generated code.
     /// </summary>
-    public class State
+    public class State: IState
     {
         /// <summary>
         /// The number of states in the automaton.

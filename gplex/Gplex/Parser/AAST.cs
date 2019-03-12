@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using QUT.Gplex;
 using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
@@ -17,9 +18,9 @@ namespace QUT.Gplex.Parser
     /// This class represents the Attributed Abstract Syntax Tree
     /// corresponding to an input LEX file.
     /// </summary>
-    public sealed class AAST
+    public sealed class AAST : IAbstractSyntaxTree
     {
-        internal QUT.Gplex.Lexer.Scanner scanner;
+        internal Lexer.Scanner scanner;
         internal ErrorHandler hdlr;
 
         internal IList<LexSpan> usingStrs = new List<LexSpan>();  // "using" dotted names
