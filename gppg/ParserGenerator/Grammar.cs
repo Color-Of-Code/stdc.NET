@@ -175,12 +175,11 @@ namespace QUT.GPGen
                     NonTerminal nonTerm = kvp.Value;
                     if (!nonTerm.IsTerminating)
                     {
-                        foreach (Production prod in nonTerm.productions)
-                            if (ProductionTerminates(prod))
-                            {
-                                nonTerm.IsTerminating = true;
-                                changed = true;
-                            }
+                        foreach (Production prod in nonTerm.productions.Where(x => x.Terminates()))
+                        {
+                            nonTerm.IsTerminating = true;
+                            changed = true;
+                        }
                         if (!nonTerm.IsTerminating)
                             nonTerminatingCount++;
                     }
@@ -206,14 +205,6 @@ namespace QUT.GPGen
             }
         }
 
-        // terminates if all non terminal symbols terminate
-        private static bool ProductionTerminates(Production thisProd)
-        {
-            return thisProd.rhs
-                .Where(x => x is NonTerminal)
-                .All(x => (x as NonTerminal).IsTerminating);
-        }
-
         //
         // NonTerminals that are non-terminating are usually so because
         // they depend on other NonTerms that are themselves non-terminating.
@@ -225,12 +216,12 @@ namespace QUT.GPGen
             int count = 0;
             // ntStack is the working stack used to find Strongly Connected 
             // Components, hereafter referred to as SCC.
-            Stack<NonTerminal> ntStack = new Stack<NonTerminal>();
+            var ntStack = new Stack<NonTerminal>();
 
             // candidates is the list of states that *might* be to blame.
             // These are two groups: leaves of the dependency graph, and
             // NonTerminals that fix up a complete SCC
-            List<NonTerminal> candidates = new List<NonTerminal>();
+            var candidates = new List<NonTerminal>();
             foreach (NonTerminal nt in ntDependencies)
             {
                 if (nt.dependsOnList.Count == 0)
@@ -264,7 +255,7 @@ namespace QUT.GPGen
                 popped.depth = finishMark;
                 if (popped != node)
                 {
-                    List<NonTerminal> SCC = new List<NonTerminal>();
+                    var SCC = new List<NonTerminal>();
                     SCC.Add(popped);
                     do
                     {
@@ -345,19 +336,15 @@ namespace QUT.GPGen
             {
                 count = 0;
                 changed = false;
-                foreach (NonTerminal nt in thisTestConfig)
+                foreach (NonTerminal nt in thisTestConfig.Where(x=> !x.IsTerminating))
                 {
-                    if (!nt.IsTerminating)
+                    foreach (Production prod in nt.productions.Where(x => x.Terminates()))
                     {
-                        foreach (Production prod in nt.productions)
-                            if (ProductionTerminates(prod))
-                            {
-                                nt.IsTerminating = true;
-                                changed = true;
-                            }
-                        if (!nt.IsTerminating)
-                            count++;
+                        nt.IsTerminating = true;
+                        changed = true;
                     }
+                    if (!nt.IsTerminating)
+                        count++;
                 }
             }
             while (changed);
@@ -385,7 +372,7 @@ namespace QUT.GPGen
                 changed = false;
                 foreach (NonTerminal nt in thisTestConfig.Where(x => !x.IsTerminating))
                 {
-                    foreach (Production prod in nt.productions.Where(p => ProductionTerminates(p)))
+                    foreach (Production prod in nt.productions.Where(p => p.Terminates()))
                     {
                         nt.IsTerminating = true;
                         changed = true;

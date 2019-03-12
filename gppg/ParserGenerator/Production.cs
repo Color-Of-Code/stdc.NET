@@ -2,8 +2,8 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-
 using System.Text;
+using System.Linq;
 using System.Collections.Generic;
 using QUT.Gplib;
 
@@ -37,5 +37,15 @@ namespace QUT.GPGen
                 builder.Append(ListUtilities.GetStringFromList(rhs, ", ", builder.Length));
             return builder.ToString();
         }
+
+                // terminates if all non terminal symbols terminate
+        public bool Terminates()
+        {
+            return this.rhs
+                .Where(x => x is NonTerminal)
+                .All(x => (x as NonTerminal).IsTerminating);
+        }
+
+
     }
 }
