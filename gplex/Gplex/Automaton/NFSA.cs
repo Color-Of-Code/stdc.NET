@@ -70,11 +70,11 @@ namespace QUT.Gplex.Automaton
 
                             if (tree.Operator == RegOp.LeftAnchor)     // this is a left anchored pattern
                             {
-                                nInst.AnchorState.AddEpsTrns(start);
+                                nInst.AnchorState.AddEpsilonTransition(start);
                                 tree = ((Unary)tree).Kid;
                             }
                             else                                // this is not a left anchored pattern
-                                nInst.EntryState.AddEpsTrns(start);
+                                nInst.EntryState.AddEpsilonTransition(start);
                             //
                             // Now check for right anchors, and add states as necessary.
                             //

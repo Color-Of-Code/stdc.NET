@@ -1,7 +1,7 @@
 
 namespace QUT.Gplib
 {
-    public interface ITerminalSymbol
+    public interface ITerminalSymbol : ISymbol
     {
     }
 }

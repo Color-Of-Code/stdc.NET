@@ -63,7 +63,7 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="chr">The character value</param>
         /// <param name="nxt">The destination state</param>
-        public void AddChrTrns(int chr, NState nxt)
+        public void AddChrTrnansition(int chr, NState nxt)
         {
             if (myNfaInst.Parent.task.CaseAgnostic && chr < Char.MaxValue)
             {
@@ -72,15 +72,15 @@ namespace QUT.Gplex.Automaton
                 char hi = Char.ToUpper(c);
                 if (lo != hi)
                 {
-                    AddTrns(lo, nxt);
-                    AddTrns(hi, nxt);
+                    AddTransition(lo, nxt);
+                    AddTransition(hi, nxt);
                     return;
                 }
             }
-            AddTrns(chr, nxt);
+            AddTransition(chr, nxt);
         }
 
-        private void AddTrns(int chr, NState nxt)
+        private void AddTransition(int chr, NState nxt)
         {
             if (myNfaInst.Pack)
                 chr = myNfaInst.Parent.task.partition[chr];
@@ -101,7 +101,7 @@ namespace QUT.Gplex.Automaton
             else        // state must have overlapping alternatives
             {
                 NState temp = myNfaInst.MkState();
-                this.AddEpsTrns(temp);
+                this.AddEpsilonTransition(temp);
                 temp.AddRawTransition(ord, nxt);
             }
         }
@@ -112,7 +112,7 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="cls">The transition bit array</param>
         /// <param name="nxt">The destination state</param>
-        private void AddClsTrans(BitArray cls, NState nxt)
+        private void AddClsTransition(BitArray cls, NState nxt)
         {
             for (int i = 0; i < cls.Count; i++)
                 if (cls[i]) AddRawTransition(i, nxt);
@@ -150,14 +150,14 @@ namespace QUT.Gplex.Automaton
                 if (leaf.rangeLit.list.IsInverted)
                     cls = cls.Not();
             }
-            AddClsTrans(cls, nxt);
+            AddClsTransition(cls, nxt);
         }
 
         /// <summary>
         /// Add an epsilon transition from "this" to "nxt"
         /// </summary>
         /// <param name="nxt">Destination state</param>
-        public void AddEpsTrns(NState nxt)
+        public void AddEpsilonTransition(NState nxt)
         {
             int count = epsilons.Count;
             if (count < myNfaInst.MaxEps) epsilons.Length = myNfaInst.MaxEps;

@@ -1,7 +1,8 @@
 
 namespace QUT.Gplib
 {
-    public interface INonTerminalSymbol
+    public interface INonTerminalSymbol : ISymbol
     {
+        // bool reached { get; set; }
     }
 }

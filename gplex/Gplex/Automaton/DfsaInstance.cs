@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Automaton
 {
@@ -15,7 +16,7 @@ namespace QUT.Gplex.Automaton
     /// one or more left-anchored pattern, then there will be an
     /// anchor start state as well.
     /// </summary>
-    public class DfsaInstance
+    public class DfsaInstance : IStateMachine
     {
         internal int instNext;                     // number of next state to be allocated
         internal int acceptCount;

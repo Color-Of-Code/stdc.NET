@@ -13,7 +13,7 @@ namespace QUT.Gplex.Automaton
     /// begin on a given start condition. Each NfsaInstance may have two "start"
     /// states, corresponding to the anchored and unanchored pattern starts.
     /// </summary>
-    public class NfsaInstance
+    public class NfsaInstance : IStateMachine
     {
         const int defN = 32;
         internal string key;
@@ -69,7 +69,7 @@ namespace QUT.Gplex.Automaton
         internal NState MkState(NState entryState)
         {
             NState s = MkState();
-            s.AddEpsTrns(entryState);
+            s.AddEpsilonTransition(entryState);
             return s;
         }
 
@@ -146,10 +146,10 @@ namespace QUT.Gplex.Automaton
                         case RegOp.Alternation:
                             tmp1 = MkState();
                             MakePath(binNode.LeftKid, startState, tmp1);
-                            tmp1.AddEpsTrns(endState);
+                            tmp1.AddEpsilonTransition(endState);
                             tmp1 = MkState();
                             MakePath(binNode.RightKid, startState, tmp1);
-                            tmp1.AddEpsTrns(endState);
+                            tmp1.AddEpsilonTransition(endState);
                             break;
                     }
                     break;
@@ -165,7 +165,7 @@ namespace QUT.Gplex.Automaton
                             if (unaryNode.MinimumOfRepetitions == 0)
                             {
                                 tmp1 = MkState();
-                                startState.AddEpsTrns(tmp1);
+                                startState.AddEpsilonTransition(tmp1);
                             }
                             else
                             {
@@ -178,8 +178,8 @@ namespace QUT.Gplex.Automaton
                                 }
                             }
                             MakePath(unaryNode.Kid, tmp1, tmp2);
-                            tmp2.AddEpsTrns(tmp1);
-                            tmp1.AddEpsTrns(endState);
+                            tmp2.AddEpsilonTransition(tmp1);
+                            tmp1.AddEpsilonTransition(endState);
                             break;
                         case RegOp.FiniteRepetition:
                             {
@@ -190,13 +190,13 @@ namespace QUT.Gplex.Automaton
                                     MakePath(unaryNode.Kid, dummy, tmp1);
                                     dummy = tmp1;
                                 }
-                                tmp1.AddEpsTrns(endState);
+                                tmp1.AddEpsilonTransition(endState);
                                 for (int i = unaryNode.MinimumOfRepetitions; i < unaryNode.MaximumOfRepetitions; i++)
                                 {
                                     tmp1 = MkState();
                                     MakePath(unaryNode.Kid, dummy, tmp1);
                                     dummy = tmp1;
-                                    dummy.AddEpsTrns(endState);
+                                    dummy.AddEpsilonTransition(endState);
                                 }
                             }
                             break;
@@ -219,7 +219,7 @@ namespace QUT.Gplex.Automaton
                                 NState dummy = startState;
                                 // Need to deal with special case of empty string
                                 if (text.Length == 0)
-                                    dummy.AddEpsTrns(endState);
+                                    dummy.AddEpsilonTransition(endState);
                                 else
                                 {
                                     //  This code is complicated by the fact that unicode
@@ -234,18 +234,18 @@ namespace QUT.Gplex.Automaton
                                     while (next >= 0)
                                     {
                                         tmp1 = MkState();
-                                        dummy.AddChrTrns(code, tmp1);
+                                        dummy.AddChrTrnansition(code, tmp1);
                                         dummy = tmp1;
                                         code = next;
                                         next = CharacterUtilities.CodePoint(text, ref index);
                                     }
                                     // Postcondition ==> "code" is the last char.
-                                    dummy.AddChrTrns(code, endState);
+                                    dummy.AddChrTrnansition(code, endState);
                                 }
                             }
                             break;
                         case RegOp.Primitive:
-                            startState.AddChrTrns(leafNode.chVal, endState);
+                            startState.AddChrTrnansition(leafNode.chVal, endState);
                             break;
 
                         case RegOp.CharacterClass:
