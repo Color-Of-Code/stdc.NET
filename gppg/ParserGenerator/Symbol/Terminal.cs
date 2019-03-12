@@ -7,7 +7,7 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class Terminal : Symbol
+    internal class Terminal : Symbol, ITerminalSymbol
     {
         // TODO: these globals hinder running parsers in parallel
         private static int _count;

@@ -3,11 +3,11 @@
 // (see accompanying GPPGcopyright.rtf)
 
 
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class Reduce : ParserAction
+    internal class Reduce : IParserAction
     {
         internal ProductionItem item;
 
@@ -21,7 +21,7 @@ namespace QUT.GPGen
             return $"reduce using rule {item.production.num} ({item.production.lhs})";
         }
 
-        internal override int ToNum()
+        public int ToNum()
         {
             return -item.production.num;
         }

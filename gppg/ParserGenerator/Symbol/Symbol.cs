@@ -2,9 +2,11 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
+using QUT.Gplib;
+
 namespace QUT.GPGen
 {
-    internal abstract class Symbol
+    internal abstract class Symbol : ISymbol
     {
         private string _name;
         internal string kind;

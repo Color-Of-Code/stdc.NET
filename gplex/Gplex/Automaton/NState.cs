@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Automaton
 {
@@ -17,7 +18,7 @@ namespace QUT.Gplex.Automaton
     /// We want to go "for every epsilon do"
     /// and also do bitwise boolean ops.
     /// </summary>
-    public class NState
+    public class NState : IState
     {
         private static uint nextSN;
 

@@ -5,11 +5,11 @@
 
 
 using System.Collections.Generic;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class NonTerminal : Symbol
+    internal class NonTerminal : Symbol, INonTerminalSymbol
     {
         internal bool reached;
 

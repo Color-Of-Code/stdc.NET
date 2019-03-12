@@ -5,11 +5,11 @@
 
 using System.Text;
 using System.Collections.Generic;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class Production
+    internal class Production : IProductionRule
     {
         internal int num;
         internal NonTerminal lhs;

@@ -18,7 +18,7 @@ namespace QUT.Gplex.Automaton
     /// That is: there is only one DFSA object with one or
     /// more DfsaInstance objects in the "dfas" field.
     /// </summary>
-    internal class DFSA
+    internal class DFSA : IStateMachine
     {
         public const int unset = -1;
         public const int gotoStart = -1;

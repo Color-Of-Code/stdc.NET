@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Automaton
 {
@@ -13,7 +14,7 @@ namespace QUT.Gplex.Automaton
     /// sorted according to global ordinal number AFTER
     /// the global numbers have been allocated.
     /// </summary>
-    public class DState : IComparable<DState>
+    public class DState : IComparable<DState>, IState
     {
         static uint nextSN = 1;                // Counter for serial number allocation
 

@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 using System.Text;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
@@ -20,7 +20,7 @@ namespace QUT.GPGen
         internal IDictionary<Symbol, AutomatonState> Goto = new Dictionary<Symbol, AutomatonState>();
         internal SetCollection<Terminal> terminalTransitions = new SetCollection<Terminal>();
         internal IDictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
-        internal IDictionary<Terminal, ParserAction> parseTable = new Dictionary<Terminal, ParserAction>();
+        internal IDictionary<Terminal, IParserAction> parseTable = new Dictionary<Terminal, IParserAction>();
 
         internal IList<Symbol> shortestPrefix;
         internal IList<AutomatonState> statePath;

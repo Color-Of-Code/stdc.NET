@@ -5,10 +5,11 @@
 using System;
 using System.Collections.Generic;
 using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Automaton
 {
-    public class NFSA
+    public class NFSA : IStateMachine
     {
         internal TaskState task;
 

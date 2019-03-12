@@ -13,7 +13,7 @@ using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class Grammar
+    internal class Grammar : IGrammar
     {
         internal const string DefaultValueTypeName = "ValueType";
         internal const int LineLength = 80;
@@ -558,7 +558,7 @@ namespace QUT.GPGen
             return builder.ToString();
         }
 
-        static string ActionToString(ParserAction action)
+        static string ActionToString(IParserAction action)
         {
             string result = null;
             Shift shift = action as Shift;

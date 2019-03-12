@@ -3,16 +3,15 @@
 // (see accompanying GPPGcopyright.rtf)
 
 
-
 using System;
 using System.Text;
 using QUT.GPGen.Parser;
 using System.Globalization;
-
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
-    internal class SemanticAction
+    internal class SemanticAction : ISemanticAction
     {
         private Production production;
         private int pos;

@@ -3,11 +3,12 @@
 // (see accompanying GPPGcopyright.rtf)
 
 
+using QUT.Gplib;
 
 
 namespace QUT.GPGen
 {
-    internal class Shift : ParserAction
+    internal class Shift : IParserAction
     {
         internal AutomatonState next;
 
@@ -21,7 +22,7 @@ namespace QUT.GPGen
             return $"shift, and go to state {next.num}";
         }
 
-        internal override int ToNum()
+        public int ToNum()
         {
             return next.num;
         }
