@@ -16,8 +16,8 @@
 %partial
 %union { public int iVal; 
          public List<string> stringList;
-         public List<TokenInfo> tokenList;
-         public TokenInfo tokenInfo; 
+         public List<IToken> tokenList;
+         public IToken tokenInfo; 
          public Production prod;
          public ActionProxy proxy;
        }
@@ -172,7 +172,7 @@ Kind
     
 TokenList
     : TokenDecl         {
-                          $$ = new List<TokenInfo>();
+                          $$ = new List<IToken>();
                           $$.Add($1);
                         }
     | TokenList CommaOpt TokenDecl

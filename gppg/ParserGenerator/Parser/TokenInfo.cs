@@ -8,16 +8,16 @@ namespace QUT.GPGen.Parser
 {
     internal class TokenInfo : IToken
     {
-        public string name { get; private set; }
-        public string alias { get; private set; }
+        public string Name { get; private set; }
+        public string Alias { get; private set; }
 
         // This constructor ignores explicit numeric value declarations
         // This might change later ...
-        internal TokenInfo(LexSpan name, LexSpan alias)
+        internal TokenInfo(ISpan name, ISpan alias)
         {
-            this.name = name.ToString();
+            this.Name = name.ToString();
             if (alias != null)
-                this.alias = alias.ToString();
+                this.Alias = alias.ToString();
         }
     }
 

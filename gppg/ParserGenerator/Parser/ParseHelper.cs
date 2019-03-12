@@ -60,12 +60,12 @@ namespace QUT.GPGen.Parser
 
 
 
-        private void DeclareTokens(PrecedenceType prop, string kind, List<TokenInfo> list)
+        private void DeclareTokens(PrecedenceType prop, string kind, IEnumerable<IToken> list)
         {
             grammar.BumpPrec();
-            foreach (TokenInfo info in list) {
-                Token token = (IsLitChar(info.name) ? Token.litchar : Token.ident);
-                Terminal t = grammar.LookupOrDefineTerminal(token, info.name, info.alias);
+            foreach (IToken info in list) {
+                Token token = (IsLitChar(info.Name) ? Token.litchar : Token.ident);
+                Terminal t = grammar.LookupOrDefineTerminal(token, info.Name, info.Alias);
                 if (prop != PrecedenceType.token)
                     t.prec = new Precedence(prop, grammar.Prec);
                 if (!String.IsNullOrEmpty(kind))
