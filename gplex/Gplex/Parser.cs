@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.0.0.0
-// Machine:  dehaan
-// DateTime: 2019-03-09T20:28:08Z
-// UserName: jaap
-// Input file <gplex.y - 2019-03-09T08:47:10Z>
+// Machine:  gest4425
+// DateTime: 2019-03-12T10:51:29Z
+// UserName: jdehaan
+// Input file <gplex.y - 2019-03-12T11:50:38Z>
 
 // options: no-lines gplex
 
@@ -515,7 +515,7 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
         break;
       case 62: // Production -> ARule
 {
-			                    int thisLine = LocationStack[LocationStack.Depth-1].startLine;
+			                    int thisLine = LocationStack[LocationStack.Depth-1].StartLine;
 			                    rb.LLine = thisLine;
 			                    if (rb.FLine == 0) rb.FLine = thisLine;
 		                      }
@@ -527,7 +527,7 @@ internal partial class Parser: ShiftReduceParser<int, LexSpan>
         break;
       case 64: // PatActionList -> /* empty */
 { 
-                                int thisLine = CurrentLocationSpan.startLine;
+                                int thisLine = CurrentLocationSpan.StartLine;
 			                    rb.LLine = thisLine;
 			                    if (rb.FLine == 0) 
 			                        rb.FLine = thisLine;

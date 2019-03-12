@@ -20,7 +20,7 @@ namespace QUT.Gplex.Automaton
     /// Studio, by contrast, there is no task state and Parse is called
     /// from the managed babel wrapper.
     /// </summary>
-	internal class TaskState : IDisposable
+	public class TaskState : IDisposable
     {
         internal const int minGplexxVersion = 285;
 

@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-09T07:13:57Z
-//  UserName: jaap
-//  GPLEX input file <ScanAction.lex - 1/6/19 10:30:04 PM>
+//  Machine:  gest4425
+//  DateTime: 2019-03-12T10:51:44Z
+//  UserName: jdehaan
+//  GPLEX input file <ScanAction.lex - 3/12/19 11:50:59 AM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: verbose, noParser, noFiles, minimize
@@ -834,8 +834,8 @@ internal static void CheckSpan(int len, LexSpan span, ErrorHandler hdlr)
         scnr.length = len;
         scnr.src = span;
         scnr.handler = hdlr;
-        scnr.lineNo = span.startLine;
-        scnr.colNo = span.startColumn;
+        scnr.lineNo = span.StartLine;
+        scnr.colNo = span.StartColumn;
         scnr.yylex();
     }
     

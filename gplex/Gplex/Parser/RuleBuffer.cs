@@ -27,9 +27,9 @@ namespace QUT.Gplex.Parser
         {
             foreach (LexSpan loc in locs)
             {
-                if (loc.startLine < FLine)
+                if (loc.StartLine < FLine)
                     aast.AddCodeSpan(Destination.scanProlog, loc);
-                else if (loc.startLine > LLine)
+                else if (loc.StartLine > LLine)
                     aast.AddCodeSpan(Destination.scanEpilog, loc);
                 else // code is between rules
                     aast.hdlr.ListError(loc, 110);

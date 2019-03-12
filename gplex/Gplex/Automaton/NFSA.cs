@@ -8,11 +8,11 @@ using QUT.Gplex.Parser;
 
 namespace QUT.Gplex.Automaton
 {
-    partial class NFSA
+    public class NFSA
     {
-        TaskState task;
+        internal TaskState task;
 
-        public NfsaInstance[] nfas;
+        internal NfsaInstance[] nfas;
 
         /// <summary>
         /// This dictionary provides a mapping from 

@@ -180,7 +180,7 @@ namespace QUT.GPGen.Parser
             for (eNum = 0; eNum < _errors.Count; eNum++)
             {
                 Error errN = _errors[eNum];
-                eLin = errN.Span.startLine;
+                eLin = errN.Span.StartLine;
                 if (eLin > currentLine)
                 {
                     //
@@ -226,19 +226,19 @@ namespace QUT.GPGen.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (errN.Span.endColumn > 3 && errN.Span.startColumn < 80)
+                if (errN.Span.EndColumn > 3 && errN.Span.StartColumn < 80)
                 {
                     if (currentCol == 0)
                     {
                         sWrtr.Write("//");
                         currentCol = 2;
                     }
-                    if (errN.Span.startColumn > currentCol)
+                    if (errN.Span.StartColumn > currentCol)
                     {
-                        Spaces(sWrtr, errN.Span.startColumn - currentCol - 1);
-                        currentCol = errN.Span.startColumn - 1;
+                        Spaces(sWrtr, errN.Span.StartColumn - currentCol - 1);
+                        currentCol = errN.Span.StartColumn - 1;
                     }
-                    for (; currentCol < errN.Span.endColumn && currentCol < 80; currentCol++ )
+                    for (; currentCol < errN.Span.EndColumn && currentCol < 80; currentCol++ )
                         sWrtr.Write('^'); 
                 }
             }
@@ -332,7 +332,7 @@ namespace QUT.GPGen.Parser
             //  Now, for each error do
             //
             for (eNum = 0; eNum < _errors.Count; eNum++) {
-                eLin = _errors[eNum].Span.startLine;
+                eLin = _errors[eNum].Span.StartLine;
                 if (eLin > currentLine) {
                     //
                     // Spill all the waiting messages
@@ -377,14 +377,14 @@ namespace QUT.GPGen.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (_errors[eNum].Span.startColumn >= 0 && _errors[eNum].Span.startColumn < 75) {
+                if (_errors[eNum].Span.StartColumn >= 0 && _errors[eNum].Span.StartColumn < 75) {
                     if (currentCol == 0) {
                         wrtr.Write("-----");
                     }
-                    for (int i = currentCol; i < _errors[eNum].Span.startColumn - 1; i++, currentCol++) {
+                    for (int i = currentCol; i < _errors[eNum].Span.StartColumn - 1; i++, currentCol++) {
                         wrtr.Write('-');
                     } 
-                    for ( ; currentCol < _errors[eNum].Span.endColumn && currentCol < 75; currentCol++)
+                    for ( ; currentCol < _errors[eNum].Span.EndColumn && currentCol < 75; currentCol++)
                         wrtr.Write('^');
                 }
             }

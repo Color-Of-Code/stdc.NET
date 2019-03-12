@@ -13,7 +13,7 @@ namespace QUT.Gplex.Parser
     /// unary trees (closure, finite repetition and anchored patterns)
     /// leaf nodes (chars, char classes, literal strings and the eof marker)
     /// </summary>
-    internal abstract class RegExTree
+    public abstract class RegExTree
     {
         public RegOp Operator { get; private set; }
 

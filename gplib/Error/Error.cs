@@ -32,13 +32,13 @@ namespace QUT.Gplib
 
         public int CompareTo(Error r)
         {
-            if (Span.startLine < r.Span.startLine) return -1;
+            if (Span.StartLine < r.Span.StartLine) return -1;
             
-            if (Span.startLine > r.Span.startLine) return 1;
+            if (Span.StartLine > r.Span.StartLine) return 1;
             
-            if (Span.startColumn < r.Span.startColumn) return -1;
+            if (Span.StartColumn < r.Span.StartColumn) return -1;
             
-            if (Span.startColumn > r.Span.startColumn) return 1;
+            if (Span.StartColumn > r.Span.StartColumn) return 1;
             
             return 0;
         }

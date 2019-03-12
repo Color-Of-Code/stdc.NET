@@ -17,7 +17,7 @@ namespace QUT.Gplex.Parser
     /// This class represents the Attributed Abstract Syntax Tree
     /// corresponding to an input LEX file.
     /// </summary>
-    internal sealed partial class AAST
+    public sealed class AAST
     {
         internal QUT.Gplex.Lexer.Scanner scanner;
         internal ErrorHandler hdlr;

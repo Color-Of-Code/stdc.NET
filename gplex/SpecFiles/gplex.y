@@ -159,7 +159,7 @@ Rule
     
 Production
     :  ARule                  {
-			                    int thisLine = @1.startLine;
+			                    int thisLine = @1.StartLine;
 			                    rb.LLine = thisLine;
 			                    if (rb.FLine == 0) rb.FLine = thisLine;
 		                      }
@@ -173,7 +173,7 @@ ProductionGroup
     
 PatActionList
     : /* empty */             { 
-                                int thisLine = @$.startLine;
+                                int thisLine = @$.StartLine;
 			                    rb.LLine = thisLine;
 			                    if (rb.FLine == 0) 
 			                        rb.FLine = thisLine;

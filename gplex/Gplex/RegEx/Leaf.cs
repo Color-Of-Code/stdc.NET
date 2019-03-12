@@ -7,7 +7,7 @@
 namespace QUT.Gplex.Parser
 {
     // CharacterClass, EOF, StringLiteral, Primitive
-    internal class Leaf : RegExTree
+    public class Leaf : RegExTree
     {
 
         internal int chVal;     // in case of primitive char

@@ -7,9 +7,9 @@ namespace QUT.Gplib
 {
     public interface ISpan
     {
-        int startLine { get; }
-        int startColumn { get; }
-        int endLine { get; }
-        int endColumn { get; }
+        int StartLine { get; }
+        int StartColumn { get; }
+        int EndLine { get; }
+        int EndColumn { get; }
     }
 }

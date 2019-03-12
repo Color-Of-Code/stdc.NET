@@ -9,7 +9,7 @@ namespace QUT.Gplex.Automaton
     internal class PartitionBlock
     {
         internal PartitionBlock twinBlk;       //  During a split, the two fragments reference each other.
-        internal LinkedList<DFSA.DState> members;
+        internal LinkedList<DState> members;
 
         //  Number of symbols left on the "pair-list" for this block.
         public int SymbolsLeft { get; set; }
@@ -18,13 +18,13 @@ namespace QUT.Gplex.Automaton
         //  Number of predecessors from the current generation.
         public int PredCount { get; set; }
         public int MemberCount { get { return members.Count; } }
-        public DFSA.DState FirstMember { get { return members.First.Value; } }
+        public DState FirstMember { get { return members.First.Value; } }
 
         /// <summary>
         /// Add the given node to the linked list
         /// </summary>
         /// <param name="node"></param>
-        private void AddNode(LinkedListNode<DFSA.DState> node)
+        private void AddNode(LinkedListNode<DState> node)
         {
             this.members.AddLast(node);
         }
@@ -33,9 +33,9 @@ namespace QUT.Gplex.Automaton
         /// Add a new node to the list, with value given by the dSt
         /// </summary>
         /// <param name="dSt"></param>
-        internal void AddState(DFSA.DState dSt)
+        internal void AddState(DState dSt)
         {
-            var node = new LinkedListNode<DFSA.DState>(dSt);
+            var node = new LinkedListNode<DState>(dSt);
             dSt.listNode = node;
             this.members.AddLast(node);
         }
@@ -45,7 +45,7 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="dSt">value to be moved</param>
         /// <param name="blk">destination partition</param>
-        internal void MoveMember(DFSA.DState dSt, PartitionBlock blk)
+        internal void MoveMember(DState dSt, PartitionBlock blk)
         {
             // Assert: dSt must belong to LinkedList this.members
             var node = dSt.listNode;
@@ -57,7 +57,7 @@ namespace QUT.Gplex.Automaton
         internal PartitionBlock(int symbolCardinality)
         {
             SymbolsLeft = symbolCardinality;            // Default cardinality of symbol alphabet.
-            members = new LinkedList<DFSA.DState>();
+            members = new LinkedList<DState>();
         }
     }
 }

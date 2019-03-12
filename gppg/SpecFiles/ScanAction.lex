@@ -89,8 +89,8 @@ kind     <{kindChrs}+>
         scnr.length = len;
         scnr.src = span;
         scnr.handler = hdlr;
-        scnr.lineNo = span.startLine;
-        scnr.colNo = span.startColumn;
+        scnr.lineNo = span.StartLine;
+        scnr.colNo = span.StartColumn;
         scnr.yylex();
     }
     

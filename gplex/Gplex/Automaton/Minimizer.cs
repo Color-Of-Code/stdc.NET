@@ -57,13 +57,13 @@ namespace QUT.Gplex.Automaton
         /// time as the initial partition is performed.
         /// </summary>
         /// <param name="list">The list of all DStates</param>
-        internal void PopulatePartitions(IList<DFSA.DState> list)
+        internal void PopulatePartitions(IList<DState> list)
         {
             PartitionBlock blk = null;
             dfsa.origLength = list.Count;
             for (int i = 1; i < list.Count; i++)
             {
-                DFSA.DState dSt = list[i];
+                DState dSt = list[i];
                 if (dSt.accept != null)
                     blk = FindPartition(dSt);
                 else if (dSt.isStart)
@@ -75,7 +75,7 @@ namespace QUT.Gplex.Automaton
                 // now create the inverse transition function
                 for (int j = 0; j < dfsa.MaxSym; j++)
                 {
-                    DFSA.DState pred = dSt.GetNext(j);
+                    DState pred = dSt.GetNext(j);
                     if (pred != null) pred.AddPredecessor(dSt, j);
                 }
             }
@@ -98,7 +98,7 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="dSt"></param>
         /// <returns></returns>
-        PartitionBlock FindPartition(DFSA.DState dSt)
+        PartitionBlock FindPartition(DState dSt)
         {
             foreach (PartitionBlock blk in acceptStates)
             {
@@ -114,7 +114,7 @@ namespace QUT.Gplex.Automaton
                 //  If the first state in the partition has both lengths fixed
                 //  we must choose one or the other backup action, and only add 
                 //  other states that are compatible with that choice.
-                DFSA.DState first = blk.FirstMember;
+                DState first = blk.FirstMember;
                 if (DFSA.SpansEqual(first.accept.aSpan, dSt.accept.aSpan))
                     if (!first.HasRightContext && !dSt.HasRightContext)
                         return blk;
@@ -138,7 +138,7 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="dSt">The state to be mapped</param>
         /// <returns>The replacement state</returns>
-        internal static DFSA.DState PMap(DFSA.DState dSt)
+        internal static DState PMap(DState dSt)
         {
             PartitionBlock blk = dSt.block as PartitionBlock;
             if (blk.MemberCount == 1) return dSt;
@@ -171,20 +171,20 @@ namespace QUT.Gplex.Automaton
                     continue;                 // Go around again to get new block.
                 }
                 generation++;
-                var predSet = new List<DFSA.DState>();
+                var predSet = new List<DState>();
                 //
                 // Form a set of all those states that have a
                 // next-state in "blk" on symbol "sym".
                 // Note that despite the nested loops the 
                 // complexity is only N == number of states.
                 //
-                foreach (DFSA.DState dSt in blk.members)
+                foreach (DState dSt in blk.members)
                 {
                     if (dSt.HasPredecessors())
                     {
                         var prds = dSt.GetPredecessors(sym);
                         if (prds != null && prds.Any())
-                            foreach (DFSA.DState pSt in prds)
+                            foreach (DState pSt in prds)
                                 // The same predecessor state might appear on the
                                 // list for more than one state of the blk.members.
                                 // States should only appear once in the predSet "set"
@@ -210,7 +210,7 @@ namespace QUT.Gplex.Automaton
                 if (predSet.Count != 0)
                 {
                     var splits = new List<PartitionBlock>();
-                    foreach (DFSA.DState lSt in predSet)
+                    foreach (DState lSt in predSet)
                     {
                         PartitionBlock tBlk = null;
                         PartitionBlock lBlk = (lSt.block as PartitionBlock);

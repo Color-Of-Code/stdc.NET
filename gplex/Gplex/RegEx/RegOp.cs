@@ -6,7 +6,7 @@
 
 namespace QUT.Gplex.Parser
 {
-    internal enum RegOp
+    public enum RegOp
     {
         eof,
         Context,

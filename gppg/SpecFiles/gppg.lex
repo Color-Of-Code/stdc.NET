@@ -96,7 +96,7 @@ OneLineCmnt  \/\/{DotChr}*
                              if (errStart != null) {
                                  Error(54, errStart.Merge(errEnd));
                                  errStart = null;
-                             } else if (lNum > comStart.startLine) 
+                             } else if (lNum > comStart.StartLine) 
                                  yy_pop_state();
                          }
                          /* And no token returned */ 

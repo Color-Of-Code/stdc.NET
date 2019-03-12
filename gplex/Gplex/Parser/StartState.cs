@@ -7,35 +7,35 @@ using System.Collections.Generic;
 
 namespace QUT.Gplex.Parser
 {
-    internal sealed class StartState
+    public sealed class StartState
     {
         static int next = -1;
 
-        int ord;
         //bool isExcl;
         //bool isInit;
-        bool isAll;
-        bool isDummy;
-        string name;
-        internal List<RuleDesc> rules = new List<RuleDesc>();
+        internal IList<RuleDesc> rules = new List<RuleDesc>();
 
         internal static StartState allState = new StartState("$ALL$", true);    // ord = -1
         internal static StartState initState = new StartState("INITIAL", false); // ord = 0;
 
         internal StartState(bool isDmy, string str)
         {
-            isDummy = isDmy; name = str; ord = next++;
+            IsDummy = isDmy;
+            Name = str;
+            Ord = next++;
         }
 
         StartState(string str, bool isAll)
         {
-            name = str; this.isAll = isAll; ord = next++;
+            Name = str;
+            IsAll = isAll;
+            Ord = next++;
         }
 
-        internal string Name { get { return name; } }
-        internal int Ord { get { return ord; } }
-        internal bool IsAll { get { return isAll; } }
-        internal bool IsDummy { get { return isDummy; } }
+        internal string Name { get; private set; }
+        internal int Ord { get; private set; }
+        internal bool IsAll { get; private set; }
+        internal bool IsDummy { get; private set; }
 
         internal void AddRule(RuleDesc rule)
         {

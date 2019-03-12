@@ -17,17 +17,17 @@ namespace QUT.GPGen.Parser
     /// </summary>
     internal class LexSpan : IMerge<LexSpan>, ISpan
     {
-        public int startLine { get; private set; }       // start line of span
-        public int startColumn { get; private set; }     // start column of span
-        public int endLine { get; private set; }         // end line of span
-        public int endColumn { get; private set; }       // end column of span
+        public int StartLine { get; private set; }       // start line of span
+        public int StartColumn { get; private set; }     // start column of span
+        public int EndLine { get; private set; }         // end line of span
+        public int EndColumn { get; private set; }       // end column of span
         internal int startIndex;    // start position in the buffer
         internal int endIndex;      // end position in the buffer
         internal ScanBuff buffer;   // reference to the buffer
 
         public LexSpan() { }
         public LexSpan(int sl, int sc, int el, int ec, int sp, int ep, ScanBuff bf)
-        { startLine = sl; startColumn = sc; endLine = el; endColumn = ec; startIndex = sp; endIndex = ep; buffer = bf; }
+        { StartLine = sl; StartColumn = sc; EndLine = el; EndColumn = ec; startIndex = sp; endIndex = ep; buffer = bf; }
 
         /// <summary>
         /// This method implements the IMerge interface
@@ -36,7 +36,7 @@ namespace QUT.GPGen.Parser
         /// <returns>A span from the start of 'this' to the end of 'end'</returns>
         public LexSpan Merge(LexSpan end)
         {
-            return new LexSpan(startLine, startColumn, end.endLine, end.endColumn, startIndex, end.endIndex, buffer);
+            return new LexSpan(StartLine, StartColumn, end.EndLine, end.EndColumn, startIndex, end.endIndex, buffer);
         }
 
         //internal bool IsInitialized { get { return buffer != null; } }

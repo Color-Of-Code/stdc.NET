@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-09T07:13:54Z
-//  UserName: jaap
-//  GPLEX input file <gppg.lex - 3/7/19 10:46:20 PM>
+//  Machine:  gest4425
+//  DateTime: 2019-03-12T10:51:42Z
+//  UserName: jdehaan
+//  GPLEX input file <gppg.lex - 3/12/19 11:50:43 AM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: verbose, parser, stack, minimize
@@ -1544,7 +1544,7 @@ yy_pop_state();
                              if (errStart != null) {
                                  Error(54, errStart.Merge(errEnd));
                                  errStart = null;
-                             } else if (lNum > comStart.startLine) 
+                             } else if (lNum > comStart.StartLine) 
                                  yy_pop_state();
                          }
                          /* And no token returned */

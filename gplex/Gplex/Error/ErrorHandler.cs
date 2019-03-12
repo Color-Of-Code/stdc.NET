@@ -266,7 +266,7 @@ namespace QUT.Gplex.Parser
             for (eNum = 0; eNum < _errors.Count; eNum++)
             {
                 Error errN = _errors[eNum];
-                eLin = errN.Span.startLine;
+                eLin = errN.Span.StartLine;
                 if (eLin > currentLine)
                 {
                     //
@@ -312,19 +312,19 @@ namespace QUT.Gplex.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (errN.Span.endColumn > 3 && errN.Span.startColumn < 80)
+                if (errN.Span.EndColumn > 3 && errN.Span.StartColumn < 80)
                 {
                     if (currentCol == 0)
                     {
                         streamWriter.Write("//");
                         currentCol = 2;
                     }
-                    if (errN.Span.startColumn > currentCol)
+                    if (errN.Span.StartColumn > currentCol)
                     {
-                        Spaces(streamWriter, errN.Span.startColumn - currentCol);
-                        currentCol = errN.Span.startColumn;
+                        Spaces(streamWriter, errN.Span.StartColumn - currentCol);
+                        currentCol = errN.Span.StartColumn;
                     }
-                    for (; currentCol < errN.Span.endColumn && currentCol < 80; currentCol++)
+                    for (; currentCol < errN.Span.EndColumn && currentCol < 80; currentCol++)
                         streamWriter.Write('^');
                 }
             }
@@ -401,9 +401,9 @@ namespace QUT.Gplex.Parser
                 if (buff != null)
                 {
                     builder.Append('(');
-                    builder.Append(err.Span.startLine);
+                    builder.Append(err.Span.StartLine);
                     builder.Append(',');
-                    builder.Append(err.Span.startColumn);
+                    builder.Append(err.Span.StartColumn);
                     builder.Append(')');
                 }
                 builder.Append(':');
@@ -451,7 +451,7 @@ namespace QUT.Gplex.Parser
             //
             for (eNum = 0; eNum < _errors.Count; eNum++)
             {
-                eLin = _errors[eNum].Span.startLine;
+                eLin = _errors[eNum].Span.StartLine;
                 if (eLin > currentLine)
                 {
                     //
@@ -502,17 +502,17 @@ namespace QUT.Gplex.Parser
                 //
                 //  Now emit the error message(s)
                 //
-                if (_errors[eNum].Span.startColumn >= 0 && _errors[eNum].Span.startColumn < 75)
+                if (_errors[eNum].Span.StartColumn >= 0 && _errors[eNum].Span.StartColumn < 75)
                 {
                     if (currentCol == 0)
                     {
                         wrtr.Write("-----");
                     }
-                    for (int i = currentCol; i < _errors[eNum].Span.startColumn; i++, currentCol++)
+                    for (int i = currentCol; i < _errors[eNum].Span.StartColumn; i++, currentCol++)
                     {
                         wrtr.Write('-');
                     }
-                    for (; currentCol < _errors[eNum].Span.endColumn && currentCol < 75; currentCol++)
+                    for (; currentCol < _errors[eNum].Span.EndColumn && currentCol < 75; currentCol++)
                         wrtr.Write('^');
                 }
             }

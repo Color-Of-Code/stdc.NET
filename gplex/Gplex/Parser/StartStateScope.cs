@@ -27,7 +27,6 @@ namespace QUT.Gplex.Parser
             get { return stack.Peek(); }
         }
 
-#if STATE_DIAGNOSTICS
         /// <summary>
         /// Diagnostic method for debugging GPLEX
         /// </summary>
@@ -40,7 +39,6 @@ namespace QUT.Gplex.Parser
             }
             Console.WriteLine();
         }
-#endif
 
         internal void EnterScope(IList<StartState> list)
         {

@@ -7,6 +7,7 @@
 //
 
 using QUT.Gplex.Parser;
+using System.Text;
 
 namespace QUT.Gplex.Lexer
 {
@@ -165,7 +166,7 @@ namespace QUT.Gplex.Lexer
 
         internal void Error79(LexSpan s)
         {
-            Error(79, s); 
+            Error(79, s);
             badCount++;
             if (badCount >= 3)
                 yy_push_state(SKIP);
@@ -174,7 +175,7 @@ namespace QUT.Gplex.Lexer
         internal LexSpan TokenSpan()
         { return new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer); }
 
-#if STATE_DIAGNOSTICS
+        // TODO: makes sense if STACK is defined
         public static string StateStr(int s)
         {
             switch (s)
@@ -200,13 +201,11 @@ namespace QUT.Gplex.Lexer
 
         public string StateStack(int s)
         {
-            string rslt = StateStr(s);
-            int[] arry = scStack.ToArray();
-            for (int i = 0; i < scStack.Count; i++)
-                rslt += (":" + StateStr(arry[i]));
-            return rslt;
+            var rslt = new StringBuilder(StateStr(s));
+            foreach (int v in scStack.ToArray())
+                rslt.Append(":" + StateStr(v));
+            return rslt.ToString();
         }
-#endif
 
         int depth;
         LexSpan comStart;

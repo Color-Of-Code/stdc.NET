@@ -33,7 +33,7 @@ namespace QUT.GPGen
         internal void GenerateCode(CodeGenerator codeGenerator)
         {
             int i = 0;
-            int line = codeSpan.startLine;
+            int line = codeSpan.StartLine;
             bool doLines = GPCG.Lines;
             string template = null;
 

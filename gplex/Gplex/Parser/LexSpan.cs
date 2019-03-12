@@ -14,10 +14,10 @@ namespace QUT.Gplex.Parser
 {
     internal class LexSpan : IMerge<LexSpan>, ISpan
     {
-        public int startLine { get; private set; }       // start line of span
-        public int startColumn { get; private set; }     // start column of span
-        public int endLine { get; private set; }         // end line of span
-        public int endColumn { get; private set; }       // end column of span
+        public int StartLine { get; private set; }       // start line of span
+        public int StartColumn { get; private set; }     // start column of span
+        public int EndLine { get; private set; }         // end line of span
+        public int EndColumn { get; private set; }       // end column of span
         internal int startIndex;      // start position in the buffer
         internal int endIndex;        // end position in the buffer
         internal ScanBuff buffer;     // reference to the buffer
@@ -25,10 +25,10 @@ namespace QUT.Gplex.Parser
         public LexSpan() { }
         public LexSpan(int sl, int sc, int el, int ec, int sp, int ep, ScanBuff bf)
         { 
-            startLine = sl;
-            startColumn = sc;
-            endLine = el;
-            endColumn = ec;
+            StartLine = sl;
+            StartColumn = sc;
+            EndLine = el;
+            EndColumn = ec;
             startIndex = sp;
             endIndex = ep;
             buffer = bf;
@@ -41,7 +41,7 @@ namespace QUT.Gplex.Parser
         /// <returns>A span from the start of 'this' to the end of 'end'</returns>
         public LexSpan Merge(LexSpan end)
         {
-            return new LexSpan(startLine, startColumn, end.endLine, end.endColumn, startIndex, end.endIndex, buffer);
+            return new LexSpan(StartLine, StartColumn, end.EndLine, end.EndColumn, startIndex, end.endIndex, buffer);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace QUT.Gplex.Parser
         internal LexSpan FirstLineSubSpan(int idx, int len)
         {
             return new LexSpan(
-                this.startLine, this.startColumn + idx, this.startLine, this.startColumn + idx + len,
+                this.StartLine, this.StartColumn + idx, this.StartLine, this.StartColumn + idx + len,
                 this.startIndex, this.endIndex, this.buffer);
         }
 

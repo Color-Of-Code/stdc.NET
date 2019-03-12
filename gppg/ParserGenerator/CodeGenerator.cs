@@ -446,7 +446,7 @@ namespace QUT.GPGen
         {
             if (span != null)
             {
-                int lNum = span.startLine;
+                int lNum = span.StartLine;
                 string code = span.ToString();
                 string format = null;
                 if (GPCG.Lines)
