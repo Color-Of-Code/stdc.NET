@@ -7,9 +7,6 @@ using QUT.Gplib;
 
 namespace QUT.GPGen.Parser
 {
-    // ===================================================================
-    // ===================================================================
-
     /// <summary>
     /// Objects of this class represent locations in the input text.
     /// The fields record both line:column information and also 
@@ -38,33 +35,6 @@ namespace QUT.GPGen.Parser
         {
             return new LexSpan(StartLine, StartColumn, end.EndLine, end.EndColumn, startIndex, end.endIndex, buffer);
         }
-
-        //internal bool IsInitialized { get { return buffer != null; } }
-
-        /// <summary>
-        /// Write the text of this text span to the stream
-        /// </summary>
-        /// <param name="sWtr"></param>
-        //internal void StreamDump(TextWriter sWtr)
-        //{
-        //    int savePos = buffer.Pos;
-        //    string str = buffer.GetString(startIndex, endIndex);
-
-        //    sWtr.WriteLine(str);
-        //    buffer.Pos = savePos;
-        //    sWtr.Flush();
-        //}
-
-        /// <summary>
-        /// Write the text of this text span to the console
-        /// </summary>
-        //internal void ConsoleDump()
-        //{
-        //    int savePos = buffer.Pos;
-        //    string str = buffer.GetString(startIndex, endIndex);
-        //    Console.WriteLine(str);
-        //    buffer.Pos = savePos;
-        //}
 
         public override string ToString()
         {

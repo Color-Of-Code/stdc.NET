@@ -522,7 +522,7 @@ namespace QUT.GPGen
 
             builder.AppendLine();
 
-            if (thisState.parseTable.Count > 0)
+            if (thisState.parseTable.Any())
                 builder.AppendLine(Header2("Parser Actions"));
             foreach (var a in thisState.parseTable)
             {
@@ -532,7 +532,7 @@ namespace QUT.GPGen
 
             builder.AppendLine();
 
-            if (thisState.nonTerminalTransitions.Count > 0)
+            if (thisState.nonTerminalTransitions.Any())
                 builder.AppendLine(Header2("Transitions"));
             foreach (var n in thisState.nonTerminalTransitions)
             {
