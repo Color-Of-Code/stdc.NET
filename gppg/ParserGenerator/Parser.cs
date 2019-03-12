@@ -4,9 +4,9 @@
 
 // GPPG version 1.0.0.0
 // Machine:  gest4425
-// DateTime: 2019-03-12T10:51:38Z
+// DateTime: 2019-03-12T21:45:19Z
 // UserName: jdehaan
-// Input file <gppg.y - 2019-03-11T08:01:29Z>
+// Input file <gppg.y - 2019-03-12T22:42:27Z>
 
 // options: no-lines gplex
 
@@ -29,8 +29,8 @@ internal enum Token {error=126,
 internal partial struct ValueType
 { public int iVal; 
          public List<string> stringList;
-         public List<TokenInfo> tokenList;
-         public TokenInfo tokenInfo; 
+         public List<IToken> tokenList;
+         public IToken tokenInfo; 
          public Production prod;
          public ActionProxy proxy;
        }
@@ -43,13 +43,13 @@ internal abstract class ScanBase : AbstractScanner<ValueType,LexSpan> {
 
 internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
 {
-  // Verbatim content from gppg.y - 2019-03-11T08:01:29Z
+  // Verbatim content from gppg.y - 2019-03-12T22:42:27Z
 /*
  *  Parser spec for GPPG
  *  gppg.y: Author: John Gough, August 2008
  *  Process with > GPPG /gplex /no-lines gppg.y
  */
-  // End verbatim content from gppg.y - 2019-03-11T08:01:29Z
+  // End verbatim content from gppg.y - 2019-03-12T22:42:27Z
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;
@@ -455,7 +455,7 @@ internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
         break;
       case 47: // TokenList -> TokenDecl
 {
-                          CurrentSemanticValue.tokenList = new List<TokenInfo>();
+                          CurrentSemanticValue.tokenList = new List<IToken>();
                           CurrentSemanticValue.tokenList.Add(ValueStack[ValueStack.Depth-1].tokenInfo);
                         }
         break;
