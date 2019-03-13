@@ -60,10 +60,5 @@ namespace QUT.GPGen
         {
             return Alias ?? base.ToString();
         }
-
-        internal string EnumName()
-        {
-            return base.ToString();
-        }
     }
 }

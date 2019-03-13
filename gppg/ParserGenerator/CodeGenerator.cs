@@ -191,11 +191,11 @@ namespace QUT.GPGen
                 if (!first)
                     Console.Write(",");
                 Console.WriteLine();
-                Console.Write("    {0}={1}", terminal.EnumName(), terminal.Id);
+                Console.Write("    {0}={1}", terminal.Name, terminal.Id);
                 first = false;
                 if (writer != null)
                     writer.WriteLine("\t{0}.{1} /* {2} */",
-                        grammar.TokenName, terminal.EnumName(), terminal.Id);
+                        grammar.TokenName, terminal.Name, terminal.Id);
             }
             Console.WriteLine();
             Console.WriteLine("};");
