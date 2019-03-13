@@ -279,12 +279,6 @@ namespace QUT.GPGen
             count--;
         }
 
-        // Return a new list with only the terminating (fixed) elements of the input.
-        private static IEnumerable<NonTerminal> FilterTerminatingElements(IEnumerable<NonTerminal> input)
-        {
-            return input.Where(x => x.IsTerminating());
-        }
-
         private IList<NonTerminal> BuildDependencyGraph()
         {
             var rslt = new List<NonTerminal>();
@@ -315,7 +309,7 @@ namespace QUT.GPGen
             return rslt;
         }
 
-        private static void SccExperiment(List<NonTerminal> component, List<NonTerminal> fixes)
+        private static void SccExperiment(IList<NonTerminal> component, IList<NonTerminal> fixes)
         {
             foreach (NonTerminal probe in component)
             {
@@ -328,7 +322,7 @@ namespace QUT.GPGen
             }
         }
 
-        private static void SccPropagate(NonTerminal root, List<NonTerminal> thisTestConfig, List<NonTerminal> fixes)
+        private static void SccPropagate(NonTerminal root, IList<NonTerminal> thisTestConfig, IList<NonTerminal> fixes)
         {
             int count = 0;
             bool changed = false;
@@ -380,7 +374,8 @@ namespace QUT.GPGen
                 }
             } while (changed);
 
-            var filtered = FilterTerminatingElements(thisTestConfig);
+            var filtered = thisTestConfig.Where(x => x.IsTerminating());
+;
             handler.AddWarning(String.Format(CultureInfo.InvariantCulture,
                         "Terminating {0} fixes the following size-{1} NonTerminal set{2}{{{3}}}",
                         root.ToString(),
