@@ -5,6 +5,7 @@
 
 
 using System.Collections.Generic;
+using System.Linq;
 using QUT.Gplib;
 
 namespace QUT.GPGen
@@ -37,31 +38,16 @@ namespace QUT.GPGen
             }
         }
 
-        // TODO: implement as isNullable?
-        private object isNullable;
+        private bool? _isNullable;
         public override bool IsNullable()
         {
-            if (isNullable == null)
-            {
-                isNullable = false;
-                foreach (var p in productions)
-                {
-                    bool nullable = true;
-                    foreach (ISymbol rhs in p.rhs)
-                        if (!rhs.IsNullable())
-                        {
-                            nullable = false;
-                            break;
-                        }
-                    if (nullable)
-                    {
-                        isNullable = true;
-                        break;
-                    }
-                }
-            }
+            if (_isNullable.HasValue)
+                return _isNullable.Value;
+            // needed because of recursive calls
+            _isNullable = false;
 
-            return (bool)isNullable;
+            _isNullable = productions.Any(p => p.IsNullable());
+            return _isNullable.Value;
         }
     }
 }

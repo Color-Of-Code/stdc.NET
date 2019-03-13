@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using QUT.Gplib;
+using System;
 
 namespace QUT.GPGen
 {
@@ -38,7 +39,11 @@ namespace QUT.GPGen
             return builder.ToString();
         }
 
-                // terminates if all non terminal symbols terminate
+        // is nullable if all symbols are nullable
+        public bool IsNullable()
+            => rhs.All(x => x.IsNullable());
+
+        // terminates if all non terminal symbols terminate
         public bool Terminates()
         {
             return this.rhs
