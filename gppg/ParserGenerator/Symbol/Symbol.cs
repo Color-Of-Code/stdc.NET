@@ -8,24 +8,21 @@ namespace QUT.GPGen
 {
     public abstract class Symbol : ISymbol
     {
-        private string _name;
-        public string Kind { get; internal set; }
+        public string Kind
+        { get; internal set; }
 
         // number, ordinal coding this symbol
         public abstract int Number
-        {
-            get;
-        }
+        { get; }
 
-        internal Symbol(string name)
-        {
-            _name = name;
-        }
+        public string Name
+        { get; private set; }
+
+        protected Symbol(string name)
+            => Name = name;
 
         public override string ToString()
-        {
-            return _name;
-        }
+            => Name;
 
         public abstract bool IsNullable();
     }

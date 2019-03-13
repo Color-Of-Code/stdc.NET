@@ -4,15 +4,14 @@
 
 
 using System.Collections.Generic;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {
     public sealed class StartState
     {
-        static int next = -1;
+        private static IdGenerator _ids = new IdGenerator(-1);
 
-        //bool isExcl;
-        //bool isInit;
         internal IList<RuleDesc> rules = new List<RuleDesc>();
 
         internal static StartState allState = new StartState("$ALL$", true);    // ord = -1
@@ -22,14 +21,14 @@ namespace QUT.Gplex.Parser
         {
             IsDummy = isDmy;
             Name = str;
-            Ord = next++;
+            Ord = _ids.Next();
         }
 
         StartState(string str, bool isAll)
         {
             Name = str;
             IsAll = isAll;
-            Ord = next++;
+            Ord = _ids.Next();
         }
 
         internal string Name { get; private set; }

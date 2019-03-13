@@ -19,14 +19,14 @@ namespace QUT.GPGen
         internal bool IsTerminating;
         // end
 
-        static int count;
+        private static IdGenerator _ids = new IdGenerator(1);
         private int n;
         internal IList<Production> productions = new List<Production>();
 
         internal NonTerminal(string name)
             : base(name)
         {
-            n = ++count;
+            n = _ids.Next();
         }
 
         public override int Number

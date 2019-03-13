@@ -693,10 +693,10 @@ namespace QUT.Gplex.Parser
     /// </summary>
     internal class PartitionElement
     {
-        static int nextOrd;
+        private static IdGenerator _ids = new IdGenerator();
 
         internal static void Reset()
-        { nextOrd = 0; }
+        { _ids = new IdGenerator(); }
 
         internal static PartitionElement AllChars()
         {
@@ -716,7 +716,7 @@ namespace QUT.Gplex.Parser
 
         internal PartitionElement(IList<CharRange> ranges, bool invert)
         {
-            ord = nextOrd++;
+            ord = _ids.Next();
             list = new RangeList(ranges, invert);
         }
     }

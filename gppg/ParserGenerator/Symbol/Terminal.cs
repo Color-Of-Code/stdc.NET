@@ -10,7 +10,7 @@ namespace QUT.GPGen
     internal class Terminal : Symbol, ITerminalSymbol
     {
         // TODO: these globals hinder running parsers in parallel
-        private static int _count;
+        private static IdGenerator _ids = new IdGenerator(1);
         internal static int MaxOrdinalOfCharacterLiteral { get; private set; }
 
         internal Precedence prec;
@@ -42,7 +42,7 @@ namespace QUT.GPGen
         {
             IsSymbolic = symbolic;
             if (symbolic)
-                this._number = ++_count;
+                this._number = _ids.Next();
             else
             {
                 this._number = CharacterUtilities.OrdinalOfCharacterLiteral(name, 1);

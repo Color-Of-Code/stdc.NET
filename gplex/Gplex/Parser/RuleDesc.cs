@@ -6,12 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {
     internal sealed class RuleDesc
     {
-        static int next = 1;
+        private static IdGenerator _ids = new IdGenerator(1);
         int minPatternLength;
         internal LexSpan pSpan { get; private set; }
         internal int ord { get; private set; }
@@ -64,7 +65,7 @@ namespace QUT.Gplex.Parser
             Pattern = pSpan.buffer.GetString(pSpan.startIndex, pSpan.endIndex);
             isBarAction = bar;
             list = aList;
-            ord = next++;
+            ord = _ids.Next();
         }
 
         internal static RuleDesc MkDummyRuleDesc(LexCategory cat, AAST aast)
