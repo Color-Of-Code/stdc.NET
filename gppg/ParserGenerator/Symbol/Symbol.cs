@@ -24,5 +24,7 @@ namespace QUT.GPGen
             => Name;
 
         public abstract bool IsNullable();
+
+        public abstract bool IsTerminating();
     }
 }

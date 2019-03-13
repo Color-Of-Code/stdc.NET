@@ -10,5 +10,7 @@ namespace QUT.Gplib
         string Kind { get; }
 
         bool IsNullable();
+
+        bool IsTerminating();
     }
 }

@@ -56,6 +56,11 @@ namespace QUT.GPGen
             return false;
         }
 
+        public override bool IsTerminating()
+        {
+            return true;
+        }
+
         public override string ToString()
         {
             return Alias ?? base.ToString();

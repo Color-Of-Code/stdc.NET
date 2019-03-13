@@ -43,14 +43,8 @@ namespace QUT.GPGen
         public bool IsNullable()
             => rhs.All(x => x.IsNullable());
 
-        // terminates if all non terminal symbols terminate
+        // terminates if all symbols terminate
         public bool Terminates()
-        {
-            return this.rhs
-                .Where(x => x is NonTerminal)
-                .All(x => (x as NonTerminal).IsTerminating);
-        }
-
-
+            => rhs.All(x => x.IsTerminating());
     }
 }

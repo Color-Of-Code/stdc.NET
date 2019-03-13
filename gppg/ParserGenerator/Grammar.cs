@@ -173,14 +173,14 @@ namespace QUT.GPGen
                 foreach (var kvp in this.nonTerminals)
                 {
                     NonTerminal nonTerm = kvp.Value;
-                    if (!nonTerm.IsTerminating)
+                    if (!nonTerm.IsTerminating())
                     {
-                        foreach (Production prod in nonTerm.productions.Where(x => x.Terminates()))
+                        if (nonTerm.productions.Any(x => x.Terminates()))
                         {
-                            nonTerm.IsTerminating = true;
+                            nonTerm.SetTerminating();
                             changed = true;
                         }
-                        if (!nonTerm.IsTerminating)
+                        if (!nonTerm.IsTerminating())
                             nonTerminatingCount++;
                     }
                 }
@@ -282,7 +282,7 @@ namespace QUT.GPGen
         // Return a new list with only the terminating (fixed) elements of the input.
         private static IEnumerable<NonTerminal> FilterTerminatingElements(IEnumerable<NonTerminal> input)
         {
-            return input.Where(x => x.IsTerminating);
+            return input.Where(x => x.IsTerminating());
         }
 
         private IList<NonTerminal> BuildDependencyGraph()
@@ -292,7 +292,7 @@ namespace QUT.GPGen
             {
                 NonTerminal nonTerm = kvp.Value;
                 NonTerminal dependency = null;
-                if (!nonTerm.IsTerminating)
+                if (!nonTerm.IsTerminating())
                 {
                     rslt.Add(nonTerm);
                     nonTerm.dependsOnList = new List<NonTerminal>();
@@ -302,7 +302,7 @@ namespace QUT.GPGen
                             dependency = symbol as NonTerminal;
                             if (dependency != null &&
                                 dependency != nonTerm &&
-                                !dependency.IsTerminating &&
+                                !dependency.IsTerminating() &&
                                 !nonTerm.dependsOnList.Contains(dependency))
                             {
                                 nonTerm.depth = 0;
@@ -320,11 +320,11 @@ namespace QUT.GPGen
             foreach (NonTerminal probe in component)
             {
                 // Test what happens with probe nullable ...
-                probe.IsTerminating = true;
+                probe.SetTerminating();
                 SccPropagate(probe, component, fixes);
                 // Then reset the values of all components
                 foreach (NonTerminal element in component)
-                    element.IsTerminating = false;
+                    element.SetTerminating(false);
             }
         }
 
@@ -336,14 +336,14 @@ namespace QUT.GPGen
             {
                 count = 0;
                 changed = false;
-                foreach (NonTerminal nt in thisTestConfig.Where(x=> !x.IsTerminating))
+                foreach (NonTerminal nt in thisTestConfig.Where(x=> !x.IsTerminating()))
                 {
-                    foreach (Production prod in nt.productions.Where(x => x.Terminates()))
+                    if (nt.productions.Any(x => x.Terminates()))
                     {
-                        nt.IsTerminating = true;
+                        nt.SetTerminating();
                         changed = true;
                     }
-                    if (!nt.IsTerminating)
+                    if (!nt.IsTerminating())
                         count++;
                 }
             }
@@ -355,11 +355,11 @@ namespace QUT.GPGen
         private void LeafExperiment(NonTerminal probe, IList<NonTerminal> component)
         {
             // Test what happens with probe terminating ...
-            probe.IsTerminating = true;
+            probe.SetTerminating();
             LeafPropagate(probe, component);
             // Then reset the values of all components
             foreach (NonTerminal element in component)
-                element.IsTerminating = false;
+                element.SetTerminating(false);
         }
 
 
@@ -370,11 +370,11 @@ namespace QUT.GPGen
             do
             {
                 changed = false;
-                foreach (NonTerminal nt in thisTestConfig.Where(x => !x.IsTerminating))
+                foreach (NonTerminal nt in thisTestConfig.Where(x => !x.IsTerminating()))
                 {
-                    foreach (Production prod in nt.productions.Where(p => p.Terminates()))
+                    if (nt.productions.Any(p => p.Terminates()))
                     {
-                        nt.IsTerminating = true;
+                        nt.IsTerminating();
                         changed = true;
                     }
                 }

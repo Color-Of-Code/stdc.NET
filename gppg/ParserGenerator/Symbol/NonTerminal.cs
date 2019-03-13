@@ -4,6 +4,7 @@
 // (see accompanying GPPGcopyright.rtf)
 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using QUT.Gplib;
@@ -17,7 +18,6 @@ namespace QUT.GPGen
         // Start experimental features
         internal IList<NonTerminal> dependsOnList;
         internal int depth;
-        internal bool IsTerminating;
         // end
 
         private static IdGenerator _ids = new IdGenerator(1);
@@ -48,6 +48,17 @@ namespace QUT.GPGen
 
             _isNullable = productions.Any(p => p.IsNullable());
             return _isNullable.Value;
+        }
+
+        private bool _isTerminating;
+        public override bool IsTerminating()
+        {
+            return _isTerminating;
+        }
+
+        internal void SetTerminating(bool v = true)
+        {
+            _isTerminating = v;
         }
     }
 }
