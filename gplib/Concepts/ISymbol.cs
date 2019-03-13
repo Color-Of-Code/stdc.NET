@@ -5,7 +5,7 @@ namespace QUT.Gplib
     {
         string Name { get; }
 
-        int Number { get; }
+        int Id { get; }
 
         string Kind { get; }
 

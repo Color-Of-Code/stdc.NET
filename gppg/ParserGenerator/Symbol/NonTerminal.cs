@@ -29,7 +29,7 @@ namespace QUT.GPGen
             n = _ids.Next();
         }
 
-        public override int Number
+        public override int Id
         {
             get
             {

@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.0.0.0
-// Machine:  gest4425
-// DateTime: 2019-03-12T21:45:19Z
-// UserName: jdehaan
-// Input file <gppg.y - 2019-03-12T22:42:27Z>
+// Machine:  dehaan
+// DateTime: 2019-03-13T21:21:26Z
+// UserName: jaap
+// Input file <gppg.y - 2019-03-13T21:17:23Z>
 
 // options: no-lines gplex
 
@@ -18,13 +18,44 @@ using QUT.Gplib;
 
 namespace QUT.GPGen.Parser
 {
-internal enum Token {error=126,
-    EOF=127,codeStart=128,codeEnd=129,ident=130,anchoredSymbol=131,number=132,
-    filePath=133,litstring=134,verbatim=135,litchar=136,kwPCPC=137,kwLbrace=138,
-    kwRbrace=139,kwToken=140,kwType=141,kwLeft=142,kwRight=143,kwNonassoc=144,
-    kwPrec=145,kwStart=146,kwUnion=147,kwDefines=148,kwLocations=149,kwNamespace=150,
-    kwPartial=151,kwOutput=152,kwParsertype=153,kwTokentype=154,kwScanbasetype=155,kwUsing=156,
-    kwVisibility=157,kwYYSTYPE=158,kwYYLTYPE=159,maxParseToken=160,errTok=161};
+internal enum Token {
+    error=126,
+    EOF=127,
+    codeStart=128,
+    codeEnd=129,
+    ident=130,
+    anchoredSymbol=131,
+    number=132,
+    filePath=133,
+    litstring=134,
+    verbatim=135,
+    litchar=136,
+    kwPCPC=137,
+    kwLbrace=138,
+    kwRbrace=139,
+    kwToken=140,
+    kwType=141,
+    kwLeft=142,
+    kwRight=143,
+    kwNonassoc=144,
+    kwPrec=145,
+    kwStart=146,
+    kwUnion=147,
+    kwDefines=148,
+    kwLocations=149,
+    kwNamespace=150,
+    kwPartial=151,
+    kwOutput=152,
+    kwParsertype=153,
+    kwTokentype=154,
+    kwScanbasetype=155,
+    kwUsing=156,
+    kwVisibility=157,
+    kwYYSTYPE=158,
+    kwYYLTYPE=159,
+    maxParseToken=160,
+    errTok=161
+};
 
 internal partial struct ValueType
 { public int iVal; 
@@ -43,13 +74,13 @@ internal abstract class ScanBase : AbstractScanner<ValueType,LexSpan> {
 
 internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
 {
-  // Verbatim content from gppg.y - 2019-03-12T22:42:27Z
+  // Verbatim content from gppg.y - 2019-03-13T21:17:23Z
 /*
  *  Parser spec for GPPG
  *  gppg.y: Author: John Gough, August 2008
  *  Process with > GPPG /gplex /no-lines gppg.y
  */
-  // End verbatim content from gppg.y - 2019-03-12T22:42:27Z
+  // End verbatim content from gppg.y - 2019-03-13T21:17:23Z
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;

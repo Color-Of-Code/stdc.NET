@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.0.0.0
-// Machine:  gest4425
-// DateTime: 2019-03-12T21:45:09Z
-// UserName: jdehaan
-// Input file <gplex.y - 2019-03-12T12:15:36Z>
+// Machine:  dehaan
+// DateTime: 2019-03-13T21:21:16Z
+// UserName: jaap
+// Input file <gplex.y - 2019-03-12T21:38:44Z>
 
 // options: no-lines gplex
 
@@ -19,16 +19,63 @@ using QUT.Gplib;
 namespace QUT.Gplex.Parser
 {
 internal enum Tokens {
-    error=1,EOF=2,csKeyword=3,csIdent=4,csNumber=5,csLitstr=6,
-    csVerbstr=7,csLitchr=8,csOp=9,csBar=10,csDot=11,semi=12,
-    csStar=13,csLT=14,csGT=15,comma=16,csSlash=17,csLBrac=18,
-    csRBrac=19,csLPar=20,csRPar=21,csLBrace=22,csRBrace=23,verbatim=24,
-    pattern=25,name=26,lCond=27,rCond=28,lxLBrace=29,lxRBrace=30,
-    lxBar=31,defCommentS=32,defCommentE=33,csCommentS=34,csCommentE=35,usingTag=36,
-    namespaceTag=37,optionTag=38,charSetPredTag=39,inclTag=40,exclTag=41,lPcBrace=42,
-    rPcBrace=43,visibilityTag=44,PCPC=45,userCharPredTag=46,scanbaseTag=47,tokentypeTag=48,
-    scannertypeTag=49,lxIndent=50,lxEndIndent=51,maxParseToken=52,EOL=53,csCommentL=54,
-    errTok=55,repErr=56};
+    error=1,
+    EOF=2,
+    csKeyword=3,
+    csIdent=4,
+    csNumber=5,
+    csLitstr=6,
+    csVerbstr=7,
+    csLitchr=8,
+    csOp=9,
+    csBar=10,
+    csDot=11,
+    semi=12,
+    csStar=13,
+    csLT=14,
+    csGT=15,
+    comma=16,
+    csSlash=17,
+    csLBrac=18,
+    csRBrac=19,
+    csLPar=20,
+    csRPar=21,
+    csLBrace=22,
+    csRBrace=23,
+    verbatim=24,
+    pattern=25,
+    name=26,
+    lCond=27,
+    rCond=28,
+    lxLBrace=29,
+    lxRBrace=30,
+    lxBar=31,
+    defCommentS=32,
+    defCommentE=33,
+    csCommentS=34,
+    csCommentE=35,
+    usingTag=36,
+    namespaceTag=37,
+    optionTag=38,
+    charSetPredTag=39,
+    inclTag=40,
+    exclTag=41,
+    lPcBrace=42,
+    rPcBrace=43,
+    visibilityTag=44,
+    PCPC=45,
+    userCharPredTag=46,
+    scanbaseTag=47,
+    tokentypeTag=48,
+    scannertypeTag=49,
+    lxIndent=50,
+    lxEndIndent=51,
+    maxParseToken=52,
+    EOL=53,
+    csCommentL=54,
+    errTok=55,
+    repErr=56
+};
 
 // Abstract base class for GPLEX scanners
 internal abstract class ScanBase : AbstractScanner<int,LexSpan> {

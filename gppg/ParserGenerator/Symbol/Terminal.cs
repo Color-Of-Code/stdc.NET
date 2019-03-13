@@ -19,7 +19,7 @@ namespace QUT.GPGen
 
         internal string Alias { get; private set; }
 
-        public override int Number
+        public override int Id
         {
             get
             {

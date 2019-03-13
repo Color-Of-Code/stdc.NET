@@ -186,23 +186,18 @@ namespace QUT.GPGen
         {
             Console.Write("{0} enum {1} {{", grammar.Visibility, grammar.TokenName);
             bool first = true;
-            foreach (Terminal terminal in terminals.Values)
-                if (terminal.IsSymbolic)
-                {
-                    if (!first)
-                        Console.Write(",");
-                    if (terminal.Number % 6 == 1)
-                    {
-                        Console.WriteLine();
-                        Console.Write("    ");
-                    }
-                    Console.Write("{0}={1}", terminal.EnumName(), terminal.Number);
-                    first = false;
-                    if (writer != null)
-                        writer.WriteLine("\t{0}.{1} /* {2} */",
-                            grammar.TokenName, terminal.EnumName(), terminal.Number);
-                }
-
+            foreach (Terminal terminal in terminals.Values.Where(x => x.IsSymbolic))
+            {
+                if (!first)
+                    Console.Write(",");
+                Console.WriteLine();
+                Console.Write("    {0}={1}", terminal.EnumName(), terminal.Id);
+                first = false;
+                if (writer != null)
+                    writer.WriteLine("\t{0}.{1} /* {2} */",
+                        grammar.TokenName, terminal.EnumName(), terminal.Id);
+            }
+            Console.WriteLine();
             Console.WriteLine("};");
             Console.WriteLine();
         }
@@ -321,7 +316,7 @@ namespace QUT.GPGen
                 foreach (Terminal termWithAlias in aliasList)
                 {
                     Console.WriteLine("    aliasses.Add({0}, {1});",
-                        termWithAlias.Number,
+                        termWithAlias.Id,
                         CharacterUtilities.QuoteMap(termWithAlias.Alias));
                 }
             }
@@ -353,7 +348,7 @@ namespace QUT.GPGen
                 {
                     if (!first)
                         Console.Write(",");
-                    Console.Write("{0},{1}", transition.Key.Number, transition.Value.ToNum());
+                    Console.Write("{0},{1}", transition.Key.Id, transition.Value.ToNum());
                     first = false;
                 }
                 Console.Write('}');
@@ -367,7 +362,7 @@ namespace QUT.GPGen
                 {
                     if (!first)
                         Console.Write(",");
-                    Console.Write("{0},{1}", transition.A.Number, transition.next.num);
+                    Console.Write("{0},{1}", transition.A.Id, transition.next.num);
                     first = false;
                 }
                 Console.Write('}');
@@ -392,7 +387,7 @@ namespace QUT.GPGen
 
         private static void GenerateRule(Production production)
         {
-            Console.Write("    rules[{0}] = new Rule({1}, new int[]{{", production.num, production.lhs.Number);
+            Console.Write("    rules[{0}] = new Rule({1}, new int[]{{", production.num, production.lhs.Id);
             bool first = true;
             foreach (ISymbol sym in production.rhs)
             {
@@ -400,7 +395,7 @@ namespace QUT.GPGen
                     Console.Write(",");
                 else
                     first = false;
-                Console.Write("{0}", sym.Number);
+                Console.Write("{0}", sym.Id);
             }
             Console.WriteLine("});");
         }

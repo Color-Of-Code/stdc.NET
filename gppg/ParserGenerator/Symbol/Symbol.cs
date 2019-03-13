@@ -11,8 +11,7 @@ namespace QUT.GPGen
         public string Kind
         { get; internal set; }
 
-        // number, ordinal coding this symbol
-        public abstract int Number
+        public abstract int Id
         { get; }
 
         public string Name
