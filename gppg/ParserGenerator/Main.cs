@@ -120,14 +120,15 @@ namespace QUT.GPGen
                             {
                                 using(var htmlWriter = new StreamWriter(htmlFile))
                                 {
-                                    Grammar.HtmlHeader(htmlWriter, filename);
+                                    var reporter = new HtmlReport();
+                                    reporter.HtmlHeader(htmlWriter, filename);
 
                                     if (Report && DoDiagnose)
-                                        grammar.GenerateCompoundReport(htmlWriter, inputFileInfo, states);
+                                        reporter.GenerateCompoundReport(htmlWriter, inputFileInfo, states, grammar);
                                     else if (Report)
-                                        grammar.GenerateReport(htmlWriter, inputFileInfo, states);
+                                        reporter.GenerateReport(htmlWriter, inputFileInfo, states, grammar);
 
-                                    Grammar.HtmlTrailer(htmlWriter);
+                                    reporter.HtmlTrailer(htmlWriter);
                                 }
                             }
                         }
