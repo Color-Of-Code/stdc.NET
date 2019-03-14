@@ -27,12 +27,21 @@ namespace QUT.Gplex.Automaton
         {
             // The hash code is a word-wise XOR
             uint val = arr[0];
-            for (int i = 1; i < arr.Length; i++) val ^= arr[i];
+            for (int i = 1; i < arr.Length; i++)
+                val ^= arr[i];
             return (int)val;
         }
 
-        public void Insert(int ord) { arr[ord / 32] |= (uint)(1 << ord % 32); }
-        public bool Contains(int ord) { return (arr[ord / 32] & (uint)(1 << (ord % 32))) != 0; }
+        public void Insert(int ord)
+        {
+            arr[ord / 32] |= (uint)(1 << ord % 32);
+        }
+        
+        public bool Contains(int ord)
+        {
+            return (arr[ord / 32] & (uint)(1 << (ord % 32))) != 0;
+        }
+        
         public NEnumerator GetEnumerator()
         {
             return new NEnumerator(this.arr);

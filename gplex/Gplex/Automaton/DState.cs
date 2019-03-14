@@ -113,12 +113,12 @@ namespace QUT.Gplex.Automaton
         public IList<DState> GetPredecessors(int ord)
         {
             predecessors = predecessors ?? new List<DState>[myDfsa.MaxSym];
-            if (predecessors[ord] == null)
-                predecessors[ord] = new List<DState>();
+            predecessors[ord] = predecessors[ord] ?? new List<DState>();
             return predecessors[ord];
         }
 
-        public bool HasPredecessors() { return predecessors != null; }
+        public bool HasPredecessors()
+            => predecessors != null;
 
         public bool isStart { get { return myDfaInst.start == this; } }
 
@@ -129,19 +129,17 @@ namespace QUT.Gplex.Automaton
         /// <returns>predicate "next-state tables are equal"</returns>
         public bool EquivalentNextStates(DState other)
         {
-            if (this.DefaultNext == other.DefaultNext &&
-                this.trList.Count == other.trList.Count)
-            {
-                for (int i = 0; i < this.trList.Count; i++)
-                {
-                    int sym = this.trList[i];
-                    if (sym != other.trList[i] || this.GetNext(sym) != other.GetNext(sym))
-                        return false;
-                }
-                return true;
-            }
-            else
+            if (this.DefaultNext != other.DefaultNext ||
+                this.trList.Count != other.trList.Count)
                 return false;
+
+            for (int i = 0; i < this.trList.Count; i++)
+            {
+                int sym = this.trList[i];
+                if (sym != other.trList[i] || this.GetNext(sym) != other.GetNext(sym))
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
