@@ -16,7 +16,7 @@ namespace QUT.Gplex.Automaton
     /// </summary>
     public class DState : IComparable<DState>, IState
     {
-        static uint nextSN = 1;                // Counter for serial number allocation
+        private static IdGenerator _ids = new IdGenerator(1);                // Counter for serial number allocation
 
 
         internal int rhCntx;                            // the right context fixed length
@@ -35,20 +35,30 @@ namespace QUT.Gplex.Automaton
         internal LinkedListNode<DState> listNode;      // only used by the minimizer algorithm
         private List<DState>[] predecessors;           // inverse nextState, only used by minimizer
 
-        readonly uint serialNumber;                      // immutable value used in the dictionary key
+        readonly int serialNumber;                      // immutable value used in the dictionary key
+
+        public int num { get { return serialNumber; } }
+
+        public List<IProductionRule> kernelItems { get { return null; } }
+
         private ulong Key(int sym) { return (((ulong)serialNumber) << 22) + (uint)sym; }
 
+        private DState()
+        {
+            serialNumber = _ids.Next();
+        }
+
         internal DState(DFSA dfsa)
+            : this()
         {
             Num = DFSA.unset;
-            serialNumber = nextSN++;
             myDfsa = dfsa;
         }
 
         internal DState(DfsaInstance inst)
+            : this()
         {
             Num = DFSA.unset;
-            serialNumber = nextSN++;
             myDfaInst = inst;
             myDfsa = inst.parent;
         }

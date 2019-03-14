@@ -38,7 +38,7 @@ namespace QUT.GPGen
         }
 
 
-        internal static bool SameProductions(IEnumerable<ProductionItem> list1, IEnumerable<ProductionItem> list2)
+        internal static bool SameProductions(IEnumerable<IProductionRule> list1, IEnumerable<IProductionRule> list2)
         {
             if (list1.Count() != list2.Count())
                 return false;

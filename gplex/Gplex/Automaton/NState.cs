@@ -20,12 +20,16 @@ namespace QUT.Gplex.Automaton
     /// </summary>
     public class NState : IState
     {
-        private static uint nextSN;
+        private static IdGenerator _ids = new IdGenerator();
 
         NfsaInstance myNfaInst;
         NFSA myNfsa;
         internal int ord;
-        private uint serialNumber;
+        private int serialNumber;
+        
+        public int num { get { return serialNumber; } }
+        public List<IProductionRule> kernelItems { get { return null; } }
+
         internal BitArray epsilons;                 // epsilon transitions.
         internal IList<NState> epsList = new List<NState>();
         internal RuleDesc accept;                   // rule matched OR null
@@ -36,7 +40,7 @@ namespace QUT.Gplex.Automaton
         {
             myNfaInst = elem;
             myNfsa = elem.Parent;
-            serialNumber = nextSN++;
+            serialNumber = _ids.Next();
             epsilons = new BitArray(myNfaInst.MaxEps);    // Caller adds to nStates list.
         }
 

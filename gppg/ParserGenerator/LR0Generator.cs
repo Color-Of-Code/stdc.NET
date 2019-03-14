@@ -32,7 +32,6 @@ namespace QUT.GPGen
             return states;
         }
 
-
         private void ExpandState(ISymbol sym, AutomatonState newState)
         {
             //newState.accessedBy = sym;
@@ -46,10 +45,9 @@ namespace QUT.GPGen
             ComputeGoto(newState);
         }
 
-
         private void ComputeGoto(AutomatonState state)
         {
-            foreach (var item in state.allItems)
+            foreach (var item in state.AllProductionItems)
                 if (!item.expanded && !item.IsReduction())
                 {
                     item.expanded = true;
@@ -59,7 +57,7 @@ namespace QUT.GPGen
                     var itemSet = new List<ProductionItem>();
                     itemSet.Add(new ProductionItem(item.production, item.pos + 1));
 
-                    foreach (ProductionItem item2 in state.allItems
+                    foreach (ProductionItem item2 in state.AllProductionItems
                         .Where(x => !x.expanded && !x.IsReduction()))
                     {
                         ISymbol s2 = item2.production.rhs[item2.pos];
@@ -96,91 +94,92 @@ namespace QUT.GPGen
             foreach (var state in states)
             {
                 // Add shift actions ...
-                foreach (var t in state.terminalTransitions)
-                    state.parseTable[t] = new Shift(state.Goto[t]);
+                state.AddShiftActions();
 
                 // Add reduce actions ...
-                foreach (var item in state.allItems)
-                    if (item.IsReduction())
-                    {
-                        // Accept on everything
-                        if (item.production == grammar.rootProduction)
-                            foreach (var t in grammar.terminals.Values)
-                                state.parseTable[t] = new Reduce(item);
+                var reductions = state.AllProductionItems.Where(x => x.IsReduction());
+                foreach (var item in reductions)
+                {
+                    // Accept on everything
+                    if (item.production == grammar.rootProduction)
+                        foreach (var t in grammar.terminals.Values)
+                            state.parseTable[t] = new Reduce(item);
 
-                        foreach (var t in item.LookAhead)
-                        {
-                            // possible conflict with existing action
-                            if (state.parseTable.ContainsKey(t))
-                            {
-                                Reduce reduceAction;
-                                var other = state.parseTable[t];
-                                var iProd = item.production;
-                                if ((reduceAction = other as Reduce) != null)
-                                {
-                                    Production oProd = reduceAction.item.production;
-
-                                    // Choose in favour of production listed first in the grammar
-                                    if (oProd.num > iProd.num)
-                                        state.parseTable[t] = new Reduce(item);
-
-                                    string p1 = String.Format(CultureInfo.InvariantCulture, " Reduce {0}:\t{1}", oProd.num, oProd.ToString());
-                                    string p2 = String.Format(CultureInfo.InvariantCulture, " Reduce {0}:\t{1}", iProd.num, iProd.ToString());
-                                    int chsn = (oProd.num > iProd.num ? iProd.num : oProd.num);
-                                    grammar.conflicts.Add(new ReduceReduceConflict(t, p1, p2, chsn, state));
-                                    if (GPCG.Verbose)
-                                    {
-                                        Console.Error.WriteLine(
-                                            "Reduce/Reduce conflict in state {0} on symbol {1}",
-                                            state.num,
-                                            t.ToString());
-                                        Console.Error.WriteLine(p1);
-                                        Console.Error.WriteLine(p2);
-                                    }
-                                    else
-                                        Console.Error.WriteLine("Reduce/Reduce conflict, state {0}: {1} vs {2} on {3}",
-                                                                                    state.num, iProd.num, oProd.num, t);
-                                }
-                                else
-                                {
-                                    if (iProd.prec != null && t.prec != null)
-                                    {
-                                        if (iProd.prec.prec > t.prec.prec ||
-                                            (iProd.prec.prec == t.prec.prec &&
-                                             iProd.prec.type == PrecedenceType.left))
-                                        {
-                                            // resolve in favour of reduce (without error)
-                                            state.parseTable[t] = new Reduce(item);
-                                        }
-                                        else
-                                        {
-                                            // resolve in favour of shift (without error)
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AutomatonState next = ((Shift)other).next;
-                                        string p1 = String.Format(CultureInfo.InvariantCulture, " Shift \"{0}\":\tState-{1} -> State-{2}", t, state.num, next.num);
-                                        string p2 = String.Format(CultureInfo.InvariantCulture, " Reduce {0}:\t{1}", iProd.num, iProd.ToString());
-                                        grammar.conflicts.Add(new ShiftReduceConflict(t, p1, p2, state, next));
-                                        if (GPCG.Verbose)
-                                        {
-                                            Console.Error.WriteLine("Shift/Reduce conflict");
-                                            Console.Error.WriteLine(p1);
-                                            Console.Error.WriteLine(p2);
-                                        }
-                                        else
-                                            Console.Error.WriteLine("Shift/Reduce conflict, state {0} on {1}", state.num, t);
-                                    }
-                                    // choose in favour of the shift
-                                }
-                            }
-                            else
-                                state.parseTable[t] = new Reduce(item);
-                        }
-                    }
+                    foreach (var t in item.LookAhead)
+                        BuildParseTable(state, item, t);
+                }
             }
         }
-    }
 
+        private void BuildParseTable(AutomatonState state, ProductionItem item, Terminal t)
+        {
+            // possible conflict with existing action
+            if (state.parseTable.ContainsKey(t))
+            {
+                Reduce reduceAction;
+                var other = state.parseTable[t];
+                var iProd = item.production;
+                if ((reduceAction = other as Reduce) != null)
+                {
+                    Production oProd = reduceAction.item.production;
+
+                    // Choose in favour of production listed first in the grammar
+                    if (oProd.num > iProd.num)
+                        state.parseTable[t] = new Reduce(item);
+
+                    string p1 = $" Reduce {oProd.num}:\t{oProd.ToString()}";
+                    string p2 = $" Reduce {iProd.num}:\t{iProd.ToString()}";
+                    int chsn = (oProd.num > iProd.num ? iProd.num : oProd.num);
+                    grammar.conflicts.Add(new ReduceReduceConflict(t, p1, p2, chsn, state));
+                    if (GPCG.Verbose)
+                    {
+                        Console.Error.WriteLine(
+                            "Reduce/Reduce conflict in state {0} on symbol {1}",
+                            state.num,
+                            t.ToString());
+                        Console.Error.WriteLine(p1);
+                        Console.Error.WriteLine(p2);
+                    }
+                    else
+                        Console.Error.WriteLine("Reduce/Reduce conflict, state {0}: {1} vs {2} on {3}",
+                                                                    state.num, iProd.num, oProd.num, t);
+                }
+                else
+                {
+                    if (iProd.prec != null && t.prec != null)
+                    {
+                        if (iProd.prec.prec > t.prec.prec ||
+                            (iProd.prec.prec == t.prec.prec &&
+                                iProd.prec.type == PrecedenceType.left))
+                        {
+                            // resolve in favour of reduce (without error)
+                            state.parseTable[t] = new Reduce(item);
+                        }
+                        else
+                        {
+                            // resolve in favour of shift (without error)
+                        }
+                    }
+                    else
+                    {
+                        AutomatonState next = ((Shift)other).next;
+                        string p1 = $" Shift \"{t}\":\tState-{state.num} -> State-{next.num}";
+                        string p2 = $" Reduce {iProd.num}:\t{iProd.ToString()}";
+                        grammar.conflicts.Add(new ShiftReduceConflict(t, p1, p2, state, next));
+                        if (GPCG.Verbose)
+                        {
+                            Console.Error.WriteLine("Shift/Reduce conflict");
+                            Console.Error.WriteLine(p1);
+                            Console.Error.WriteLine(p2);
+                        }
+                        else
+                            Console.Error.WriteLine("Shift/Reduce conflict, state {0} on {1}", state.num, t);
+                    }
+                    // choose in favour of the shift
+                }
+            }
+            else
+                state.parseTable[t] = new Reduce(item);
+        }
+    }
 }

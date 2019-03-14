@@ -11,12 +11,12 @@ namespace QUT.GPGen
 {
     internal class AutomatonState: IState
     {
-        private static int TotalStates;
+        private static IdGenerator _ids = new IdGenerator();
 
-        internal int num;
+        public int num { get; private set; }
 
-        internal List<ProductionItem> kernelItems = new List<ProductionItem>();
-        internal List<ProductionItem> allItems = new List<ProductionItem>();
+        public List<IProductionRule> kernelItems { get; private set; }
+        internal List<ProductionItem> AllProductionItems = new List<ProductionItem>();
         internal IDictionary<ISymbol, AutomatonState> Goto = new Dictionary<ISymbol, AutomatonState>();
         internal HashSet<Terminal> terminalTransitions = new HashSet<Terminal>();
         internal IDictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
@@ -26,18 +26,24 @@ namespace QUT.GPGen
         internal IList<AutomatonState> statePath;
         internal IList<Conflict> conflicts;
 
-        internal AutomatonState(Production production)
+        private AutomatonState()
         {
-            num = TotalStates++;
+            num = _ids.Next();
+            kernelItems = new List<IProductionRule>();
+        }
+
+        internal AutomatonState(Production production)
+            : this()
+        {
             AddKernel(production, 0);
         }
 
 
         internal AutomatonState(IList<ProductionItem> itemSet)
+            : this()
         {
-            num = TotalStates++;
             kernelItems.AddRange(itemSet);
-            allItems.AddRange(itemSet);
+            AllProductionItems.AddRange(itemSet);
         }
 
 
@@ -67,7 +73,7 @@ namespace QUT.GPGen
         {
             var item = new ProductionItem(production, pos);
             kernelItems.Add(item);
-            allItems.Add(item);
+            AllProductionItems.Add(item);
         }
 
 
@@ -75,9 +81,9 @@ namespace QUT.GPGen
         {
             var item = new ProductionItem(production, 0);
 
-            if (!allItems.Contains(item))
+            if (!AllProductionItems.Contains(item))
             {
-                allItems.Add(item);
+                AllProductionItems.Add(item);
                 AddClosure(item);
             }
         }
@@ -97,18 +103,11 @@ namespace QUT.GPGen
             }
         }
 
-        internal string ItemDisplay()
+        internal void AddShiftActions()
         {
-            var builder = new StringBuilder();
-            builder.AppendFormat("State {0}", num);
-            foreach (ProductionItem item in kernelItems)
-            {
-                builder.AppendLine();
-                builder.AppendFormat("    {0}", item);
-            }
-            return builder.ToString();
+            foreach (var t in terminalTransitions)
+                parseTable[t] = new Shift(Goto[t]);
         }
-
 
         public override string ToString()
         {

@@ -3,6 +3,7 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using System.Collections.Generic;
+using System.Linq;
 using QUT.Gplib;
 
 namespace QUT.GPGen
@@ -169,29 +170,32 @@ namespace QUT.GPGen
 
         private void ComputeLookAhead()
         {
-            // LA(q, A->w) = Union { Follow(p,A) | p -> w -> q }
-
             foreach (AutomatonState q in states)
             {
-                foreach (ProductionItem item in q.allItems)
+                var reductions = q.AllProductionItems.Where(x => x.IsReduction());
+                foreach (ProductionItem item in reductions)
                 {
-                    if (item.IsReduction())
-                    {
-                        item.LookAhead = new HashSet<Terminal>();
-                        foreach (AutomatonState p in states)
-                            if (PathTo(p, item.production, item.pos) == q)
-                            {
-                                NonTerminal A = item.production.lhs;
-                                if (p.nonTerminalTransitions.ContainsKey(A))
-                                {
-                                    Transition pA = p.nonTerminalTransitions[A];
-                                    foreach (var f in pA.Follow)
-                                        item.LookAhead.Add(f);
-                                }
-                            }
-                    }
+                    ComputeLookAhead(q, item);
                 }
             }
+        }
+
+        private void ComputeLookAhead(AutomatonState q, ProductionItem item)
+        {
+            // LA(q, A->w) = Union { Follow(p,A) | p -> w -> q }
+
+            item.LookAhead = new HashSet<Terminal>();
+            foreach (AutomatonState p in states)
+                if (PathTo(p, item.production, item.pos) == q)
+                {
+                    NonTerminal A = item.production.lhs;
+                    if (p.nonTerminalTransitions.ContainsKey(A))
+                    {
+                        Transition pA = p.nonTerminalTransitions[A];
+                        foreach (var f in pA.Follow)
+                            item.LookAhead.Add(f);
+                    }
+                }
         }
     }
 }
