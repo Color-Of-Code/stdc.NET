@@ -20,7 +20,7 @@ namespace QUT.GPGen
         internal IDictionary<ISymbol, AutomatonState> Goto = new Dictionary<ISymbol, AutomatonState>();
         internal HashSet<Terminal> terminalTransitions = new HashSet<Terminal>();
         internal IDictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
-        internal IDictionary<Terminal, IParserAction> parseTable = new Dictionary<Terminal, IParserAction>();
+        internal IDictionary<ITerminalSymbol, IParserAction> parseTable = new Dictionary<ITerminalSymbol, IParserAction>();
 
         internal IList<ISymbol> shortestPrefix;
         internal IList<AutomatonState> statePath;
