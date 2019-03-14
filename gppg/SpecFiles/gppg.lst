@@ -4,7 +4,7 @@
 // ==========================================================================
 //  Version:  1.0.0.0
 //  Machine:  dehaan
-//  DateTime: 2019-03-14T21:27:31Z
+//  DateTime: 2019-03-14T21:35:33Z
 //  UserName: jaap
 // ==========================================================================
 
@@ -107,7 +107,7 @@ OneLineCmnt  \/\/{DotChr}*
                              if (errStart != null) {
                                  Error(54, errStart.Merge(errEnd));
                                  errStart = null;
-                             } else if (lNum > comStart.startLine) 
+                             } else if (lNum > comStart.StartLine) 
                                  yy_pop_state();
                          }
                          /* And no token returned */ 
