@@ -95,7 +95,7 @@ namespace QUT.GPGen
                         handler.ListError(null, 103, CharacterUtilities.Map(Terminal.MaxOrdinalOfCharacterLiteral), '\'');
 
                     LALRGenerator generator = new LALRGenerator(grammar);
-                    IList<AutomatonState> states = generator.BuildStates();
+                    var states = generator.BuildStates();
                     generator.ComputeLookAheadMeta();
                     generator.BuildParseTable();
                     if (!grammar.CheckGrammar(handler))
@@ -113,24 +113,22 @@ namespace QUT.GPGen
                     bool DoDiagnose = Diagnose && !grammar.HasNonTerminatingNonTerms;
                     if (Report || DoDiagnose)
                     {
-                        string htmlName = System.IO.Path.ChangeExtension(filename, ".report.html");
+                        string htmlName = Path.ChangeExtension(filename, ".report.html");
                         try
                         {
-                            System.IO.FileStream htmlFile = new System.IO.FileStream(htmlName, System.IO.FileMode.Create);
-                            System.IO.StreamWriter htmlWriter = new System.IO.StreamWriter(htmlFile);
-                            Grammar.HtmlHeader(htmlWriter, filename);
-
-                            if (Report && DoDiagnose)
-                                grammar.GenerateCompoundReport(htmlWriter, inputFileInfo, states);
-                            else if (Report)
-                                grammar.GenerateReport(htmlWriter, inputFileInfo, states);
-
-                            Grammar.HtmlTrailer(htmlWriter);
-
-                            if (htmlFile != null)
+                            using (var htmlFile = new FileStream(htmlName, FileMode.Create))
                             {
-                                htmlWriter.Flush();
-                                htmlFile.Close();
+                                using(var htmlWriter = new StreamWriter(htmlFile))
+                                {
+                                    Grammar.HtmlHeader(htmlWriter, filename);
+
+                                    if (Report && DoDiagnose)
+                                        grammar.GenerateCompoundReport(htmlWriter, inputFileInfo, states);
+                                    else if (Report)
+                                        grammar.GenerateReport(htmlWriter, inputFileInfo, states);
+
+                                    Grammar.HtmlTrailer(htmlWriter);
+                                }
                             }
                         }
                         catch (System.IO.IOException)
