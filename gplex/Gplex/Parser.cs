@@ -4,11 +4,11 @@
 
 // GPPG version 1.0.0.0
 // Machine:  dehaan
-// DateTime: 2019-03-13T21:21:16Z
+// DateTime: 2019-03-14T21:27:12Z
 // UserName: jaap
-// Input file <gplex.y - 2019-03-12T21:38:44Z>
+// Input file <gplex.y - 2019-03-14T22:26:55Z>
 
-// options: no-lines gplex
+// options: no-lines diagnose & report gplex listing
 
 using System;
 using System.Collections.Generic;
