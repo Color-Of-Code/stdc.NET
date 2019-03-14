@@ -16,7 +16,7 @@ namespace QUT.GPGen
         internal Production production { get; private set; }
         internal int pos { get; private set; }
         internal bool expanded;
-        internal SetCollection<Terminal> LookAhead;
+        internal HashSet<Terminal> LookAhead;
 
 
         internal ProductionItem(Production production, int pos)

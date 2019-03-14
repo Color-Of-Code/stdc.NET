@@ -56,7 +56,7 @@ namespace QUT.GPGen
         {
             S.Push(x);
             x.N = k;
-            x.Read = new SetCollection<Terminal>(x.DR);
+            x.Read = new HashSet<Terminal>(x.DR);
 
             // foreach y such that x reads y
             foreach (Transition y in x.next.nonTerminalTransitions.Values)
@@ -68,14 +68,15 @@ namespace QUT.GPGen
                     if (y.N < x.N)
                         x.N = y.N;
 
-                    x.Read.AddRange(y.Read);
+                    foreach (var item in y.Read)
+                        x.Read.Add(item);
                 }
 
             if (x.N == k)
                 do
                 {
                     S.Peek().N = int.MaxValue;
-                    S.Peek().Read = new SetCollection<Terminal>(x.Read);
+                    S.Peek().Read = new HashSet<Terminal>(x.Read);
                 } while (S.Pop() != x);
         }
 
@@ -142,7 +143,7 @@ namespace QUT.GPGen
         {
             S.Push(x);
             x.N = k;
-            x.Follow = new SetCollection<Terminal>(x.Read);
+            x.Follow = new HashSet<Terminal>(x.Read);
 
             foreach (Transition y in x.includes)
                 if (x != y)
@@ -153,14 +154,15 @@ namespace QUT.GPGen
                     if (y.N < x.N)
                         x.N = y.N;
 
-                    x.Follow.AddRange(y.Follow);
+                    foreach (var item in y.Follow)
+                        x.Follow.Add(item);
                 }
 
             if (x.N == k)
                 do
                 {
                     S.Peek().N = int.MaxValue;
-                    S.Peek().Follow = new SetCollection<Terminal>(x.Follow);
+                    S.Peek().Follow = new HashSet<Terminal>(x.Follow);
                 } while (S.Pop() != x);
         }
 
@@ -175,7 +177,7 @@ namespace QUT.GPGen
                 {
                     if (item.IsReduction())
                     {
-                        item.LookAhead = new SetCollection<Terminal>();
+                        item.LookAhead = new HashSet<Terminal>();
                         foreach (AutomatonState p in states)
                             if (PathTo(p, item.production, item.pos) == q)
                             {
@@ -183,7 +185,8 @@ namespace QUT.GPGen
                                 if (p.nonTerminalTransitions.ContainsKey(A))
                                 {
                                     Transition pA = p.nonTerminalTransitions[A];
-                                    item.LookAhead.AddRange(pA.Follow);
+                                    foreach (var f in pA.Follow)
+                                        item.LookAhead.Add(f);
                                 }
                             }
                     }

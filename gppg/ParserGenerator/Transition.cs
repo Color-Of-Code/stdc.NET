@@ -17,10 +17,10 @@ namespace QUT.GPGen
         internal NonTerminal A;
         internal AutomatonState next;
 
-        internal SetCollection<Terminal> DR;
+        internal HashSet<Terminal> DR;
         internal IList<Transition> includes = new List<Transition>();
-        internal SetCollection<Terminal> Read;
-        internal SetCollection<Terminal> Follow;
+        internal HashSet<Terminal> Read;
+        internal HashSet<Terminal> Follow;
 
 
         internal Transition(NonTerminal A, AutomatonState next)

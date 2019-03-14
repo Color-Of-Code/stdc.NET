@@ -18,7 +18,7 @@ namespace QUT.GPGen
         internal List<ProductionItem> kernelItems = new List<ProductionItem>();
         internal List<ProductionItem> allItems = new List<ProductionItem>();
         internal IDictionary<ISymbol, AutomatonState> Goto = new Dictionary<ISymbol, AutomatonState>();
-        internal SetCollection<Terminal> terminalTransitions = new SetCollection<Terminal>();
+        internal HashSet<Terminal> terminalTransitions = new HashSet<Terminal>();
         internal IDictionary<NonTerminal, Transition> nonTerminalTransitions = new Dictionary<NonTerminal, Transition>();
         internal IDictionary<Terminal, IParserAction> parseTable = new Dictionary<Terminal, IParserAction>();
 
