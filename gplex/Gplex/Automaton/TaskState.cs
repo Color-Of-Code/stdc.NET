@@ -180,8 +180,7 @@ namespace QUT.Gplex.Automaton
         {
             get
             {
-                if (listWriter == null)
-                    listWriter = ListingFile(baseName + dotLst);
+                listWriter = listWriter ?? ListingFile(baseName + dotLst);
                 return listWriter;
             }
         }
@@ -318,8 +317,7 @@ namespace QUT.Gplex.Automaton
             // for example after errors have been detected.
             try
             {
-                if (listWriter == null)
-                    listWriter = ListingFile(baseName + dotLst);
+                listWriter = listWriter ?? ListingFile(baseName + dotLst);
                 handler.MakeListing(scanner.Buffer, listWriter, fileName, version);
             }
             catch (IOException)

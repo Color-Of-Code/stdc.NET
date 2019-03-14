@@ -11,82 +11,8 @@ namespace QUT.Gplex
     /// A well-formed CharClassMap must map to a class for every 
     /// index in the complete character ordinal range.
     /// </summary>
-    internal class CharClassMap
+    internal partial class CharClassMap
     {
-        // ==========================================================
-        /// <summary>
-        /// Nodes to represent contiguous ranges with same
-        /// mapping in the Class Map. "value" is the map class 
-        /// ordinal for all indices in the range min..max.
-        /// </summary>
-        class TreeNode
-        {
-            int min;
-            int max;
-            int value;
-            TreeNode lKid;
-            TreeNode rKid;
-
-            internal TreeNode(int mn, int mx, int vl)
-            {
-                min = mn; max = mx; value = vl;
-            }
-
-            /// <summary>
-            /// Fetch the bounds of the range that contains "index"
-            /// </summary>
-            /// <param name="index">Index value to lookup</param>
-            /// <param name="rMin">Low bound of range</param>
-            /// <param name="rMax">High bound of range</param>
-            internal void GetRange(int index, out int rMin, out int rMax)
-            {
-                if (index < min) lKid.GetRange(index, out rMin, out rMax);
-                else if (index > max) rKid.GetRange(index, out rMin, out rMax);
-                else
-                {
-                    rMin = min;
-                    rMax = max;
-                }
-            }
-
-            /// <summary>
-            /// Lookup the class ordinal for the range that contains index.
-            /// </summary>
-            /// <param name="index">The index to check</param>
-            /// <returns>The class ordinal of the range</returns>
-            internal int Lookup(int index)
-            {
-                if (index < min) return lKid.Lookup(index);
-                else if (index > max) return rKid.Lookup(index);
-                else return value;
-            }
-
-            /// <summary>
-            /// Insert a new Node in the tree.
-            /// </summary>
-            /// <param name="node">Node to insert</param>
-            internal void InsertNewNode(TreeNode node)
-            {
-                int key = node.min;
-                if (key < this.min)
-                {
-                    if (this.lKid == null)
-                        this.lKid = node;
-                    else
-                        lKid.InsertNewNode(node);
-                }
-                else if (key > this.max)
-                {
-                    if (this.rKid == null)
-                        this.rKid = node;
-                    else
-                        rKid.InsertNewNode(node);
-                }
-                else throw new Parser.GplexInternalException("Invalid range overlap");
-            }
-        }
-        // ==========================================================
-
         int count;
         TreeNode root;
 
@@ -111,7 +37,6 @@ namespace QUT.Gplex
         /// <param name="part">The Partition to use</param>
         internal CharClassMap(Partition part)
         {
-
             foreach (PartitionElement pElem in part.elements)
             {
                 foreach (CharRange range in pElem.list.Ranges)

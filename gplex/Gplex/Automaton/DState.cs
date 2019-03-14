@@ -149,7 +149,9 @@ namespace QUT.Gplex.Automaton
         /// </summary>
         /// <param name="j"></param>
         /// <returns></returns>
-        public int NextOn(int j) { return (GetNext(j) == null ? DefaultNext : GetNext(j).Num); }
+        public int NextOn(int j)
+            => GetNext(j)?.Num ?? DefaultNext;
+
         public int DefaultNext { get { return (myDfaInst == null ? DFSA.eofNum : DFSA.gotoStart); } }
 
         /// <summary>
@@ -170,7 +172,7 @@ namespace QUT.Gplex.Automaton
                 .Add(pred);
         }
 
-        internal void AddTrans(int ch, DState next)
+        internal void AddTransition(int ch, DState next)
         {
             SetNext(ch, next);
             trList.Add(ch);
@@ -185,7 +187,7 @@ namespace QUT.Gplex.Automaton
             {
                 if (myDfaInst != null)
                     return this.myDfaInst.myNfaInst.myStartCondition.Name;
-                else return "";
+                return string.Empty;
             }
         }
 

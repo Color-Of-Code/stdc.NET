@@ -6,7 +6,6 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using QUT.Gplib;
-using System;
 
 namespace QUT.GPGen
 {

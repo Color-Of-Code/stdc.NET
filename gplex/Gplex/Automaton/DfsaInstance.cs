@@ -95,8 +95,7 @@ namespace QUT.Gplex.Automaton
                         if (nStCh != null)                         // ==> we have a transition
                         {
                             // Create next state set on demand, and insert ord in set.
-                            if (nxSet == null)
-                                nxSet = factory.MkNewSet();
+                            nxSet = nxSet ?? factory.MkNewSet();
                             nxSet.Insert(nStCh.ord);
                         }
                     }
@@ -121,7 +120,7 @@ namespace QUT.Gplex.Automaton
                             nxState = MkNewState(nxSet);
                             stack.Push(nxState);
                         }
-                        last.AddTrans(ch, nxState);
+                        last.AddTransition(ch, nxState);
                     }
                 }
             }

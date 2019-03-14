@@ -26,7 +26,7 @@ namespace QUT.Gplex.Parser
 
         internal override int ContextLength()
         {
-            if (this.Kid == null) return 0;
+            if (Kid == null) return 0;
             switch (Operator)
             {
                 case RegOp.Closure:

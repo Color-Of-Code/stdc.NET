@@ -80,7 +80,7 @@ namespace QUT.Gplex.Parser
 
         internal void FindClasses(AAST aast)
         {
-            Accumulator visitor = new Accumulator(this);
+            var visitor = new Accumulator(this);
             foreach (RuleDesc rule in aast.ruleList)
             {
                 rule.Tree.Visit(visitor);
@@ -230,7 +230,7 @@ namespace QUT.Gplex.Parser
 
         internal void ComputePages()
         {
-            List<MapRun> result = new List<MapRun>();
+            var result = new List<MapRun>();
             // int cardinality = CharRange.SymCard;
             int cardinality = Char.MaxValue + 1;
             int stepSize = PageSize;
