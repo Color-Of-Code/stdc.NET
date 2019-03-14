@@ -85,7 +85,7 @@ namespace QUT.GPGen
         {
             if (accessedBy.ContainsKey(sym))
                 return accessedBy[sym]
-                    .FirstOrDefault(x => ProductionItem.SameProductions(x.kernelItems, itemSet));
+                    .FirstOrDefault(x => ProductionItem.SameProductions(x.KernelItems, itemSet));
             return null;
         }
 
@@ -135,14 +135,14 @@ namespace QUT.GPGen
                     {
                         Console.Error.WriteLine(
                             "Reduce/Reduce conflict in state {0} on symbol {1}",
-                            state.num,
+                            state.Id,
                             t.ToString());
                         Console.Error.WriteLine(p1);
                         Console.Error.WriteLine(p2);
                     }
                     else
                         Console.Error.WriteLine("Reduce/Reduce conflict, state {0}: {1} vs {2} on {3}",
-                                                                    state.num, iProd.num, oProd.num, t);
+                                                                    state.Id, iProd.num, oProd.num, t);
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace QUT.GPGen
                     else
                     {
                         AutomatonState next = ((Shift)other).next;
-                        string p1 = $" Shift \"{t}\":\tState-{state.num} -> State-{next.num}";
+                        string p1 = $" Shift \"{t}\":\tState-{state.Id} -> State-{next.Id}";
                         string p2 = $" Reduce {iProd.num}:\t{iProd.ToString()}";
                         grammar.conflicts.Add(new ShiftReduceConflict(t, p1, p2, state, next));
                         if (GPCG.Verbose)
@@ -173,7 +173,7 @@ namespace QUT.GPGen
                             Console.Error.WriteLine(p2);
                         }
                         else
-                            Console.Error.WriteLine("Shift/Reduce conflict, state {0} on {1}", state.num, t);
+                            Console.Error.WriteLine("Shift/Reduce conflict, state {0} on {1}", state.Id, t);
                     }
                     // choose in favour of the shift
                 }

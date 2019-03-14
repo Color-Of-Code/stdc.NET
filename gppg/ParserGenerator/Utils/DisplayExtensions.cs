@@ -9,8 +9,8 @@ namespace QUT.Gplib
         public static string ItemDisplay(this IState state)
         {
             var builder = new StringBuilder();
-            builder.AppendFormat("State {0}", state.num);
-            foreach (IProductionRule item in state.kernelItems)
+            builder.AppendFormat("State {0}", state.Id);
+            foreach (IProductionRule item in state.KernelItems)
             {
                 builder.AppendLine();
                 builder.AppendFormat("    {0}", item);

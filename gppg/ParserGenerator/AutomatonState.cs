@@ -13,9 +13,9 @@ namespace QUT.GPGen
     {
         private static IdGenerator _ids = new IdGenerator();
 
-        public int num { get; private set; }
+        public int Id { get; private set; }
 
-        public List<IProductionRule> kernelItems { get; private set; }
+        public List<IProductionRule> KernelItems { get; private set; }
         internal List<ProductionItem> AllProductionItems = new List<ProductionItem>();
         internal IDictionary<ISymbol, AutomatonState> Goto = new Dictionary<ISymbol, AutomatonState>();
         internal HashSet<Terminal> terminalTransitions = new HashSet<Terminal>();
@@ -28,8 +28,8 @@ namespace QUT.GPGen
 
         private AutomatonState()
         {
-            num = _ids.Next();
-            kernelItems = new List<IProductionRule>();
+            Id = _ids.Next();
+            KernelItems = new List<IProductionRule>();
         }
 
         internal AutomatonState(Production production)
@@ -42,14 +42,14 @@ namespace QUT.GPGen
         internal AutomatonState(IList<ProductionItem> itemSet)
             : this()
         {
-            kernelItems.AddRange(itemSet);
+            KernelItems.AddRange(itemSet);
             AllProductionItems.AddRange(itemSet);
         }
 
 
         internal void AddClosure()
         {
-            foreach (ProductionItem item in kernelItems)
+            foreach (ProductionItem item in KernelItems)
                 AddClosure(item);
         }
 
@@ -72,7 +72,7 @@ namespace QUT.GPGen
         private void AddKernel(Production production, int pos)
         {
             var item = new ProductionItem(production, pos);
-            kernelItems.Add(item);
+            KernelItems.Add(item);
             AllProductionItems.Add(item);
         }
 
@@ -113,11 +113,11 @@ namespace QUT.GPGen
         {
             var builder = new StringBuilder();
 
-            builder.AppendFormat("State {0}", num);
+            builder.AppendFormat("State {0}", Id);
             builder.AppendLine();
             builder.AppendLine();
 
-            foreach (var item in kernelItems)
+            foreach (var item in KernelItems)
             {
                 builder.AppendFormat("    {0}", item);
                 builder.AppendLine();
@@ -135,7 +135,7 @@ namespace QUT.GPGen
 
             foreach (var n in nonTerminalTransitions)
             {
-                builder.AppendFormat("    {0,-14} go to state {1}", n.Key, Goto[n.Key].num);
+                builder.AppendFormat("    {0,-14} go to state {1}", n.Key, Goto[n.Key].Id);
                 builder.AppendLine();
             }
 

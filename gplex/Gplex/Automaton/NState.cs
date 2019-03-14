@@ -27,8 +27,8 @@ namespace QUT.Gplex.Automaton
         internal int ord;
         private int serialNumber;
         
-        public int num { get { return serialNumber; } }
-        public List<IProductionRule> kernelItems { get { return null; } }
+        public int Id { get { return serialNumber; } }
+        public List<IProductionRule> KernelItems { get { return null; } }
 
         internal BitArray epsilons;                 // epsilon transitions.
         internal IList<NState> epsList = new List<NState>();

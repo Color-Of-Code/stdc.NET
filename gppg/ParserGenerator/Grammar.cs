@@ -452,7 +452,7 @@ namespace QUT.GPGen
         {
             wrtr.WriteLine(
                 "Reduce/Reduce conflict in state {0} on symbol \"{1}\", parser will reduce production {2}",
-                inState.num,
+                inState.Id,
                 symbol.ToString(),
                 chosen);
             wrtr.WriteLine(str1);

@@ -362,7 +362,7 @@ namespace QUT.GPGen
                 {
                     if (!first)
                         Console.Write(",");
-                    Console.Write("{0},{1}", transition.A.Id, transition.next.num);
+                    Console.Write("{0},{1}", transition.A.Id, transition.next.Id);
                     first = false;
                 }
                 Console.Write('}');

@@ -23,7 +23,7 @@ namespace QUT.GPGen
 
             foreach (AutomatonState state in statelist)
             {
-                writer.WriteLine(StateAnchor(state.num));
+                writer.WriteLine(StateAnchor(state.Id));
                 writer.WriteLine(StateToString(state));
             }
         }
@@ -36,11 +36,11 @@ namespace QUT.GPGen
 
             WriteProductions(writer, grammar.productions);
             DiagnosticHelp.PopulatePrefixes(statelist);
-            Mapper<string, AutomatonState> map = state => StateRef(state.num);
+            Mapper<string, AutomatonState> map = state => StateRef(state.Id);
 
             foreach (AutomatonState state in statelist)
             {
-                writer.WriteLine(StateAnchor(state.num));
+                writer.WriteLine(StateAnchor(state.Id));
                 DiagnoseState(writer, state, map, false);
                 writer.WriteLine(StateToString(state));
             }
@@ -65,7 +65,7 @@ namespace QUT.GPGen
             if (doKernel)
             {
                 writer.WriteLine("    Kernel items --");
-                foreach (ProductionItem item in state.kernelItems)
+                foreach (ProductionItem item in state.KernelItems)
                     writer.WriteLine("      {0}", ItemToString(item, false));
             }
             writer.WriteLine();
@@ -76,7 +76,7 @@ namespace QUT.GPGen
             var builder = new StringBuilder();
 
             builder.AppendLine(Header2("Kernel Items"));
-            foreach (ProductionItem item in thisState.kernelItems)
+            foreach (ProductionItem item in thisState.KernelItems)
             {
                 builder.AppendFormat("    {0}", ItemToString(item, true));
                 builder.AppendLine();
@@ -98,7 +98,7 @@ namespace QUT.GPGen
                 builder.AppendLine(Header2("Transitions"));
             foreach (var n in thisState.nonTerminalTransitions)
             {
-                builder.AppendFormat("    {0,-14} go to state {1}", n.Key, StateRef(thisState.Goto[n.Key].num));
+                builder.AppendFormat("    {0,-14} go to state {1}", n.Key, StateRef(thisState.Goto[n.Key].Id));
                 builder.AppendLine();
             }
 
@@ -112,7 +112,7 @@ namespace QUT.GPGen
             string result = null;
             Shift shift = action as Shift;
             if (shift != null)
-                return "shift, and go to state " + StateRef(shift.next.num);
+                return "shift, and go to state " + StateRef(shift.next.Id);
             Reduce reduce = action as Reduce;
             if (reduce != null)
                 return String.Format(CultureInfo.InvariantCulture, "reduce using {0} ({1}{2})",

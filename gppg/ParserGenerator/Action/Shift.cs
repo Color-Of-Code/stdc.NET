@@ -19,12 +19,12 @@ namespace QUT.GPGen
 
         public override string ToString()
         {
-            return $"shift, and go to state {next.num}";
+            return $"shift, and go to state {next.Id}";
         }
 
         public int ToNum()
         {
-            return next.num;
+            return next.Id;
         }
     }
 }

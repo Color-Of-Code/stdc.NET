@@ -37,9 +37,9 @@ namespace QUT.Gplex.Automaton
 
         readonly int serialNumber;                      // immutable value used in the dictionary key
 
-        public int num { get { return serialNumber; } }
+        public int Id { get { return serialNumber; } }
 
-        public List<IProductionRule> kernelItems { get { return null; } }
+        public List<IProductionRule> KernelItems { get { return null; } }
 
         private ulong Key(int sym) { return (((ulong)serialNumber) << 22) + (uint)sym; }
 

@@ -5,8 +5,8 @@ namespace QUT.Gplib
 {
     public interface IState
     {
-        int num { get; }
+        int Id { get; }
 
-        List<IProductionRule> kernelItems { get; }
+        List<IProductionRule> KernelItems { get; }
    }
 }
