@@ -15,7 +15,7 @@ namespace QUT.GPGen
         public INonTerminalSymbol lhs { get; private set; }
         public IList<ISymbol> rhs { get; private set; }
         internal SemanticAction semanticAction;
-        internal Precedence prec;
+        internal IPrecedence prec;
         internal ISpan precSpan;
 
         internal Production(NonTerminal lhs)

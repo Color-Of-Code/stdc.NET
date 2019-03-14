@@ -2,9 +2,9 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-namespace QUT.GPGen
+namespace QUT.Gplib
 {
-    internal enum PrecedenceType
+    public enum PrecedenceType
     {
         left,
         right,

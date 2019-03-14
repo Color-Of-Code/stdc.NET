@@ -13,7 +13,7 @@ namespace QUT.GPGen
         private static IdGenerator _ids = new IdGenerator(1);
         internal static int MaxOrdinalOfCharacterLiteral { get; private set; }
 
-        internal Precedence prec;
+        public IPrecedence prec { get; set; }
         private int _number;
         internal bool IsSymbolic { get; private set; }
 

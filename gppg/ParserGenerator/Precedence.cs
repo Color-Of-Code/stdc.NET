@@ -4,14 +4,15 @@
 
 using System;
 using System.Linq;
+using QUT.Gplib;
 
 namespace QUT.GPGen
 {
 
-    internal class Precedence
+    internal class Precedence : IPrecedence
     {
-        internal PrecedenceType type { get; private set; }
-        internal int prec { get; private set; }
+        public PrecedenceType type { get; private set; }
+        public int prec { get; private set; }
 
         internal Precedence(PrecedenceType type, int prec)
         {
@@ -28,12 +29,13 @@ namespace QUT.GPGen
                 return;
 
             var rightMostTerminal = p.rhs
+                .OfType<ITerminalSymbol>()
                 .Reverse()
-                .FirstOrDefault(x => x is Terminal);
+                .FirstOrDefault();
             
             if (rightMostTerminal != null)
             {
-                p.prec = ((Terminal)rightMostTerminal).prec;
+                p.prec = rightMostTerminal.prec;
             }
         }
     }
