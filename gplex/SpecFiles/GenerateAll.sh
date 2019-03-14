@@ -7,7 +7,7 @@ dotnet run --project ../../gppg/gppg.csproj /report /listing /verbose /gplex /no
 mv Parser.cs ../Gplex
 
 # generate a fresh copy of Scanner.cs
-dotnet run --project ../gplex.csproj /report /listing /verbose gplex.lex
+dotnet run --project ../gplex.csproj /listing /verbose gplex.lex
 mv Scanner.cs ../Gplex
 mv GplexBuffers.cs ../Gplex
 

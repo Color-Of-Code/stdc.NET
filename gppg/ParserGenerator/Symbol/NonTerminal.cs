@@ -13,7 +13,7 @@ namespace QUT.GPGen
 {
     public class NonTerminal : Symbol, INonTerminalSymbol
     {
-        internal bool reached;
+        public bool reached { get; set; }
 
         // Start experimental features
         internal IList<NonTerminal> dependsOnList;

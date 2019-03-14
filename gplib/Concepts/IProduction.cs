@@ -5,7 +5,7 @@ namespace QUT.Gplib
 {
     public interface IProduction
     {
-        // INonTerminalSymbol lhs { get; }
+        INonTerminalSymbol lhs { get; }
         IList<ISymbol> rhs { get; }
     }
 }

@@ -12,7 +12,7 @@ namespace QUT.GPGen
     public class Production : IProduction
     {
         internal int num;
-        public NonTerminal lhs { get; private set; }
+        public INonTerminalSymbol lhs { get; private set; }
         public IList<ISymbol> rhs { get; private set; }
         internal SemanticAction semanticAction;
         internal Precedence prec;

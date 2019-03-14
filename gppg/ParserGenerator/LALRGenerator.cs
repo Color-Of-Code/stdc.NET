@@ -188,7 +188,7 @@ namespace QUT.GPGen
             foreach (AutomatonState p in states)
                 if (PathTo(p, item.production, item.pos) == q)
                 {
-                    NonTerminal A = item.production.lhs;
+                    var A = item.production.lhs as NonTerminal; // HACK: TODO: fix
                     if (p.nonTerminalTransitions.ContainsKey(A))
                     {
                         Transition pA = p.nonTerminalTransitions[A];

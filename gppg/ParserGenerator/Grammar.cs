@@ -488,7 +488,7 @@ namespace QUT.GPGen
 
                 if (production.lhs != lhs)
                 {
-                    lhs = production.lhs;
+                    lhs = production.lhs as NonTerminal;  // HACK: TODO: fix
                     writer.WriteLine();
                     writer.Write("{0} {1}: ", ProductionAnchor(production.num), lhs);
                 }
@@ -694,8 +694,8 @@ namespace QUT.GPGen
         internal override void Report(StreamWriter wrtr)
         {
             wrtr.WriteLine("Shift/Reduce conflict on symbol \"{0}\", parser will shift", symbol.ToString());
-            wrtr.WriteLine(str2);
             wrtr.WriteLine(str1);
+            wrtr.WriteLine(str2);
             wrtr.Write("  Items for From-state ");
             wrtr.WriteLine(fromState.ItemDisplay());
             wrtr.Write("  Items for Next-state ");
