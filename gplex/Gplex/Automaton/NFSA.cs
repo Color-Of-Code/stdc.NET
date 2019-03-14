@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using QUT.Gplex.Parser;
 using QUT.Gplib;
 
@@ -13,6 +14,7 @@ namespace QUT.Gplex.Automaton
     {
         internal TaskState task;
 
+        // TODO: change to dictionary <start state> -> NFSA
         internal NfsaInstance[] nfas;
 
         /// <summary>
@@ -24,6 +26,7 @@ namespace QUT.Gplex.Automaton
         /// bits of each, and were erroneous for automata with more
         /// than 64k of NFSA states.
         /// </summary>
+        // TODO: replace this micro optimization with robust crypto hash
         public IDictionary<ulong, NState> next = new Dictionary<ulong, NState>();
 
         public NFSA(TaskState t) { task = t; }
@@ -137,15 +140,12 @@ namespace QUT.Gplex.Automaton
             task.ListDivider();
             task.ListStream.WriteLine("Total NFSA states = " + this.next.Count.ToString());
             task.ListStream.WriteLine("Number of Start Conditions = " + (nfas.Length - 1));
-            foreach (NfsaInstance inst in nfas)
+            foreach (var inst in nfas.Where(x => x != null))
             {
-                if (inst != null)
-                {
-                    task.ListStream.WriteLine("Start condition " + inst.key + ":");
-                    task.ListStream.Write("  number of patterns = " + inst.myStartCondition.rules.Count);
-                    task.ListStream.Write(", number of nfsa states = " + inst.nStates.Count);
-                    task.ListStream.WriteLine(", accept states = " + inst.acceptStates.Count);
-                }
+                task.ListStream.WriteLine("Start condition " + inst.key + ":");
+                task.ListStream.Write("  number of patterns = " + inst.myStartCondition.rules.Count);
+                task.ListStream.Write(", number of nfsa states = " + inst.nStates.Count);
+                task.ListStream.WriteLine(", accept states = " + inst.acceptStates.Count);
             }
 
             task.ListDivider();
