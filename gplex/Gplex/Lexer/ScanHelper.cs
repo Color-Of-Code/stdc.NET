@@ -8,6 +8,7 @@
 
 using QUT.Gplex.Parser;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace QUT.Gplex.Lexer
 {
@@ -16,109 +17,40 @@ namespace QUT.Gplex.Lexer
         public ErrorHandler yyhdlr;
         private int badCount;
 
+        private static Regex _keywordsRegex = null;
+
+        static Regex BuildKeywordsRegex()
+        {
+            string[] list = {
+                "abstract", "as",
+                "base", "bool", "break", "byte",
+                "case", "catch", "char", "checked", "class", "const", "continue",
+                "decimal", "default", "delegate", "do", "double",
+                "else", "enum", "event", "explicit", "extern",
+                "false", "finally", "fixed", "float", "for", "foreach",
+                "goto",
+                "if", "implicit", "in", "int", "interface", "internal", "is",
+                "lock", "long",
+                "namespace", "new", "null",
+                "object", "operator", "out", "override",
+                "params", "private", "protected", "public",
+                "readonly", "ref", "return",
+                "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch",
+                "this", "throw", "true", "try", "typeof",
+                "uint", "ulong", "unchecked", "unsafe", "ushort", "using",
+                "virtual", "void",
+                "while", "where"
+            };
+            var regexstr = $@"^({string.Join('|', list)})$";
+            return new Regex(regexstr, RegexOptions.Compiled);
+        }
+
         static Tokens GetIdToken(string str)
         {
-            switch (str[0])
-            {
-                case 'a':
-                    if (str.Equals("abstract") || str.Equals("as"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'b':
-                    if (str.Equals("base") || str.Equals("bool") ||
-                        str.Equals("break") || str.Equals("byte"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'c':
-                    if (str.Equals("case") || str.Equals("catch")
-                     || str.Equals("char") || str.Equals("checked")
-                     || str.Equals("class") || str.Equals("const")
-                     || str.Equals("continue"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'd':
-                    if (str.Equals("decimal") || str.Equals("default")
-                     || str.Equals("delegate") || str.Equals("do")
-                     || str.Equals("double"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'e':
-                    if (str.Equals("else") || str.Equals("enum")
-                     || str.Equals("event") || str.Equals("explicit")
-                     || str.Equals("extern"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'f':
-                    if (str.Equals("false") || str.Equals("finally")
-                     || str.Equals("fixed") || str.Equals("float")
-                     || str.Equals("for") || str.Equals("foreach"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'g':
-                    if (str.Equals("goto"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'i':
-                    if (str.Equals("if")
-                     || str.Equals("int") || str.Equals("implicit")
-                     || str.Equals("in") || str.Equals("interface")
-                     || str.Equals("internal") || str.Equals("is"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'l':
-                    if (str.Equals("lock") || str.Equals("long"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'n':
-                    if (str.Equals("namespace") || str.Equals("new")
-                     || str.Equals("null"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'o':
-                    if (str.Equals("object") || str.Equals("operator")
-                     || str.Equals("out") || str.Equals("override"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'p':
-                    if (str.Equals("params") || str.Equals("private")
-                     || str.Equals("protected") || str.Equals("public"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'r':
-                    if (str.Equals("readonly") || str.Equals("ref")
-                     || str.Equals("return"))
-                        return Tokens.csKeyword;
-                    break;
-                case 's':
-                    if (str.Equals("sbyte") || str.Equals("sealed")
-                     || str.Equals("short") || str.Equals("sizeof")
-                     || str.Equals("stackalloc") || str.Equals("static")
-                     || str.Equals("string") || str.Equals("struct")
-                     || str.Equals("switch"))
-                        return Tokens.csKeyword;
-                    break;
-                case 't':
-                    if (str.Equals("this") || str.Equals("throw")
-                     || str.Equals("true") || str.Equals("try")
-                     || str.Equals("typeof"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'u':
-                    if (str.Equals("uint") || str.Equals("ulong")
-                     || str.Equals("unchecked") || str.Equals("unsafe")
-                     || str.Equals("ushort") || str.Equals("using"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'v':
-                    if (str.Equals("virtual") || str.Equals("void"))
-                        return Tokens.csKeyword;
-                    break;
-                case 'w':
-                    if (str.Equals("while") || str.Equals("where"))
-                        return Tokens.csKeyword;
-                    break;
-            }
-            return Tokens.csIdent;
+            _keywordsRegex = _keywordsRegex ?? BuildKeywordsRegex();
+            return _keywordsRegex.IsMatch(str)
+                ? Tokens.csKeyword
+                : Tokens.csIdent;
         }
 
         Tokens GetTagToken(string str)
@@ -158,8 +90,8 @@ namespace QUT.Gplex.Lexer
 
         internal void Error(int n, LexSpan s)
         {
-            // Console.WriteLine(StateStack(YY_START));
-            if (yyhdlr != null) yyhdlr.ListError(s, n);
+            if (yyhdlr != null)
+                yyhdlr.ListError(s, n);
         }
 
         internal void ResetBadCount() { badCount = 0; }
@@ -174,38 +106,6 @@ namespace QUT.Gplex.Lexer
 
         internal LexSpan TokenSpan()
         { return new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer); }
-
-        // TODO: makes sense if STACK is defined
-        public static string StateStr(int s)
-        {
-            switch (s)
-            {
-                case INITIAL: return "0";
-                case RULES: return "RULES";
-                case UCODE: return "UCODE";
-                case LCODE: return "LCODE";
-                case BCODE: return "BCODE";
-                case INDNT: return "INDNT";
-                case CMMNT: return "CMMNT";
-                case SMACT: return "SMACT";
-                case XPEOL: return "XPEOL";
-                case REGEX: return "REGEX";
-                case NMLST: return "NMLST";
-                case SPACE: return "SPACE";
-                case VRBTM: return "VRBTM";
-                case PRGRP: return "PRGRP";
-                case SKIP: return "SKIP";
-                default: return "state " + s.ToString();
-            }
-        }
-
-        public string StateStack(int s)
-        {
-            var rslt = new StringBuilder(StateStr(s));
-            foreach (int v in scStack.ToArray())
-                rslt.Append(":" + StateStr(v));
-            return rslt.ToString();
-        }
 
         int depth;
         LexSpan comStart;
