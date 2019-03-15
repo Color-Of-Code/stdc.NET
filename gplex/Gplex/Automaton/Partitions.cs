@@ -3,6 +3,7 @@
 // (see accompanying GPLEXcopyright.rtf)
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -777,6 +778,31 @@ namespace QUT.Gplex.Parser
         }
 
         public override string ToString() { return name; }
+
+        internal void MakeCaseAgnosticList()
+        {
+            list = list.MakeCaseAgnosticList();
+            list.Canonicalize();
+        }
+
+        internal BitArray GetBitArray(int maxSym, bool pack)
+        {
+            var cls = new BitArray(maxSym);
+            if (pack)
+            {
+                foreach (int ord in equivClasses)
+                    cls[ord] = true;
+            }
+            else
+            {
+                foreach (CharRange rng in list.Ranges)
+                    for (int i = rng.minChr; i <= rng.maxChr; i++)
+                        cls[i] = true;
+                if (list.IsInverted)
+                    cls = cls.Not();
+            }
+            return cls;
+        }
 
         /// <summary>
         /// The RangeLiteral for all line-end characters.

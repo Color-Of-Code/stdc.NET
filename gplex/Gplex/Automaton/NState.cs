@@ -136,24 +136,10 @@ namespace QUT.Gplex.Automaton
         {
             if (myNfaInst.Parent.task.CaseAgnostic)
             {
-                leaf.rangeLit.list = leaf.rangeLit.list.MakeCaseAgnosticList();
-                leaf.rangeLit.list.Canonicalize();
+                leaf.rangeLit.MakeCaseAgnosticList();
             }
 
-            BitArray cls = new BitArray(myNfaInst.MaxSym);
-            if (myNfaInst.Pack)
-            {
-                foreach (int ord in leaf.rangeLit.equivClasses)
-                    cls[ord] = true;
-            }
-            else
-            {
-                foreach (CharRange rng in leaf.rangeLit.list.Ranges)
-                    for (int i = rng.minChr; i <= rng.maxChr; i++)
-                        cls[i] = true;
-                if (leaf.rangeLit.list.IsInverted)
-                    cls = cls.Not();
-            }
+            var cls = leaf.rangeLit.GetBitArray(myNfaInst.MaxSym, myNfaInst.Pack);
             AddClsTransition(cls, nxt);
         }
 
