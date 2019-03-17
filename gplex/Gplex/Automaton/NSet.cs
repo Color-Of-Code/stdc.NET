@@ -19,7 +19,9 @@ namespace QUT.Gplex.Automaton
         public bool Equals(NSet val)
         {
             // Short-circuit the test if possible, as for string comparisons
-            for (int i = 0; i < arr.Length; i++) if (arr[i] != val.arr[i]) return false;
+            for (int i = 0; i < arr.Length; i++) 
+                if (arr[i] != val.arr[i])
+                    return false;
             return true;
         }
 
