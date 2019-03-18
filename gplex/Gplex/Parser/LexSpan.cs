@@ -20,10 +20,10 @@ namespace QUT.Gplex.Parser
         public int EndColumn { get; private set; }       // end column of span
         internal int startIndex;      // start position in the buffer
         internal int endIndex;        // end position in the buffer
-        internal ScanBuff buffer;     // reference to the buffer
+        internal IScanBuffer buffer;     // reference to the buffer
 
         public LexSpan() { }
-        public LexSpan(int sl, int sc, int el, int ec, int sp, int ep, ScanBuff bf)
+        public LexSpan(int sl, int sc, int el, int ec, int sp, int ep, IScanBuffer bf)
         { 
             StartLine = sl;
             StartColumn = sc;
@@ -61,10 +61,8 @@ namespace QUT.Gplex.Parser
 
         internal void StreamDump(TextWriter sWtr)
         {
-            int savePos = buffer.Pos;
             string str = buffer.GetString(startIndex, endIndex);
             sWtr.WriteLine(str);
-            buffer.Pos = savePos;
             sWtr.Flush();
         }
 
