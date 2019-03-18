@@ -179,7 +179,7 @@ namespace QUT.Gplex.Parser
             foreach (var cat in this.lexCatsWithPredicates)
                 ruleList.Add(RuleDesc.MkDummyRuleDesc(cat, this));
 
-            LexSpan lastSpan = Parser.BlankSpan;
+            ISpan lastSpan = Parser.BlankSpan;
             foreach (var rule in ruleList.Reverse())
             {
                 if (!rule.isBarAction) lastSpan = rule.aSpan;

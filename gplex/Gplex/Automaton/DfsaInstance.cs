@@ -23,7 +23,7 @@ namespace QUT.Gplex.Automaton
         internal DState start;
         internal DState anchor;
         internal DFSA parent;                      // Parent DFSA reference
-        internal LexSpan eofCode;                  // Text span for EOF semantic action.
+        internal ISpan eofCode;                  // Text span for EOF semantic action.
         internal NfsaInstance myNfaInst;      // Corresponding NFSA instance
         NSetFactory factory;                       // Factory for creating NSet objects
 

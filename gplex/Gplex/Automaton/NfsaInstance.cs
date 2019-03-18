@@ -17,7 +17,7 @@ namespace QUT.Gplex.Automaton
     {
         const int defN = 32;
         internal string key;
-        internal LexSpan eofAction;
+        internal ISpan eofAction;
         public StartState myStartCondition;           // from the LEX start state
         internal IList<int> acceptStates = new List<int>();
         internal IList<NState> nStates = new List<NState>();

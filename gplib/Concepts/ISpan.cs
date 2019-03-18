@@ -11,5 +11,10 @@ namespace QUT.Gplib
         int StartColumn { get; }
         int EndLine { get; }
         int EndColumn { get; }
+
+        int startIndex { get; set; }      // start position in the buffer
+        int endIndex { get; set; }        // end position in the buffer
+
+        bool IsInitialized { get; }
     }
 }

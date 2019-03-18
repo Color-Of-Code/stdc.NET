@@ -21,8 +21,8 @@ namespace QUT.Gplib
         public int StartColumn { get; private set; }     // start column of span
         public int EndLine { get; private set; }         // end line of span
         public int EndColumn { get; private set; }       // end column of span
-        public int startIndex;      // start position in the buffer
-        public int endIndex;        // end position in the buffer
+        public int startIndex { get; set; }      // start position in the buffer
+        public int endIndex { get; set; }        // end position in the buffer
         public IScanBuffer buffer;     // reference to the buffer
 
         public LexSpan() { }

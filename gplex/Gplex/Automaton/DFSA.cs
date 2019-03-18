@@ -850,7 +850,8 @@ namespace QUT.Gplex.Automaton
                                 }
                             }
                         }
-                        dInst.eofCode.StreamDump(sWrtr);
+                        // TODO: replace
+                        (dInst.eofCode as LexSpan).StreamDump(sWrtr);
                         sWrtr.WriteLine("                    break;");
                     }
                 }
@@ -912,7 +913,8 @@ namespace QUT.Gplex.Automaton
                     if (lLen > 0) sWrtr.WriteLine("yyless({0}); ", lLen);
                     else if (rLen > 0) sWrtr.WriteLine("_yytrunc({0}); ", rLen);
                     if (dSt.accept.HasAction)
-                        dSt.accept.aSpan.StreamDump(sWrtr);
+                        // TODO: replace
+                        (dSt.accept.aSpan as LexSpan).StreamDump(sWrtr);
                     sWrtr.WriteLine("            break;");
                 }
             }
@@ -923,7 +925,8 @@ namespace QUT.Gplex.Automaton
             sWrtr.WriteLine("#endregion");
         }
 
-        public static bool SpansEqual(LexSpan l, LexSpan r)
+        // TODO: Move to ISpan LexSpan?
+        public static bool SpansEqual(ISpan l, ISpan r)
         {
             return l.startIndex == r.startIndex && l.endIndex == r.endIndex;
         }

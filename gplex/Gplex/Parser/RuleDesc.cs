@@ -17,7 +17,7 @@ namespace QUT.Gplex.Parser
         internal LexSpan pSpan { get; private set; }
         internal int ord { get; private set; }
         RegExTree reAST;
-        internal LexSpan aSpan { get; set; } // Span of lexical action
+        internal ISpan aSpan { get; set; } // Span of lexical action
         internal bool isBarAction;
         internal bool isPredDummyRule;
         internal IList<StartState> list;

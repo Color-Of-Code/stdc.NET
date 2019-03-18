@@ -34,6 +34,11 @@ namespace QUT.Gplib
         /// </summary>
         public int EndColumn { get; private set; }
 
+        public bool IsInitialized => false;
+
+        public int startIndex { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int endIndex { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         /// <summary>
         /// Default no-arg constructor.
         /// </summary>
