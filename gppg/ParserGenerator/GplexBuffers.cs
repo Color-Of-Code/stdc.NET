@@ -28,7 +28,7 @@ namespace QUT.GplexBuffers
             : base(info, context) { }
     }
 
-    public abstract class ScanBuff
+    public abstract class ScanBuff : QUT.Gplib.IScanBuffer
     {
         private string fileNm;
 

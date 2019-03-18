@@ -13,7 +13,6 @@ mv Scanner.cs ../ParserGenerator
 # generate a fresh copy of ScanAction.cs
 dotnet run --project ../../gplex/gplex.csproj /verbose /listing ScanAction.lex
 mv ScanAction.cs ../ParserGenerator
-
 mv GplexBuffers.cs ../ParserGenerator
 
 popd
