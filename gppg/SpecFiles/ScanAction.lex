@@ -5,6 +5,7 @@
 
 %namespace QUT.GPGen.Lexers
 %using QUT.GPGen.Parser;
+%using QUT.Gplib;
 %visibility internal
 %scannertype ActionScanner
 %scanbasetype ActionBase

@@ -2,6 +2,7 @@
 /* gppg.lex: Author: John Gough, August 2008 */
 
 %using QUT.GPGen.Parser;
+%using QUT.Gplib;
 %namespace QUT.GPGen.Lexers
 %visibility internal
 %tokentype Token
@@ -271,7 +272,7 @@ OneLineCmnt  \/\/{DotChr}*
 
 /* ------------------------------------------ */
 %{
-	yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
+	yylloc = new QUT.Gplib.LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
 %}
 /* ------------------------------------------ */
 

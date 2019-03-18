@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <gppg.lex>
 // ==========================================================================
 //  Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-14T21:35:33Z
-//  UserName: jaap
+//  Machine:  gest4425
+//  DateTime: 2019-03-18T22:22:24Z
+//  UserName: jdehaan
 // ==========================================================================
 
 
@@ -13,6 +13,7 @@
 /* gppg.lex: Author: John Gough, August 2008 */
 
 %using QUT.GPGen.Parser;
+%using QUT.Gplib;
 %namespace QUT.GPGen.Lexers
 %visibility internal
 %tokentype Token
@@ -282,7 +283,7 @@ OneLineCmnt  \/\/{DotChr}*
 
 /* ------------------------------------------ */
 %{
-	yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
+	yylloc = new QUT.Gplib.LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
 %}
 /* ------------------------------------------ */
 

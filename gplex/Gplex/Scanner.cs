@@ -1481,7 +1481,7 @@ yy_push_state(SMACT);
             finally {
 // User-specified epilog to scan()
 /* Epilog from LEX file */
-	yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
+	yylloc = new QUT.Gplib.LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
 // End, user-specified epilog
             } // end finally
         }

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using QUT.Gplex.Lexer;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {

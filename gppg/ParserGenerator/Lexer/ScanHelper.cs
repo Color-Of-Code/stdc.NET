@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using QUT.GPGen.Parser;
+using QUT.Gplib;
 
 namespace QUT.GPGen.Lexers
 {

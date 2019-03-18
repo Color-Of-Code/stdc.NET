@@ -6,6 +6,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {

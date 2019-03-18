@@ -4,6 +4,7 @@
 
 
 using System.Collections.Generic;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {

@@ -312,7 +312,7 @@ OneLineCmnt  \/\/{DotChr}*
 
 %{
     /* Epilog from LEX file */
-	yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
+	yylloc = new QUT.Gplib.LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
 %}
 
 // =============================================================

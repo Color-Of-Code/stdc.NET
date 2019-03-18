@@ -7,20 +7,23 @@
 //
 
 using System.IO;
-using QUT.GplexBuffers;
-using QUT.Gplib;
 
-namespace QUT.Gplex.Parser
+namespace QUT.Gplib
 {
-    internal class LexSpan : IMerge<LexSpan>, ISpan
+    /// <summary>
+    /// Objects of this class represent locations in the input text.
+    /// The fields record both line:column information and also 
+    /// file position data and buffer object identity.
+    /// </summary>
+    public class LexSpan : IMerge<LexSpan>, ISpan
     {
         public int StartLine { get; private set; }       // start line of span
         public int StartColumn { get; private set; }     // start column of span
         public int EndLine { get; private set; }         // end line of span
         public int EndColumn { get; private set; }       // end column of span
-        internal int startIndex;      // start position in the buffer
-        internal int endIndex;        // end position in the buffer
-        internal IScanBuffer buffer;     // reference to the buffer
+        public int startIndex;      // start position in the buffer
+        public int endIndex;        // end position in the buffer
+        public IScanBuffer buffer;     // reference to the buffer
 
         public LexSpan() { }
         public LexSpan(int sl, int sc, int el, int ec, int sp, int ep, IScanBuffer bf)
@@ -50,16 +53,16 @@ namespace QUT.Gplex.Parser
         /// <param name="idx">Starting index</param>
         /// <param name="len">Length of span</param>
         /// <returns></returns>
-        internal LexSpan FirstLineSubSpan(int idx, int len)
+        public LexSpan FirstLineSubSpan(int idx, int len)
         {
             return new LexSpan(
                 this.StartLine, this.StartColumn + idx, this.StartLine, this.StartColumn + idx + len,
                 this.startIndex, this.endIndex, this.buffer);
         }
 
-        internal bool IsInitialized { get { return buffer != null; } }
+        public bool IsInitialized { get { return buffer != null; } }
 
-        internal void StreamDump(TextWriter sWtr)
+        public void StreamDump(TextWriter sWtr)
         {
             string str = buffer.GetString(startIndex, endIndex);
             sWtr.WriteLine(str);

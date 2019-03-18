@@ -9,6 +9,7 @@
 using QUT.Gplex.Parser;
 using System.Text;
 using System.Text.RegularExpressions;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Lexer
 {

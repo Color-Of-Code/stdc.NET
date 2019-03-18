@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-14T22:03:16Z
-//  UserName: jaap
-//  GPLEX input file <gppg.lex - 3/14/19 10:30:37 PM>
+//  Machine:  gest4425
+//  DateTime: 2019-03-18T22:22:24Z
+//  UserName: jdehaan
+//  GPLEX input file <gppg.lex - 3/18/19 11:21:47 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: verbose, parser, stack, minimize
@@ -36,6 +36,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using QUT.GplexBuffers;
 using QUT.GPGen.Parser;
+using QUT.Gplib;
 
 namespace QUT.GPGen.Lexers
 {   
@@ -1625,7 +1626,7 @@ if (errStart != null)
             } // end try
             finally {
 // User-specified epilog to scan()
-yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
+yylloc = new QUT.Gplib.LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
 // End, user-specified epilog
             } // end finally
         }

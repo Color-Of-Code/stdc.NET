@@ -2,7 +2,7 @@
 // Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
-
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {

@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <ScanAction.lex>
 // ==========================================================================
 //  Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-14T21:35:37Z
-//  UserName: jaap
+//  Machine:  gest4425
+//  DateTime: 2019-03-18T22:20:13Z
+//  UserName: jdehaan
 // ==========================================================================
 
 
@@ -16,6 +16,7 @@
 
 %namespace QUT.GPGen.Lexers
 %using QUT.GPGen.Parser;
+%using QUT.Gplib;
 %visibility internal
 %scannertype ActionScanner
 %scanbasetype ActionBase

@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-14T21:35:37Z
-//  UserName: jaap
-//  GPLEX input file <ScanAction.lex - 3/14/19 10:30:37 PM>
+//  Machine:  gest4425
+//  DateTime: 2019-03-18T22:22:26Z
+//  UserName: jdehaan
+//  GPLEX input file <ScanAction.lex - 3/18/19 11:11:31 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: verbose, noParser, noFiles, minimize
@@ -36,6 +36,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using QUT.GplexBuffers;
 using QUT.GPGen.Parser;
+using QUT.Gplib;
 
 namespace QUT.GPGen.Lexers
 {   
