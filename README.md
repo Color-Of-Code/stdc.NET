@@ -23,10 +23,9 @@ Excellent hints on parsing in C#:
 
 * https://tomassetti.me/parsing-in-csharp/
 
-## GPlex
+## Other GitHub projects
 
-### Other GitHub projects
-
+* https://github.com/IronyProject/Irony
 * https://github.com/kellyw42/GardensPointCompilerTools
 * https://github.com/KommuSoft/Gardens-Point-Parser-Generator
 * https://github.com/KommuSoft/Gardens-Point-LEX
