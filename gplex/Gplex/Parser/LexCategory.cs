@@ -23,7 +23,7 @@ namespace QUT.Gplex.Parser
 
         internal string Name { get; private set; }
 
-        internal string PredDummyName { get { return "PRED_" + Name + "_DUMMY"; } }
+        internal string PredDummyName { get { return $"PRED_{Name}_DUMMY"; } }
 
         internal void ParseRegularExpression(AAST aast)
         {

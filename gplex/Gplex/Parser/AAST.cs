@@ -63,7 +63,7 @@ namespace QUT.Gplex.Parser
         // Epilog code for the scanning routine
         internal IList<ISpan> Epilog { get; private set; }
 
-        internal void AddCodeSpan(Destination dest, LexSpan span)
+        internal void AddCodeSpan(Destination dest, ISpan span)
         {
             if (!span.IsInitialized) return;
             switch (dest)
@@ -99,7 +99,7 @@ namespace QUT.Gplex.Parser
         }
 
 
-        internal bool AddLexCategory(string name, string verb, LexSpan spn)
+        internal bool AddLexCategory(string name, string verb, ISpan spn)
         {
             if (lexCategories.ContainsKey(name))
                 return false;
@@ -110,7 +110,7 @@ namespace QUT.Gplex.Parser
             return true;
         }
 
-        internal void AddLexCatPredicate(string name, LexSpan span)
+        internal void AddLexCatPredicate(string name, ISpan span)
         {
             LexCategory cat;
             if (!lexCategories.TryGetValue(name, out cat))
@@ -312,7 +312,5 @@ namespace QUT.Gplex.Parser
 
 #region Regular Expression Parser class
         #endregion // Regular Expression Parser
-        // =============================================================================
-    } // end AAST class.
-
+    }
 }

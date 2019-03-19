@@ -55,7 +55,7 @@ namespace QUT.Gplex.Parser
         char chr;               // the last char to be read.
         bool esc;               // the last character was backslash-escaped
         AAST parent;
-        LexSpan span;
+        ISpan span;
         string pat;
 
         /// <summary>
@@ -109,7 +109,8 @@ namespace QUT.Gplex.Parser
             }
             catch (RegExException x)
             {
-                x.ListError(parent.hdlr, this.span);
+                // TODO: avoid cast
+                x.ListError(parent.hdlr, (LexSpan)this.span);
                 return null;
             }
             catch (StringInterpretException x)
@@ -167,12 +168,14 @@ namespace QUT.Gplex.Parser
 
         void Warn(int num, int idx, int len, string str)
         {
-            parent.hdlr.ListError(span.FirstLineSubSpan(idx, len), num, str, '"');
+            // TODO: avoid cast
+            parent.hdlr.ListError(((LexSpan)span).FirstLineSubSpan(idx, len), num, str, '"');
         }
 
         void Warn(int num, int idx, int len)
         {
-            parent.hdlr.ListError(span.FirstLineSubSpan(idx, len), num);
+            // TODO: avoid cast
+            parent.hdlr.ListError(((LexSpan)span).FirstLineSubSpan(idx, len), num);
         }
 
         internal void checkAndScan(char ex)

@@ -89,7 +89,7 @@ namespace QUT.Gplex.Lexer
         public override void yyerror(string format, params object[] args)
         { if (yyhdlr != null) yyhdlr.ListError(TokenSpan(), 1, format); }
 
-        internal void Error(int n, LexSpan s)
+        internal void Error(int n, ISpan s)
         {
             if (yyhdlr != null)
                 yyhdlr.ListError(s, n);
@@ -97,7 +97,7 @@ namespace QUT.Gplex.Lexer
 
         internal void ResetBadCount() { badCount = 0; }
 
-        internal void Error79(LexSpan s)
+        internal void Error79(ISpan s)
         {
             Error(79, s);
             badCount++;

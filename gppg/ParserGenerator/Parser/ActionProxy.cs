@@ -11,9 +11,9 @@ namespace QUT.GPGen.Parser
         // TODO: setters should become better encapsulated
         public ISpan codeBlock { get; private set; }
         public ISpan precedenceToken { get; set; }
-        public LexSpan precedenceSpan { get; set; }
+        public ISpan precedenceSpan { get; set; }
 
-        internal ActionProxy(LexSpan precedence, ISpan identifier, ISpan code)
+        internal ActionProxy(ISpan precedence, ISpan identifier, ISpan code)
         {
             codeBlock = code;
             precedenceToken = identifier;

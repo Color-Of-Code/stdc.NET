@@ -10,7 +10,7 @@ namespace QUT.Gplex.Parser
 {
     internal sealed class RuleBuffer
     {
-        IList<LexSpan> locs = new List<LexSpan>();
+        IList<ISpan> locs = new List<ISpan>();
 
         // First line of rules
         internal int FLine { get; set; }
@@ -26,7 +26,7 @@ namespace QUT.Gplex.Parser
         /// <param name="aast"></param>
         internal void FinalizeCode(AAST aast)
         {
-            foreach (LexSpan loc in locs)
+            foreach (ISpan loc in locs)
             {
                 if (loc.StartLine < FLine)
                     aast.AddCodeSpan(Destination.scanProlog, loc);

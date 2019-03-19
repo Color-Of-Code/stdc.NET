@@ -78,9 +78,10 @@ namespace QUT.GPGen.Lexers
             }
         }
 
-        private void Error(int n, LexSpan s)
+        private void Error(int n, ISpan s)
         {
-            if (yyhdlr != null) yyhdlr.ListError(s, n);
+            if (yyhdlr != null)
+                yyhdlr.ListError(s, n);
         }
         
         private LexSpan TokenSpan() 
