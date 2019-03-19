@@ -16,10 +16,10 @@ namespace QUT.GPGen
         private Production production;
         private int pos;
         private string commands;
-        private LexSpan codeSpan;
+        private ISpan codeSpan;
 
 
-        internal SemanticAction(Production production, int pos, LexSpan span)
+        internal SemanticAction(Production production, int pos, ISpan span)
         {
             this.production = production;
             this.pos = pos;
@@ -27,7 +27,7 @@ namespace QUT.GPGen
             commands = span.ToString();
         }
 
-        internal LexSpan Code { get { return codeSpan; } }
+        internal ISpan Code { get { return codeSpan; } }
 
         internal void GenerateCode(CodeGenerator codeGenerator)
         {

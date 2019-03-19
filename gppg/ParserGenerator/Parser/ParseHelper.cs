@@ -207,7 +207,7 @@ namespace QUT.GPGen.Parser
             {
                 if (prod.semanticAction != null || prod.precSpan != null)
                     FixInternalReduction(prod);
-                LexSpan cSpan = proxy.codeBlock;      // LexSpan of action code
+                ISpan cSpan = proxy.codeBlock;      // LexSpan of action code
                 LexSpan pSpan = proxy.precedenceToken;      // LexSpan of ident in %prec ident
                 if (pSpan != null)
                 {
@@ -250,7 +250,8 @@ namespace QUT.GPGen.Parser
         private void FinalizeProduction(Production prod)
         {
             if (prod.semanticAction != null)
-                ActionScanner.CheckSpan(prod.rhs.Count, prod.semanticAction.Code, handler);
+                // TODO: replace with ISpan
+                ActionScanner.CheckSpan(prod.rhs.Count, (LexSpan)prod.semanticAction.Code, handler);
             grammar.AddProduction(prod);
             Precedence.Calculate(prod);
             prod.precSpan = null;
