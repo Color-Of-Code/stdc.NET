@@ -9,10 +9,10 @@ namespace QUT.Gplex.Parser
     internal sealed class LexCategory
     {
         private string _verb;
-        private LexSpan _verbSpan;
+        private ISpan _verbSpan;
         public RegExTree RegularExpressionTree {get; private set;}
 
-        internal LexCategory(string name, string vrb, LexSpan spn)
+        internal LexCategory(string name, string vrb, ISpan spn)
         {
             _verbSpan = spn;
             _verb = vrb;
@@ -27,7 +27,8 @@ namespace QUT.Gplex.Parser
 
         internal void ParseRegularExpression(AAST aast)
         {
-            RegularExpressionTree = new AAST.RegularExpressionParser(_verb, _verbSpan, aast).Parse();
+            // TODO: remove cast
+            RegularExpressionTree = new RegularExpressionParser(_verb, (LexSpan)_verbSpan, aast).Parse();
         }
     }
 

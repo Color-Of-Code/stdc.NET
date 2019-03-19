@@ -44,7 +44,7 @@ namespace QUT.GPGen.Parser
         //
         // ===============================================================
 
-        internal void SetSemanticType(LexSpan span)
+        internal void SetSemanticType(ISpan span)
         {
             if (grammar.ValueTypeNameSpan != null)
             {
@@ -73,7 +73,7 @@ namespace QUT.GPGen.Parser
             }
         }
 
-        internal string GetLitString(LexSpan span)
+        internal string GetLitString(ISpan span)
         {
             string text = span.ToString();
             if (text[0] != '\"' || text[text.Length - 1] != '\"')
@@ -90,7 +90,7 @@ namespace QUT.GPGen.Parser
             return text;
         }
 
-        internal static string GetVerbatimString(LexSpan span)
+        internal static string GetVerbatimString(ISpan span)
         {
             string text = span.ToString();
             if (text[0] != '@' || text[1] != '\"' || text[text.Length - 1] != '\"')
@@ -108,7 +108,7 @@ namespace QUT.GPGen.Parser
             }
         }
 
-        private void TidyUpDefinitions(LexSpan def)
+        private void TidyUpDefinitions(ISpan def)
         {
             handler.DefaultSpan = def;
             if (GPCG.Defines) grammar.TokFileName = baseName + ".tokens";
@@ -130,7 +130,7 @@ namespace QUT.GPGen.Parser
         //
         // ===============================================================
 
-        private void SetCurrentLHS(LexSpan lhs) 
+        private void SetCurrentLHS(ISpan lhs) 
         {
             string lhsName = lhs.ToString();
             NonTerminal nt = grammar.LookupNonTerminal(lhsName);
@@ -208,7 +208,7 @@ namespace QUT.GPGen.Parser
                 if (prod.semanticAction != null || prod.precSpan != null)
                     FixInternalReduction(prod);
                 ISpan cSpan = proxy.codeBlock;      // LexSpan of action code
-                LexSpan pSpan = proxy.precedenceToken;      // LexSpan of ident in %prec ident
+                ISpan pSpan = proxy.precedenceToken;      // LexSpan of ident in %prec ident
                 if (pSpan != null)
                 {
                     prod.prec = grammar.LookupTerminal(Token.ident, pSpan.ToString()).prec;

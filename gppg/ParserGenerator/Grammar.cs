@@ -23,10 +23,10 @@ namespace QUT.GPGen
         internal int Prec { get { return currentPrec; } }
 
         internal IList<Production> productions = new List<Production>();
-        internal LexSpan unionType;
+        internal ISpan unionType;
         internal int NumActions;
-        internal IList<LexSpan> prologCode = new List<LexSpan>();	// before first %%
-        internal LexSpan epilogCode;    // after last %%
+        internal IList<ISpan> prologCode = new List<ISpan>();	// before first %%
+        internal ISpan epilogCode;    // after last %%
         internal NonTerminal startSymbol;
         internal Production rootProduction;
         internal IDictionary<string, NonTerminal> nonTerminals = new Dictionary<string, NonTerminal>();
@@ -49,7 +49,7 @@ namespace QUT.GPGen
         internal string ValueTypeName;
         internal string LocationTypeName = "LexLocation";
         internal string PartialMark { get { return (IsPartial ? " partial" : ""); } }
-        internal LexSpan ValueTypeNameSpan;
+        internal ISpan ValueTypeNameSpan;
 
         // Experimental features
         // readonly List<Terminal> emptyTerminalList;

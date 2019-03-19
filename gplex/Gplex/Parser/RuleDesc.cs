@@ -87,7 +87,7 @@ namespace QUT.Gplex.Parser
 
         internal void ParseRE(AAST aast)
         {
-            reAST = new AAST.RegularExpressionParser(Pattern, pSpan, aast).Parse();
+            reAST = new RegularExpressionParser(Pattern, pSpan, aast).Parse();
             SemanticCheck(aast);
         }
 

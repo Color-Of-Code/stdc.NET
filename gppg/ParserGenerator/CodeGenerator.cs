@@ -98,7 +98,7 @@ namespace QUT.GPGen
             if (grammar.prologCode.Any())
             {
                 Console.WriteLine("  // Verbatim content from {0}", grammar.InputFileIdent);
-                foreach (LexSpan span in grammar.prologCode)
+                foreach (ISpan span in grammar.prologCode)
                     InsertCodeSpan(span);
                 Console.WriteLine("  // End verbatim content from {0}", grammar.InputFileIdent);
                 Console.WriteLine();
@@ -437,7 +437,7 @@ namespace QUT.GPGen
             Console.WriteLine();
         }
 
-        private void InsertCodeSpan(LexSpan span)
+        private void InsertCodeSpan(ISpan span)
         {
             if (span != null)
             {
