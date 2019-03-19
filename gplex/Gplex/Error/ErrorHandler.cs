@@ -251,7 +251,7 @@ namespace QUT.Gplex.Parser
             ListDivider(streamWriter);
             streamWriter.WriteLine("//  Version:  " + version);
             streamWriter.WriteLine("//  Machine:  " + Environment.MachineName);
-            streamWriter.WriteLine("//  DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
+            //streamWriter.WriteLine("//  DateTime: " + DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
             streamWriter.WriteLine("//  UserName: " + Environment.UserName);
             ListDivider(streamWriter); streamWriter.WriteLine(); streamWriter.WriteLine();
             //

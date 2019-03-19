@@ -6,7 +6,6 @@
 //
 //  GPLEX Version:  1.0.0.0
 //  Machine:  gest4425
-//  DateTime: 2019-03-18T22:22:24Z
 //  UserName: jdehaan
 //  GPLEX input file <gppg.lex - 3/18/19 11:21:47 PM>
 //  GPLEX frame file <embedded resource>

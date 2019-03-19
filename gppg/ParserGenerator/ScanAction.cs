@@ -6,7 +6,6 @@
 //
 //  GPLEX Version:  1.0.0.0
 //  Machine:  gest4425
-//  DateTime: 2019-03-18T22:22:26Z
 //  UserName: jdehaan
 //  GPLEX input file <ScanAction.lex - 3/18/19 11:11:31 PM>
 //  GPLEX frame file <embedded resource>
