@@ -77,7 +77,7 @@ namespace QUT.GPGen.Parser
         {
             string text = span.ToString();
             if (text[0] != '\"' || text[text.Length - 1] != '\"')
-                throw new GppgInternalException("Internal error: invalid litstring");
+                throw new ToolInternalException("Internal error: invalid litstring");
             text = text.Substring(1, text.Length - 2);
             try
             {
@@ -94,7 +94,7 @@ namespace QUT.GPGen.Parser
         {
             string text = span.ToString();
             if (text[0] != '@' || text[1] != '\"' || text[text.Length - 1] != '\"')
-                throw new GppgInternalException("Internal error: invalid litstring");
+                throw new ToolInternalException("Internal error: invalid litstring");
             text = text.Substring(2, text.Length - 3);
             return CharacterUtilities.InterpretEscapesInVerbatimString(text);
         }
