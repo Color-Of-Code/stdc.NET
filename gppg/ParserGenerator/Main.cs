@@ -241,12 +241,6 @@ namespace QUT.GPGen
                             Babel = true;
                             ForGplex = true;
                             break;
-                        case "DIAGNOSE":
-                            // Obsolete, but still recognized
-                            // for backward compatability      
-                            Diagnose = true;
-                            Report = true;
-                            break;
                         case "CONFLICTS":
                             Conflicts = true;
                             Verbose = true;

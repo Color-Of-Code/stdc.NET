@@ -108,12 +108,6 @@ namespace QUT.Gplib
       /// <param name="states">The pre-initialized states table</param>
         protected void InitStates(State[] states) { this.states = states; }
 
-      /// <summary>
-      /// OBSOLETE FOR VERSION 1.4.0
-      /// </summary>
-      /// <param name="size"></param>
-        protected void InitStateTable(int size) { states = new State[size]; }
-
         /// <summary>
         /// Initialization method to allow derived classes
         /// to insert the special value for the error and EOF tokens.
@@ -535,19 +529,6 @@ namespace QUT.Gplib
         protected void yyerrok()
         {
             recovering = false;
-        }
-
-        /// <summary>
-        /// OBSOLETE FOR VERSION 1.4.0
-        /// Method used by derived types to insert new
-        /// state instances in the "states" array.
-        /// </summary>
-        /// <param name="stateNumber">index of the state</param>
-        /// <param name="state">data for the state</param>
-        protected void AddState(int stateNumber, State state)
-        {
-            states[stateNumber] = state;
-            state.number = stateNumber;
         }
 
         private void DisplayStack()
