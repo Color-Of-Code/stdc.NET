@@ -1,7 +1,7 @@
 
 README file for gppg\ParserGenerator
 
-Question:  Where are GplexBuffers.cs, Parser.cs, Scanner.cs and ScanAction.cs?
+Question:  Where are Parser.cs, Scanner.cs and ScanAction.cs?
 
 Answer:  
 These four files are not part of the Source-Controlled distribution. 

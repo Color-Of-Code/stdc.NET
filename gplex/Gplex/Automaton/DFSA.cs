@@ -506,12 +506,12 @@ namespace QUT.Gplex.Automaton
                     (myTask.Files ? "" : " noFiles,"),
                     (myTask.Stack ? " stack," : ""),
                     (myTask.Minimize ? " minimize" : " noMinimize"));
-                sWrtr.WriteLine("//  Option settings:{0}{1}{2}{3}{4}",
+                sWrtr.WriteLine("//  Option settings:{0}{1}{2}{3}",
                     (myTask.ChrClasses ? " classes," : ""),
                     (myTask.ChrClasses ? (myTask.CompressMap ? " compressMap," : " noCompressMap,") : ""),
                     (myTask.CompressNext ? " compressNext," : " noCompressNext,"),
-                    (myTask.Files ? (myTask.Persist ? " persistBuffer," : " noPersistBuffer,") : ""),
-                    (myTask.EmbedBuffers ? " embedbuffers" : " noEmbedBuffers"));
+                    (myTask.Files ? (myTask.Persist ? " persistBuffer," : " noPersistBuffer,") : "")
+                    );
 
                 if (myTask.UseUnicode && myTask.Files)
                 {
@@ -623,9 +623,6 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector == "usingDcl")
                             {
-                                if (!myTask.EmbedBuffers)
-                                    sWrtr.WriteLine("using QUT.GplexBuffers;");
-
                                 foreach (LexSpan s in myTask.aast.usingStrs)
                                 {
                                     sWrtr.Write("using ");
@@ -704,11 +701,6 @@ namespace QUT.Gplex.Automaton
                                 myTask.aast.UserCode.StreamDump(sWrtr);
                                 sWrtr.WriteLine();
                                 sWrtr.WriteLine("#endregion");
-                            }
-                            else if (selector == "embeddedBuffers")
-                            {
-                                if (myTask.EmbedBuffers)
-                                    TaskState.EmbedBufferCode(sWrtr);
                             }
                             else if (selector == "bufferCtor")
                             {

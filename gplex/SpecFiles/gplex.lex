@@ -3,11 +3,12 @@
 // =============================================================
 
 %using QUT.Gplex.Parser;
+%using QUT.Gplib;
 %namespace QUT.Gplex.Lexer
 
 %visibility internal
 
-%option stack, classes, minimize, parser, verbose, persistbuffer, noembedbuffers, out:Scanner.cs
+%option stack, classes, minimize, parser, verbose, persistbuffer, out:Scanner.cs
 
 /* 
  *  gplex.lex file, Version 1.2.1 including charset operators {-}, {+}, {*}

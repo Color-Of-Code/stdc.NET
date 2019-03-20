@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using QUT.GplexBuffers;
 using QUT.Gplib;
 
 namespace QUT.Gplex.Parser

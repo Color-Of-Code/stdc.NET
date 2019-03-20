@@ -7,7 +7,7 @@
 %visibility internal
 %tokentype Token
 
-%option stack, minimize, parser, verbose, persistbuffer, noembedbuffers, out:Scanner.cs
+%option stack, minimize, parser, verbose, persistbuffer, out:Scanner.cs
 
 Eol             (\r\n?|\n)
 NotWh           [^ \t\r\n]

@@ -7,11 +7,11 @@
 //  GPLEX Version:  1.0.0.0
 //  Machine:  gest4425
 //  UserName: jdehaan
-//  GPLEX input file <gplex.lex - 3/18/19 11:14:28 PM>
+//  GPLEX input file <gplex.lex - 3/20/19 11:38:05 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, verbose, parser, stack, minimize
-//  Option settings: classes, compressMap, compressNext, persistBuffer, noEmbedBuffers
+//  Option settings: classes, compressMap, compressNext, persistBuffer,
 //  Fallback code page: Raw 8-bit binary
 //
 
@@ -33,8 +33,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-using QUT.GplexBuffers;
 using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex.Lexer
 {   

@@ -8,7 +8,6 @@
     /// string[] names = assembly.GetManifestResourceNames();
     ///
     /// gplex.Properties.Resources.resources
-    /// gplex.SpecFiles.GplexBuffers.txt
     /// gplex.SpecFiles.ResourceHeader.txt
     /// gplex.SpecFiles.gplexx.frame
     /// gplex.SpecFiles.guesser.frame
@@ -27,14 +26,6 @@
             using (StreamReader reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
-            }
-        }
-
-        internal static string GplexBuffers
-        {
-            get
-            {
-                return GetString("gplex.SpecFiles.GplexBuffers.txt");
             }
         }
 

@@ -7,11 +7,11 @@
 //  GPLEX Version:  1.0.0.0
 //  Machine:  gest4425
 //  UserName: jdehaan
-//  GPLEX input file <ScanAction.lex - 3/18/19 11:11:31 PM>
+//  GPLEX input file <ScanAction.lex - 3/20/19 11:22:56 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: verbose, noParser, noFiles, minimize
-//  Option settings: compressNext, noEmbedBuffers
+//  Option settings: compressNext,
 //
 
 //
@@ -33,7 +33,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-using QUT.GplexBuffers;
 using QUT.GPGen.Parser;
 using QUT.Gplib;
 

@@ -9,6 +9,5 @@ mv Parser.cs ../Gplex
 # generate a fresh copy of Scanner.cs
 dotnet run --project ../gplex.csproj /listing /verbose gplex.lex
 mv Scanner.cs ../Gplex
-mv GplexBuffers.cs ../Gplex
 
 popd

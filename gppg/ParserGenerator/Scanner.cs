@@ -7,11 +7,11 @@
 //  GPLEX Version:  1.0.0.0
 //  Machine:  gest4425
 //  UserName: jdehaan
-//  GPLEX input file <gppg.lex - 3/18/19 11:21:47 PM>
+//  GPLEX input file <gppg.lex - 3/20/19 11:22:52 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: verbose, parser, stack, minimize
-//  Option settings: compressNext, persistBuffer, noEmbedBuffers
+//  Option settings: compressNext, persistBuffer,
 //
 
 //
@@ -33,7 +33,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-using QUT.GplexBuffers;
 using QUT.GPGen.Parser;
 using QUT.Gplib;
 
