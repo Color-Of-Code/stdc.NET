@@ -46,7 +46,7 @@ namespace QUT.Gplex.Parser
                         int rLen = RightKid.MinimumLength();
                         return (lLen <= rLen ? lLen : rLen);
                     }
-                default: throw new GplexInternalException("Bad binary RegOp");
+                default: throw new ToolInternalException("Bad binary RegOp");
             }
         }
 

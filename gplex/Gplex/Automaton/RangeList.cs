@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using QUT.Gplib;
+
 namespace QUT.Gplex.Parser
 {
     /// <summary>
@@ -78,7 +80,7 @@ namespace QUT.Gplex.Parser
         internal RangeList AND(RangeList rhOp)
         {
             if (!isCanonical || !rhOp.isCanonical)
-                throw new GplexInternalException("RangeList non canonicalized");
+                throw new ToolInternalException("RangeList non canonicalized");
             if (this.ranges.Count == 0 || rhOp.ranges.Count == 0)
                 return new RangeList(false); // return empty RangeList
 
@@ -153,7 +155,7 @@ namespace QUT.Gplex.Parser
         internal RangeList SUB(RangeList rhOp)
         {
             if (!this.isCanonical || !rhOp.isCanonical)
-                throw new GplexInternalException("RangeList not canonicalized");
+                throw new ToolInternalException("RangeList not canonicalized");
             if (this.ranges.Count == 0)
                 return new RangeList(false);
             else if (rhOp.ranges.Count == 0)
@@ -169,7 +171,7 @@ namespace QUT.Gplex.Parser
         internal bool EQU(RangeList rhOp)
         {
             if (!isCanonical || !rhOp.isCanonical)
-                throw new GplexInternalException("RangeList not canonicalized");
+                throw new ToolInternalException("RangeList not canonicalized");
             if (this == rhOp)
                 return true;
             else if (this.ranges.Count != rhOp.ranges.Count)

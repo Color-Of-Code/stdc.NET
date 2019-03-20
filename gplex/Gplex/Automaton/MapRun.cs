@@ -2,6 +2,7 @@
 // Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {
@@ -45,7 +46,7 @@ namespace QUT.Gplex.Parser
         internal void Merge(int min, int max, int val)
         {
             if (this.range.maxChr != (min - 1))
-                throw new GplexInternalException("Bad MapRun Merge");
+                throw new ToolInternalException("Bad MapRun Merge");
             this.range.maxChr = max;
             this.tag = TagType.mixedValues;
             this.hash += (max - min + 1) * val;

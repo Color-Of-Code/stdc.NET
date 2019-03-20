@@ -68,7 +68,7 @@ namespace QUT.Gplex.Parser
                     case RegOp.eof: // no action required
                         break;
                     default:
-                        throw new GplexInternalException("Unknown RegOp");
+                        throw new ToolInternalException("Unknown RegOp");
                 }
             }
             else if (tree.Operator == RegOp.RightAnchor)

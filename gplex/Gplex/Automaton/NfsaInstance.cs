@@ -253,7 +253,7 @@ namespace QUT.Gplex.Automaton
                             break;
                     }
                     break;
-                default: throw new GplexInternalException("unknown tree op");
+                default: throw new ToolInternalException("unknown tree op");
             }
         }
 

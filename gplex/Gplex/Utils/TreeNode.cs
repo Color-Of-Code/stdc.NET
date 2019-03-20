@@ -2,6 +2,7 @@
 // Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
+using QUT.Gplib;
 
 namespace QUT.Gplex
 {
@@ -77,7 +78,7 @@ namespace QUT.Gplex
                 else
                     _rightKid.InsertNewNode(node);
             }
-            else throw new Parser.GplexInternalException("Invalid range overlap");
+            else throw new ToolInternalException("Invalid range overlap");
         }
     }
 }

@@ -3,6 +3,7 @@
 // (see accompanying GPLEXcopyright.rtf)
 
 using QUT.Gplex.Parser;
+using QUT.Gplib;
 
 namespace QUT.Gplex
 {
@@ -20,7 +21,7 @@ namespace QUT.Gplex
         {
             get
             {
-                if (root == null) throw new Parser.GplexInternalException("Map not initialized");
+                if (root == null) throw new ToolInternalException("Map not initialized");
                 return root.Lookup(theChar);
             }
         }

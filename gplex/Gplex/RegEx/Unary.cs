@@ -2,7 +2,7 @@
 // Copyright (c) K John Gough, QUT 2006-2014
 // (see accompanying GPLEXcopyright.rtf)
 
-
+using QUT.Gplib;
 
 namespace QUT.Gplex.Parser
 {
@@ -37,7 +37,7 @@ namespace QUT.Gplex.Parser
                     return Kid.ContextLength();
                 case RegOp.RightAnchor:
                     return Kid.ContextLength();
-                default: throw new GplexInternalException("unknown unary RegOp");
+                default: throw new ToolInternalException("unknown unary RegOp");
             }
         }
 
@@ -52,7 +52,7 @@ namespace QUT.Gplex.Parser
                 case RegOp.LeftAnchor:
                 case RegOp.RightAnchor:
                     return Kid.MinimumLength();
-                default: throw new GplexInternalException("unknown unary RegOp");
+                default: throw new ToolInternalException("unknown unary RegOp");
             }
         }
 
