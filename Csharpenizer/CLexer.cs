@@ -5,14 +5,13 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  dehaan
-//  DateTime: 2019-03-03T14:27:54Z
-//  UserName: jaap
-//  GPLEX input file <CLexer.lex - 2/27/19 11:29:06 PM>
+//  Machine:  gest4425
+//  UserName: jdehaan
+//  GPLEX input file <CLexer.lex - 3/21/19 10:01:26 PM>
 //  GPLEX frame file <embedded resource>
 //
-//  Option settings: noParser, noFiles, stack, minimize
-//  Option settings: compressNext, embedbuffers
+//  Option settings: verbose, noParser, noFiles, stack, minimize
+//  Option settings: compressNext,
 //
 
 //
@@ -36,6 +35,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 using System.Text.RegularExpressions;
+using QUT.Gplib;
 
 namespace CLexer
 {   
@@ -172,13 +172,16 @@ namespace CLexer
     static int[] startState = new int[] {51, 167, 168, 169, 0};
 
     static Table[] NxS = new Table[170] {
-/* NxS[   0] */ new Table(0, 0, 0, null),
-/* NxS[   1] */ new Table(0, 0, -1, null),
-/* NxS[   2] */ new Table(0, 0, -1, null),
-/* NxS[   3] */ new Table(10, 1, -1, new short[] {2}),
-/* NxS[   4] */ new Table(0, 0, -1, null),
-/* NxS[   5] */ new Table(10, 4, 5, new short[] {-1, 5, 5, -1}),
-/* NxS[   6] */ new Table(9, 114, -1, new short[] {166, -1, -1, -1, -1, -1, 
+/* NxS[   0] */ new Table(0, 0, 0, null), // Shortest string ""
+/* NxS[   1] */ new Table(0, 0, -1, null), // Shortest string "\x01"
+/* NxS[   2] */ new Table(0, 0, -1, null), // Shortest string "\n"
+/* NxS[   3] */ // Shortest string "\r"
+      new Table(10, 1, -1, new short[] {2}),
+/* NxS[   4] */ new Table(0, 0, -1, null), // Shortest string "\""
+/* NxS[   5] */ // Shortest string "#"
+      new Table(10, 4, 5, new short[] {-1, 5, 5, -1}),
+/* NxS[   6] */ // Shortest string "&"
+      new Table(9, 114, -1, new short[] {166, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 166, -1, -1, -1, -1, -1, 39, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -186,7 +189,8 @@ namespace CLexer
           40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, -1, -1, -1, -1, 
           40, -1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}),
-/* NxS[   7] */ new Table(9, 110, -1, new short[] {161, -1, -1, -1, -1, -1, 
+/* NxS[   7] */ // Shortest string "("
+      new Table(9, 110, -1, new short[] {161, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 161, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -194,32 +198,49 @@ namespace CLexer
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, 162}),
-/* NxS[   8] */ new Table(9, 32, -1, new short[] {156, -1, -1, -1, -1, -1, 
+/* NxS[   8] */ // Shortest string "*"
+      new Table(9, 32, -1, new short[] {156, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 156, -1, -1, -1, -1, -1, -1, -1, 157}),
-/* NxS[   9] */ new Table(42, 6, -1, new short[] {35, -1, -1, -1, -1, 36}),
-/* NxS[  10] */ new Table(73, 1, -1, new short[] {153}),
-/* NxS[  11] */ new Table(85, 1, -1, new short[] {151}),
-/* NxS[  12] */ new Table(116, 1, -1, new short[] {149}),
-/* NxS[  13] */ new Table(104, 8, -1, new short[] {112, -1, -1, -1, 113, -1, 
+/* NxS[   9] */ // Shortest string "/"
+      new Table(42, 6, -1, new short[] {35, -1, -1, -1, -1, 36}),
+/* NxS[  10] */ // Shortest string "F"
+      new Table(73, 1, -1, new short[] {153}),
+/* NxS[  11] */ // Shortest string "N"
+      new Table(85, 1, -1, new short[] {151}),
+/* NxS[  12] */ // Shortest string "a"
+      new Table(116, 1, -1, new short[] {149}),
+/* NxS[  13] */ // Shortest string "c"
+      new Table(104, 8, -1, new short[] {112, -1, -1, -1, 113, -1, 
           -1, 114}),
-/* NxS[  14] */ new Table(120, 1, -1, new short[] {111}),
-/* NxS[  15] */ new Table(99, 14, -1, new short[] {106, -1, -1, -1, 107, -1, 
+/* NxS[  14] */ // Shortest string "e"
+      new Table(120, 1, -1, new short[] {111}),
+/* NxS[  15] */ // Shortest string "f"
+      new Table(99, 14, -1, new short[] {106, -1, -1, -1, 107, -1, 
           -1, -1, -1, -1, -1, -1, 108, 109}),
-/* NxS[  16] */ new Table(101, 1, -1, new short[] {103}),
-/* NxS[  17] */ new Table(110, 1, -1, new short[] {93}),
-/* NxS[  18] */ new Table(114, 4, -1, new short[] {79, -1, -1, 91}),
-/* NxS[  19] */ new Table(115, 1, -1, new short[] {89}),
-/* NxS[  20] */ new Table(97, 1, -1, new short[] {87}),
-/* NxS[  21] */ new Table(99, 18, -1, new short[] {61, -1, -1, -1, -1, -1, 
+/* NxS[  16] */ // Shortest string "g"
+      new Table(101, 1, -1, new short[] {103}),
+/* NxS[  17] */ // Shortest string "i"
+      new Table(110, 1, -1, new short[] {93}),
+/* NxS[  18] */ // Shortest string "p"
+      new Table(114, 4, -1, new short[] {79, -1, -1, 91}),
+/* NxS[  19] */ // Shortest string "q"
+      new Table(115, 1, -1, new short[] {89}),
+/* NxS[  20] */ // Shortest string "r"
+      new Table(97, 1, -1, new short[] {87}),
+/* NxS[  21] */ // Shortest string "s"
+      new Table(99, 18, -1, new short[] {61, -1, -1, -1, -1, -1, 
           62, -1, -1, -1, -1, -1, -1, 63, -1, 64, -1, 65}),
-/* NxS[  22] */ new Table(105, 1, -1, new short[] {59}),
-/* NxS[  23] */ new Table(111, 1, -1, new short[] {52}),
-/* NxS[  24] */ new Table(0, 0, -1, null),
-/* NxS[  25] */ new Table(0, 0, -1, null),
-/* NxS[  26] */ new Table(0, 0, -1, null),
-/* NxS[  27] */ new Table(0, 0, -1, null),
-/* NxS[  28] */ new Table(9, 115, 27, new short[] {28, -1, 27, 27, -1, 27, 
+/* NxS[  22] */ // Shortest string "t"
+      new Table(105, 1, -1, new short[] {59}),
+/* NxS[  23] */ // Shortest string "v"
+      new Table(111, 1, -1, new short[] {52}),
+/* NxS[  24] */ new Table(0, 0, -1, null), // Shortest string "void\t*"
+/* NxS[  25] */ new Table(0, 0, -1, null), // Shortest string "void\tmain"
+/* NxS[  26] */ new Table(0, 0, -1, null), // Shortest string "NULL"
+/* NxS[  27] */ new Table(0, 0, -1, null), // Shortest string "struct\tA\x01"
+/* NxS[  28] */ // Shortest string "struct\tA\t"
+      new Table(9, 115, 27, new short[] {28, -1, 27, 27, -1, 27, 
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 28, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
@@ -227,7 +248,8 @@ namespace CLexer
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, -1}),
-/* NxS[  29] */ new Table(9, 115, 27, new short[] {28, -1, 27, 27, -1, 27, 
+/* NxS[  29] */ // Shortest string "struct\tA0"
+      new Table(9, 115, 27, new short[] {28, -1, 27, 27, -1, 27, 
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 28, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 27, 27, 27, 27, 27, 
@@ -235,7 +257,8 @@ namespace CLexer
           29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 27, 27, 27, 27, 
           29, 27, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 
           29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, -1}),
-/* NxS[  30] */ new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
+/* NxS[  30] */ // Shortest string "int\tmain"
+      new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 98, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, -1, 
@@ -243,32 +266,37 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 99, -1, -1, -1, 
           96, -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[  31] */ new Table(0, 0, -1, null),
-/* NxS[  32] */ new Table(0, 0, -1, null),
-/* NxS[  33] */ new Table(0, 0, -1, null),
-/* NxS[  34] */ new Table(0, 0, -1, null),
-/* NxS[  35] */ new Table(0, 0, -1, null),
-/* NxS[  36] */ new Table(0, 0, -1, null),
-/* NxS[  37] */ new Table(0, 0, -1, null),
-/* NxS[  38] */ new Table(0, 0, -1, null),
-/* NxS[  39] */ new Table(0, 0, -1, null),
-/* NxS[  40] */ new Table(48, 75, -1, new short[] {40, 40, 40, 40, 40, 40, 
+/* NxS[  31] */ new Table(0, 0, -1, null), // Shortest string "int\tA[]="
+/* NxS[  32] */ new Table(0, 0, -1, null), // Shortest string "char\tA[]="
+/* NxS[  33] */ new Table(0, 0, -1, null), // Shortest string "char\tA[];"
+/* NxS[  34] */ new Table(0, 0, -1, null), // Shortest string "FILE*"
+/* NxS[  35] */ new Table(0, 0, -1, null), // Shortest string "/*"
+/* NxS[  36] */ new Table(0, 0, -1, null), // Shortest string "//"
+/* NxS[  37] */ new Table(0, 0, -1, null), // Shortest string "*(A*)"
+/* NxS[  38] */ new Table(0, 0, -1, null), // Shortest string "(void)"
+/* NxS[  39] */ new Table(0, 0, -1, null), // Shortest string "&&"
+/* NxS[  40] */ // Shortest string "&A"
+      new Table(48, 75, -1, new short[] {40, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, -1, -1, -1, -1, -1, -1, -1, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, 40, -1, -1, -1, -1, 40, -1, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, 40}),
-/* NxS[  41] */ new Table(0, 0, -1, null),
-/* NxS[  42] */ new Table(0, 0, -1, null),
-/* NxS[  43] */ new Table(34, 1, -1, new short[] {44}),
-/* NxS[  44] */ new Table(0, 0, -1, null),
-/* NxS[  45] */ new Table(0, 0, -1, null),
-/* NxS[  46] */ new Table(0, 0, -1, null),
-/* NxS[  47] */ new Table(10, 1, -1, new short[] {46}),
-/* NxS[  48] */ new Table(0, 0, -1, null),
-/* NxS[  49] */ new Table(47, 1, -1, new short[] {50}),
-/* NxS[  50] */ new Table(0, 0, -1, null),
-/* NxS[  51] */ new Table(10, 109, 1, new short[] {2, 1, 1, 3, 1, 1, 
+/* NxS[  41] */ new Table(0, 0, -1, null), // Shortest string "\x01"
+/* NxS[  42] */ new Table(0, 0, -1, null), // Shortest string "\""
+/* NxS[  43] */ // Shortest string "\\"
+      new Table(34, 1, -1, new short[] {44}),
+/* NxS[  44] */ new Table(0, 0, -1, null), // Shortest string "\\\""
+/* NxS[  45] */ new Table(0, 0, -1, null), // Shortest string "\x01"
+/* NxS[  46] */ new Table(0, 0, -1, null), // Shortest string "\n"
+/* NxS[  47] */ // Shortest string "\r"
+      new Table(10, 1, -1, new short[] {46}),
+/* NxS[  48] */ new Table(0, 0, -1, null), // Shortest string "\x01"
+/* NxS[  49] */ // Shortest string "*"
+      new Table(47, 1, -1, new short[] {50}),
+/* NxS[  50] */ new Table(0, 0, -1, null), // Shortest string "*/"
+/* NxS[  51] */ // Shortest string ""
+      new Table(10, 109, 1, new short[] {2, 1, 1, 3, 1, 1, 
           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
           1, 1, 4, 5, 1, 1, 6, 1, 7, 1, 8, 1, 1, 1, 1, 9, 
           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
@@ -276,39 +304,60 @@ namespace CLexer
           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
           1, 12, 1, 13, 1, 14, 15, 16, 1, 17, 1, 1, 1, 1, 1, 1, 
           18, 19, 20, 21, 22, 1, 23}),
-/* NxS[  52] */ new Table(105, 1, -1, new short[] {53}),
-/* NxS[  53] */ new Table(100, 1, -1, new short[] {54}),
-/* NxS[  54] */ new Table(9, 24, -1, new short[] {55, -1, -1, -1, -1, -1, 
+/* NxS[  52] */ // Shortest string "vo"
+      new Table(105, 1, -1, new short[] {53}),
+/* NxS[  53] */ // Shortest string "voi"
+      new Table(100, 1, -1, new short[] {54}),
+/* NxS[  54] */ // Shortest string "void"
+      new Table(9, 24, -1, new short[] {55, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 55}),
-/* NxS[  55] */ new Table(9, 101, -1, new short[] {55, -1, -1, -1, -1, -1, 
+/* NxS[  55] */ // Shortest string "void\t"
+      new Table(9, 101, -1, new short[] {55, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 55, -1, -1, -1, -1, -1, -1, -1, -1, -1, 24, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 56}),
-/* NxS[  56] */ new Table(97, 1, -1, new short[] {57}),
-/* NxS[  57] */ new Table(105, 1, -1, new short[] {58}),
-/* NxS[  58] */ new Table(110, 1, -1, new short[] {25}),
-/* NxS[  59] */ new Table(109, 1, -1, new short[] {60}),
-/* NxS[  60] */ new Table(101, 1, -1, new short[] {26}),
-/* NxS[  61] */ new Table(97, 1, -1, new short[] {86}),
-/* NxS[  62] */ new Table(103, 1, -1, new short[] {83}),
-/* NxS[  63] */ new Table(114, 1, -1, new short[] {79}),
-/* NxS[  64] */ new Table(97, 1, -1, new short[] {77}),
-/* NxS[  65] */ new Table(114, 1, -1, new short[] {66}),
-/* NxS[  66] */ new Table(99, 19, -1, new short[] {67, -1, -1, -1, -1, -1, 
+/* NxS[  56] */ // Shortest string "void\tm"
+      new Table(97, 1, -1, new short[] {57}),
+/* NxS[  57] */ // Shortest string "void\tma"
+      new Table(105, 1, -1, new short[] {58}),
+/* NxS[  58] */ // Shortest string "void\tmai"
+      new Table(110, 1, -1, new short[] {25}),
+/* NxS[  59] */ // Shortest string "ti"
+      new Table(109, 1, -1, new short[] {60}),
+/* NxS[  60] */ // Shortest string "tim"
+      new Table(101, 1, -1, new short[] {26}),
+/* NxS[  61] */ // Shortest string "sc"
+      new Table(97, 1, -1, new short[] {86}),
+/* NxS[  62] */ // Shortest string "si"
+      new Table(103, 1, -1, new short[] {83}),
+/* NxS[  63] */ // Shortest string "sp"
+      new Table(114, 1, -1, new short[] {79}),
+/* NxS[  64] */ // Shortest string "sr"
+      new Table(97, 1, -1, new short[] {77}),
+/* NxS[  65] */ // Shortest string "st"
+      new Table(114, 1, -1, new short[] {66}),
+/* NxS[  66] */ // Shortest string "str"
+      new Table(99, 19, -1, new short[] {67, -1, -1, -1, -1, -1, 
           -1, -1, -1, 68, -1, -1, -1, -1, -1, -1, -1, -1, 69}),
-/* NxS[  67] */ new Table(97, 16, -1, new short[] {75, -1, -1, -1, -1, -1, 
+/* NxS[  67] */ // Shortest string "strc"
+      new Table(97, 16, -1, new short[] {75, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, 76}),
-/* NxS[  68] */ new Table(101, 1, -1, new short[] {74}),
-/* NxS[  69] */ new Table(99, 1, -1, new short[] {70}),
-/* NxS[  70] */ new Table(116, 1, -1, new short[] {71}),
-/* NxS[  71] */ new Table(9, 24, -1, new short[] {72, -1, -1, -1, -1, -1, 
+/* NxS[  68] */ // Shortest string "fop"
+      new Table(101, 1, -1, new short[] {74}),
+/* NxS[  69] */ // Shortest string "stru"
+      new Table(99, 1, -1, new short[] {70}),
+/* NxS[  70] */ // Shortest string "struc"
+      new Table(116, 1, -1, new short[] {71}),
+/* NxS[  71] */ // Shortest string "struct"
+      new Table(9, 24, -1, new short[] {72, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 72}),
-/* NxS[  72] */ new Table(9, 114, -1, new short[] {72, -1, -1, -1, -1, -1, 
+/* NxS[  72] */ // Shortest string "struct\t"
+      new Table(9, 114, -1, new short[] {72, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 72, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -316,7 +365,8 @@ namespace CLexer
           73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, -1, -1, -1, -1, 
           73, -1, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 
           73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73}),
-/* NxS[  73] */ new Table(9, 115, 27, new short[] {28, -1, 27, 27, -1, 27, 
+/* NxS[  73] */ // Shortest string "struct\tA"
+      new Table(9, 115, 27, new short[] {28, -1, 27, 27, -1, 27, 
           27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 28, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 
           27, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 27, 27, 27, 27, 27, 
@@ -324,31 +374,53 @@ namespace CLexer
           29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 27, 27, 27, 27, 
           29, 27, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 
           29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, -1}),
-/* NxS[  74] */ new Table(110, 1, -1, new short[] {26}),
-/* NxS[  75] */ new Table(116, 1, -1, new short[] {26}),
-/* NxS[  76] */ new Table(121, 1, -1, new short[] {26}),
-/* NxS[  77] */ new Table(110, 1, -1, new short[] {78}),
-/* NxS[  78] */ new Table(100, 1, -1, new short[] {26}),
-/* NxS[  79] */ new Table(105, 1, -1, new short[] {80}),
-/* NxS[  80] */ new Table(110, 1, -1, new short[] {81}),
-/* NxS[  81] */ new Table(116, 1, -1, new short[] {82}),
-/* NxS[  82] */ new Table(102, 1, -1, new short[] {26}),
-/* NxS[  83] */ new Table(110, 1, -1, new short[] {84}),
-/* NxS[  84] */ new Table(97, 1, -1, new short[] {85}),
-/* NxS[  85] */ new Table(108, 1, -1, new short[] {26}),
-/* NxS[  86] */ new Table(110, 1, -1, new short[] {82}),
-/* NxS[  87] */ new Table(105, 6, -1, new short[] {88, -1, -1, -1, -1, 78}),
-/* NxS[  88] */ new Table(115, 1, -1, new short[] {60}),
-/* NxS[  89] */ new Table(111, 1, -1, new short[] {90}),
-/* NxS[  90] */ new Table(114, 1, -1, new short[] {75}),
-/* NxS[  91] */ new Table(116, 1, -1, new short[] {92}),
-/* NxS[  92] */ new Table(99, 17, -1, new short[] {26, -1, -1, -1, -1, -1, 
+/* NxS[  74] */ // Shortest string "fope"
+      new Table(110, 1, -1, new short[] {26}),
+/* NxS[  75] */ // Shortest string "exi"
+      new Table(116, 1, -1, new short[] {26}),
+/* NxS[  76] */ // Shortest string "strcp"
+      new Table(121, 1, -1, new short[] {26}),
+/* NxS[  77] */ // Shortest string "sra"
+      new Table(110, 1, -1, new short[] {78}),
+/* NxS[  78] */ // Shortest string "ran"
+      new Table(100, 1, -1, new short[] {26}),
+/* NxS[  79] */ // Shortest string "pr"
+      new Table(105, 1, -1, new short[] {80}),
+/* NxS[  80] */ // Shortest string "pri"
+      new Table(110, 1, -1, new short[] {81}),
+/* NxS[  81] */ // Shortest string "prin"
+      new Table(116, 1, -1, new short[] {82}),
+/* NxS[  82] */ // Shortest string "scan"
+      new Table(102, 1, -1, new short[] {26}),
+/* NxS[  83] */ // Shortest string "sig"
+      new Table(110, 1, -1, new short[] {84}),
+/* NxS[  84] */ // Shortest string "sign"
+      new Table(97, 1, -1, new short[] {85}),
+/* NxS[  85] */ // Shortest string "signa"
+      new Table(108, 1, -1, new short[] {26}),
+/* NxS[  86] */ // Shortest string "sca"
+      new Table(110, 1, -1, new short[] {82}),
+/* NxS[  87] */ // Shortest string "ra"
+      new Table(105, 6, -1, new short[] {88, -1, -1, -1, -1, 78}),
+/* NxS[  88] */ // Shortest string "rai"
+      new Table(115, 1, -1, new short[] {60}),
+/* NxS[  89] */ // Shortest string "qs"
+      new Table(111, 1, -1, new short[] {90}),
+/* NxS[  90] */ // Shortest string "qso"
+      new Table(114, 1, -1, new short[] {75}),
+/* NxS[  91] */ // Shortest string "pu"
+      new Table(116, 1, -1, new short[] {92}),
+/* NxS[  92] */ // Shortest string "put"
+      new Table(99, 17, -1, new short[] {26, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 26}),
-/* NxS[  93] */ new Table(116, 1, -1, new short[] {94}),
-/* NxS[  94] */ new Table(9, 24, -1, new short[] {95, -1, -1, -1, -1, -1, 
+/* NxS[  93] */ // Shortest string "in"
+      new Table(116, 1, -1, new short[] {94}),
+/* NxS[  94] */ // Shortest string "int"
+      new Table(9, 24, -1, new short[] {95, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 95}),
-/* NxS[  95] */ new Table(9, 114, -1, new short[] {95, -1, -1, -1, -1, -1, 
+/* NxS[  95] */ // Shortest string "int\t"
+      new Table(9, 114, -1, new short[] {95, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 95, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -356,7 +428,8 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, 
           96, -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 97, 96, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[  96] */ new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
+/* NxS[  96] */ // Shortest string "int\tA"
+      new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 98, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, -1, 
@@ -364,7 +437,8 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 99, -1, -1, -1, 
           96, -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[  97] */ new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
+/* NxS[  97] */ // Shortest string "int\tm"
+      new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 98, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, -1, 
@@ -372,14 +446,17 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 99, -1, -1, -1, 
           96, -1, 100, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[  98] */ new Table(9, 83, -1, new short[] {98, -1, -1, -1, -1, -1, 
+/* NxS[  98] */ // Shortest string "int\tA\t"
+      new Table(9, 83, -1, new short[] {98, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 98, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 99}),
-/* NxS[  99] */ new Table(93, 1, 99, new short[] {102}),
-/* NxS[ 100] */ new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
+/* NxS[  99] */ // Shortest string "int\tA["
+      new Table(93, 1, 99, new short[] {102}),
+/* NxS[ 100] */ // Shortest string "int\tma"
+      new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 98, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, -1, 
@@ -387,7 +464,8 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 99, -1, -1, -1, 
           96, -1, 96, 96, 96, 96, 96, 96, 96, 96, 101, 96, 96, 96, 96, 96, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[ 101] */ new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
+/* NxS[ 101] */ // Shortest string "int\tmai"
+      new Table(9, 114, -1, new short[] {98, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 98, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, -1, 
@@ -395,29 +473,46 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 99, -1, -1, -1, 
           96, -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 30, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[ 102] */ new Table(9, 53, -1, new short[] {102, -1, -1, -1, -1, -1, 
+/* NxS[ 102] */ // Shortest string "int\tA[]"
+      new Table(9, 53, -1, new short[] {102, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 102, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 31}),
-/* NxS[ 103] */ new Table(116, 1, -1, new short[] {104}),
-/* NxS[ 104] */ new Table(99, 17, -1, new short[] {105, -1, -1, -1, -1, -1, 
+/* NxS[ 103] */ // Shortest string "ge"
+      new Table(116, 1, -1, new short[] {104}),
+/* NxS[ 104] */ // Shortest string "get"
+      new Table(99, 17, -1, new short[] {105, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 26}),
-/* NxS[ 105] */ new Table(104, 1, -1, new short[] {26}),
-/* NxS[ 106] */ new Table(108, 1, -1, new short[] {110}),
-/* NxS[ 107] */ new Table(101, 1, -1, new short[] {91}),
-/* NxS[ 108] */ new Table(112, 1, -1, new short[] {68}),
-/* NxS[ 109] */ new Table(114, 4, -1, new short[] {79, -1, -1, 91}),
-/* NxS[ 110] */ new Table(111, 1, -1, new short[] {88}),
-/* NxS[ 111] */ new Table(105, 1, -1, new short[] {75}),
-/* NxS[ 112] */ new Table(97, 1, -1, new short[] {140}),
-/* NxS[ 113] */ new Table(114, 1, -1, new short[] {137}),
-/* NxS[ 114] */ new Table(110, 1, -1, new short[] {115}),
-/* NxS[ 115] */ new Table(115, 1, -1, new short[] {116}),
-/* NxS[ 116] */ new Table(116, 1, -1, new short[] {117}),
-/* NxS[ 117] */ new Table(9, 24, -1, new short[] {118, -1, -1, -1, -1, -1, 
+/* NxS[ 105] */ // Shortest string "getc"
+      new Table(104, 1, -1, new short[] {26}),
+/* NxS[ 106] */ // Shortest string "fc"
+      new Table(108, 1, -1, new short[] {110}),
+/* NxS[ 107] */ // Shortest string "fg"
+      new Table(101, 1, -1, new short[] {91}),
+/* NxS[ 108] */ // Shortest string "fo"
+      new Table(112, 1, -1, new short[] {68}),
+/* NxS[ 109] */ // Shortest string "fp"
+      new Table(114, 4, -1, new short[] {79, -1, -1, 91}),
+/* NxS[ 110] */ // Shortest string "fcl"
+      new Table(111, 1, -1, new short[] {88}),
+/* NxS[ 111] */ // Shortest string "ex"
+      new Table(105, 1, -1, new short[] {75}),
+/* NxS[ 112] */ // Shortest string "ch"
+      new Table(97, 1, -1, new short[] {140}),
+/* NxS[ 113] */ // Shortest string "cl"
+      new Table(114, 1, -1, new short[] {137}),
+/* NxS[ 114] */ // Shortest string "co"
+      new Table(110, 1, -1, new short[] {115}),
+/* NxS[ 115] */ // Shortest string "con"
+      new Table(115, 1, -1, new short[] {116}),
+/* NxS[ 116] */ // Shortest string "cons"
+      new Table(116, 1, -1, new short[] {117}),
+/* NxS[ 117] */ // Shortest string "const"
+      new Table(9, 24, -1, new short[] {118, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 118}),
-/* NxS[ 118] */ new Table(9, 110, -1, new short[] {118, -1, -1, -1, -1, -1, 
+/* NxS[ 118] */ // Shortest string "const\t"
+      new Table(9, 110, -1, new short[] {118, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 118, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -425,22 +520,32 @@ namespace CLexer
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, 119, -1, -1, -1, -1, -1, 120, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, 121}),
-/* NxS[ 119] */ new Table(104, 1, -1, new short[] {129}),
-/* NxS[ 120] */ new Table(110, 1, -1, new short[] {126}),
-/* NxS[ 121] */ new Table(111, 1, -1, new short[] {122}),
-/* NxS[ 122] */ new Table(105, 1, -1, new short[] {123}),
-/* NxS[ 123] */ new Table(100, 1, -1, new short[] {124}),
-/* NxS[ 124] */ new Table(9, 24, -1, new short[] {125, -1, -1, -1, -1, -1, 
+/* NxS[ 119] */ // Shortest string "const\tc"
+      new Table(104, 1, -1, new short[] {129}),
+/* NxS[ 120] */ // Shortest string "const\ti"
+      new Table(110, 1, -1, new short[] {126}),
+/* NxS[ 121] */ // Shortest string "const\tv"
+      new Table(111, 1, -1, new short[] {122}),
+/* NxS[ 122] */ // Shortest string "const\tvo"
+      new Table(105, 1, -1, new short[] {123}),
+/* NxS[ 123] */ // Shortest string "const\tvoi"
+      new Table(100, 1, -1, new short[] {124}),
+/* NxS[ 124] */ // Shortest string "const\tvoid"
+      new Table(9, 24, -1, new short[] {125, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 125}),
-/* NxS[ 125] */ new Table(9, 34, -1, new short[] {125, -1, -1, -1, -1, -1, 
+/* NxS[ 125] */ // Shortest string "const\tvoid\t"
+      new Table(9, 34, -1, new short[] {125, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 125, -1, -1, -1, -1, -1, -1, -1, -1, -1, 24}),
-/* NxS[ 126] */ new Table(116, 1, -1, new short[] {127}),
-/* NxS[ 127] */ new Table(9, 24, -1, new short[] {128, -1, -1, -1, -1, -1, 
+/* NxS[ 126] */ // Shortest string "const\tin"
+      new Table(116, 1, -1, new short[] {127}),
+/* NxS[ 127] */ // Shortest string "const\tint"
+      new Table(9, 24, -1, new short[] {128, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 128}),
-/* NxS[ 128] */ new Table(9, 114, -1, new short[] {128, -1, -1, -1, -1, -1, 
+/* NxS[ 128] */ // Shortest string "const\tint\t"
+      new Table(9, 114, -1, new short[] {128, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 128, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -448,12 +553,16 @@ namespace CLexer
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, -1, -1, -1, -1, 
           96, -1, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 
           96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96}),
-/* NxS[ 129] */ new Table(97, 1, -1, new short[] {130}),
-/* NxS[ 130] */ new Table(114, 1, -1, new short[] {131}),
-/* NxS[ 131] */ new Table(9, 24, -1, new short[] {132, -1, -1, -1, -1, -1, 
+/* NxS[ 129] */ // Shortest string "const\tch"
+      new Table(97, 1, -1, new short[] {130}),
+/* NxS[ 130] */ // Shortest string "const\tcha"
+      new Table(114, 1, -1, new short[] {131}),
+/* NxS[ 131] */ // Shortest string "const\tchar"
+      new Table(9, 24, -1, new short[] {132, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 132}),
-/* NxS[ 132] */ new Table(9, 114, -1, new short[] {132, -1, -1, -1, -1, -1, 
+/* NxS[ 132] */ // Shortest string "const\tchar\t"
+      new Table(9, 114, -1, new short[] {132, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 132, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -461,7 +570,8 @@ namespace CLexer
           133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, -1, -1, -1, -1, 
           133, -1, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 
           133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133}),
-/* NxS[ 133] */ new Table(9, 114, -1, new short[] {134, -1, -1, -1, -1, -1, 
+/* NxS[ 133] */ // Shortest string "const\tchar\tA"
+      new Table(9, 114, -1, new short[] {134, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 134, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, -1, -1, -1, -1, -1, 
@@ -469,30 +579,39 @@ namespace CLexer
           133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 135, -1, -1, -1, 
           133, -1, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 
           133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133, 133}),
-/* NxS[ 134] */ new Table(9, 83, -1, new short[] {134, -1, -1, -1, -1, -1, 
+/* NxS[ 134] */ // Shortest string "const\tchar\tA\t"
+      new Table(9, 83, -1, new short[] {134, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 134, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 135}),
-/* NxS[ 135] */ new Table(9, 85, -1, new short[] {135, -1, -1, -1, -1, -1, 
+/* NxS[ 135] */ // Shortest string "const\tchar\tA["
+      new Table(9, 85, -1, new short[] {135, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 135, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 136}),
-/* NxS[ 136] */ new Table(9, 53, -1, new short[] {136, -1, -1, -1, -1, -1, 
+/* NxS[ 136] */ // Shortest string "char\tA[]\t"
+      new Table(9, 53, -1, new short[] {136, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 136, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 32}),
-/* NxS[ 137] */ new Table(115, 1, -1, new short[] {138}),
-/* NxS[ 138] */ new Table(99, 1, -1, new short[] {139}),
-/* NxS[ 139] */ new Table(114, 1, -1, new short[] {26}),
-/* NxS[ 140] */ new Table(114, 1, -1, new short[] {141}),
-/* NxS[ 141] */ new Table(9, 24, -1, new short[] {142, -1, -1, -1, -1, -1, 
+/* NxS[ 137] */ // Shortest string "clr"
+      new Table(115, 1, -1, new short[] {138}),
+/* NxS[ 138] */ // Shortest string "clrs"
+      new Table(99, 1, -1, new short[] {139}),
+/* NxS[ 139] */ // Shortest string "clrsc"
+      new Table(114, 1, -1, new short[] {26}),
+/* NxS[ 140] */ // Shortest string "cha"
+      new Table(114, 1, -1, new short[] {141}),
+/* NxS[ 141] */ // Shortest string "char"
+      new Table(9, 24, -1, new short[] {142, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 142}),
-/* NxS[ 142] */ new Table(9, 114, -1, new short[] {142, -1, -1, -1, -1, -1, 
+/* NxS[ 142] */ // Shortest string "char\t"
+      new Table(9, 114, -1, new short[] {142, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 142, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -500,7 +619,8 @@ namespace CLexer
           143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, -1, -1, -1, -1, 
           143, -1, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 
           143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143}),
-/* NxS[ 143] */ new Table(9, 114, -1, new short[] {144, -1, -1, -1, -1, -1, 
+/* NxS[ 143] */ // Shortest string "char\tA"
+      new Table(9, 114, -1, new short[] {144, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 144, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, -1, -1, -1, -1, -1, 
@@ -508,37 +628,51 @@ namespace CLexer
           143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 145, -1, -1, -1, 
           143, -1, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 
           143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143}),
-/* NxS[ 144] */ new Table(9, 83, -1, new short[] {144, -1, -1, -1, -1, -1, 
+/* NxS[ 144] */ // Shortest string "char\tA\t"
+      new Table(9, 83, -1, new short[] {144, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 144, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 145}),
-/* NxS[ 145] */ new Table(9, 85, 146, new short[] {145, 146, 146, 146, 146, 146, 
+/* NxS[ 145] */ // Shortest string "char\tA["
+      new Table(9, 85, 146, new short[] {145, 146, 146, 146, 146, 146, 
           146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 
           146, 145, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 
           146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 
           146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 
           146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 147}),
-/* NxS[ 146] */ new Table(93, 1, 146, new short[] {148}),
-/* NxS[ 147] */ new Table(9, 53, -1, new short[] {136, -1, -1, -1, -1, -1, 
+/* NxS[ 146] */ // Shortest string "char\tA[\x01"
+      new Table(93, 1, 146, new short[] {148}),
+/* NxS[ 147] */ // Shortest string "char\tA[]"
+      new Table(9, 53, -1, new short[] {136, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 136, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 33, -1, 32}),
-/* NxS[ 148] */ new Table(59, 1, -1, new short[] {33}),
-/* NxS[ 149] */ new Table(101, 1, -1, new short[] {150}),
-/* NxS[ 150] */ new Table(120, 1, -1, new short[] {111}),
-/* NxS[ 151] */ new Table(76, 1, -1, new short[] {152}),
-/* NxS[ 152] */ new Table(76, 1, -1, new short[] {26}),
-/* NxS[ 153] */ new Table(76, 1, -1, new short[] {154}),
-/* NxS[ 154] */ new Table(69, 1, -1, new short[] {155}),
-/* NxS[ 155] */ new Table(9, 34, -1, new short[] {155, -1, -1, -1, -1, -1, 
+/* NxS[ 148] */ // Shortest string "char\tA[\x01]"
+      new Table(59, 1, -1, new short[] {33}),
+/* NxS[ 149] */ // Shortest string "at"
+      new Table(101, 1, -1, new short[] {150}),
+/* NxS[ 150] */ // Shortest string "ate"
+      new Table(120, 1, -1, new short[] {111}),
+/* NxS[ 151] */ // Shortest string "NU"
+      new Table(76, 1, -1, new short[] {152}),
+/* NxS[ 152] */ // Shortest string "NUL"
+      new Table(76, 1, -1, new short[] {26}),
+/* NxS[ 153] */ // Shortest string "FI"
+      new Table(76, 1, -1, new short[] {154}),
+/* NxS[ 154] */ // Shortest string "FIL"
+      new Table(69, 1, -1, new short[] {155}),
+/* NxS[ 155] */ // Shortest string "FILE"
+      new Table(9, 34, -1, new short[] {155, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 155, -1, -1, -1, -1, -1, -1, -1, -1, -1, 34}),
-/* NxS[ 156] */ new Table(9, 32, -1, new short[] {156, -1, -1, -1, -1, -1, 
+/* NxS[ 156] */ // Shortest string "*\t"
+      new Table(9, 32, -1, new short[] {156, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 156, -1, -1, -1, -1, -1, -1, -1, 157}),
-/* NxS[ 157] */ new Table(9, 114, -1, new short[] {157, -1, -1, -1, -1, -1, 
+/* NxS[ 157] */ // Shortest string "*("
+      new Table(9, 114, -1, new short[] {157, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 157, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -546,7 +680,8 @@ namespace CLexer
           158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, -1, -1, -1, -1, 
           158, -1, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 
           158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158}),
-/* NxS[ 158] */ new Table(9, 114, -1, new short[] {159, -1, -1, -1, -1, -1, 
+/* NxS[ 158] */ // Shortest string "*(A"
+      new Table(9, 114, -1, new short[] {159, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 159, -1, -1, -1, -1, -1, -1, -1, -1, -1, 160, -1, -1, -1, -1, 
           -1, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, -1, -1, -1, -1, -1, 
@@ -554,13 +689,16 @@ namespace CLexer
           158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, -1, -1, -1, -1, 
           158, -1, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 
           158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158, 158}),
-/* NxS[ 159] */ new Table(9, 34, -1, new short[] {159, -1, -1, -1, -1, -1, 
+/* NxS[ 159] */ // Shortest string "*(A\t"
+      new Table(9, 34, -1, new short[] {159, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 159, -1, -1, -1, -1, -1, -1, -1, -1, -1, 160}),
-/* NxS[ 160] */ new Table(9, 33, -1, new short[] {160, -1, -1, -1, -1, -1, 
+/* NxS[ 160] */ // Shortest string "*(A*"
+      new Table(9, 33, -1, new short[] {160, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 160, -1, -1, -1, -1, -1, -1, -1, -1, 37}),
-/* NxS[ 161] */ new Table(9, 110, -1, new short[] {161, -1, -1, -1, -1, -1, 
+/* NxS[ 161] */ // Shortest string "(\t"
+      new Table(9, 110, -1, new short[] {161, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 161, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -568,13 +706,18 @@ namespace CLexer
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, 162}),
-/* NxS[ 162] */ new Table(111, 1, -1, new short[] {163}),
-/* NxS[ 163] */ new Table(105, 1, -1, new short[] {164}),
-/* NxS[ 164] */ new Table(100, 1, -1, new short[] {165}),
-/* NxS[ 165] */ new Table(9, 33, -1, new short[] {165, -1, -1, -1, -1, -1, 
+/* NxS[ 162] */ // Shortest string "(v"
+      new Table(111, 1, -1, new short[] {163}),
+/* NxS[ 163] */ // Shortest string "(vo"
+      new Table(105, 1, -1, new short[] {164}),
+/* NxS[ 164] */ // Shortest string "(voi"
+      new Table(100, 1, -1, new short[] {165}),
+/* NxS[ 165] */ // Shortest string "(void"
+      new Table(9, 33, -1, new short[] {165, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 165, -1, -1, -1, -1, -1, -1, -1, -1, 38}),
-/* NxS[ 166] */ new Table(9, 114, -1, new short[] {166, -1, -1, -1, -1, -1, 
+/* NxS[ 166] */ // Shortest string "&\t"
+      new Table(9, 114, -1, new short[] {166, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, 166, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -582,20 +725,23 @@ namespace CLexer
           40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, -1, -1, -1, -1, 
           40, -1, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 
           40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}),
-/* NxS[ 167] */ new Table(10, 83, 41, new short[] {-1, 41, 41, 41, 41, 41, 
+/* NxS[ 167] */ // Shortest string ""
+      new Table(10, 83, 41, new short[] {-1, 41, 41, 41, 41, 41, 
           41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 
           41, 41, 42, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 
           41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 
           41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 
           41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 43}),
-/* NxS[ 168] */ new Table(10, 4, 45, new short[] {46, 45, 45, 47}),
-/* NxS[ 169] */ new Table(10, 33, 48, new short[] {-1, 48, 48, 48, 48, 48, 
+/* NxS[ 168] */ // Shortest string ""
+      new Table(10, 4, 45, new short[] {46, 45, 45, 47}),
+/* NxS[ 169] */ // Shortest string ""
+      new Table(10, 33, 48, new short[] {-1, 48, 48, 48, 48, 48, 
           48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 
           48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 49}),
     };
 
 int NextState() {
-    if (code == ScanBuff.EndOfFile)
+    if (code == ScanBuffCode.EndOfFile)
         return eofNum;
     else
         unchecked {
@@ -695,14 +841,14 @@ int NextState() {
 
             // Now read new codepoint.
             code = buffer.Read();
-            if (code > ScanBuff.EndOfFile)
+            if (code > ScanBuffCode.EndOfFile)
             {
 #if (!BYTEMODE)
                 if (code >= 0xD800 && code <= 0xDBFF)
                 {
                     int next = buffer.Read();
                     if (next < 0xDC00 || next > 0xDFFF)
-                        code = ScanBuff.UnicodeReplacementChar;
+                        code = ScanBuffCode.UnicodeReplacementChar;
                     else
                         code = (0x10000 + ((code & 0x3FF) << 10) + (next & 0x3FF));
                 }
@@ -938,7 +1084,7 @@ int NextState() {
                     do {
                         ch = buffer.Read();
                         if (!char.IsHighSurrogate((char)ch)) count++;
-                    } while (buffer.Pos < tokEPos && ch != ScanBuff.EndOfFile);
+                    } while (buffer.Pos < tokEPos && ch != ScanBuffCode.EndOfFile);
                     buffer.Pos = save;
                     return count;
                 }
@@ -1024,106 +1170,106 @@ throw new Exception("comment is unterminated");
             if (yywrap())
                 return (int)Tokens.EOF;
             break;
-        case 1:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
+        case 1: // Recognized '.',	Shortest string "\x01"
+        case 6: // Recognized '.',	Shortest string "&"
+        case 7: // Recognized '.',	Shortest string "("
+        case 8: // Recognized '.',	Shortest string "*"
+        case 9: // Recognized '.',	Shortest string "/"
+        case 10: // Recognized '.',	Shortest string "F"
+        case 11: // Recognized '.',	Shortest string "N"
+        case 12: // Recognized '.',	Shortest string "a"
+        case 13: // Recognized '.',	Shortest string "c"
+        case 14: // Recognized '.',	Shortest string "e"
+        case 15: // Recognized '.',	Shortest string "f"
+        case 16: // Recognized '.',	Shortest string "g"
+        case 17: // Recognized '.',	Shortest string "i"
+        case 18: // Recognized '.',	Shortest string "p"
+        case 19: // Recognized '.',	Shortest string "q"
+        case 20: // Recognized '.',	Shortest string "r"
+        case 21: // Recognized '.',	Shortest string "s"
+        case 22: // Recognized '.',	Shortest string "t"
+        case 23: // Recognized '.',	Shortest string "v"
 Text.Append(yytext);
             break;
-        case 2:
-        case 3:
+        case 2: // Recognized '\n',	Shortest string "\n"
+        case 3: // Recognized '\r',	Shortest string "\r"
 Text.AppendLine();
             break;
-        case 4:
+        case 4: // Recognized '\"',	Shortest string "\""
 /*Text.Append("<str>");*/ Text.Append(yytext); yy_push_state(StringLiteral);
             break;
-        case 5:
+        case 5: // Recognized '#[^\r\n]*',	Shortest string "#"
 Text.Append("// "); Text.Append(yytext);
             break;
-        case 24:
+        case 24: // Recognized '{CONST}?void{WS}+{STAR}',	Shortest string "void\t*"
 Text.Append("object");
             break;
-        case 25:
+        case 25: // Recognized 'void{WS}+main',	Shortest string "void\tmain"
 ContainsVMain = true; Text.Append(yytext);
             break;
-        case 26:
+        case 26: // Recognized 'time',	Shortest string "NULL"
 Text.Append("C."); Text.Append(yytext);
             break;
-        case 27:
-        case 28:
-        case 29:
+        case 27: // Recognized 'struct{WS}+{IDENTIFIER}{WS}*[^{\r\n]',	Shortest string "struct\tA\x01"
+        case 28: // Recognized 'struct{WS}+{IDENTIFIER}{WS}*[^{\r\n]',	Shortest string "struct\tA\t"
+        case 29: // Recognized 'struct{WS}+{IDENTIFIER}{WS}*[^{\r\n]',	Shortest string "struct\tA0"
 Text.Append(Regex.Replace(yytext, @"struct\s+(\S+)", "$1"));
             break;
-        case 30:
+        case 30: // Recognized 'int{WS}+main',	Shortest string "int\tmain"
 ContainsIMain = true; Text.Append(yytext);
             break;
-        case 31:
+        case 31: // Recognized '{CONST}?int{WS}+{IDENTIFIER}{WS}*\[[^\]]*\]{WS}*=',	Shortest string "int\tA[]="
 Text.Append(Regex.Replace(yytext, @".*?int\s+(\S+)\s*\[.*?\]\s*=", "int[] $1 = new int[]"));
             break;
-        case 32:
+        case 32: // Recognized '{CONST}?char{WS}+{IDENTIFIER}{WS}*\[{WS}*\]{WS}*=',	Shortest string "char\tA[]="
 Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[.*?\]", "string $1"));
             break;
-        case 33:
+        case 33: // Recognized 'char{WS}+{IDENTIFIER}{WS}*\[[^\]]*\];',	Shortest string "char\tA[];"
 Text.Append(Regex.Replace(yytext, @".*?char\s+(\S+)\s*\[(.*?)\]", "char[] $1 = new char[$2]"));
             break;
-        case 34:
+        case 34: // Recognized 'FILE{WS}*{STAR}',	Shortest string "FILE*"
 Text.Append("C.FILE");
             break;
-        case 35:
+        case 35: // Recognized '{START_COMMENT}',	Shortest string "/*"
 /*Text.Append("<cmt>");*/ Text.Append(yytext); yy_push_state(StreamComment);
             break;
-        case 36:
+        case 36: // Recognized '{LINE_COMMENT}',	Shortest string "//"
 /*Text.Append("<cmt>");*/ Text.Append(yytext); yy_push_state(LineComment);
             break;
-        case 37:
+        case 37: // Recognized '{STAR}{WS}*\({WS}*{IDENTIFIER}{WS}*{STAR}{WS}*\)',	Shortest string "*(A*)"
 /* remove casts */
             break;
-        case 38:
+        case 38: // Recognized '\({WS}*void{WS}*\)',	Shortest string "(void)"
 Text.Append("()");
             break;
-        case 39:
+        case 39: // Recognized '&&',	Shortest string "&&"
 Text.Append(yytext);
             break;
-        case 40:
+        case 40: // Recognized '&{WS}*{IDENTIFIER}',	Shortest string "&A"
 Text.Append(Regex.Replace(yytext, @"&", "out "));
             break;
-        case 41:
-        case 43:
+        case 41: // In <StringLiteral> Recognized '.',	Shortest string "\x01"
+        case 43: // In <StringLiteral> Recognized '.',	Shortest string "\\"
 Text.Append(yytext);
             break;
-        case 42:
+        case 42: // In <StringLiteral> Recognized '\"',	Shortest string "\""
 Text.Append(yytext); /*Text.Append("</str>");*/ yy_pop_state();
             break;
-        case 44:
+        case 44: // In <StringLiteral> Recognized '\\\"',	Shortest string "\\\""
 Text.Append(yytext);
             break;
-        case 45:
+        case 45: // In <LineComment> Recognized '.',	Shortest string "\x01"
 Text.Append(yytext);
             break;
-        case 46:
-        case 47:
+        case 46: // In <LineComment> Recognized '\n',	Shortest string "\n"
+        case 47: // In <LineComment> Recognized '\r',	Shortest string "\r"
 /*Text.Append("</cmt>");*/ Text.AppendLine(); yy_pop_state();
             break;
-        case 48:
-        case 49:
+        case 48: // In <StreamComment> Recognized '.',	Shortest string "\x01"
+        case 49: // In <StreamComment> Recognized '.',	Shortest string "*"
 Text.Append(yytext);
             break;
-        case 50:
+        case 50: // In <StreamComment> Recognized '{END_COMMENT}',	Shortest string "*/"
 Text.Append(yytext); /*Text.Append("</cmt>");*/ yy_pop_state();
             break;
         default:
@@ -1187,719 +1333,10 @@ Text.Append(yytext); /*Text.Append("</cmt>");*/ yy_pop_state();
 
 public Boolean ContainsIMain = false;
 	public Boolean ContainsVMain = false;
-	public StringBuilder Text = new StringBuilder ();
+	public StringBuilder Text = new StringBuilder();
 
 #endregion
     } // end class $Scanner
 
-// ==============================================================
-// <auto-generated>
-// This code automatically produced from an embedded resource.
-// Do not edit this file, or it will become incompatible with 
-// the specification from which it was generated.
-// </auto-generated>
-// ==============================================================
-
-// Code copied from GPLEX embedded resource
-    [Serializable]
-    public class BufferException : Exception
-    {
-        public BufferException() { }
-        public BufferException(string message) : base(message) { }
-        public BufferException(string message, Exception innerException)
-            : base(message, innerException) { }
-        protected BufferException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
-    }
-
-    public abstract class ScanBuff
-    {
-        private string fileNm;
-
-        public const int EndOfFile = -1;
-        public const int UnicodeReplacementChar = 0xFFFD;
-
-        public bool IsFile { get { return (fileNm != null); } }
-        public string FileName { get { return fileNm; } set { fileNm = value; } }
-
-        public abstract int Pos { get; set; }
-        public abstract int Read();
-        public virtual void Mark() { }
-
-        public abstract string GetString(int begin, int limit);
-
-        public static ScanBuff GetBuffer(string source)
-        {
-            return new StringBuffer(source);
-        }
-
-        public static ScanBuff GetBuffer(IList<string> source)
-        {
-            return new LineBuffer(source);
-        }
-
-#if (!NOFILES)
-        public static ScanBuff GetBuffer(Stream source)
-        {
-            return new BuildBuffer(source);
-        }
-
-#if (!BYTEMODE)
-        public static ScanBuff GetBuffer(Stream source, int fallbackCodePage)
-        {
-            return new BuildBuffer(source, fallbackCodePage);
-        }
-#endif // !BYTEMODE
-#endif // !NOFILES
-    }
-
-    #region Buffer classes
-
-    // ==============================================================
-    // =====  Definitions for various ScanBuff derived classes   ====
-    // ==============================================================
-    // ===============         String input          ================
-    // ==============================================================
-
-    /// <summary>
-    /// This class reads characters from a single string as
-    /// required, for example, by Visual Studio language services
-    /// </summary>
-    sealed class StringBuffer : ScanBuff
-    {
-        string str;        // input buffer
-        int bPos;          // current position in buffer
-        int sLen;
-
-        public StringBuffer(string source)
-        {
-            this.str = source;
-            this.sLen = source.Length;
-            this.FileName = null;
-        }
-
-        public override int Read()
-        {
-            if (bPos < sLen) return str[bPos++];
-            else if (bPos == sLen) { bPos++; return '\n'; }   // one strike, see new line
-            else { bPos++; return EndOfFile; }                // two strikes and you're out!
-        }
-
-        public override string GetString(int begin, int limit)
-        {
-            //  "limit" can be greater than sLen with the BABEL
-            //  option set.  Read returns a "virtual" EOL if
-            //  an attempt is made to read past the end of the
-            //  string buffer.  Without the guard any attempt 
-            //  to fetch yytext for a token that includes the 
-            //  EOL will throw an index exception.
-            if (limit > sLen) limit = sLen;
-            if (limit <= begin) return "";
-            else return str.Substring(begin, limit - begin);
-        }
-
-        public override int Pos
-        {
-            get { return bPos; }
-            set { bPos = value; }
-        }
-
-        public override string ToString() { return "StringBuffer"; }
-    }
-
-    // ==============================================================
-    //  The LineBuff class contributed by Nigel Horspool, 
-    //  nigelh@cs.uvic.cs
-    // ==============================================================
-
-    sealed class LineBuffer : ScanBuff
-    {
-        IList<string> line;    // list of source lines from a file
-        int numLines;          // number of strings in line list
-        string curLine;        // current line in that list
-        int cLine;             // index of current line in the list
-        int curLen;            // length of current line
-        int curLineStart;      // position of line start in whole file
-        int curLineEnd;        // position of line end in whole file
-        int maxPos;            // max position ever visited in whole file
-        int cPos;              // ordinal number of code in source
-
-        // Constructed from a list of strings, one per source line.
-        // The lines have had trailing '\n' characters removed.
-        public LineBuffer(IList<string> lineList)
-        {
-            line = lineList;
-            numLines = line.Count;
-            cPos = curLineStart = 0;
-            curLine = (numLines > 0 ? line[0] : "");
-            maxPos = curLineEnd = curLen = curLine.Length;
-            cLine = 1;
-            FileName = null;
-        }
-
-        public override int Read()
-        {
-            if (cPos < curLineEnd)
-                return curLine[cPos++ - curLineStart];
-            if (cPos++ == curLineEnd)
-                return '\n';
-            if (cLine >= numLines)
-                return EndOfFile;
-            curLine = line[cLine];
-            curLen = curLine.Length;
-            curLineStart = curLineEnd + 1;
-            curLineEnd = curLineStart + curLen;
-            if (curLineEnd > maxPos)
-                maxPos = curLineEnd;
-            cLine++;
-            return curLen > 0 ? curLine[0] : '\n';
-        }
-
-        // To speed up searches for the line containing a position
-        private int cachedPosition;
-        private int cachedIxdex;
-        private int cachedLineStart;
-
-        // Given a position pos within the entire source, the results are
-        //   ix     -- the index of the containing line
-        //   lstart -- the position of the first character on that line
-        private void findIndex(int pos, out int ix, out int lstart)
-        {
-            if (pos >= cachedPosition)
-            {
-                ix = cachedIxdex; lstart = cachedLineStart;
-            }
-            else
-            {
-                ix = lstart = 0;
-            }
-            while (ix < numLines)
-            {
-                int len = line[ix].Length + 1;
-                if (pos < lstart + len) break;
-                lstart += len;
-                ix++;
-            }
-            cachedPosition = pos;
-            cachedIxdex = ix;
-            cachedLineStart = lstart;
-        }
-
-        public override string GetString(int begin, int limit)
-        {
-            if (begin >= maxPos || limit <= begin) return "";
-            int endIx, begIx, endLineStart, begLineStart;
-            findIndex(begin, out begIx, out begLineStart);
-            int begCol = begin - begLineStart;
-            findIndex(limit, out endIx, out endLineStart);
-            int endCol = limit - endLineStart;
-            string s = line[begIx];
-            if (begIx == endIx)
-            {
-                // the usual case, substring all on one line
-                return (endCol <= s.Length) ?
-                    s.Substring(begCol, endCol - begCol)
-                    : s.Substring(begCol) + "\n";
-            }
-            // the string spans multiple lines, yuk!
-            StringBuilder sb = new StringBuilder();
-            if (begCol < s.Length)
-                sb.Append(s.Substring(begCol));
-            for (; ; )
-            {
-                sb.Append("\n");
-                s = line[++begIx];
-                if (begIx >= endIx) break;
-                sb.Append(s);
-            }
-            if (endCol <= s.Length)
-            {
-                sb.Append(s.Substring(0, endCol));
-            }
-            else
-            {
-                sb.Append(s);
-                sb.Append("\n");
-            }
-            return sb.ToString();
-        }
-
-        public override int Pos
-        {
-            get { return cPos; }
-            set
-            {
-                cPos = value;
-                findIndex(cPos, out cLine, out curLineStart);
-                // cLine should be the *next* line after curLine.
-                curLine = (cLine < numLines ? line[cLine++] : "");
-                curLineEnd = curLineStart + curLine.Length;
-            }
-        }
-
-        public override string ToString() { return "LineBuffer"; }
-    }
-
-#if (!NOFILES)
-    // ==============================================================
-    // =====     class BuildBuff : for unicode text files    ========
-    // ==============================================================
-
-    class BuildBuffer : ScanBuff
-    {
-        // Double buffer for char stream.
-        class BufferElement
-        {
-            StringBuilder bldr = new StringBuilder();
-            StringBuilder next = new StringBuilder();
-            int minIx;
-            int maxIx;
-            int brkIx;
-            bool appendToNext;
-
-            internal BufferElement() { }
-
-            internal int MaxIndex { get { return maxIx; } }
-            // internal int MinIndex { get { return minIx; } }
-
-            internal char this[int index]
-            {
-                get
-                {
-                    if (index < minIx || index >= maxIx)
-                        throw new BufferException("Index was outside data buffer");
-                    else if (index < brkIx)
-                        return bldr[index - minIx];
-                    else
-                        return next[index - brkIx];
-                }
-            }
-
-            internal void Append(char[] block, int count)
-            {
-                maxIx += count;
-                if (appendToNext)
-                    this.next.Append(block, 0, count);
-                else
-                {
-                    this.bldr.Append(block, 0, count);
-                    brkIx = maxIx;
-                    appendToNext = true;
-                }
-            }
-
-            internal string GetString(int start, int limit)
-            {
-                if (limit <= start)
-                    return "";
-                if (start >= minIx && limit <= maxIx)
-                    if (limit < brkIx) // String entirely in bldr builder
-                        return bldr.ToString(start - minIx, limit - start);
-                    else if (start >= brkIx) // String entirely in next builder
-                        return next.ToString(start - brkIx, limit - start);
-                    else // Must do a string-concatenation
-                        return
-                            bldr.ToString(start - minIx, brkIx - start) +
-                            next.ToString(0, limit - brkIx);
-                else
-                    throw new BufferException("String was outside data buffer");
-            }
-
-            internal void Mark(int limit)
-            {
-                if (limit > brkIx + 16) // Rotate blocks
-                {
-                    StringBuilder temp = bldr;
-                    bldr = next;
-                    next = temp;
-                    next.Length = 0;
-                    minIx = brkIx;
-                    brkIx = maxIx;
-                }
-            }
-        }
-
-        BufferElement data = new BufferElement();
-
-        int bPos;            // Postion index in the StringBuilder
-        BlockReader NextBlk; // Delegate that serves char-arrays;
-
-        private string EncodingName
-        {
-            get
-            {
-                StreamReader rdr = NextBlk.Target as StreamReader;
-                return (rdr == null ? "raw-bytes" : rdr.CurrentEncoding.BodyName);
-            }
-        }
-
-        public BuildBuffer(Stream stream)
-        {
-            FileStream fStrm = (stream as FileStream);
-            if (fStrm != null) FileName = fStrm.Name;
-            NextBlk = BlockReaderFactory.Raw(stream);
-        }
-
-#if (!BYTEMODE)
-        public BuildBuffer(Stream stream, int fallbackCodePage)
-        {
-            FileStream fStrm = (stream as FileStream);
-            if (fStrm != null) FileName = fStrm.Name;
-            NextBlk = BlockReaderFactory.Get(stream, fallbackCodePage);
-        }
-#endif
-
-        /// <summary>
-        /// Marks a conservative lower bound for the buffer,
-        /// allowing space to be reclaimed.  If an application 
-        /// needs to call GetString at arbitrary past locations 
-        /// in the input stream, Mark() is not called.
-        /// </summary>
-        public override void Mark() { data.Mark(bPos - 2); }
-
-        public override int Pos
-        {
-            get { return bPos; }
-            set { bPos = value; }
-        }
-
-
-        /// <summary>
-        /// Read returns the ordinal number of the next char, or 
-        /// EOF (-1) for an end of stream.  Note that the next
-        /// code point may require *two* calls of Read().
-        /// </summary>
-        /// <returns></returns>
-        public override int Read()
-        {
-            //
-            //  Characters at positions 
-            //  [data.offset, data.offset + data.bldr.Length)
-            //  are available in data.bldr.
-            //
-            if (bPos < data.MaxIndex)
-            {
-                // ch0 cannot be EOF
-                return (int)data[bPos++];
-            }
-            else // Read from underlying stream
-            {
-                // Experimental code, blocks of page size
-                char[] chrs = new char[4096];
-                int count = NextBlk(chrs, 0, 4096);
-                if (count == 0)
-                    return EndOfFile;
-                else
-                {
-                    data.Append(chrs, count);
-                    return (int)data[bPos++];
-                }
-            }
-        }
-
-        public override string GetString(int begin, int limit)
-        {
-            return data.GetString(begin, limit);
-        }
-
-        public override string ToString()
-        {
-            return "StringBuilder buffer, encoding: " + this.EncodingName;
-        }
-    }
-
-    // =============== End ScanBuff-derived classes ==================
-
-    public delegate int BlockReader(char[] block, int index, int number);
-
-    // A delegate factory, serving up a delegate that
-    // reads a block of characters from the underlying
-    // encoded stream, via a StreamReader object.
-    //
-    public static class BlockReaderFactory
-    {
-        public static BlockReader Raw(Stream stream)
-        {
-            return delegate(char[] block, int index, int number)
-            {
-                byte[] b = new byte[number];
-                int count = stream.Read(b, 0, number);
-                int i = 0;
-                int j = index;
-                for (; i < count; i++, j++)
-                    block[j] = (char)b[i];
-                return count;
-            };
-        }
-
-#if (!BYTEMODE)
-        public static BlockReader Get(Stream stream, int fallbackCodePage)
-        {
-            Encoding encoding;
-            int preamble = Preamble(stream);
-
-            if (preamble != 0)  // There is a valid BOM here!
-                encoding = Encoding.GetEncoding(preamble);
-            else if (fallbackCodePage == -1) // Fallback is "raw" bytes
-                return Raw(stream);
-            else if (fallbackCodePage != -2) // Anything but "guess"
-                encoding = Encoding.GetEncoding(fallbackCodePage);
-            else // This is the "guess" option
-            {
-                int guess = new Guesser(stream).GuessCodePage();
-                stream.Seek(0, SeekOrigin.Begin);
-                if (guess == -1) // ==> this is a 7-bit file
-                    encoding = Encoding.ASCII;
-                else if (guess == 65001)
-                    encoding = Encoding.UTF8;
-                else             // ==> use the machine default
-                    encoding = Encoding.Default;
-            }
-            StreamReader reader = new StreamReader(stream, encoding);
-            return reader.Read;
-        }
-
-        static int Preamble(Stream stream)
-        {
-            int b0 = stream.ReadByte();
-            int b1 = stream.ReadByte();
-
-            if (b0 == 0xfe && b1 == 0xff)
-                return 1201; // UTF16BE
-            if (b0 == 0xff && b1 == 0xfe)
-                return 1200; // UTF16LE
-
-            int b2 = stream.ReadByte();
-            if (b0 == 0xef && b1 == 0xbb && b2 == 0xbf)
-                return 65001; // UTF8
-            //
-            // There is no unicode preamble, so we
-            // return denoter for the machine default.
-            //
-            stream.Seek(0, SeekOrigin.Begin);
-            return 0;
-        }
-#endif // !BYTEMODE
-    }
-#endif // !NOFILES
-    #endregion Buffer classes
-
-    // ==============================================================
-    // ============      class CodePageHandling         =============
-    // ==============================================================
-#if (!NOFILES)
-    public static class CodePageHandling
-    {
-        public static int GetCodePage(string option)
-        {
-            string command = option.ToUpperInvariant();
-            if (command.StartsWith("CodePage:", StringComparison.OrdinalIgnoreCase))
-                command = command.Substring(9);
-            try
-            {
-                if (command.Equals("RAW"))
-                    return -1;
-                else if (command.Equals("GUESS"))
-                    return -2;
-                else if (command.Equals("DEFAULT"))
-                    return 0;
-                else if (char.IsDigit(command[0]))
-                    return int.Parse(command, CultureInfo.InvariantCulture);
-                else
-                {
-                    Encoding enc = Encoding.GetEncoding(command);
-                    return enc.CodePage;
-                }
-            }
-            catch (FormatException)
-            {
-                Console.Error.WriteLine(
-                    "Invalid format \"{0}\", using machine default", option);
-            }
-            catch (ArgumentException)
-            {
-                Console.Error.WriteLine(
-                    "Unknown code page \"{0}\", using machine default", option);
-            }
-            return 0;
-        }
-    }
-#region guesser
-#if (!BYTEMODE)
-    // ==============================================================
-    // ============          Encoding Guesser           =============
-    // ==============================================================
-
-    /// <summary>
-    /// This class provides a simple finite state automaton that
-    /// scans the file looking for (1) valid UTF-8 byte patterns,
-    /// (2) bytes >= 0x80 which are not part of a UTF-8 sequence.
-    /// The method then guesses whether it is UTF-8 or maybe some 
-    /// local machine default encoding.  This works well for the
-    /// various Latin encodings.
-    /// </summary>
-    internal class Guesser
-    {
-        ScanBuff buffer;
-
-        public int GuessCodePage() { return Scan(); }
-
-        const int maxAccept = 10;
-        const int initial = 0;
-        const int eofNum = 0;
-        const int goStart = -1;
-        const int INITIAL = 0;
-        const int EndToken = 0;
-
-        #region user code
-        /* 
-         *  Reads the bytes of a file to determine if it is 
-         *  UTF-8 or a single-byte code page file.
-         */
-        public long utfX;
-        public long uppr;
-        #endregion user code
-
-        int state;
-        int currentStart = startState[0];
-        int code;
-
-        #region ScannerTables
-        static int[] startState = new int[] { 11, 0 };
-
-        #region CharacterMap
-        static sbyte[] map = new sbyte[256] {
-/*     '\0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*   '\x10' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*   '\x20' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*      '0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*      '@' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*      'P' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*      '`' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*      'p' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-/*   '\x80' */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-/*   '\x90' */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-/*   '\xA0' */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-/*   '\xB0' */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-/*   '\xC0' */ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-/*   '\xD0' */ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-/*   '\xE0' */ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 
-/*   '\xF0' */ 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5 };
-        #endregion
-
-        static sbyte[][] nextState = new sbyte[][] {
-            new sbyte[] {0, 0, 0, 0, 0, 0},
-            new sbyte[] {-1, -1, 10, -1, -1, -1},
-            new sbyte[] {-1, -1, -1, -1, -1, -1},
-            new sbyte[] {-1, -1, 8, -1, -1, -1},
-            new sbyte[] {-1, -1, 5, -1, -1, -1},
-            new sbyte[] {-1, -1, 6, -1, -1, -1},
-            new sbyte[] {-1, -1, 7, -1, -1, -1},
-            null,
-            new sbyte[] {-1, -1, 9, -1, -1, -1},
-            null,
-            null,
-            new sbyte[] {-1, 1, 2, 3, 4, 2}
-        };
-
-
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
-        // Reason for suppression: cannot have self-reference in array initializer.
-        static Guesser()
-        {
-            nextState[7] = nextState[2];
-            nextState[9] = nextState[2];
-            nextState[10] = nextState[2];
-        }
-
-        int NextState()
-        {
-            if (code == ScanBuff.EndOfFile)
-                return eofNum;
-            else
-                return nextState[state][map[code]];
-        }
-        #endregion
-
-        public Guesser(System.IO.Stream file) { SetSource(file); }
-
-        public void SetSource(System.IO.Stream source)
-        {
-            this.buffer = new BuildBuffer(source);
-            code = buffer.Read();
-        }
-
-        int Scan()
-        {
-            for (; ; )
-            {
-                int next;
-                state = currentStart;
-                while ((next = NextState()) == goStart)
-                    code = buffer.Read();
-
-                state = next;
-                code = buffer.Read();
-
-                while ((next = NextState()) > eofNum)
-                {
-                    state = next;
-                    code = buffer.Read();
-                }
-                if (state <= maxAccept)
-                {
-                    #region ActionSwitch
-#pragma warning disable 162
-                    switch (state)
-                    {
-                        case eofNum:
-                            switch (currentStart)
-                            {
-                                case 11:
-                                    if (utfX == 0 && uppr == 0) return -1; /* raw ascii */
-                                    else if (uppr * 10 > utfX) return 0;   /* default code page */
-                                    else return 65001;                     /* UTF-8 encoding */
-                                    break;
-                            }
-                            return EndToken;
-                        case 1: // Recognized '{Upper128}',	Shortest string "\xC0"
-                        case 2: // Recognized '{Upper128}',	Shortest string "\x80"
-                        case 3: // Recognized '{Upper128}',	Shortest string "\xE0"
-                        case 4: // Recognized '{Upper128}',	Shortest string "\xF0"
-                            uppr++;
-                            break;
-                        case 5: // Recognized '{Utf8pfx4}{Utf8cont}',	Shortest string "\xF0\x80"
-                            uppr += 2;
-                            break;
-                        case 6: // Recognized '{Utf8pfx4}{Utf8cont}{2}',	Shortest string "\xF0\x80\x80"
-                            uppr += 3;
-                            break;
-                        case 7: // Recognized '{Utf8pfx4}{Utf8cont}{3}',	Shortest string "\xF0\x80\x80\x80"
-                            utfX += 3;
-                            break;
-                        case 8: // Recognized '{Utf8pfx3}{Utf8cont}',	Shortest string "\xE0\x80"
-                            uppr += 2;
-                            break;
-                        case 9: // Recognized '{Utf8pfx3}{Utf8cont}{2}',	Shortest string "\xE0\x80\x80"
-                            utfX += 2;
-                            break;
-                        case 10: // Recognized '{Utf8pfx2}{Utf8cont}',	Shortest string "\xC0\x80"
-                            utfX++;
-                            break;
-                        default:
-                            break;
-                    }
-#pragma warning restore 162
-                    #endregion
-                }
-            }
-        }
-    } // end class Guesser
-    
-#endif // !BYTEMODE
-#endregion
-#endif // !NOFILES
-
-// End of code copied from embedded resource
 
 } // end namespace

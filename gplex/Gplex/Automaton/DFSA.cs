@@ -1357,7 +1357,7 @@ namespace QUT.Gplex.Automaton
             // ==========================================================================
             sWrtr.WriteLine();
             sWrtr.WriteLine("int NextState() {");
-            sWrtr.WriteLine("    if (code == ScanBuff.EndOfFile)");
+            sWrtr.WriteLine("    if (code == ScanBuffCode.EndOfFile)");
             sWrtr.WriteLine("        return eofNum;");
             sWrtr.WriteLine("    else");
             sWrtr.WriteLine("        unchecked {");
@@ -1385,7 +1385,7 @@ namespace QUT.Gplex.Automaton
                 sWrtr.WriteLine("// EXPERIMENTAL: This is the NextState method that");
                 sWrtr.WriteLine("// is used by the CharClassPredicate functions for V0.9");
                 sWrtr.WriteLine("static int TestNextState(int qStat, int code) {");
-                sWrtr.WriteLine("    if (code == ScanBuff.EndOfFile)");
+                sWrtr.WriteLine("    if (code == ScanBuffCode.EndOfFile)");
                 sWrtr.WriteLine("        return eofNum;");
                 sWrtr.WriteLine("    else");
                 sWrtr.WriteLine("        unchecked {");
@@ -1542,7 +1542,7 @@ namespace QUT.Gplex.Automaton
             tranNum = (globNext - copyNum) * this.MaxSym;
             sWrtr.WriteLine();
             sWrtr.WriteLine("int NextState() {");
-            sWrtr.WriteLine("    if (code == ScanBuff.EndOfFile)");
+            sWrtr.WriteLine("    if (code == ScanBuffCode.EndOfFile)");
             sWrtr.WriteLine("        return eofNum;");
             sWrtr.WriteLine("    else");
             sWrtr.WriteLine("        return nextState[state][{0}];", symStr);
@@ -1554,7 +1554,7 @@ namespace QUT.Gplex.Automaton
                 sWrtr.WriteLine("// EXPERIMENTAL: This is the NextState method that");
                 sWrtr.WriteLine("// is used by the CharClassPredicate functions for V0.9");
                 sWrtr.WriteLine("static int TestNextState(int query, int code) {");
-                sWrtr.WriteLine("    if (code == ScanBuff.EndOfFile)");
+                sWrtr.WriteLine("    if (code == ScanBuffCode.EndOfFile)");
                 sWrtr.WriteLine("        return eofNum;");
                 sWrtr.WriteLine("    else");
                 sWrtr.WriteLine("        return nextState[query][{0}];", symStr);

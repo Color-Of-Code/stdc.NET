@@ -227,7 +227,7 @@ namespace QUT.Gplib
                 char[] chrs = new char[4096];
                 int count = NextBlk(chrs, 0, 4096);
                 if (count == 0)
-                    return EndOfFile;
+                    return ScanBuffCode.EndOfFile;
                 else
                 {
                     data.Append(chrs, count);

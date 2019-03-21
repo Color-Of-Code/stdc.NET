@@ -218,7 +218,7 @@ namespace QUT.GPGen.Parser
                     nxtC = buff.Read();
                     if (nxtC == (int)'\n')
                         line++;
-                    else if (nxtC == ScanBuff.EndOfFile)
+                    else if (nxtC == ScanBuffCode.EndOfFile)
                         break;
                     sWrtr.Write((char)nxtC);
                 }
@@ -270,7 +270,7 @@ namespace QUT.GPGen.Parser
             //  And dump the tail of the file
             //
             nxtC = buff.Read();
-            while (nxtC != ScanBuff.EndOfFile)
+            while (nxtC != ScanBuffCode.EndOfFile)
             {
                 sWrtr.Write((char)nxtC);
                 nxtC = buff.Read();
@@ -355,7 +355,7 @@ namespace QUT.GPGen.Parser
                 while (line < eLin) {
                     nxtC = buff.Read();
                     if (nxtC == (int)'\n') line++;
-                    else if (nxtC == ScanBuff.EndOfFile) break;
+                    else if (nxtC == ScanBuffCode.EndOfFile) break;
                 } 
                 //
                 //  Emit the error line
@@ -369,7 +369,7 @@ namespace QUT.GPGen.Parser
                     while (line <= eLin) {
                         nxtC = buff.Read();
                         if (nxtC == (int)'\n') line++;
-                        else if (nxtC == ScanBuff.EndOfFile) break;
+                        else if (nxtC == ScanBuffCode.EndOfFile) break;
                         wrtr.Write((char)nxtC);
                     } 
                 } 

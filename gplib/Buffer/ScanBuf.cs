@@ -3,12 +3,15 @@ using System.IO;
 
 namespace QUT.Gplib
 {
-    public abstract class ScanBuff : QUT.Gplib.IScanBuffer
+    public static class ScanBuffCode
     {
-        private string fileNm;
-
         public const int EndOfFile = -1;
         public const int UnicodeReplacementChar = 0xFFFD;
+    }
+
+    public abstract class ScanBuff : IScanBuffer
+    {
+        private string fileNm;
 
         public bool IsFile { get { return (fileNm != null); } }
         public string FileName { get { return fileNm; } set { fileNm = value; } }

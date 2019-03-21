@@ -27,7 +27,7 @@ namespace QUT.Gplib
         {
             if (bPos < sLen) return str[bPos++];
             else if (bPos == sLen) { bPos++; return '\n'; }   // one strike, see new line
-            else { bPos++; return EndOfFile; }                // two strikes and you're out!
+            else { bPos++; return ScanBuffCode.EndOfFile; }                // two strikes and you're out!
         }
 
         public override string GetString(int begin, int limit)

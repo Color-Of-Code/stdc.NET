@@ -91,7 +91,7 @@
 
         int NextState()
         {
-            if (code == ScanBuff.EndOfFile)
+            if (code == ScanBuffCode.EndOfFile)
                 return eofNum;
             else
                 return nextState[state][map[code]];

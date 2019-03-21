@@ -271,7 +271,7 @@ int length;
     };
 
 int NextState() {
-    if (code == ScanBuff.EndOfFile)
+    if (code == ScanBuffCode.EndOfFile)
         return eofNum;
     else
         unchecked {
@@ -371,14 +371,14 @@ int NextState() {
 
             // Now read new codepoint.
             code = buffer.Read();
-            if (code > ScanBuff.EndOfFile)
+            if (code > ScanBuffCode.EndOfFile)
             {
 #if (!BYTEMODE)
                 if (code >= 0xD800 && code <= 0xDBFF)
                 {
                     int next = buffer.Read();
                     if (next < 0xDC00 || next > 0xDFFF)
-                        code = ScanBuff.UnicodeReplacementChar;
+                        code = ScanBuffCode.UnicodeReplacementChar;
                     else
                         code = (0x10000 + ((code & 0x3FF) << 10) + (next & 0x3FF));
                 }
@@ -614,7 +614,7 @@ int NextState() {
                     do {
                         ch = buffer.Read();
                         if (!char.IsHighSurrogate((char)ch)) count++;
-                    } while (buffer.Pos < tokEPos && ch != ScanBuff.EndOfFile);
+                    } while (buffer.Pos < tokEPos && ch != ScanBuffCode.EndOfFile);
                     buffer.Pos = save;
                     return count;
                 }

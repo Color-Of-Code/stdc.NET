@@ -40,7 +40,7 @@ namespace QUT.Gplib
             if (cPos++ == curLineEnd)
                 return '\n';
             if (cLine >= numLines)
-                return EndOfFile;
+                return ScanBuffCode.EndOfFile;
             curLine = line[cLine];
             curLen = curLine.Length;
             curLineStart = curLineEnd + 1;

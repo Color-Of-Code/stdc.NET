@@ -1,4 +1,14 @@
 
+// ==========================================================================
+//  GPLEX error listing for lex source file <CLexer.lex>
+// ==========================================================================
+//  Version:  1.0.0.0
+//  Machine:  gest4425
+//  UserName: jdehaan
+// ==========================================================================
+
+
+
 %namespace CLexer
 %using System.Text.RegularExpressions;
 %using QUT.Gplib;
@@ -113,4 +123,6 @@ NULL					{ Text.Append("C."); Text.Append(yytext); }
 	public Boolean ContainsIMain = false;
 	public Boolean ContainsVMain = false;
 	public StringBuilder Text = new StringBuilder();
+
+// ==========================================================================
 
