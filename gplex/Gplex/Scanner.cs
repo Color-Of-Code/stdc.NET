@@ -5,9 +5,9 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.0.0.0
-//  Machine:  gest4425
-//  UserName: jdehaan
-//  GPLEX input file <gplex.lex - 3/20/19 11:38:05 PM>
+//  Machine:  dehaan
+//  UserName: jaap
+//  GPLEX input file <gplex.lex - 3/24/19 8:01:34 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, verbose, parser, stack, minimize
@@ -91,7 +91,7 @@ namespace QUT.Gplex.Lexer
 #if BABEL
      internal sealed partial class Scanner : ScanBase, IColorScan
     {
-        private ScanBuff buffer;
+        private IScanBuffer buffer;
         int currentScOrd;  // start condition ordinal
         
         protected override int CurrentSc 
@@ -108,7 +108,7 @@ namespace QUT.Gplex.Lexer
 #else  // BABEL
      internal sealed partial class Scanner : ScanBase
     {
-        private ScanBuff buffer;
+        private IScanBuffer buffer;
         int currentScOrd;  // start condition ordinal
 #endif // BABEL
         
@@ -116,7 +116,7 @@ namespace QUT.Gplex.Lexer
         /// The input buffer for this scanner.
         /// </summary>
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ScanBuff Buffer { get { return buffer; } }
+        public IScanBuffer Buffer { get { return buffer; } }
         
         private static int GetMaxParseToken() {
      System.Reflection.FieldInfo f = typeof(Tokens).GetField("maxParseToken");
@@ -758,7 +758,7 @@ int NextState() {
         // ==============================================================
 
 		struct BufferContext {
-            internal ScanBuff buffSv;
+            internal IScanBuffer buffSv;
 			internal int chrSv;
 			internal int cColSv;
 			internal int lNumSv;

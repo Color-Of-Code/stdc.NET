@@ -11,7 +11,6 @@ namespace QUT.Gplib
 
     public abstract class ScanBuff : IScanBuffer
     {
-        public bool IsFile { get { return (FileName != null); } }
         public string FileName { get; set; }
 
         public abstract int Pos { get; set; }

@@ -224,7 +224,7 @@ namespace QUT.Gplex.Parser
         //   Error Listfile Reporting Method
         // -----------------------------------------------------
 
-        internal void MakeListing(ScanBuff buff, StreamWriter streamWriter, string name, string version)
+        internal void MakeListing(IScanBuffer buff, StreamWriter streamWriter, string name, string version)
         {
             int line = 1;
             int eNum = 0;
@@ -383,7 +383,7 @@ namespace QUT.Gplex.Parser
         //   Console Error Reporting Method
         // -----------------------------------------------------
 
-        internal void DumpErrorsInMsbuildFormat(ScanBuff buff, TextWriter wrtr)
+        internal void DumpErrorsInMsbuildFormat(IScanBuffer buff, TextWriter wrtr)
         {
             var builder = new StringBuilder();
             //
@@ -422,7 +422,7 @@ namespace QUT.Gplex.Parser
 
 
 
-        internal void DumpAll(ScanBuff buff, TextWriter wrtr)
+        internal void DumpAll(IScanBuffer buff, TextWriter wrtr)
         {
             int line = 1;
             int eNum = 0;

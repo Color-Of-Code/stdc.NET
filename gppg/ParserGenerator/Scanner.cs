@@ -91,7 +91,7 @@ namespace QUT.GPGen.Lexers
 #if BABEL
      internal sealed partial class Scanner : ScanBase, IColorScan
     {
-        private ScanBuff buffer;
+        private IScanBuffer buffer;
         int currentScOrd;  // start condition ordinal
         
         protected override int CurrentSc 
@@ -108,7 +108,7 @@ namespace QUT.GPGen.Lexers
 #else  // BABEL
      internal sealed partial class Scanner : ScanBase
     {
-        private ScanBuff buffer;
+        private IScanBuffer buffer;
         int currentScOrd;  // start condition ordinal
 #endif // BABEL
         
@@ -116,7 +116,7 @@ namespace QUT.GPGen.Lexers
         /// The input buffer for this scanner.
         /// </summary>
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ScanBuff Buffer { get { return buffer; } }
+        public IScanBuffer Buffer { get { return buffer; } }
         
         private static int GetMaxParseToken() {
      System.Reflection.FieldInfo f = typeof(Token).GetField("maxParseToken");
@@ -955,7 +955,7 @@ int NextState() {
         // ==============================================================
 
 		struct BufferContext {
-            internal ScanBuff buffSv;
+            internal IScanBuffer buffSv;
 			internal int chrSv;
 			internal int cColSv;
 			internal int lNumSv;

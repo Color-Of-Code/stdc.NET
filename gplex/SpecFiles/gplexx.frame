@@ -74,7 +74,7 @@ using System.Diagnostics.CodeAnalysis;
 #if BABEL
 ##-->translate $public sealed partial class $Scanner : $ScanBase, IColorScan
     {
-        private ScanBuff buffer;
+        private IScanBuffer buffer;
         int currentScOrd;  // start condition ordinal
         
         protected override int CurrentSc 
@@ -91,7 +91,7 @@ using System.Diagnostics.CodeAnalysis;
 #else  // BABEL
 ##-->translate $public sealed partial class $Scanner : $ScanBase
     {
-        private ScanBuff buffer;
+        private IScanBuffer buffer;
         int currentScOrd;  // start condition ordinal
 #endif // BABEL
         
@@ -99,7 +99,7 @@ using System.Diagnostics.CodeAnalysis;
         /// The input buffer for this scanner.
         /// </summary>
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ScanBuff Buffer { get { return buffer; } }
+        public IScanBuffer Buffer { get { return buffer; } }
         
         private static int GetMaxParseToken() {
 ##-->translate System.Reflection.FieldInfo f = typeof($Tokens).GetField("maxParseToken");
@@ -161,12 +161,12 @@ using System.Diagnostics.CodeAnalysis;
         // ==== Nested struct to support input switching in scanners ====
         // ==============================================================
 
-		struct BufferContext {
-            internal ScanBuff buffSv;
-			internal int chrSv;
-			internal int cColSv;
-			internal int lNumSv;
-		}
+        struct BufferContext {
+            internal IScanBuffer buffSv;
+            internal int chrSv;
+            internal int cColSv;
+            internal int lNumSv;
+        }
 
         // ==============================================================
         // ===== Private methods to save and restore buffer contexts ====

@@ -138,7 +138,7 @@ namespace QUT.GPGen.Parser
         //   Error Listfile Reporting Method
         // -----------------------------------------------------
 
-        internal void MakeListing(ScanBuff buff, StreamWriter sWrtr, string name, string version)
+        internal void MakeListing(IScanBuffer buff, StreamWriter sWrtr, string name, string version)
         {
             int line = 1;
             int eNum = 0;
@@ -297,7 +297,7 @@ namespace QUT.GPGen.Parser
         //   Console Error Reporting Method
         // -----------------------------------------------------
 
-        internal void DumpAll(ScanBuff buff, TextWriter wrtr) {
+        internal void DumpAll(IScanBuffer buff, TextWriter wrtr) {
             if (buff == null) {
                 PanicDump(wrtr); return;
             }
