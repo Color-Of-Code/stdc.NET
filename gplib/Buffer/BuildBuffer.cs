@@ -85,7 +85,7 @@ namespace QUT.Gplib
     // =====     class BuildBuff : for unicode text files    ========
     // ==============================================================
 
-    class BuildBuffer : ScanBuff
+    internal class BuildBuffer : ScanBuff
     {
         // Double buffer for char stream.
         class BufferElement
@@ -161,7 +161,6 @@ namespace QUT.Gplib
 
         BufferElement data = new BufferElement();
 
-        int bPos;            // Postion index in the StringBuilder
         BlockReader NextBlk; // Delegate that serves char-arrays;
 
         private string EncodingName
@@ -194,12 +193,12 @@ namespace QUT.Gplib
         /// needs to call GetString at arbitrary past locations 
         /// in the input stream, Mark() is not called.
         /// </summary>
-        public override void Mark() { data.Mark(bPos - 2); }
+        public override void Mark() { data.Mark(Pos - 2); }
 
         public override int Pos
         {
-            get { return bPos; }
-            set { bPos = value; }
+            get;
+            set;
         }
 
 
@@ -216,10 +215,10 @@ namespace QUT.Gplib
             //  [data.offset, data.offset + data.bldr.Length)
             //  are available in data.bldr.
             //
-            if (bPos < data.MaxIndex)
+            if (Pos < data.MaxIndex)
             {
                 // ch0 cannot be EOF
-                return (int)data[bPos++];
+                return (int)data[Pos++];
             }
             else // Read from underlying stream
             {
@@ -231,7 +230,7 @@ namespace QUT.Gplib
                 else
                 {
                     data.Append(chrs, count);
-                    return (int)data[bPos++];
+                    return (int)data[Pos++];
                 }
             }
         }
