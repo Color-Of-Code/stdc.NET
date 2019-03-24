@@ -3,7 +3,7 @@ namespace QUT.Gplib
 {
     public interface IScanBuffer
     {
-        string FileName { get; set; }
+        string FileName { get; }
         int Pos { get; set; }
         string GetString(int startPosition, int endPosition);
         int Read();

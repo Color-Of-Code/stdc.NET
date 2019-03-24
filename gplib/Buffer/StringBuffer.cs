@@ -1,36 +1,34 @@
 namespace QUT.Gplib
 {
-    // ==============================================================
-    // =====  Definitions for various ScanBuff derived classes   ====
-    // ==============================================================
-    // ===============         String input          ================
-    // ==============================================================
-
     /// <summary>
     /// This class reads characters from a single string as
     /// required, for example, by Visual Studio language services
     /// </summary>
-    sealed class StringBuffer : ScanBuff
+    internal sealed class StringBuffer : IScanBuffer
     {
-        string str;        // input buffer
-        int bPos;          // current position in buffer
-        int sLen;
+        // input buffer
+        private readonly string _str;
+        private readonly int _len;
 
-        public StringBuffer(string source)
+        internal StringBuffer(string source)
         {
-            this.str = source;
-            this.sLen = source.Length;
-            this.FileName = null;
+            _str = source;
+            _len = source.Length;
         }
 
-        public override int Read()
+        public string FileName { get { return null; } }
+
+        public void Mark()
+        {}
+
+        public int Read()
         {
-            if (bPos < sLen) return str[bPos++];
-            else if (bPos == sLen) { bPos++; return '\n'; }   // one strike, see new line
-            else { bPos++; return ScanBuffCode.EndOfFile; }                // two strikes and you're out!
+            if (Pos < _len) return _str[Pos++];
+            else if (Pos == _len) { Pos++; return '\n'; }   // one strike, see new line
+            else { Pos++; return ScanBuffCode.EndOfFile; }                // two strikes and you're out!
         }
 
-        public override string GetString(int begin, int limit)
+        public string GetString(int begin, int limit)
         {
             //  "limit" can be greater than sLen with the BABEL
             //  option set.  Read returns a "virtual" EOL if
@@ -38,15 +36,15 @@ namespace QUT.Gplib
             //  string buffer.  Without the guard any attempt 
             //  to fetch yytext for a token that includes the 
             //  EOL will throw an index exception.
-            if (limit > sLen) limit = sLen;
+            if (limit > _len) limit = _len;
             if (limit <= begin) return "";
-            else return str.Substring(begin, limit - begin);
+            else return _str.Substring(begin, limit - begin);
         }
 
-        public override int Pos
+        public int Pos
         {
-            get { return bPos; }
-            set { bPos = value; }
+            get;
+            set;
         }
 
         public override string ToString() { return "StringBuffer"; }

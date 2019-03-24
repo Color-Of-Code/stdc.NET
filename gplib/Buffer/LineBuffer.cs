@@ -8,7 +8,7 @@ namespace QUT.Gplib
     //  nigelh@cs.uvic.cs
     // ==============================================================
 
-    sealed class LineBuffer : ScanBuff
+    internal sealed class LineBuffer : IScanBuffer
     {
         IList<string> line;    // list of source lines from a file
         int numLines;          // number of strings in line list
@@ -22,7 +22,7 @@ namespace QUT.Gplib
 
         // Constructed from a list of strings, one per source line.
         // The lines have had trailing '\n' characters removed.
-        public LineBuffer(IList<string> lineList)
+        internal LineBuffer(IList<string> lineList)
         {
             line = lineList;
             numLines = line.Count;
@@ -30,10 +30,14 @@ namespace QUT.Gplib
             curLine = (numLines > 0 ? line[0] : "");
             maxPos = curLineEnd = curLen = curLine.Length;
             cLine = 1;
-            FileName = null;
         }
 
-        public override int Read()
+        public string FileName { get { return null; } }
+
+        public void Mark()
+        {}
+
+        public int Read()
         {
             if (cPos < curLineEnd)
                 return curLine[cPos++ - curLineStart];
@@ -81,7 +85,7 @@ namespace QUT.Gplib
             cachedLineStart = lstart;
         }
 
-        public override string GetString(int begin, int limit)
+        public string GetString(int begin, int limit)
         {
             if (begin >= maxPos || limit <= begin) return "";
             int endIx, begIx, endLineStart, begLineStart;
@@ -120,7 +124,7 @@ namespace QUT.Gplib
             return sb.ToString();
         }
 
-        public override int Pos
+        public int Pos
         {
             get { return cPos; }
             set

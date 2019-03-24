@@ -85,7 +85,7 @@ namespace QUT.Gplib
     // =====     class BuildBuff : for unicode text files    ========
     // ==============================================================
 
-    internal class BuildBuffer : ScanBuff
+    internal class BuildBuffer : IScanBuffer
     {
         // Double buffer for char stream.
         class BufferElement
@@ -172,7 +172,9 @@ namespace QUT.Gplib
             }
         }
 
-        public BuildBuffer(Stream stream)
+        public string FileName { get; set; }
+
+        internal BuildBuffer(Stream stream)
         {
             FileStream fStrm = (stream as FileStream);
             if (fStrm != null) FileName = fStrm.Name;
@@ -180,7 +182,7 @@ namespace QUT.Gplib
         }
 
         // #if (!BYTEMODE)
-        public BuildBuffer(Stream stream, int fallbackCodePage)
+        internal BuildBuffer(Stream stream, int fallbackCodePage)
         {
             FileStream fStrm = (stream as FileStream);
             if (fStrm != null) FileName = fStrm.Name;
@@ -193,9 +195,9 @@ namespace QUT.Gplib
         /// needs to call GetString at arbitrary past locations 
         /// in the input stream, Mark() is not called.
         /// </summary>
-        public override void Mark() { data.Mark(Pos - 2); }
+        public void Mark() { data.Mark(Pos - 2); }
 
-        public override int Pos
+        public int Pos
         {
             get;
             set;
@@ -208,7 +210,7 @@ namespace QUT.Gplib
         /// code point may require *two* calls of Read().
         /// </summary>
         /// <returns></returns>
-        public override int Read()
+        public int Read()
         {
             //
             //  Characters at positions 
@@ -235,7 +237,7 @@ namespace QUT.Gplib
             }
         }
 
-        public override string GetString(int begin, int limit)
+        public string GetString(int begin, int limit)
         {
             return data.GetString(begin, limit);
         }
