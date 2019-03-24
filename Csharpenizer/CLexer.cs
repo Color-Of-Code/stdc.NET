@@ -896,7 +896,7 @@ int NextState() {
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public void SetSource(string source, int offset)
         {
-            this.buffer = ScanBuff.GetBuffer(source);
+            this.buffer = ScanBufferFactory.GetBuffer(source);
             this.buffer.Pos = offset;
             this.lNum = 0;
             this.code = '\n'; // to initialize yyline, yycol and lineStart
@@ -911,7 +911,7 @@ int NextState() {
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public void SetSource(IList<string> source)
         {
-            this.buffer = ScanBuff.GetBuffer(source);
+            this.buffer = ScanBufferFactory.GetBuffer(source);
             this.code = '\n'; // to initialize yyline, yycol and lineStart
             this.lNum = 0;
             GetCode();
@@ -928,7 +928,7 @@ int NextState() {
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public void SetSource(Stream source)
         {
-            this.buffer = ScanBuff.GetBuffer(source);
+            this.buffer = ScanBufferFactory.GetBuffer(source);
             this.lNum = 0;
             this.code = '\n'; // to initialize yyline, yycol and lineStart
             GetCode();
@@ -947,7 +947,7 @@ int NextState() {
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public void SetSource(Stream source, int fallbackCodePage)
         {
-            this.buffer = ScanBuff.GetBuffer(source, fallbackCodePage);
+            this.buffer = ScanBufferFactory.GetBuffer(source, fallbackCodePage);
             this.lNum = 0;
             this.code = '\n'; // to initialize yyline, yycol and lineStart
             GetCode();
