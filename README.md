@@ -2,7 +2,7 @@
 
 ## CI-Status
 
-[![Travis build status](https://img.shields.io/travis/Color-Of-Code/stdc.NET/master.svg?label=master&style=flat-square)](https://travis-ci.org/Color-Of-Code/stdc.NET)
+[![Action Status](https://github.com/Color-Of-Code/stdc.NET/workflows/.NET%20Core/badge.svg)](https://github.com/Color-Of-Code/stdc.NET/actions) |
 
 ## Goals
 
