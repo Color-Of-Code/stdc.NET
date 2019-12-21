@@ -2,7 +2,7 @@
 
 ## CI-Status
 
-[![Action Status](https://github.com/Color-Of-Code/stdc.NET/workflows/.NET%20Core/badge.svg)](https://github.com/Color-Of-Code/stdc.NET/actions) |
+[![Action Status](https://github.com/Color-Of-Code/stdc.NET/workflows/.NET%20Core/badge.svg)](https://github.com/Color-Of-Code/stdc.NET/actions)
 
 ## Goals
 
