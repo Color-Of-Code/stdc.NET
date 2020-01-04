@@ -299,8 +299,8 @@ The signature of the main function is one of:
 - `void main()`
 
 The .NET arguments do not contain the program name unlike in C where argv[0] contains the name of the executable.
-To enable to reuse code from C that expects this behavior, you must use the C.RunI/VMain() function.
-The RunMain() function also provides an environment where the signal() and raise() C functions can be used.
+To enable to reuse code from C that expects this behavior, you must use the `C.RunI/VMain()` function.
+The `RunMain()` function also provides an environment where the `signal()` and `raise()` C functions can be used.
 
 ## Further examples
 
@@ -353,6 +353,6 @@ namespace example {
 }
 ```
 
-The full code is provided for this example, to demonstrate how to let the RunMain() method call the ported main() function.
-RunMain() calls main() after initializing an environment where the signals can work properly.
+The full code is provided for this example, to demonstrate how to let the `RunMain()` method call the ported `main()` function.
+`RunMain()` calls `main()` after initializing an environment where the signals can work properly.
 The behavior expected from C regarding the order in which the handlers are called is implemented correctly: the handlers are called in reverse order or registration.
