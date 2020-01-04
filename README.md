@@ -25,10 +25,19 @@ Excellent hints on parsing in C#:
 
 ## Other GitHub projects
 
-* https://github.com/IronyProject/Irony
+### Parser generators
+
 * https://github.com/kellyw42/GardensPointCompilerTools
 * https://github.com/KommuSoft/Gardens-Point-Parser-Generator
 * https://github.com/KommuSoft/Gardens-Point-LEX
 * https://github.com/deAtog/gplex
 * https://github.com/k-john-gough/gpcp (pascal)
-* https://github.com/sprache/sprache
+
+### Monadic parser combinator libraries
+
+* [Sprache](https://github.com/sprache/sprache)
+* [Superpower](https://github.com/datalust/superpower)
+* [Pidgin](https://github.com/benjamin-hodgson/Pidgin)
+* [Parsley](https://github.com/plioi/parsley)
+* [FParsec](https://github.com/stephan-tolksdorf/fparsec)
+* [Irony](https://github.com/IronyProject/Irony)
