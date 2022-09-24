@@ -1,196 +1,194 @@
-﻿using System;
+﻿namespace stdc;
 
-namespace stdc
+using System;
+
+public static partial class C
 {
+    /* signals */
 
-    public static partial class C
+    /* abnormal termination as in abort() */
+    public const int SIGABRT = 1;
+    /* erroneous arithmetic operator */
+    public const int SIGFPE = 2;
+    /* illegal instruction */
+    public const int SIGILL = 3;
+    /* interactive attention (Control Break) */
+    public const int SIGINT = 4;
+    /* invalid access to storage */
+    public const int SIGSEGV = 5;
+    /* program termination request */
+    public const int SIGTERM = 6;
+
+    /* the type returned by and passed to (as second argument) the signal function */
+    public delegate void _sigfunc_t(int parameter);
+
+    //#define SIG_DFL (_sigfunc_t)0   /* default action */
+    //#define SIG_IGN (_sigfunc_t)1   /* ignore the signal */
+    //#define SIG_ERR (_sigfunc_t)(-1)  /* error return */
+    public static readonly _sigfunc_t SIG_DFL = new _sigfunc_t(_sigdummy);
+    public static readonly _sigfunc_t SIG_IGN = new _sigfunc_t(_sigdummy);
+    public static readonly _sigfunc_t SIG_ERR = new _sigfunc_t(_sigdummy);
+
+    private static _sigfunc_t _sigtermHandler = SIG_DFL;
+    private static _sigfunc_t _sigintHandler = SIG_DFL;
+    private static _sigfunc_t _sigabrtHandler = SIG_DFL;
+    private static _sigfunc_t _sigfpeHandler = SIG_DFL;
+    private static _sigfunc_t _sigsegvHandler = SIG_DFL;
+    private static _sigfunc_t _sigillHandler = SIG_DFL;
+
+    private static void _sigdummy(int parameter)
     {
-        /* signals */
-
-        /* abnormal termination as in abort() */
-        public const int SIGABRT = 1;
-        /* erroneous arithmetic operator */
-        public const int SIGFPE = 2;
-        /* illegal instruction */
-        public const int SIGILL = 3;
-        /* interactive attention (Control Break) */
-        public const int SIGINT = 4;
-        /* invalid access to storage */
-        public const int SIGSEGV = 5;
-        /* program termination request */
-        public const int SIGTERM = 6;
-
-        /* the type returned by and passed to (as second argument) the signal function */
-        public delegate void _sigfunc_t(int parameter);
-
-        //#define SIG_DFL (_sigfunc_t)0   /* default action */
-        //#define SIG_IGN (_sigfunc_t)1   /* ignore the signal */
-        //#define SIG_ERR (_sigfunc_t)(-1)  /* error return */
-        public static readonly _sigfunc_t SIG_DFL = new _sigfunc_t(_sigdummy);
-        public static readonly _sigfunc_t SIG_IGN = new _sigfunc_t(_sigdummy);
-        public static readonly _sigfunc_t SIG_ERR = new _sigfunc_t(_sigdummy);
-
-        private static _sigfunc_t _sigtermHandler = SIG_DFL;
-        private static _sigfunc_t _sigintHandler = SIG_DFL;
-        private static _sigfunc_t _sigabrtHandler = SIG_DFL;
-        private static _sigfunc_t _sigfpeHandler = SIG_DFL;
-        private static _sigfunc_t _sigsegvHandler = SIG_DFL;
-        private static _sigfunc_t _sigillHandler = SIG_DFL;
-
-        private static void _sigdummy(int parameter)
-        {
-        }
-
-        //extern _sigfunc_t signal(int, _sigfunc_t);
-        public static _sigfunc_t signal(int s, _sigfunc_t f)
-        {
-            switch (s)
-            {
-                case SIGABRT:
-                    AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
-                    AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
-                    _sigabrtHandler = f;
-                    break;
-                case SIGFPE:
-                    _sigfpeHandler = f;
-                    break;
-                case SIGSEGV:
-                    _sigsegvHandler = f;
-                    break;
-                case SIGILL:
-                    _sigillHandler = f;
-                    break;
-                case SIGINT:
-                    Console.TreatControlCAsInput = true;
-                    Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
-                    _sigintHandler = f;
-                    break;
-                case SIGTERM:
-                    Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
-                    _sigtermHandler = f;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-            return f;
-        }
-
-        private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
-        {
-            _sigabrtHandler(0);
-        }
-
-        private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
-        {
-            _sigabrtHandler(0);
-        }
-
-        private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
-        {
-            _sigtermHandler(0);
-        }
-
-        /// <summary>
-        /// 		int raise (signal sig);
-        /// 		
-        /// Generates a signal
-        /// Sends signal sig to the current executing program.
-        /// 
-        /// Parameters
-        /// sig
-        /// The signal number to send. The following macro constant expressions identify
-        /// standard signal numbers:
-        /// macro	signal
-        /// SIGABRT	(Signal Abort) Abnormal termination, such as is initiated by the abort function.
-        /// SIGFPE	(Signal Floating-Point Exception) Erroneous arithmetic operation, such as zero
-        ///			divide or an operation resulting in overflow (not necessarily with a floating-
-        ///			point operation).
-        /// SIGILL	(Signal Illegal Instruction) Invalid function image, such as an illegal
-        ///			instruction. This is generally due to a corruption in the code or to an attempt
-        ///			to execute data.
-        ///	SIGINT	(Signal Interrupt) Interactive attention signal. Generally generated by the
-        ///			application user.
-        ///	SIGSEGV	(Signal Segmentation Violation) Invalid access to storage: When a program tries
-        ///			to read or write outside the memory it is allocated for it.
-        ///	SIGTERM	(Signal Terminate) Termination request sent to program.
-        ///	
-        /// Each compiler implentation may provide additional signal number macro constants to be
-        /// used by this function.
-        /// 
-        /// Return Value
-        /// Returns zero if successful, and a value different from zero otherwise.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static int raise(int s)
-        {
-            switch (s)
-            {
-                case SIGABRT:
-                    abort();
-                    break;
-                case SIGFPE:
-                    throw new System.DivideByZeroException();
-                case SIGILL:
-                    throw new System.SystemException();
-                case SIGINT:
-                case SIGTERM:
-                    throw new System.Threading.ThreadInterruptedException();
-                case SIGSEGV:
-                    throw new System.AccessViolationException();
-                default:
-                    throw new NotImplementedException();
-            }
-            return 0;
-        }
-
-
-        //void (*signal(int sig, void (*func)(int)))(int);
-
-        //Set function to handle signal
-        //Specifies a way to handle those signals whith the signal number specified by sig.
-
-        //There are three ways in which a signal can be handled by a program (which is specified by parameter func):
-
-        //    * Default handling (SIG_DFL): The signal is handled by the default action for that particular signal.
-        //    * Ignore signal (SIG_IGN): The signal is ignored and the code execution will continue even if unmeaningful.
-        //    * Function handler: A specific function is defined to handle the signal.
-
-
-
-        //A specific compiler implementation may set either SIG_DFL or SIG_IGN as the default signal handling behavior for each of the supported signals at program startup.
-
-        //Parameters
-
-        //sig
-        //    The signal number to which a handling function is set. The following macro constant expressions identify standard signal numbers:
-
-        //    macro	signal
-        //    SIGABRT	(Signal Abort) Abnormal termination, such as is initiated by the abort function.
-        //    SIGFPE	(Signal Floating-Point Exception) Erroneous arithmetic operation, such as zero divide or an operation resulting in overflow (not necessarily with a floating-point operation).
-        //    SIGILL	(Signal Illegal Instruction) Invalid function image, such as an illegal instruction. This is generally due to a corruption in the code or to an attempt to execute data.
-        //    SIGINT	(Signal Interrupt) Interactive attention signal. Generally generated by the application user.
-        //    SIGSEGV	(Signal Segmentation Violation) Invalid access to storage: When a program tries to read or write outside the memory it is allocated for it.
-        //    SIGTERM	(Signal Terminate) Termination request sent to program.
-
-        //    Each compiler implentation may provide additional signal number macro constants to be used by this function.
-
-        //    Notice that not all running environments are required to generate automatic signals, not even in the specific cases described above, although all running environments must deliver signals generated by a explicit call to the raise function.
-        //func
-        //    A pointer to a function. This may either be a function defined by the programmer or one of the following predefined functions:
-
-        //    SIG_DFL	Default handling: The signal is handled by the default action for that particular signal.
-        //    SIG_IGN	Ignore Signal: The signal is ignored.
-
-        //    If a function, it should follow the following prototype:
-        //    void handler_function ( int parameter ); 
-
-        //Return value
-        //The return type is the same as for parameter func.
-
-        //If the request is successful, the function returns a pointer to the particular handler function in charge of handling this signal before the call, if any. Or SIG_DFL or SIG_IGN if before the call the signal was being handled by the default handler or was being ignored.
-
-        //If the function was not successful in registering the new signal handling procedure, it returns SIG_ERR and sets errno to a positive value.
-
     }
+
+    //extern _sigfunc_t signal(int, _sigfunc_t);
+    public static _sigfunc_t signal(int s, _sigfunc_t f)
+    {
+        switch (s)
+        {
+            case SIGABRT:
+                AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
+                AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
+                _sigabrtHandler = f;
+                break;
+            case SIGFPE:
+                _sigfpeHandler = f;
+                break;
+            case SIGSEGV:
+                _sigsegvHandler = f;
+                break;
+            case SIGILL:
+                _sigillHandler = f;
+                break;
+            case SIGINT:
+                Console.TreatControlCAsInput = true;
+                Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+                _sigintHandler = f;
+                break;
+            case SIGTERM:
+                Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+                _sigtermHandler = f;
+                break;
+            default:
+                throw new NotImplementedException();
+        }
+        return f;
+    }
+
+    private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+    {
+        _sigabrtHandler(0);
+    }
+
+    private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
+    {
+        _sigabrtHandler(0);
+    }
+
+    private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+    {
+        _sigtermHandler(0);
+    }
+
+    /// <summary>
+    /// 		int raise (signal sig);
+    ///
+    /// Generates a signal
+    /// Sends signal sig to the current executing program.
+    ///
+    /// Parameters
+    /// sig
+    /// The signal number to send. The following macro constant expressions identify
+    /// standard signal numbers:
+    /// macro	signal
+    /// SIGABRT	(Signal Abort) Abnormal termination, such as is initiated by the abort function.
+    /// SIGFPE	(Signal Floating-Point Exception) Erroneous arithmetic operation, such as zero
+    ///			divide or an operation resulting in overflow (not necessarily with a floating-
+    ///			point operation).
+    /// SIGILL	(Signal Illegal Instruction) Invalid function image, such as an illegal
+    ///			instruction. This is generally due to a corruption in the code or to an attempt
+    ///			to execute data.
+    ///	SIGINT	(Signal Interrupt) Interactive attention signal. Generally generated by the
+    ///			application user.
+    ///	SIGSEGV	(Signal Segmentation Violation) Invalid access to storage: When a program tries
+    ///			to read or write outside the memory it is allocated for it.
+    ///	SIGTERM	(Signal Terminate) Termination request sent to program.
+    ///
+    /// Each compiler implentation may provide additional signal number macro constants to be
+    /// used by this function.
+    ///
+    /// Return Value
+    /// Returns zero if successful, and a value different from zero otherwise.
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public static int raise(int s)
+    {
+        switch (s)
+        {
+            case SIGABRT:
+                abort();
+                break;
+            case SIGFPE:
+                throw new System.DivideByZeroException();
+            case SIGILL:
+                throw new System.SystemException();
+            case SIGINT:
+            case SIGTERM:
+                throw new System.Threading.ThreadInterruptedException();
+            case SIGSEGV:
+                throw new System.AccessViolationException();
+            default:
+                throw new NotImplementedException();
+        }
+        return 0;
+    }
+
+
+    //void (*signal(int sig, void (*func)(int)))(int);
+
+    //Set function to handle signal
+    //Specifies a way to handle those signals whith the signal number specified by sig.
+
+    //There are three ways in which a signal can be handled by a program (which is specified by parameter func):
+
+    //    * Default handling (SIG_DFL): The signal is handled by the default action for that particular signal.
+    //    * Ignore signal (SIG_IGN): The signal is ignored and the code execution will continue even if unmeaningful.
+    //    * Function handler: A specific function is defined to handle the signal.
+
+
+
+    //A specific compiler implementation may set either SIG_DFL or SIG_IGN as the default signal handling behavior for each of the supported signals at program startup.
+
+    //Parameters
+
+    //sig
+    //    The signal number to which a handling function is set. The following macro constant expressions identify standard signal numbers:
+
+    //    macro	signal
+    //    SIGABRT	(Signal Abort) Abnormal termination, such as is initiated by the abort function.
+    //    SIGFPE	(Signal Floating-Point Exception) Erroneous arithmetic operation, such as zero divide or an operation resulting in overflow (not necessarily with a floating-point operation).
+    //    SIGILL	(Signal Illegal Instruction) Invalid function image, such as an illegal instruction. This is generally due to a corruption in the code or to an attempt to execute data.
+    //    SIGINT	(Signal Interrupt) Interactive attention signal. Generally generated by the application user.
+    //    SIGSEGV	(Signal Segmentation Violation) Invalid access to storage: When a program tries to read or write outside the memory it is allocated for it.
+    //    SIGTERM	(Signal Terminate) Termination request sent to program.
+
+    //    Each compiler implentation may provide additional signal number macro constants to be used by this function.
+
+    //    Notice that not all running environments are required to generate automatic signals, not even in the specific cases described above, although all running environments must deliver signals generated by a explicit call to the raise function.
+    //func
+    //    A pointer to a function. This may either be a function defined by the programmer or one of the following predefined functions:
+
+    //    SIG_DFL	Default handling: The signal is handled by the default action for that particular signal.
+    //    SIG_IGN	Ignore Signal: The signal is ignored.
+
+    //    If a function, it should follow the following prototype:
+    //    void handler_function ( int parameter );
+
+    //Return value
+    //The return type is the same as for parameter func.
+
+    //If the request is successful, the function returns a pointer to the particular handler function in charge of handling this signal before the call, if any. Or SIG_DFL or SIG_IGN if before the call the signal was being handled by the default handler or was being ignored.
+
+    //If the function was not successful in registering the new signal handling procedure, it returns SIG_ERR and sets errno to a positive value.
+
 }

@@ -8,7 +8,7 @@
 //  printf("\t  n  \t    2^n\n");
 //  printf("\t================\n");
 //  for (n=0; n<=N; n++) {
-//    printf("\t%3d \t %6d\n", n, val); 
+//    printf("\t%3d \t %6d\n", n, val);
 //    val = 2*val;
 //  }
 //  return 0;
@@ -38,30 +38,28 @@
 
 */
 
-namespace examples
+namespace examples;
+
+//#include <stdio.h>
+using stdc;
+
+public class Power2
 {
 
-    //#include <stdio.h>
-    using stdc;
+    private const int N = 16;
 
-    public class Power2
+    public static int main()
     {
+        int n;          // The current exponent
+        int val = 1;    // The current power of 2
 
-        private const int N = 16;
-
-        public static int main()
+        C.printf("\t  n  \t    2^n\n");
+        C.printf("\t================\n");
+        for (n = 0; n <= N; n++)
         {
-            int n;          // The current exponent
-            int val = 1;    // The current power of 2
-
-            C.printf("\t  n  \t    2^n\n");
-            C.printf("\t================\n");
-            for (n = 0; n <= N; n++)
-            {
-                C.printf("\t%3d \t %6d\n", n, val);
-                val = 2 * val;
-            }
-            return 0;
+            C.printf("\t%3d \t %6d\n", n, val);
+            val = 2 * val;
         }
+        return 0;
     }
 }

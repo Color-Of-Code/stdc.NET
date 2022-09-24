@@ -1,23 +1,21 @@
-﻿using System;
+﻿namespace stdc;
 
-namespace stdc
+using System;
+
+public static partial class C
 {
-    public static partial class C
+    [Obsolete("non standard conio.h support")]
+    public static void clrscr()
     {
+        Console.Clear();
+    }
 
-        [Obsolete("non standard conio.h support")]
-        public static void clrscr()
-        {
-            Console.Clear();
-        }
-
-        /// <summary>
-        /// Gets a character from the console without echo.
-        /// </summary>
-        /// <returns></returns>
-        public static Char getch()
-        {
-            return (Char)Console.In.Read();
-        }
+    /// <summary>
+    /// Gets a character from the console without echo.
+    /// </summary>
+    /// <returns></returns>
+    public static Char getch()
+    {
+        return (Char)Console.In.Read();
     }
 }

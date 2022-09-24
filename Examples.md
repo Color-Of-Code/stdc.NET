@@ -43,13 +43,12 @@ If you...
 ```
 
 ```csharp
-namespace Example {      // a namespace to contain the code
-    using stdc;          // instead of #include ...
+namespace examples;    // a namespace to contain the code
+using stdc;            // instead of #include ...
 
-    public class HelloWorld { // in C# methods must be in a class
-        public static void main () {
-            C.printf("Hello World!\n");
-        }
+public class HelloWorld { // in C# methods must be in a class
+    public static void main () {
+        C.printf("Hello World!\n");
     }
 }
 ```
@@ -278,15 +277,15 @@ the library needs to control the code to be run. There is a trampoline from the 
 This should be used like this:
 
 ```csharp
-namespace examples {
-    using stdc;
-    class Program {
-        static void Main (string[] args)
-        {
-            // use one of these
-            C.RunVMain (args, CProgram.main); // if the main is returning nothing (void)
-            C.RunIMain (args, CProgram.main); // if the main is returning an int
-        }
+namespace examples;
+using stdc;
+
+class Program {
+    static void Main (string[] args)
+    {
+        // use one of these
+        C.RunVMain (args, CProgram.main); // if the main is returning nothing (void)
+        C.RunIMain (args, CProgram.main); // if the main is returning an int
     }
 }
 ```
@@ -327,28 +326,27 @@ The `RunMain()` function also provides an environment where the `signal()` and `
 ```
 
 ```csharp
-namespace example {
-    using stdc;
+namespace examples;
+using stdc;
 
-    public class Program {
+public class Program {
 
-        public static void atexit_handler1() {
-            C.puts("handler 1");
-        }
-        public static void atexit_handler2() {
-            C.puts("handler 2");
-        }
+    public static void atexit_handler1() {
+        C.puts("handler 1");
+    }
+    public static void atexit_handler2() {
+        C.puts("handler 2");
+    }
 
-        public static void main () {
-            C.atexit(atexit_handler1);
-            C.atexit(atexit_handler2);
-            C.puts("atexit handlers should be " +
-                "called in reverse order 2 and then 1!");
-        }
+    public static void main () {
+        C.atexit(atexit_handler1);
+        C.atexit(atexit_handler2);
+        C.puts("atexit handlers should be " +
+            "called in reverse order 2 and then 1!");
+    }
 
-        static void Main (string[] args) {
-            C.RunVMain (args, main); // trampoline
-        }
+    static void Main (string[] args) {
+        C.RunVMain (args, main); // trampoline
     }
 }
 ```

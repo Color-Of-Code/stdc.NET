@@ -15,38 +15,34 @@
 //    for (n=0; n<6; n++)
 //        printf ("%d ",values[n]);
 //}
-using System;
+namespace examples;
 
-namespace examples
+//#include <stdio.h>
+//#include <stdlib.h>
+using stdc;
+
+public class Qsort
 {
 
-    //#include <stdio.h>
-    //#include <stdlib.h>
-    using stdc;
+    public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
-    public class Qsort
+    public static int compare(int a, int b)
     {
+        return a - b;
+    }
 
-        public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
+    public static void main_1()
+    {
+        int n;
+        C.qsort(values, 6, sizeof(int), compare);
+        for (n = 0; n < 6; n++)
+            C.printf("%d ", values[n]);
+    }
 
-        public static int compare(int a, int b)
-        {
-            return a - b;
-        }
-
-        public static void main_1()
-        {
-            int n;
-            C.qsort(values, 6, sizeof(int), compare);
-            for (n = 0; n < 6; n++)
-                C.printf("%d ", values[n]);
-        }
-
-        public static void main()
-        {
-            C.qsort(values, compare);
-            foreach (int v in values)
-                C.printf("%d ", v);
-        }
+    public static void main()
+    {
+        C.qsort(values, compare);
+        foreach (int v in values)
+            C.printf("%d ", v);
     }
 }
