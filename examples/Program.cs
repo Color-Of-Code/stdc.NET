@@ -11,6 +11,10 @@ public partial class Program : C
 
     private void RunMain(string[] args)
     {
+        // Work in progress
+        //printf("------- Snake\n");
+        //RunVMain (args, Snake.main);
+
         printf("------- Macros\n");
         RunVMain (args, Macros.main);
 
