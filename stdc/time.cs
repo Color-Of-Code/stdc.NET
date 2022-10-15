@@ -26,7 +26,7 @@ public struct clock_t
     public long _clock_t;
 }
 
-public static partial class C
+public partial class C
 {
 
 

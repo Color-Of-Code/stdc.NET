@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 
-public static partial class C
+public partial class C
 {
 
     //void * memchr(const void *, int, size_t);

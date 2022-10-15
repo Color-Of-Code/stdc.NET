@@ -22,20 +22,20 @@ namespace examples;
 //#include <assert.h>
 using stdc;
 
-public class Assert
+public class Assert : C
 {
 
     public static void print_number(object myInt)
     {
-        C.assert(myInt != C.NULL);
-        C.printf("%d\n", myInt);
+        assert(myInt != NULL);
+        printf("%d\n", myInt);
     }
 
     public static void main()
     {
         int a = 10;
-        object b = C.NULL;
-        object c = C.NULL;
+        var b = NULL;
+        var c = NULL;
         b = a;
         print_number(b);
         print_number(c);

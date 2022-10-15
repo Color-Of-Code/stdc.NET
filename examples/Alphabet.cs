@@ -18,20 +18,20 @@ namespace examples;
 //#include <stdio.h>
 using stdc;
 
-public class Alphabet
+public class Alphabet : C
 {
 
     public static void main()
     {
-        C.FILE pFile;
+        FILE pFile;
         char c;
 
-        pFile = C.fopen("alphabet.txt", "wt");
+        pFile = fopen("alphabet.txt", "wt");
         for (c = 'A'; c <= 'Z'; c++)
         {
-            C.putc(c, pFile);
+            putc(c, pFile);
         }
-        C.fclose(pFile);
+        fclose(pFile);
     }
 
 }

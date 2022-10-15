@@ -7,7 +7,7 @@ namespace stdc;
 using System;
 using System.Diagnostics;
 
-public static partial class C
+public partial class C
 {
     /// <summary>
     ///		void assert (int expression);

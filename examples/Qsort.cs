@@ -21,7 +21,7 @@ namespace examples;
 //#include <stdlib.h>
 using stdc;
 
-public class Qsort
+public class Qsort : C
 {
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
@@ -34,15 +34,15 @@ public class Qsort
     public static void main_1()
     {
         int n;
-        C.qsort(values, 6, sizeof(int), compare);
+        qsort(values, 6, sizeof(int), compare);
         for (n = 0; n < 6; n++)
-            C.printf("%d ", values[n]);
+            printf("%d ", values[n]);
     }
 
     public static void main()
     {
-        C.qsort(values, compare);
+        qsort(values, compare);
         foreach (int v in values)
-            C.printf("%d ", v);
+            printf("%d ", v);
     }
 }

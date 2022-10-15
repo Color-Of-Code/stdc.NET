@@ -18,26 +18,26 @@ namespace examples;
 using stdc;
 using System.Text;
 
-public class Strcat
+public class Strcat : C
 {
 
     public static void main()
     {
         char[] str = new char[80];
-        C.strcpy(str, "these ");
-        C.strcat(str, "strings ");
-        C.strcat(str, "are ");
-        C.strcat(str, "concatenated.");
-        C.puts(str);
+        strcpy(str, "these ");
+        strcat(str, "strings ");
+        strcat(str, "are ");
+        strcat(str, "concatenated.");
+        puts(str);
     }
 
     public static void main2()
     {
         StringBuilder str = new StringBuilder(80);
-        C.strcpy(str, "these ");
-        C.strcat(str, "strings ");
-        C.strcat(str, "are ");
-        C.strcat(str, "concatenated.");
-        C.puts(str);
+        strcpy(str, "these ");
+        strcat(str, "strings ");
+        strcat(str, "are ");
+        strcat(str, "concatenated.");
+        puts(str);
     }
 }

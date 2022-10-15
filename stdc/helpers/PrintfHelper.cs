@@ -74,7 +74,7 @@ namespace stdc
                 #endregion
 
                 #region field length
-                // extract field length and 
+                // extract field length and
                 // pading character
                 paddingCharacter = ' ';
                 fieldLength = int.MinValue;

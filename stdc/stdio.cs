@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-public static partial class C
+public partial class C
 {
 
     #region FILE

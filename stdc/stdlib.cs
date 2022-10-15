@@ -13,7 +13,7 @@ public enum EXIT_STATUS
 }
 
 
-public static partial class C
+public partial class C
 {
 
     //#define NULL ((void *) 0)

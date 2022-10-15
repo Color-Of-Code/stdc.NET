@@ -43,7 +43,7 @@ namespace examples;
 //#include <stdio.h>
 using stdc;
 
-public class Power2
+public class Power2 : C
 {
 
     private const int N = 16;
@@ -53,11 +53,11 @@ public class Power2
         int n;          // The current exponent
         int val = 1;    // The current power of 2
 
-        C.printf("\t  n  \t    2^n\n");
-        C.printf("\t================\n");
+        printf("\t  n  \t    2^n\n");
+        printf("\t================\n");
         for (n = 0; n <= N; n++)
         {
-            C.printf("\t%3d \t %6d\n", n, val);
+            printf("\t%3d \t %6d\n", n, val);
             val = 2 * val;
         }
         return 0;
