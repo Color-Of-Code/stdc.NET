@@ -1138,7 +1138,11 @@ public partial class C
     //int  sscanf(const char *, const char *, ...);
 
     //int getchar(void);
-    //int putchar(int);
+
+    // Write character to stdout
+    // Writes a character to the standard output (stdout).
+    // It is equivalent to calling putc with stdout as second argument.
+    public static int putchar(int character) => putc(character, stdout);
 
     //#ifndef __VA_LIST
     //#define __VA_LIST
