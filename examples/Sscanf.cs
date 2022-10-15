@@ -17,9 +17,7 @@
 
 namespace examples;
 
-using stdc;
-
-class Sscanf : C
+class Sscanf : stdc.C
 {
 
     public static void main()

@@ -1,7 +1,5 @@
 namespace examples;
 
-using stdc;
-
 // #include <stdio.h>
 
 // void main() {
@@ -20,9 +18,8 @@ using stdc;
 //     fclose(fp);
 // }
 
-class Macros : C
+class Macros : stdc.C
 {
-
     public static void main()
     {
         FILE fp;

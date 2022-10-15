@@ -17,13 +17,8 @@
 //}
 namespace examples;
 
-//#include <stdio.h>
-//#include <stdlib.h>
-using stdc;
-
-public class Qsort : C
+public class Qsort : stdc.C
 {
-
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
     public static int compare(int a, int b)

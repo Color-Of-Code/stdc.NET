@@ -18,11 +18,7 @@
 
 namespace examples;
 
-//#include <stdio.h>
-//#include <assert.h>
-using stdc;
-
-public class Assert : C
+public class Assert : stdc.C
 {
 
     public static void print_number(object myInt)

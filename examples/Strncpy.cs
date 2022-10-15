@@ -12,12 +12,9 @@
 
 namespace examples;
 
-//#include <stdio.h>
-//#include <string.h>
-using stdc;
 using System.Text;
 
-public class Strncpy : C
+public class Strncpy : stdc.C
 {
     public static void main()
     {
