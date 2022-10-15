@@ -11,6 +11,9 @@ public partial class Program : C
 
     private void RunMain(string[] args)
     {
+        printf("------- Macros\n");
+        RunVMain (args, Macros.main);
+
         printf("------- Sscanf\n");
         RunVMain (args, Sscanf.main);
 
