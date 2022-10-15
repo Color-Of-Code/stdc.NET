@@ -2,7 +2,7 @@
 
 using System;
 
-public static partial class C
+public partial class C
 {
 
     public delegate int imain1(int argc, string[] argv);
@@ -12,8 +12,8 @@ public static partial class C
 
     public static int RunIMain(string[] args, imain1 main)
     {
-        int argc = C.ToArgc(args);
-        string[] argv = C.ToArgv(args);
+        int argc = ToArgc(args);
+        string[] argv = ToArgv(args);
         int ret = 0;
         try
         {
@@ -49,8 +49,8 @@ public static partial class C
         int ret = 0;
         try
         {
-            int argc = C.ToArgc(args);
-            string[] argv = C.ToArgv(args);
+            int argc = ToArgc(args);
+            string[] argv = ToArgv(args);
             main(argc, argv);
             return ret;
         }

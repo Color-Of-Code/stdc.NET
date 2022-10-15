@@ -5,23 +5,23 @@ using System.Threading;
 
 using stdc;
 
-public class Signal
+public class Signal : C
 {
 
     public static void sigterm_handler(int p)
     {
-        C.puts("Received SIGTERM");
+        puts("Received SIGTERM");
     }
 
     public static void sigfpe_handler(int p)
     {
-        C.puts("Received SIGFPE");
+        puts("Received SIGFPE");
     }
 
     public static void main_term()
     {
-        C.signal(C.SIGTERM, sigterm_handler);
-        C.puts("Push Ctrl+C to break the process");
+        signal(SIGTERM, sigterm_handler);
+        puts("Push Ctrl+C to break the process");
         while (true)
         {
             Thread.Sleep(100);
@@ -30,7 +30,7 @@ public class Signal
 
     public static void main_fpe()
     {
-        C.signal(C.SIGFPE, sigfpe_handler);
+        signal(SIGFPE, sigfpe_handler);
         int j;
         for (int i = 0; i < 10; i++)
             j = i / i;

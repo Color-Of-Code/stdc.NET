@@ -1,6 +1,6 @@
 ﻿namespace stdc;
 
-public static partial class C
+public partial class C
 {
 
     public static readonly int LC_ALL = 0;

@@ -46,18 +46,23 @@ If you...
 namespace examples;    // a namespace to contain the code
 using stdc;            // instead of #include ...
 
-public class HelloWorld { // in C# methods must be in a class
+public class HelloWorld : C { // in C# methods must be in a class
     public static void main () {
-        C.printf("Hello World!\n");
+        printf("Hello World!\n");
     }
 }
 ```
 
 The main difference is that the code must be embedded in a class and a namespace.
 The functions turn consequently into public static methods (equivalent in .NET to C functions).
+
 In further examples we will omit this necessary code parts to keep the focus on the real code changes.
-Includes are replaced by a using statement and the C functions are part of a static class with called C.
-Therefore `C.printf` is used instead of a bare `printf` statement without `C.` as prefix.
+Includes are replaced by deriving the class from a base `C` class which automatically makes the functions from `C` available.
+
+Care was taken to put all the C functions into separate files using the `partial` implementation feature of C#. That way
+in a real port, you can delete the portions of the C library that are not needed to save space or not pollute the namespace.
+
+Therefore within a class derived from `C`, `printf` can be used as it would be the case in plain C.
 This first example is simplistic but it is there just to get a feeling for the basic principles in porting C to .NET.
 
 ### Printing powers of 2 - printf()
@@ -81,7 +86,9 @@ This first example is simplistic but it is there just to get a feeling for the b
 ```
 
 ```csharp
-    using stdc; // ... code to embed in class/namespace omitted
+using stdc;
+
+public class PowerExample : C {
 
     private const int N = 16;
 
@@ -89,13 +96,14 @@ This first example is simplistic but it is there just to get a feeling for the b
         int n;          // The current exponent
         int val = 1;    // The current power of 2
 
-        C.printf ("\t  n  \t    2^n\n");
-        C.printf ("\t================\n");
+        printf ("\t  n  \t    2^n\n");
+        printf ("\t================\n");
         for (n=0; n<=N; n++) {
-            C.printf ("\t%3d \t %6d\n", n, val);
+            printf ("\t%3d \t %6d\n", n, val);
             val = 2 * val;
         }
     }
+}
 ```
 
 Note that absolutely no change was needed to be made to the formatting strings.
@@ -118,18 +126,21 @@ Note that absolutely no change was needed to be made to the formatting strings.
 ```
 
 ```csharp
-    using stdc; // ... code to embed in class/namespace omitted
+using stdc;
+
+public class FileExample : C {
 
     public static void main () {
         FILE pFile;
         char c;
 
-        pFile = C.fopen ("alphabet.txt", "wt");
+        pFile = fopen ("alphabet.txt", "wt");
         for (c = 'A'; c <= 'Z'; c++) {
-            C.putc (c, pFile);
+            putc (c, pFile);
         }
-        C.fclose (pFile);
+        fclose (pFile);
     }
+}
 ```
 
 The `fopen`, `fclose` can be used exactly like in C, only the pointer symbol (*) disappears.
@@ -161,29 +172,32 @@ The `fopen`, `fclose` can be used exactly like in C, only the pointer symbol (*)
 ```
 
 ```csharp
-    using stdc; // ... code to embed in class/namespace omitted
+using stdc;
+
+public class GuessExample : C {
 
     public static void main () {
         int iSecret;
         object guess;
         int iGuess;
 
-        C.srand (C.time (C.NULL));
-        iSecret = C.rand () % 10 + 1;
+        srand (time (NULL));
+        iSecret = rand () % 10 + 1;
 
         do {
-            C.printf ("Guess the number (1 to 10): ");
-            C.scanf ("%d", out guess);
+            printf ("Guess the number (1 to 10): ");
+            scanf ("%d", out guess);
             // can we get rid of this ugly casting here...
             iGuess = (int)guess;
             if (iSecret < iGuess)
-                C.puts ("The secret number is lower");
+                puts ("The secret number is lower");
             else if (iSecret > iGuess)
-                C.puts ("The secret number is higher");
+                puts ("The secret number is higher");
         } while (iSecret != iGuess);
 
-        C.puts ("Congratulations!");
+        puts ("Congratulations!");
     }
+}
 ```
 
 The only ugly step needed here is the need for a cast, as `scanf` implementation is only able to handle object's as out parameters.
@@ -210,7 +224,9 @@ The API does not provide a solution for this dilemma right now.
 ```
 
 ```csharp
-    using stdc; // ... code to embed in class/namespace omitted
+using stdc;
+
+public class SortExample : C {
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
@@ -220,10 +236,11 @@ The API does not provide a solution for this dilemma right now.
 
     public static void main () {
         int n;
-        C.qsort (values, 6, sizeof (int), compare);
+        qsort (values, 6, sizeof (int), compare);
         for (n = 0; n < 6; n++)
-            C.printf ("%d ", values[n]);
+            printf ("%d ", values[n]);
     }
+}
 ```
 
 Second step, refactoring, getting rid of the C-like syntax and use .NET strengths.
@@ -231,7 +248,9 @@ Second step, refactoring, getting rid of the C-like syntax and use .NET strength
 We transformed the `for` loop into a `foreach` loop, making the use of the magic number '6' superfluous.
 
 ```csharp
-    using stdc; // ... code to embed in class/namespace omitted
+using stdc;
+
+public class SortExample : C {
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
@@ -240,16 +259,20 @@ We transformed the `for` loop into a `foreach` loop, making the use of the magic
     }
 
     public static void main () {
-        C.qsort (values, compare);
+        qsort (values, compare);
         foreach (int v in values)
-            C.printf ("%d ", v);
+            printf ("%d ", v);
     }
+}
 ```
 
-Third step: get rid of all C functions and replace them with their .NET equivalents
+Third step: get rid of all C functions and replace them with their .NET equivalents. After that there
+is no need anymore to use the base class `C` and the code is fully ported.
 
 ```csharp
-    using stdc; // ... code to embed in class/namespace omitted
+using System;
+
+public class SortExample {
 
     public static int[] values = new int[] { 40, 10, 100, 90, 20, 25 };
 
@@ -262,6 +285,7 @@ Third step: get rid of all C functions and replace them with their .NET equivale
         foreach (int v in values)
             Console.Write ("{0} ", v);
     }
+}
 ```
 
 Did you notice? From the first step on, the C# compare method didn't need any casts unlike the C version.
@@ -280,12 +304,12 @@ This should be used like this:
 namespace examples;
 using stdc;
 
-class Program {
+class Program : C {
     static void Main (string[] args)
     {
         // use one of these
-        C.RunVMain (args, CProgram.main); // if the main is returning nothing (void)
-        C.RunIMain (args, CProgram.main); // if the main is returning an int
+        RunVMain (args, CProgram.main); // if the main is returning nothing (void)
+        RunIMain (args, CProgram.main); // if the main is returning an int
     }
 }
 ```
@@ -329,24 +353,24 @@ The `RunMain()` function also provides an environment where the `signal()` and `
 namespace examples;
 using stdc;
 
-public class Program {
+public class Program: C {
 
     public static void atexit_handler1() {
-        C.puts("handler 1");
+        puts("handler 1");
     }
     public static void atexit_handler2() {
-        C.puts("handler 2");
+        puts("handler 2");
     }
 
     public static void main () {
-        C.atexit(atexit_handler1);
-        C.atexit(atexit_handler2);
-        C.puts("atexit handlers should be " +
+        atexit(atexit_handler1);
+        atexit(atexit_handler2);
+        puts("atexit handlers should be " +
             "called in reverse order 2 and then 1!");
     }
 
     static void Main (string[] args) {
-        C.RunVMain (args, main); // trampoline
+        RunVMain (args, main); // trampoline
     }
 }
 ```

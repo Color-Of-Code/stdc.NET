@@ -2,7 +2,7 @@
 
 using System;
 
-public static partial class C
+public partial class C
 {
     [Obsolete("non standard conio.h support")]
     public static void clrscr()

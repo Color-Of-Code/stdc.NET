@@ -10,7 +10,7 @@ namespace examples;
 //#include <stdio.h>
 using stdc;
 
-public class HelloWorld
+public class HelloWorld : C
 {
 
     //void main(void) {
@@ -19,7 +19,7 @@ public class HelloWorld
     //}
     public static void main()
     {
-        C.printf("Hello World!\n");
+        printf("Hello World!\n");
     }
 
 }

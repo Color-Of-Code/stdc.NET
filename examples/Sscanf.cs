@@ -19,7 +19,7 @@ namespace examples;
 
 using stdc;
 
-class Sscanf
+class Sscanf : C
 {
 
     public static void main()
@@ -27,13 +27,13 @@ class Sscanf
         object str; // we loose the type here due to limitations on 'out'
         object i;   // and 'params' doesn't seem of any help either...
 
-        C.printf("Enter your family name: ");
-        C.scanf("%s", out str);
-        C.printf("Enter your age: ");
-        C.scanf("%d", out i);
-        C.printf("Mr. %s, %d years old.\n", str, i);
-        C.printf("Enter a hexadecimal number: ");
-        C.scanf("%x", out i);
-        C.printf("You have entered %#x (%d).\n", i, i);
+        printf("Enter your family name: ");
+        scanf("%s", out str);
+        printf("Enter your age: ");
+        scanf("%d", out i);
+        printf("Mr. %s, %d years old.\n", str, i);
+        printf("Enter a hexadecimal number: ");
+        scanf("%x", out i);
+        printf("You have entered %#x (%d).\n", i, i);
     }
 }
