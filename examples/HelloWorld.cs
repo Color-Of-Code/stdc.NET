@@ -7,16 +7,8 @@
 
 namespace examples;
 
-//#include <stdio.h>
-using stdc;
-
-public class HelloWorld : C
+public class HelloWorld : stdc.C
 {
-
-    //void main(void) {
-    //  printf("Hello World!\n");
-    //  return 0;
-    //}
     public static void main()
     {
         printf("Hello World!\n");

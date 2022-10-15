@@ -1,13 +1,9 @@
 ﻿namespace examples;
 
-using System;
 using System.Threading;
 
-using stdc;
-
-public class Signal : C
+public class Signal : stdc.C
 {
-
     public static void sigterm_handler(int p)
     {
         puts("Received SIGTERM");

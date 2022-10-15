@@ -29,11 +29,7 @@
 
 namespace examples;
 
-//#include <stdio.h>
-//#include <stdlib.h>
-using stdc;
-
-public class FileCopy : C
+public class FileCopy : stdc.C
 {
 
     //int main(int argc, char * argv[])

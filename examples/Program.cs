@@ -1,8 +1,6 @@
 ﻿namespace examples;
 
-using stdc;
-
-public partial class Program : C
+public partial class Program : stdc.C
 {
     static void Main (string[] args)
     {

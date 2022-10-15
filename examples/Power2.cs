@@ -40,12 +40,8 @@
 
 namespace examples;
 
-//#include <stdio.h>
-using stdc;
-
-public class Power2 : C
+public class Power2 : stdc.C
 {
-
     private const int N = 16;
 
     public static int main()

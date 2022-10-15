@@ -13,14 +13,10 @@
 
 namespace examples;
 
-//#include <stdio.h>
-//#include <string.h>
-using stdc;
 using System.Text;
 
-public class Strcat : C
+public class Strcat : stdc.C
 {
-
     public static void main()
     {
         char[] str = new char[80];

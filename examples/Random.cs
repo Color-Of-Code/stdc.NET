@@ -35,14 +35,8 @@
 
 namespace examples;
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <time.h>
-using stdc;
-
-public class Random : C
+public class Random : stdc.C
 {
-
     public static void main_rand()
     {
         int iSecret;

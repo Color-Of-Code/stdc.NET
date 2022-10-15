@@ -17,9 +17,7 @@
 
 namespace examples;
 
-using stdc;
-
-public class Atexit : C
+public class Atexit : stdc.C
 {
 
     public static void atexit_handler1()
