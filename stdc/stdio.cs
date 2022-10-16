@@ -39,7 +39,7 @@ public partial class C
         internal TextReader _reader;
         internal TextWriter _writer;
         internal int _error;
-        internal Boolean _eof;
+        internal bool _eof;
         internal String Name
         {
             get { return _stream.Name; }
@@ -443,7 +443,20 @@ public partial class C
     }
 
     //int  ungetc(int , FILE *);
-    //char *fgets(char *, int , FILE *);
+
+    // Reads at most count - 1 characters from the given file stream and stores
+    // them in the character array pointed to by str. Parsing stops if a newline
+    // character is found, in which case str will contain that newline character,
+    // or if end-of-file occurs. If bytes are read and no errors occur, writes a
+    // null character at the position immediately after the last character written
+    // to str.
+    public static char[] fgets(char[] str, int count, FILE stream)
+    {
+        string result = stream._reader.ReadLine();
+        //TODO: does not respect count!
+        strcpy(str, result);
+        return str;
+    }
 
     /// <summary>
     /// 		char * gets ( char * str );
@@ -891,8 +904,9 @@ public partial class C
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static Boolean feof(FILE file)
+    public static bool feof(FILE file)
     {
+        file._eof = file._reader.Peek() < 0;
         return file._eof;
     }
 

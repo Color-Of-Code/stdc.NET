@@ -24,17 +24,27 @@ public struct time_t
 public struct clock_t
 {
     public long _clock_t;
+
+    public static clock_t operator +(clock_t left, long add) => new clock_t() { _clock_t = left._clock_t + add };
+    public static bool operator >=(clock_t left, clock_t right) => left._clock_t >= right._clock_t;
+    public static bool operator <=(clock_t left, clock_t right) => left._clock_t <= right._clock_t;
 }
 
 public partial class C
 {
-
-
-    //#define CLOCKS_PER_SEC 1000
+    // Expands to an expression (not necessarily a compile-time constant) of type clock_t equal to the number of clock ticks per second, as returned by clock().
+    public const long CLOCKS_PER_SEC = TimeSpan.TicksPerMillisecond;
 
     //char *asctime(const struct tm *);
     //char *ctime(const time_t *);
-    //clock_t  clock(void);
+
+    // Returns the approximate processor time used by the process since the beginning of an implementation-defined era related to the program's execution.
+    // To convert result value to seconds, divide it by CLOCKS_PER_SEC.
+    public static clock_t clock()
+    {
+        return new clock_t() { _clock_t = DateTime.UtcNow.Ticks };
+    }
+
     //double  difftime(time_t, time_t);
     //struct tm *gmtime(const time_t *);
     //struct tm *localtime(const time_t *);
