@@ -15,12 +15,8 @@
 
 namespace examples;
 
-//#include <stdio.h>
-using stdc;
-
-public class Alphabet : C
+public class Alphabet : stdc.C
 {
-
     public static void main()
     {
         FILE pFile;

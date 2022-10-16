@@ -39,7 +39,7 @@ public partial class C
         internal TextReader _reader;
         internal TextWriter _writer;
         internal int _error;
-        internal Boolean _eof;
+        internal bool _eof;
         internal String Name
         {
             get { return _stream.Name; }
@@ -452,8 +452,10 @@ public partial class C
     // to str.
     public static char[] fgets(char[] str, int count, FILE stream)
     {
-        // TODO: implement
-        return new char[1];
+        string result = stream._reader.ReadLine();
+        //TODO: does not respect count!
+        strcpy(str, result);
+        return str;
     }
 
     /// <summary>
@@ -902,8 +904,9 @@ public partial class C
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static Boolean feof(FILE file)
+    public static bool feof(FILE file)
     {
+        file._eof = file._reader.Peek() < 0;
         return file._eof;
     }
 
