@@ -77,9 +77,12 @@ public partial class C
     }
     public static char[] strcpy(char[] destination, string source)
     {
-        char[] src = source.ToCharArray();
-        Array.Copy(src, destination, src.Length);
-        destination[src.Length] = '\0';
+        return strcpy(destination, source.ToCharArray());
+    }
+    public static char[] strcpy(char[] destination, char[] source)
+    {
+        Array.Copy(source, destination, source.Length);
+        destination[source.Length] = '\0';
         return destination;
     }
 

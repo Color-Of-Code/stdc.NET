@@ -639,7 +639,6 @@
 
 // void loadEnviroment(int consoleWidth, int consoleHeight)//This can be done in a better way... FIX ME!!!! Also i think it doesn't work properly in ubuntu <- Fixed
 // {
-// 	int i;
 // 	int x = 1, y = 1;
 // 	int rectangleHeight = consoleHeight - 4;
 // 	clrscr(); //clear the console
@@ -664,29 +663,6 @@
 // 		gotoxy(x, rectangleHeight); //Right Wall
 // 		printf("%c",WALL);
 // 	}
-
-// /*
-// 	for (i = 0; i < 80; i++)
-// 	{
-// 		printf("%c",WALL);
-// 	}
-
-// 	for (i = 0; i < 17; i++)
-// 	{
-// 		printf("%c\n",WALL);
-// 	}
-
-// 	for (i = 0; i < 21; i++)
-// 	{
-// 		printf("%c\n",WALL);
-// 		gotoxy(80,i);
-// 	}
-
-// 	for (i = 0; i < 81; i++)
-// 	{
-// 		printf("%c",WALL);
-// 	}
-// */
 // }
 
 // void loadSnake(int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength)
@@ -1062,19 +1038,19 @@ public class Snake : C
 
     //Cycles around checking if the x y coordinates ='s the snake coordinates as one of this parts
     //One thing to note, a snake of length 4 cannot collide with itself, therefore there is no need to call this function when the snakes length is <= 4
-    int collisionSnake(int x, int y, int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength, int detect)
+    bool collisionSnake(int x, int y, int [][] snakeXY, int snakeLength, int detect)
     {
         int i;
         for (i = detect; i < snakeLength; i++) //Checks if the snake collided with itself
         {
             if (x == snakeXY[0][i] && y == snakeXY[1][i])
-                return (1);
+                return true;
         }
-        return (0);
+        return false;
     }
 
     //Generates food & Makes sure the food doesn't appear on top of the snake <- This sometimes causes a lag issue!!! Not too much of a problem tho
-    int generateFood(int foodXY[], int width, int height, int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength)
+    int generateFood(int [] foodXY, int width, int height, int [][] snakeXY, int snakeLength)
     {
         int i;
 
@@ -1108,7 +1084,7 @@ public class Snake : C
 
      snakeXY[0][0]--; <- if direction left, take 1 away from the x coordinate
     */
-    void moveSnakeArray(int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength, int direction)
+    void moveSnakeArray(int [][] snakeXY, int snakeLength, int direction)
     {
         int i;
         for (i = snakeLength - 1; i >= 1; i--)
@@ -1138,7 +1114,7 @@ public class Snake : C
         }
     }
 
-    void move(int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength, int direction)
+    void move(int [][] snakeXY, int snakeLength, int direction)
     {
         int x;
         int y;
@@ -1163,21 +1139,21 @@ public class Snake : C
     }
 
     //This function checks if the snakes head his on top of the food, if it is then it'll generate some more food...
-    int eatFood(int snakeXY[][SNAKE_ARRAY_SIZE], int foodXY[])
+    bool eatFood(int [][] snakeXY, int [] foodXY)
     {
         if (snakeXY[0][0] == foodXY[0] && snakeXY[1][0] == foodXY[1])
         {
             foodXY[0] = 0;
             foodXY[1] = 0; //This should prevent a nasty bug (loops) need to check if the bug still exists...
 
-            printf("\7"); //Beep
-            return (1);
+            // TODO: printf("\7"); //Beep
+            return true;
         }
 
-        return (0);
+        return false;
     }
 
-    int collisionDetection(int snakeXY[][SNAKE_ARRAY_SIZE], int consoleWidth, int consoleHeight, int snakeLength) //Need to Clean this up a bit
+    int collisionDetection(int [][] snakeXY, int consoleWidth, int consoleHeight, int snakeLength) //Need to Clean this up a bit
     {
         int colision = 0;
         if ((snakeXY[0][0] == 1) || (snakeXY[1][0] == 1) || (snakeXY[0][0] == consoleWidth) || (snakeXY[1][0] == consoleHeight - 4)) //Checks if the snake collided wit the wall or it's self
@@ -1233,7 +1209,7 @@ public class Snake : C
     int getLowestScore()
     {
         FILE fp;
-        char str[128];
+        char [] str = new char[128];
         int lowestScore = 0;
         int i;
         int intLength;
@@ -1265,7 +1241,7 @@ public class Snake : C
         //Gets converts the string to int
         for (i = 0; i < intLength; i++)
         {
-            lowestScore = lowestScore + ((int)str[2 + i] - 48) * pow(10, intLength - i - 1);
+            lowestScore = lowestScore + ((int)str[2 + i] - 48) * (int)pow(10, intLength - i - 1);
         }
 
         return (lowestScore);
@@ -1275,16 +1251,21 @@ public class Snake : C
     {
         FILE fp;
         FILE file;
-        char str[20];
+        char [] str = new char[20];
         int fScore;
         int i, s, y;
         int intLength;
-        int scores[5];
+        int [] scores = new int[5];
         int x;
-        char highScoreName[20];
-        char highScoreNames[5][20];
+        char [] highScoreName = new char[20];
+        char [][] highScoreNames = new char[5][];
+        highScoreNames[0] = new char[20];
+        highScoreNames[1] = new char[20];
+        highScoreNames[2] = new char[20];
+        highScoreNames[3] = new char[20];
+        highScoreNames[4] = new char[20];
 
-        char name[20];
+        char [] name = new char[20];
 
         int entered = 0;
 
@@ -1333,7 +1314,7 @@ public class Snake : C
             for (i = 0; i < intLength; i++)
             {
                 //printf("%c", str[2+i]);
-                fScore = fScore + ((int)str[2 + i] - 48) * pow(10, intLength - i - 1);
+                fScore = fScore + ((int)str[2 + i] - 48) * (int)pow(10, intLength - i - 1);
             }
 
             if (score >= fScore && entered != 1)
@@ -1356,7 +1337,8 @@ public class Snake : C
             //highScoreName = "";
             for (y = 0; y < 20; y++)
             {
-                highScoreName[y] = NULL;
+                // highScoreName[y] = NULL;
+                highScoreName[y] = '\0';
             }
 
             x++;
@@ -1380,7 +1362,7 @@ public class Snake : C
     void displayHighScores()
     {
         FILE fp;
-        char str[128];
+        char [] str = new char[128];
         int y = 5;
 
         clrscr(); //clear the console
@@ -1400,7 +1382,7 @@ public class Snake : C
         while (!feof(fp))
         {
             gotoxy(10, y++);
-            if (fgets(str, 126, fp))
+            if (fgets(str, 126, fp).Length > 0) // TODO: right?
                 printf("%s", str);
         }
 
@@ -1482,15 +1464,15 @@ public class Snake : C
     }
 
     //Messy, need to clean this function up
-    void startGame(int snakeXY[][SNAKE_ARRAY_SIZE], int foodXY[], int consoleWidth, int consoleHeight, int snakeLength, int direction, int score, int speed)
+    void startGame(int [][] snakeXY, int [] foodXY, int consoleWidth, int consoleHeight, int snakeLength, int direction, int score, int speed)
     {
         int gameOver = 0;
         clock_t endWait;
 
         //CLOCKS_PER_SEC-(n-1)*(CLOCKS_PER_SEC/10)
-        int waitMili = CLOCKS_PER_SEC - (speed) * (CLOCKS_PER_SEC / 10);    //Sets the correct wait time according to the selected speed
+        long waitMili = CLOCKS_PER_SEC - (speed) * (CLOCKS_PER_SEC / 10);    //Sets the correct wait time according to the selected speed
         int tempScore = 10 * speed;
-        int oldDirection;
+        int oldDirection = -1;
         int canChangeDirection = 1;
         //int seconds = 1;
 
@@ -1498,7 +1480,7 @@ public class Snake : C
 
         do
         {
-            if (canChangeDirection)
+            if (canChangeDirection != 0)
             {
                 oldDirection = direction;
                 direction = checkKeysPressed(direction);
@@ -1559,13 +1541,14 @@ public class Snake : C
                 score += 1500; //When you win you get an extra 1500 points!!!
             }
 
-        } while (!gameOver);
+        } while (gameOver != 0);
 
         switch (gameOver)
         {
             case 1:
-                printf("\7"); //Beep
-                printf("\7"); //Beep
+                // TODO:
+                // printf("\7"); //Beep
+                // printf("\7"); //Beep
 
                 gameOverScreen();
 
@@ -1584,7 +1567,6 @@ public class Snake : C
 
     void loadEnviroment(int consoleWidth, int consoleHeight)//This can be done in a better way... FIX ME!!!! Also i think it doesn't work properly in ubuntu <- Fixed
     {
-        int i;
         int x = 1, y = 1;
         int rectangleHeight = consoleHeight - 4;
         clrscr(); //clear the console
@@ -1609,32 +1591,9 @@ public class Snake : C
             gotoxy(x, rectangleHeight); //Right Wall
             printf("%c", WALL);
         }
-
-        /*
-            for (i = 0; i < 80; i++)
-            {
-                printf("%c",WALL);
-            }
-
-            for (i = 0; i < 17; i++)
-            {
-                printf("%c\n",WALL);
-            }
-
-            for (i = 0; i < 21; i++)
-            {
-                printf("%c\n",WALL);
-                gotoxy(80,i);
-            }
-
-            for (i = 0; i < 81; i++)
-            {
-                printf("%c",WALL);
-            }
-        */
     }
 
-    void loadSnake(int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength)
+    void loadSnake(int [][] snakeXY, int snakeLength)
     {
         int i;
         /*
@@ -1654,7 +1613,7 @@ public class Snake : C
 
     /* NOTE, This function will only work if the snakes starting direction is left!!!!
     Well it will work, but the results wont be the ones expected.. I need to fix this at some point.. */
-    void prepairSnakeArray(int snakeXY[][SNAKE_ARRAY_SIZE], int snakeLength)
+    void prepairSnakeArray(int [][] snakeXY, int snakeLength)
     {
         int i, x;
         int snakeX = snakeXY[0][0];
@@ -1689,13 +1648,17 @@ public class Snake : C
     //This function loads the enviroment, snake, etc
     void loadGame()
     {
-        int snakeXY[2][SNAKE_ARRAY_SIZE] ; //Two Dimentional Array, the first array is for the X coordinates and the second array for the Y coordinates
+        // https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/jagged-arrays
+        // https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/multidimensional-arrays
+        int [][] snakeXY = new int[2][];
+        snakeXY[0] = new int [SNAKE_ARRAY_SIZE];
+        snakeXY[1] = new int [SNAKE_ARRAY_SIZE]; // Jagged array: Two Dimentional Array, the first array is for the X coordinates and the second array for the Y coordinates
 
         int snakeLength = 4; //Starting Length
 
         int direction = LEFT_ARROW; //DO NOT CHANGE THIS TO RIGHT ARROW, THE GAME WILL INSTANTLY BE OVER IF YOU DO!!! <- Unless the prepairSnakeArray function is changed to take into account the direction....
 
-        int foodXY[] = { 5, 5 };// Stores the location of the food
+        int [] foodXY = { 5, 5 };// Stores the location of the food
 
         int score = 0;
         //int level = 1;
