@@ -12,26 +12,26 @@ public class stdio_file : C
     public void FOpenWithUnexistingFile()
     {
         FILE f = fopen("dum.my", "rb");
-        Assert.IsTrue(f == NULL);
-        Assert.IsTrue(errno == ENOENT);
+        Assert.That(f == NULL);
+        Assert.That(errno == ENOENT);
     }
 
     [Test(Description = "opening file with illegal mode")]
     public void FOpenWithIllegalParameter()
     {
         FILE f = fopen("dum.my", "il");
-        Assert.IsTrue(f == NULL);
-        Assert.IsTrue(errno == EINVAL);
+        Assert.That(f == NULL);
+        Assert.That(errno == EINVAL);
     }
 
     [Test(Description = "temporary file creation and cleanup")]
     public void TemporaryFile()
     {
         FILE f = tmpfile();
-        Assert.IsTrue(f != NULL);
+        Assert.That(f != NULL);
         String filename = f.Name;
-        Assert.IsTrue(File.Exists(filename));
+        Assert.That(File.Exists(filename));
         fclose(f);
-        Assert.IsFalse(File.Exists(filename));
+        Assert.That(File.Exists(filename), Is.False);
     }
 }

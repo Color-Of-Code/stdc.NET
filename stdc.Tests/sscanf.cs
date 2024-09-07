@@ -26,8 +26,8 @@ public class scanf
         Console.WriteLine("--------------------------------------------------------------------------------");
 
         int result42 = 42;
-        Assert.IsTrue(RunTest("[%d]", "[42]", result42));
-        Assert.IsTrue(RunTest("[%i]", "[42]", result42));
+        Assert.That(RunTest("[%d]", "[42]", result42));
+        Assert.That(RunTest("[%i]", "[42]", result42));
         //Assert.IsTrue (RunTest ("[%ld]", "[42]", result42));
         Console.WriteLine("\n\n");
     }
@@ -41,8 +41,8 @@ public class scanf
         Console.WriteLine("--------------------------------------------------------------------------------");
 
         int result42 = -42;
-        Assert.IsTrue(RunTest("[%d]", "[-42]", result42));
-        Assert.IsTrue(RunTest("[%i]", "[-42]", result42));
+        Assert.That(RunTest("[%d]", "[-42]", result42));
+        Assert.That(RunTest("[%i]", "[-42]", result42));
         //Assert.IsTrue (RunTest ("[%ld]", "[-42]", result42));
 
         Console.WriteLine("\n\n");
@@ -146,7 +146,7 @@ public class scanf
         Console.WriteLine("--------------------------------------------------------------------------------");
 
         char resultA = 'A';
-        Assert.IsTrue(RunTest("[%c]", "[A]", resultA));
+        Assert.That(RunTest("[%c]", "[A]", resultA));
 
         Console.WriteLine("\n\n");
     }
@@ -162,15 +162,15 @@ public class scanf
 
         //string result1 = "This is a test";
         string result1 = "This";
-        Assert.IsTrue(RunTest("[%s]", "[This is a test]", result1));
+        Assert.That(RunTest("[%s]", "[This is a test]", result1));
 
         //string result2 = "A test with %";
         string result2 = "A";
-        Assert.IsTrue(RunTest("[%s]", "[A test with %]", result2));
+        Assert.That(RunTest("[%s]", "[A test with %]", result2));
 
         //string result3 = "A test with %s inside";
         string result3 = "A";
-        Assert.IsTrue(RunTest("[%s]", "[A test with %s inside]", result3));
+        Assert.That(RunTest("[%s]", "[A test with %s inside]", result3));
 
         //Assert.IsTrue (RunTest ("[%% %s %%]", "[% % Another test % %]", "% Another test %"));
 

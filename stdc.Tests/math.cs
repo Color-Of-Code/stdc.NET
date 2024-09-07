@@ -10,23 +10,23 @@ public class math : C
     public void DomainErrors()
     {
         Double ret = sqrt(-1.0);
-        Assert.AreEqual(EDOM, errno);
+        Assert.That(errno, Is.EqualTo(EDOM));
 
         ret = log(0);
-        Assert.AreEqual(ERANGE, errno);
+        Assert.That(errno, Is.EqualTo(ERANGE));
 
         ret = log10(0);
-        Assert.AreEqual(ERANGE, errno);
+        Assert.That(errno, Is.EqualTo(ERANGE));
     }
 
     [Test(Description = "Range errors")]
     public void RangeErrors()
     {
         Double ret = log(0);
-        Assert.AreEqual(ERANGE, errno);
+        Assert.That(errno, Is.EqualTo(ERANGE));
 
         ret = log10(0);
-        Assert.AreEqual(ERANGE, errno);
+        Assert.That(errno, Is.EqualTo(ERANGE));
     }
 
 }

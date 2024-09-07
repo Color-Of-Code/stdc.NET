@@ -26,9 +26,9 @@ public class sprintf
         Console.WriteLine("Test special formats %% / %n");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%%]", "[%]"));
-        Assert.IsTrue(RunTest("[%n]", "[1]"));
-        Assert.IsTrue(RunTest("[%%n shows the number of processed chars so far (%010n)]",
+        Assert.That(RunTest("[%%]", "[%]"));
+        Assert.That(RunTest("[%n]", "[1]"));
+        Assert.That(RunTest("[%%n shows the number of processed chars so far (%010n)]",
             "[%n shows the number of processed chars so far (0000000048)]"));
 
         Console.WriteLine("\n\n");
@@ -42,20 +42,20 @@ public class sprintf
         Console.WriteLine("Test positive signed integer format %d / %i");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%d]", "[42]", 42));
-        Assert.IsTrue(RunTest("[%10d]", "[        42]", 42));
-        Assert.IsTrue(RunTest("[%-10d]", "[42        ]", 42));
-        Assert.IsTrue(RunTest("[%010d]", "[0000000042]", 42));
-        Assert.IsTrue(RunTest("[%-010d]", "[42        ]", 42));
-        Assert.IsTrue(RunTest("[%+d]", "[+42]", 42));
-        Assert.IsTrue(RunTest("[%+10d]", "[       +42]", 42));
-        Assert.IsTrue(RunTest("[%-+10d]", "[+42       ]", 42));
-        Assert.IsTrue(RunTest("[%+010d]", "[+000000042]", 42));
-        Assert.IsTrue(RunTest("[%-+010d]", "[+42       ]", 42));
+        Assert.That(RunTest("[%d]", "[42]", 42));
+        Assert.That(RunTest("[%10d]", "[        42]", 42));
+        Assert.That(RunTest("[%-10d]", "[42        ]", 42));
+        Assert.That(RunTest("[%010d]", "[0000000042]", 42));
+        Assert.That(RunTest("[%-010d]", "[42        ]", 42));
+        Assert.That(RunTest("[%+d]", "[+42]", 42));
+        Assert.That(RunTest("[%+10d]", "[       +42]", 42));
+        Assert.That(RunTest("[%-+10d]", "[+42       ]", 42));
+        Assert.That(RunTest("[%+010d]", "[+000000042]", 42));
+        Assert.That(RunTest("[%-+010d]", "[+42       ]", 42));
 
-        Assert.IsTrue(RunTest("[%d]", "[65537]", 65537));
-        Assert.IsTrue(RunTest("[%'d]", String.Format("[65{0}537]", sep1000), 65537));
-        Assert.IsTrue(RunTest("[%'d]", String.Format("[10{0}065{0}537]", sep1000), 10065537));
+        Assert.That(RunTest("[%d]", "[65537]", 65537));
+        Assert.That(RunTest("[%'d]", String.Format("[65{0}537]", sep1000), 65537));
+        Assert.That(RunTest("[%'d]", String.Format("[10{0}065{0}537]", sep1000), 10065537));
 
         Console.WriteLine("\n\n");
     }
@@ -68,20 +68,20 @@ public class sprintf
         Console.WriteLine("Test negative signed integer format %d / %i");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%d]", "[-42]", -42));
-        Assert.IsTrue(RunTest("[%10d]", "[       -42]", -42));
-        Assert.IsTrue(RunTest("[%-10d]", "[-42       ]", -42));
-        Assert.IsTrue(RunTest("[%010d]", "[-000000042]", -42));
-        Assert.IsTrue(RunTest("[%-010d]", "[-42       ]", -42));
-        Assert.IsTrue(RunTest("[%+d]", "[-42]", -42));
-        Assert.IsTrue(RunTest("[%+10d]", "[       -42]", -42));
-        Assert.IsTrue(RunTest("[%-+10d]", "[-42       ]", -42));
-        Assert.IsTrue(RunTest("[%+010d]", "[-000000042]", -42));
-        Assert.IsTrue(RunTest("[%-+010d]", "[-42       ]", -42));
+        Assert.That(RunTest("[%d]", "[-42]", -42));
+        Assert.That(RunTest("[%10d]", "[       -42]", -42));
+        Assert.That(RunTest("[%-10d]", "[-42       ]", -42));
+        Assert.That(RunTest("[%010d]", "[-000000042]", -42));
+        Assert.That(RunTest("[%-010d]", "[-42       ]", -42));
+        Assert.That(RunTest("[%+d]", "[-42]", -42));
+        Assert.That(RunTest("[%+10d]", "[       -42]", -42));
+        Assert.That(RunTest("[%-+10d]", "[-42       ]", -42));
+        Assert.That(RunTest("[%+010d]", "[-000000042]", -42));
+        Assert.That(RunTest("[%-+010d]", "[-42       ]", -42));
 
-        Assert.IsTrue(RunTest("[%d]", "[-65537]", -65537));
-        Assert.IsTrue(RunTest("[%'d]", String.Format("[-65{0}537]", sep1000), -65537));
-        Assert.IsTrue(RunTest("[%'d]", String.Format("[-10{0}065{0}537]", sep1000), -10065537));
+        Assert.That(RunTest("[%d]", "[-65537]", -65537));
+        Assert.That(RunTest("[%'d]", String.Format("[-65{0}537]", sep1000), -65537));
+        Assert.That(RunTest("[%'d]", String.Format("[-10{0}065{0}537]", sep1000), -10065537));
 
         Console.WriteLine("\n\n");
     }
@@ -94,21 +94,21 @@ public class sprintf
         Console.WriteLine("Test unsigned integer format %u");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%u]", "[42]", 42));
-        Assert.IsTrue(RunTest("[%10u]", "[        42]", 42));
-        Assert.IsTrue(RunTest("[%-10u]", "[42        ]", 42));
-        Assert.IsTrue(RunTest("[%010u]", "[0000000042]", 42));
-        Assert.IsTrue(RunTest("[%-010u]", "[42        ]", 42));
+        Assert.That(RunTest("[%u]", "[42]", 42));
+        Assert.That(RunTest("[%10u]", "[        42]", 42));
+        Assert.That(RunTest("[%-10u]", "[42        ]", 42));
+        Assert.That(RunTest("[%010u]", "[0000000042]", 42));
+        Assert.That(RunTest("[%-010u]", "[42        ]", 42));
 
-        Assert.IsTrue(RunTest("[%u]", "[4294967254]", -42));
-        Assert.IsTrue(RunTest("[%20u]", "[          4294967254]", -42));
-        Assert.IsTrue(RunTest("[%-20u]", "[4294967254          ]", -42));
-        Assert.IsTrue(RunTest("[%020u]", "[00000000004294967254]", -42));
-        Assert.IsTrue(RunTest("[%-020u]", "[4294967254          ]", -42));
+        Assert.That(RunTest("[%u]", "[4294967254]", -42));
+        Assert.That(RunTest("[%20u]", "[          4294967254]", -42));
+        Assert.That(RunTest("[%-20u]", "[4294967254          ]", -42));
+        Assert.That(RunTest("[%020u]", "[00000000004294967254]", -42));
+        Assert.That(RunTest("[%-020u]", "[4294967254          ]", -42));
 
-        Assert.IsTrue(RunTest("[%u]", "[65537]", 65537));
-        Assert.IsTrue(RunTest("[%'u]", String.Format("[65{0}537]", sep1000), 65537));
-        Assert.IsTrue(RunTest("[%'u]", String.Format("[10{0}065{0}537]", sep1000), 10065537));
+        Assert.That(RunTest("[%u]", "[65537]", 65537));
+        Assert.That(RunTest("[%'u]", String.Format("[65{0}537]", sep1000), 65537));
+        Assert.That(RunTest("[%'u]", String.Format("[10{0}065{0}537]", sep1000), 10065537));
 
         Console.WriteLine("\n\n");
     }
@@ -121,95 +121,95 @@ public class sprintf
         Console.WriteLine("Test float format %f");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%f]", String.Format("[42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%f]", String.Format("[42{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%10f]", String.Format("[ 42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%10f]", String.Format("[ 42{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-10f]", String.Format("[42{0}000000 ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-10f]", String.Format("[42{0}500000 ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%010f]", String.Format("[042{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%010f]", String.Format("[042{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-010f]", String.Format("[42{0}000000 ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-010f]", String.Format("[42{0}500000 ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%f]", String.Format("[42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%f]", String.Format("[42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%10f]", String.Format("[ 42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%10f]", String.Format("[ 42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-10f]", String.Format("[42{0}000000 ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-10f]", String.Format("[42{0}500000 ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%010f]", String.Format("[042{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%010f]", String.Format("[042{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-010f]", String.Format("[42{0}000000 ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-010f]", String.Format("[42{0}500000 ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%+f]", String.Format("[+42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+10f]", String.Format("[+42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+10f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-10f]", String.Format("[+42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-10f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+010f]", String.Format("[+42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+010f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-010f]", String.Format("[+42{0}000000]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-010f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+f]", String.Format("[+42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%+f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+10f]", String.Format("[+42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%+10f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-10f]", String.Format("[+42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-10f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+010f]", String.Format("[+42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%+010f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-010f]", String.Format("[+42{0}000000]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-010f]", String.Format("[+42{0}500000]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%-10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%-010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
 
-        Assert.IsTrue(RunTest("[%+f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%+f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%+10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-10f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-10f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%+010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-010f]", String.Format("[-42{0}000000]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-010f]", String.Format("[-42{0}500000]", sepDecimal), -42.5));
 
         // -----
 
-        Assert.IsTrue(RunTest("[%.2f]", String.Format("[42{0}00]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%.2f]", String.Format("[42{0}50]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%10.2f]", String.Format("[     42{0}00]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%10.2f]", String.Format("[     42{0}50]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-10.2f]", String.Format("[42{0}00     ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-10.2f]", String.Format("[42{0}50     ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%010.2f]", String.Format("[0000042{0}00]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%010.2f]", String.Format("[0000042{0}50]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-010.2f]", String.Format("[42{0}00     ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-010.2f]", String.Format("[42{0}50     ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%.2f]", String.Format("[42{0}00]", sepDecimal), 42));
+        Assert.That(RunTest("[%.2f]", String.Format("[42{0}50]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%10.2f]", String.Format("[     42{0}00]", sepDecimal), 42));
+        Assert.That(RunTest("[%10.2f]", String.Format("[     42{0}50]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-10.2f]", String.Format("[42{0}00     ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-10.2f]", String.Format("[42{0}50     ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%010.2f]", String.Format("[0000042{0}00]", sepDecimal), 42));
+        Assert.That(RunTest("[%010.2f]", String.Format("[0000042{0}50]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-010.2f]", String.Format("[42{0}00     ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-010.2f]", String.Format("[42{0}50     ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%+.2f]", String.Format("[+42{0}00]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+.2f]", String.Format("[+42{0}50]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+10.2f]", String.Format("[    +42{0}00]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+10.2f]", String.Format("[    +42{0}50]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-10.2f]", String.Format("[+42{0}00    ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-10.2f]", String.Format("[+42{0}50    ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+010.2f]", String.Format("[+000042{0}00]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+010.2f]", String.Format("[+000042{0}50]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-010.2f]", String.Format("[+42{0}00    ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-010.2f]", String.Format("[+42{0}50    ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+.2f]", String.Format("[+42{0}00]", sepDecimal), 42));
+        Assert.That(RunTest("[%+.2f]", String.Format("[+42{0}50]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+10.2f]", String.Format("[    +42{0}00]", sepDecimal), 42));
+        Assert.That(RunTest("[%+10.2f]", String.Format("[    +42{0}50]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-10.2f]", String.Format("[+42{0}00    ]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-10.2f]", String.Format("[+42{0}50    ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+010.2f]", String.Format("[+000042{0}00]", sepDecimal), 42));
+        Assert.That(RunTest("[%+010.2f]", String.Format("[+000042{0}50]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-010.2f]", String.Format("[+42{0}00    ]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-010.2f]", String.Format("[+42{0}50    ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%.2f]", String.Format("[-42{0}00]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%.2f]", String.Format("[-42{0}50]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%10.2f]", String.Format("[    -42{0}00]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%10.2f]", String.Format("[    -42{0}50]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-10.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-10.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%010.2f]", String.Format("[-000042{0}00]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%010.2f]", String.Format("[-000042{0}50]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-010.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-010.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%.2f]", String.Format("[-42{0}00]", sepDecimal), -42));
+        Assert.That(RunTest("[%.2f]", String.Format("[-42{0}50]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%10.2f]", String.Format("[    -42{0}00]", sepDecimal), -42));
+        Assert.That(RunTest("[%10.2f]", String.Format("[    -42{0}50]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-10.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
+        Assert.That(RunTest("[%-10.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%010.2f]", String.Format("[-000042{0}00]", sepDecimal), -42));
+        Assert.That(RunTest("[%010.2f]", String.Format("[-000042{0}50]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-010.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
+        Assert.That(RunTest("[%-010.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
 
-        Assert.IsTrue(RunTest("[%+.2f]", String.Format("[-42{0}00]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+.2f]", String.Format("[-42{0}50]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+10.2f]", String.Format("[    -42{0}00]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+10.2f]", String.Format("[    -42{0}50]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-10.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-10.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+010.2f]", String.Format("[-000042{0}00]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+010.2f]", String.Format("[-000042{0}50]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-010.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-010.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+.2f]", String.Format("[-42{0}00]", sepDecimal), -42));
+        Assert.That(RunTest("[%+.2f]", String.Format("[-42{0}50]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+10.2f]", String.Format("[    -42{0}00]", sepDecimal), -42));
+        Assert.That(RunTest("[%+10.2f]", String.Format("[    -42{0}50]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-10.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-10.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+010.2f]", String.Format("[-000042{0}00]", sepDecimal), -42));
+        Assert.That(RunTest("[%+010.2f]", String.Format("[-000042{0}50]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-010.2f]", String.Format("[-42{0}00    ]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-010.2f]", String.Format("[-42{0}50    ]", sepDecimal), -42.5));
 
         Console.WriteLine("\n\n");
     }
@@ -222,95 +222,95 @@ public class sprintf
         Console.WriteLine("Test exponent format %f");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%e]", String.Format("[4{0}200000e+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%e]", String.Format("[4{0}250000e+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%20e]", String.Format("[       4{0}200000e+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%20e]", String.Format("[       4{0}250000e+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-20e]", String.Format("[4{0}200000e+001       ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-20e]", String.Format("[4{0}250000e+001       ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%020e]", String.Format("[00000004{0}200000e+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%020e]", String.Format("[00000004{0}250000e+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-020e]", String.Format("[4{0}200000e+001       ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-020e]", String.Format("[4{0}250000e+001       ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%e]", String.Format("[4{0}200000e+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%e]", String.Format("[4{0}250000e+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%20e]", String.Format("[       4{0}200000e+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%20e]", String.Format("[       4{0}250000e+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-20e]", String.Format("[4{0}200000e+001       ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-20e]", String.Format("[4{0}250000e+001       ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%020e]", String.Format("[00000004{0}200000e+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%020e]", String.Format("[00000004{0}250000e+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-020e]", String.Format("[4{0}200000e+001       ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-020e]", String.Format("[4{0}250000e+001       ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%+E]", String.Format("[+4{0}200000E+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+E]", String.Format("[+4{0}250000E+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+20E]", String.Format("[      +4{0}200000E+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+20E]", String.Format("[      +4{0}250000E+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-20E]", String.Format("[+4{0}200000E+001      ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-20E]", String.Format("[+4{0}250000E+001      ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+020E]", String.Format("[+0000004{0}200000E+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+020E]", String.Format("[+0000004{0}250000E+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-020E]", String.Format("[+4{0}200000E+001      ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-020E]", String.Format("[+4{0}250000E+001      ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+E]", String.Format("[+4{0}200000E+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%+E]", String.Format("[+4{0}250000E+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+20E]", String.Format("[      +4{0}200000E+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%+20E]", String.Format("[      +4{0}250000E+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-20E]", String.Format("[+4{0}200000E+001      ]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-20E]", String.Format("[+4{0}250000E+001      ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+020E]", String.Format("[+0000004{0}200000E+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%+020E]", String.Format("[+0000004{0}250000E+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-020E]", String.Format("[+4{0}200000E+001      ]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-020E]", String.Format("[+4{0}250000E+001      ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%e]", String.Format("[-4{0}200000e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%e]", String.Format("[-4{0}250000e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%20e]", String.Format("[      -4{0}200000e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%20e]", String.Format("[      -4{0}250000e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-20e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-20e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%020e]", String.Format("[-0000004{0}200000e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%020e]", String.Format("[-0000004{0}250000e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-020e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-020e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%e]", String.Format("[-4{0}200000e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%e]", String.Format("[-4{0}250000e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%20e]", String.Format("[      -4{0}200000e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%20e]", String.Format("[      -4{0}250000e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-20e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
+        Assert.That(RunTest("[%-20e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%020e]", String.Format("[-0000004{0}200000e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%020e]", String.Format("[-0000004{0}250000e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-020e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
+        Assert.That(RunTest("[%-020e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
 
-        Assert.IsTrue(RunTest("[%+e]", String.Format("[-4{0}200000e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+e]", String.Format("[-4{0}250000e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+20e]", String.Format("[      -4{0}200000e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+20e]", String.Format("[      -4{0}250000e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-20e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-20e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+020e]", String.Format("[-0000004{0}200000e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+020e]", String.Format("[-0000004{0}250000e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-020e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-020e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+e]", String.Format("[-4{0}200000e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%+e]", String.Format("[-4{0}250000e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+20e]", String.Format("[      -4{0}200000e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%+20e]", String.Format("[      -4{0}250000e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-20e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-20e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+020e]", String.Format("[-0000004{0}200000e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%+020e]", String.Format("[-0000004{0}250000e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-020e]", String.Format("[-4{0}200000e+001      ]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-020e]", String.Format("[-4{0}250000e+001      ]", sepDecimal), -42.5));
 
         // -----
 
-        Assert.IsTrue(RunTest("[%.2e]", String.Format("[4{0}20e+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%.2e]", String.Format("[4{0}25e+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%20.2e]", String.Format("[           4{0}20e+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%20.2e]", String.Format("[           4{0}25e+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-20.2e]", String.Format("[4{0}20e+001           ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-20.2e]", String.Format("[4{0}25e+001           ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%020.2e]", String.Format("[000000000004{0}20e+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%020.2e]", String.Format("[000000000004{0}25e+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%-020.2e]", String.Format("[4{0}20e+001           ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%-020.2e]", String.Format("[4{0}25e+001           ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%.2e]", String.Format("[4{0}20e+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%.2e]", String.Format("[4{0}25e+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%20.2e]", String.Format("[           4{0}20e+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%20.2e]", String.Format("[           4{0}25e+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-20.2e]", String.Format("[4{0}20e+001           ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-20.2e]", String.Format("[4{0}25e+001           ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%020.2e]", String.Format("[000000000004{0}20e+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%020.2e]", String.Format("[000000000004{0}25e+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%-020.2e]", String.Format("[4{0}20e+001           ]", sepDecimal), 42));
+        Assert.That(RunTest("[%-020.2e]", String.Format("[4{0}25e+001           ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%+.2E]", String.Format("[+4{0}20E+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+.2E]", String.Format("[+4{0}25E+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+20.2E]", String.Format("[          +4{0}20E+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+20.2E]", String.Format("[          +4{0}25E+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-20.2E]", String.Format("[+4{0}20E+001          ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-20.2E]", String.Format("[+4{0}25E+001          ]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+020.2E]", String.Format("[+00000000004{0}20E+001]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+020.2E]", String.Format("[+00000000004{0}25E+001]", sepDecimal), 42.5));
-        Assert.IsTrue(RunTest("[%+-020.2E]", String.Format("[+4{0}20E+001          ]", sepDecimal), 42));
-        Assert.IsTrue(RunTest("[%+-020.2E]", String.Format("[+4{0}25E+001          ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+.2E]", String.Format("[+4{0}20E+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%+.2E]", String.Format("[+4{0}25E+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+20.2E]", String.Format("[          +4{0}20E+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%+20.2E]", String.Format("[          +4{0}25E+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-20.2E]", String.Format("[+4{0}20E+001          ]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-20.2E]", String.Format("[+4{0}25E+001          ]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+020.2E]", String.Format("[+00000000004{0}20E+001]", sepDecimal), 42));
+        Assert.That(RunTest("[%+020.2E]", String.Format("[+00000000004{0}25E+001]", sepDecimal), 42.5));
+        Assert.That(RunTest("[%+-020.2E]", String.Format("[+4{0}20E+001          ]", sepDecimal), 42));
+        Assert.That(RunTest("[%+-020.2E]", String.Format("[+4{0}25E+001          ]", sepDecimal), 42.5));
 
-        Assert.IsTrue(RunTest("[%.2e]", String.Format("[-4{0}20e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%.2e]", String.Format("[-4{0}25e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%20.2e]", String.Format("[          -4{0}20e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%20.2e]", String.Format("[          -4{0}25e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-20.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-20.2e]", String.Format("[-4{0}25e+001          ]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%020.2e]", String.Format("[-00000000004{0}20e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%020.2e]", String.Format("[-00000000004{0}25e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%-020.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%-020.2e]", String.Format("[-4{0}25e+001          ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%.2e]", String.Format("[-4{0}20e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%.2e]", String.Format("[-4{0}25e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%20.2e]", String.Format("[          -4{0}20e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%20.2e]", String.Format("[          -4{0}25e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-20.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
+        Assert.That(RunTest("[%-20.2e]", String.Format("[-4{0}25e+001          ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%020.2e]", String.Format("[-00000000004{0}20e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%020.2e]", String.Format("[-00000000004{0}25e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%-020.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
+        Assert.That(RunTest("[%-020.2e]", String.Format("[-4{0}25e+001          ]", sepDecimal), -42.5));
 
-        Assert.IsTrue(RunTest("[%+.2e]", String.Format("[-4{0}20e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+.2e]", String.Format("[-4{0}25e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+20.2e]", String.Format("[          -4{0}20e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+20.2e]", String.Format("[          -4{0}25e+001]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+-20.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-20.2e]", String.Format("[-4{0}25e+001          ]", sepDecimal), -42.5));
-        Assert.IsTrue(RunTest("[%+020.2e]", String.Format("[-00000000004{0}20e+001]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+020.2e]", String.Format("[-00000000004{0}25e+001]", sepDecimal), -42.545));
-        Assert.IsTrue(RunTest("[%+-020.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
-        Assert.IsTrue(RunTest("[%+-020.2e]", String.Format("[-4{0}26e+001          ]", sepDecimal), -42.555));
+        Assert.That(RunTest("[%+.2e]", String.Format("[-4{0}20e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%+.2e]", String.Format("[-4{0}25e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+20.2e]", String.Format("[          -4{0}20e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%+20.2e]", String.Format("[          -4{0}25e+001]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+-20.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-20.2e]", String.Format("[-4{0}25e+001          ]", sepDecimal), -42.5));
+        Assert.That(RunTest("[%+020.2e]", String.Format("[-00000000004{0}20e+001]", sepDecimal), -42));
+        Assert.That(RunTest("[%+020.2e]", String.Format("[-00000000004{0}25e+001]", sepDecimal), -42.545));
+        Assert.That(RunTest("[%+-020.2e]", String.Format("[-4{0}20e+001          ]", sepDecimal), -42));
+        Assert.That(RunTest("[%+-020.2e]", String.Format("[-4{0}26e+001          ]", sepDecimal), -42.555));
 
         Console.WriteLine("\n\n");
     }
@@ -323,10 +323,10 @@ public class sprintf
         Console.WriteLine("Test character formats %c");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%c]", "[]", null));
-        Assert.IsTrue(RunTest("[%c]", "[A]", 'A'));
-        Assert.IsTrue(RunTest("[%c]", "[A]", "A Test"));
-        Assert.IsTrue(RunTest("[%c]", "[A]", 65));
+        Assert.That(RunTest("[%c]", "[]", null));
+        Assert.That(RunTest("[%c]", "[A]", 'A'));
+        Assert.That(RunTest("[%c]", "[A]", "A Test"));
+        Assert.That(RunTest("[%c]", "[A]", 65));
 
         Console.WriteLine("\n\n");
     }
@@ -339,20 +339,20 @@ public class sprintf
         Console.WriteLine("Test string format %s");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%s]", "[This is a test]", "This is a test"));
-        Assert.IsTrue(RunTest("[%s]", "[A test with %]", "A test with %"));
-        Assert.IsTrue(RunTest("[%s]", "[A test with %s inside]", "A test with %s inside"));
-        Assert.IsTrue(RunTest("[%% %s %%]", "[% % Another test % %]", "% Another test %"));
-        Assert.IsTrue(RunTest("[%20s]", "[       a long string]", "a long string"));
-        Assert.IsTrue(RunTest("[%-20s]", "[a long string       ]", "a long string"));
-        Assert.IsTrue(RunTest("[%020s]", "[0000000a long string]", "a long string"));
-        Assert.IsTrue(RunTest("[%-020s]", "[a long string       ]", "a long string"));
+        Assert.That(RunTest("[%s]", "[This is a test]", "This is a test"));
+        Assert.That(RunTest("[%s]", "[A test with %]", "A test with %"));
+        Assert.That(RunTest("[%s]", "[A test with %s inside]", "A test with %s inside"));
+        Assert.That(RunTest("[%% %s %%]", "[% % Another test % %]", "% Another test %"));
+        Assert.That(RunTest("[%20s]", "[       a long string]", "a long string"));
+        Assert.That(RunTest("[%-20s]", "[a long string       ]", "a long string"));
+        Assert.That(RunTest("[%020s]", "[0000000a long string]", "a long string"));
+        Assert.That(RunTest("[%-020s]", "[a long string       ]", "a long string"));
 
-        Assert.IsTrue(RunTest("[%.10s]", "[This is a ]", "This is a shortened string"));
-        Assert.IsTrue(RunTest("[%20.10s]", "[          This is a ]", "This is a shortened string"));
-        Assert.IsTrue(RunTest("[%-20.10s]", "[This is a           ]", "This is a shortened string"));
-        Assert.IsTrue(RunTest("[%020.10s]", "[0000000000This is a ]", "This is a shortened string"));
-        Assert.IsTrue(RunTest("[%-020.10s]", "[This is a           ]", "This is a shortened string"));
+        Assert.That(RunTest("[%.10s]", "[This is a ]", "This is a shortened string"));
+        Assert.That(RunTest("[%20.10s]", "[          This is a ]", "This is a shortened string"));
+        Assert.That(RunTest("[%-20.10s]", "[This is a           ]", "This is a shortened string"));
+        Assert.That(RunTest("[%020.10s]", "[0000000000This is a ]", "This is a shortened string"));
+        Assert.That(RunTest("[%-020.10s]", "[This is a           ]", "This is a shortened string"));
 
         C.printf("Account balance: %'+20.2f\n", 12345678);
 
@@ -367,25 +367,25 @@ public class sprintf
         Console.WriteLine("Test hex format %x / %X");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%x]", "[2a]", 42));
-        Assert.IsTrue(RunTest("[%X]", "[2A]", 42));
-        Assert.IsTrue(RunTest("[%5x]", "[   2a]", 42));
-        Assert.IsTrue(RunTest("[%5X]", "[   2A]", 42));
-        Assert.IsTrue(RunTest("[%05x]", "[0002a]", 42));
-        Assert.IsTrue(RunTest("[%05X]", "[0002A]", 42));
-        Assert.IsTrue(RunTest("[%-05x]", "[2a   ]", 42));
-        Assert.IsTrue(RunTest("[%-05X]", "[2A   ]", 42));
+        Assert.That(RunTest("[%x]", "[2a]", 42));
+        Assert.That(RunTest("[%X]", "[2A]", 42));
+        Assert.That(RunTest("[%5x]", "[   2a]", 42));
+        Assert.That(RunTest("[%5X]", "[   2A]", 42));
+        Assert.That(RunTest("[%05x]", "[0002a]", 42));
+        Assert.That(RunTest("[%05X]", "[0002A]", 42));
+        Assert.That(RunTest("[%-05x]", "[2a   ]", 42));
+        Assert.That(RunTest("[%-05X]", "[2A   ]", 42));
 
-        Assert.IsTrue(RunTest("[%#x]", "[0x2a]", 42));
-        Assert.IsTrue(RunTest("[%#X]", "[0X2A]", 42));
-        Assert.IsTrue(RunTest("[%#5x]", "[ 0x2a]", 42));
-        Assert.IsTrue(RunTest("[%#5X]", "[ 0X2A]", 42));
-        Assert.IsTrue(RunTest("[%#05x]", "[0x02a]", 42));
-        Assert.IsTrue(RunTest("[%#05X]", "[0X02A]", 42));
-        Assert.IsTrue(RunTest("[%#-05x]", "[0x2a ]", 42));
-        Assert.IsTrue(RunTest("[%#-05X]", "[0X2A ]", 42));
+        Assert.That(RunTest("[%#x]", "[0x2a]", 42));
+        Assert.That(RunTest("[%#X]", "[0X2A]", 42));
+        Assert.That(RunTest("[%#5x]", "[ 0x2a]", 42));
+        Assert.That(RunTest("[%#5X]", "[ 0X2A]", 42));
+        Assert.That(RunTest("[%#05x]", "[0x02a]", 42));
+        Assert.That(RunTest("[%#05X]", "[0X02A]", 42));
+        Assert.That(RunTest("[%#-05x]", "[0x2a ]", 42));
+        Assert.That(RunTest("[%#-05X]", "[0X2A ]", 42));
 
-        Assert.IsTrue(RunTest("[%.2x]", "[05]", 5));
+        Assert.That(RunTest("[%.2x]", "[05]", 5));
 
         Console.WriteLine("\n\n");
     }
@@ -398,23 +398,23 @@ public class sprintf
         Console.WriteLine("Test octal format %o");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%o]", "[52]", 42));
-        Assert.IsTrue(RunTest("[%o]", "[52]", 42));
-        Assert.IsTrue(RunTest("[%5o]", "[   52]", 42));
-        Assert.IsTrue(RunTest("[%5o]", "[   52]", 42));
-        Assert.IsTrue(RunTest("[%05o]", "[00052]", 42));
-        Assert.IsTrue(RunTest("[%05o]", "[00052]", 42));
-        Assert.IsTrue(RunTest("[%-05o]", "[52   ]", 42));
-        Assert.IsTrue(RunTest("[%-05o]", "[52   ]", 42));
+        Assert.That(RunTest("[%o]", "[52]", 42));
+        Assert.That(RunTest("[%o]", "[52]", 42));
+        Assert.That(RunTest("[%5o]", "[   52]", 42));
+        Assert.That(RunTest("[%5o]", "[   52]", 42));
+        Assert.That(RunTest("[%05o]", "[00052]", 42));
+        Assert.That(RunTest("[%05o]", "[00052]", 42));
+        Assert.That(RunTest("[%-05o]", "[52   ]", 42));
+        Assert.That(RunTest("[%-05o]", "[52   ]", 42));
 
-        Assert.IsTrue(RunTest("[%#o]", "[052]", 42));
-        Assert.IsTrue(RunTest("[%#o]", "[052]", 42));
-        Assert.IsTrue(RunTest("[%#5o]", "[  052]", 42));
-        Assert.IsTrue(RunTest("[%#5o]", "[  052]", 42));
-        Assert.IsTrue(RunTest("[%#05o]", "[00052]", 42));
-        Assert.IsTrue(RunTest("[%#05o]", "[00052]", 42));
-        Assert.IsTrue(RunTest("[%#-05o]", "[052  ]", 42));
-        Assert.IsTrue(RunTest("[%#-05o]", "[052  ]", 42));
+        Assert.That(RunTest("[%#o]", "[052]", 42));
+        Assert.That(RunTest("[%#o]", "[052]", 42));
+        Assert.That(RunTest("[%#5o]", "[  052]", 42));
+        Assert.That(RunTest("[%#5o]", "[  052]", 42));
+        Assert.That(RunTest("[%#05o]", "[00052]", 42));
+        Assert.That(RunTest("[%#05o]", "[00052]", 42));
+        Assert.That(RunTest("[%#-05o]", "[052  ]", 42));
+        Assert.That(RunTest("[%#-05o]", "[052  ]", 42));
 
         Console.WriteLine("\n\n");
     }
@@ -427,7 +427,7 @@ public class sprintf
         Console.WriteLine("Test position index (n$)");
         Console.WriteLine("--------------------------------------------------------------------------------");
 
-        Assert.IsTrue(RunTest("[%2$d %1$#x %1$d]", "[17 0x10 16]", 16, 17));
+        Assert.That(RunTest("[%2$d %1$#x %1$d]", "[17 0x10 16]", 16, 17));
 
         Console.WriteLine("\n\n");
     }
